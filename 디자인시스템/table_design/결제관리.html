@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>결제 관리</title>
+  <!-- 기준 프롬프트: docs/DB_v2_신규테이블_페이지_프롬프트.md -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="./table-design.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="관리자 메뉴">
+      <div class="brand"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>관리자 패널</span></div>
+      <nav class="nav">
+        <button class="nav-button"><i class="nav-icon fa-solid fa-table-columns"></i><span class="nav-label">대시보드</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-users"></i><span class="nav-label">회원</span><span class="nav-count">2</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-bolt"></i><span class="nav-label">활동 관리</span></button>
+        <button class="nav-button active"><i class="nav-icon fa-solid fa-wallet"></i><span class="nav-label">결제 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-handshake"></i><span class="nav-label">매칭 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-graduation-cap"></i><span class="nav-label">시험 관리</span><span class="nav-count">4</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-calendar-days"></i><span class="nav-label">스케줄 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-database"></i><span class="nav-label">신규 테이블 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-comments"></i><span class="nav-label">1:1 문의</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-chart-line"></i><span class="nav-label">통계</span></button>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="topbar-title">결제 관리</div>
+        <div class="topbar-actions">
+          <button class="btn"><i class="fa-solid fa-floppy-disk"></i>저장</button>
+          <button class="btn primary"><i class="fa-solid fa-file-export"></i>엑셀 내보내기</button>
+        </div>
+      </header>
+
+      <section class="page">
+        <div class="page-head">
+          <div>
+            <div class="breadcrumb">관리자 &gt; 결제 관리</div>
+            <h1>결제 관리</h1>
+            <div class="meta">사이트별 매출과 결제 내역을 한 화면에서 확인한다.</div>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn"><i class="fa-solid fa-calculator"></i>정산 보기</button>
+            <button class="btn"><i class="fa-solid fa-rotate-left"></i>필터초기화</button>
+          </div>
+        </div>
+
+        <div class="major-tabs" role="tablist" aria-label="사이트 대분류">
+          <button class="major-tab active" type="button"><i class="fa-solid fa-globe"></i>전체 <span class="count">(28건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-robot"></i>AI번역 <span class="count">(9건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-file-lines"></i>통독문서 <span class="count">(4건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-graduation-cap"></i>교육센터 <span class="count">(6건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-ticket"></i>전시/행사 <span class="count">(5건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-pen-to-square"></i>시험사이트 <span class="count">(4건)</span></button>
+        </div>
+
+        <div class="sub-tabs" role="tablist" aria-label="결제 하위 탭">
+          <button class="sub-tab active" type="button" data-target="payments">결제 내역 <span class="count">(전체 28건)</span></button>
+          <button class="sub-tab" type="button" data-target="refunds">환불 내역 <span class="count">(전체 3건)</span></button>
+          <button class="sub-tab" type="button" data-target="settlements">정산 대기 <span class="count">(전체 7건)</span></button>
+        </div>
+
+        <form class="dense-filter-card" data-dense-filter aria-label="결제 검색 및 필터">
+          <div class="dense-search-main">
+            <label class="dense-search-field">
+              <span>검색어</span>
+              <input type="search" name="keyword" placeholder="결제번호, 회원명, 관리번호, 상품명 검색">
+            </label>
+            <label class="dense-date-field"><span>결제 시작</span><input type="date" name="payStart"></label>
+            <label class="dense-date-field"><span>결제 종료</span><input type="date" name="payEnd"></label>
+            <button class="btn primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
+            <button class="btn" type="reset"><i class="fa-solid fa-rotate-left"></i>초기화</button>
+          </div>
+          <div class="dense-filter-flow" aria-label="결제 조건">
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>구분</legend>
+              <button class="filter-chip" type="button" aria-pressed="true">전체</button>
+              <button class="filter-chip" type="button" aria-pressed="false">구독</button>
+              <button class="filter-chip" type="button" aria-pressed="false">서비스의뢰</button>
+              <button class="filter-chip" type="button" aria-pressed="false">시험응시</button>
+              <button class="filter-chip" type="button" aria-pressed="false">문서구매</button>
+            </fieldset>
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>상태</legend>
+              <button class="filter-chip" type="button" aria-pressed="true">결제완료</button>
+              <button class="filter-chip" type="button" aria-pressed="false">정산대기</button>
+              <button class="filter-chip" type="button" aria-pressed="false">환불완료</button>
+              <button class="filter-chip" type="button" aria-pressed="false">결제취소</button>
+            </fieldset>
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>수단</legend>
+              <label class="dense-check"><input type="checkbox" checked> 카드</label>
+              <label class="dense-check"><input type="checkbox"> 계좌이체</label>
+              <label class="dense-check"><input type="checkbox"> 체크카드</label>
+              <label class="dense-check"><input type="checkbox"> 토스페이</label>
+              <label class="dense-check"><input type="checkbox"> 가상계좌</label>
+            </fieldset>
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>정산</legend>
+              <label class="dense-check"><input type="checkbox" checked> 월 정산 포함</label>
+              <label class="dense-check"><input type="checkbox"> 세금계산서</label>
+              <label class="dense-check"><input type="checkbox"> 환불요청</label>
+              <label class="dense-check"><input type="checkbox"> 검수중</label>
+              <label class="dense-check"><input type="checkbox"> 담당자 확인</label>
+            </fieldset>
+          </div>
+          <div class="dense-active-filters" data-active-filters aria-live="polite"></div>
+        </form>
+
+        <div class="summary-strip">
+          <div class="summary-item"><div class="summary-label"><i class="fa-solid fa-coins"></i>총 매출</div><div class="summary-value">1,645.95만</div></div>
+          <div class="summary-item"><div class="summary-label"><i class="fa-solid fa-chart-line"></i>순 매출</div><div class="summary-value">1,637.85만</div></div>
+          <div class="summary-item"><div class="summary-label"><i class="fa-solid fa-arrow-rotate-left"></i>환불</div><div class="summary-value">8.1만</div></div>
+          <div class="summary-item"><div class="summary-label"><i class="fa-solid fa-receipt"></i>건수</div><div class="summary-value">28건</div></div>
+        </div>
+
+        <section class="chart-panel" aria-label="사이트별 매출">
+          <div class="chart-title"><i class="fa-solid fa-chart-column"></i>사이트별 매출</div>
+          <div class="bar-list">
+            <div class="bar-item"><div class="bar-label"><span>AI번역</span><span>197.5만</span></div><div class="bar-track"><div class="bar-fill" style="width: 28%"></div></div></div>
+            <div class="bar-item"><div class="bar-label"><span>통독문서</span><span>228.8만</span></div><div class="bar-track"><div class="bar-fill" style="width: 32%"></div></div></div>
+            <div class="bar-item"><div class="bar-label"><span>교육센터</span><span>375.75만</span></div><div class="bar-track"><div class="bar-fill" style="width: 54%"></div></div></div>
+            <div class="bar-item"><div class="bar-label"><span>전시/행사</span><span>705만</span></div><div class="bar-track"><div class="bar-fill" style="width: 100%"></div></div></div>
+            <div class="bar-item"><div class="bar-label"><span>시험사이트</span><span>138.9만</span></div><div class="bar-track"><div class="bar-fill" style="width: 20%"></div></div></div>
+          </div>
+        </section>
+
+        <section class="table-card">
+          <article class="table-section active" id="payments">
+            <div class="table-headbar">
+              <div class="table-title">결제 내역 <small>전체 28건</small></div>
+              <button class="btn"><i class="fa-solid fa-sliders"></i>컬럼설정</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <colgroup>
+                  <col style="width:112px"><col style="width:110px"><col style="width:156px"><col style="width:190px"><col style="width:130px"><col style="width:132px"><col style="width:126px"><col style="width:180px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="sticky-id">결제번호</th>
+                    <th>사이트<br>구분</th>
+                    <th>회원<br>관리번호</th>
+                    <th>상품<br>서비스</th>
+                    <th>금액<br>수수료</th>
+                    <th>결제상태<br>수단</th>
+                    <th>결제일<br>환불일</th>
+                    <th>담당<br>메모</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="sticky-id">PAY-AI-001</td>
+                    <td><div class="cell"><span class="main"><i class="icon primary fa-solid fa-robot"></i> AI번역</span><span class="sub">서비스의뢰</span></div></td>
+                    <td><div class="cell"><span class="main">김민수</span><span class="sub">001-Ab2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">AI 텍스트 번역</span><span class="sub">영한 반도체 문서</span></div></td>
+                    <td class="right"><div class="cell"><span class="main">350,000원</span><span class="sub">수수료 10,500</span></div></td>
+                    <td><div class="cell"><span class="status ok">결제완료</span><span class="sub">신용카드</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-15</span><span class="sub">-</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">정산팀</span><span class="sub">월 정산 포함</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">PAY-AI-002</td>
+                    <td><div class="cell"><span class="main"><i class="icon primary fa-solid fa-robot"></i> AI번역</span><span class="sub">구독</span></div></td>
+                    <td><div class="cell"><span class="main">(주)글로벌텍</span><span class="sub">002-Aa2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">프리미엄 월 구독</span><span class="sub">기업 계정</span></div></td>
+                    <td class="right"><div class="cell"><span class="main">990,000원</span><span class="sub">수수료 29,700</span></div></td>
+                    <td><div class="cell"><span class="status ok">결제완료</span><span class="sub">계좌이체</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-01</span><span class="sub">-</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">운영팀</span><span class="sub">세금계산서 발행</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">PAY-TD-001</td>
+                    <td><div class="cell"><span class="main"><i class="icon fa-solid fa-file-lines"></i> 통독문서</span><span class="sub">문서구매</span></div></td>
+                    <td><div class="cell"><span class="main">한국문서관리(주)</span><span class="sub">009-Ba2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">문서 관리 패키지</span><span class="sub">기업 라이선스</span></div></td>
+                    <td class="right"><div class="cell"><span class="main">720,000원</span><span class="sub">수수료 21,600</span></div></td>
+                    <td><div class="cell"><span class="status ok">결제완료</span><span class="sub">계좌이체</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-18</span><span class="sub">-</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">정산팀</span><span class="sub">기관 계약</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">PAY-ED-001</td>
+                    <td><div class="cell"><span class="main"><i class="icon fa-solid fa-graduation-cap"></i> 교육센터</span><span class="sub">시험응시</span></div></td>
+                    <td><div class="cell"><span class="main">강서현</span><span class="sub">014-Ca2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">영어교육 지도사 자격시험</span><span class="sub">응시료</span></div></td>
+                    <td class="right"><div class="cell"><span class="main">45,000원</span><span class="sub">수수료 1,350</span></div></td>
+                    <td><div class="cell"><span class="status ok">결제완료</span><span class="sub">체크카드</span></div></td>
+                    <td><div class="cell"><span class="main">25-12-10</span><span class="sub">-</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">시험팀</span><span class="sub">응시 접수 완료</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">PAY-EX-004</td>
+                    <td><div class="cell"><span class="main"><i class="icon fa-solid fa-ticket"></i> 전시/행사</span><span class="sub">서비스의뢰</span></div></td>
+                    <td><div class="cell"><span class="main">이벤트플러스(주)</span><span class="sub">020-Da2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">대형 행사 통번역 패키지</span><span class="sub">VIP 등급</span></div></td>
+                    <td class="right"><div class="cell"><span class="main">4,900,000원</span><span class="sub">수수료 147,000</span></div></td>
+                    <td><div class="cell"><span class="status wait">정산대기</span><span class="sub">카드</span></div></td>
+                    <td><div class="cell"><span class="main">25-07-10</span><span class="sub">-</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">정산팀</span><span class="sub">행사 종료 후 정산</span></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="refunds">
+            <div class="table-headbar"><div class="table-title">환불 내역 <small>전체 3건</small></div></div>
+            <div class="table-wrap">
+              <table>
+                <colgroup><col style="width:112px"><col style="width:156px"><col style="width:190px"><col style="width:130px"><col style="width:132px"><col style="width:180px"></colgroup>
+                <thead><tr><th class="sticky-id">결제번호</th><th>회원<br>관리번호</th><th>상품<br>서비스</th><th>환불금액<br>수수료</th><th>결제일<br>환불일</th><th>상태<br>메모</th></tr></thead>
+                <tbody>
+                  <tr><td class="sticky-id">PAY-AI-005</td><td><div class="cell"><span class="main">이정희</span><span class="sub">003-Aa1</span></div></td><td class="left"><div class="cell"><span class="main">베이직 구독</span><span class="sub">AI번역</span></div></td><td class="right"><div class="cell"><span class="main">49,000원</span><span class="sub">0</span></div></td><td><div class="cell"><span class="main">25-11-01</span><span class="sub">25-11-03</span></div></td><td><div class="cell"><span class="status fail">환불완료</span><span class="sub">중복 결제</span></div></td></tr>
+                  <tr><td class="sticky-id">PAY-TE-001</td><td><div class="cell"><span class="main">류하은</span><span class="sub">024-Eb2</span></div></td><td class="left"><div class="cell"><span class="main">번역시험 응시</span><span class="sub">시험사이트</span></div></td><td class="right"><div class="cell"><span class="main">32,000원</span><span class="sub">0</span></div></td><td><div class="cell"><span class="main">25-06-20</span><span class="sub">25-06-22</span></div></td><td><div class="cell"><span class="status fail">환불완료</span><span class="sub">시험 취소</span></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="settlements">
+            <div class="table-headbar"><div class="table-title">정산 대기 <small>전체 7건</small></div></div>
+            <div class="table-wrap">
+              <table>
+                <colgroup><col style="width:112px"><col style="width:156px"><col style="width:190px"><col style="width:130px"><col style="width:132px"><col style="width:180px"></colgroup>
+                <thead><tr><th class="sticky-id">결제번호</th><th>회원<br>관리번호</th><th>상품<br>서비스</th><th>정산금액<br>수수료</th><th>결제일<br>예정일</th><th>상태<br>메모</th></tr></thead>
+                <tbody>
+                  <tr><td class="sticky-id">PAY-EX-004</td><td><div class="cell"><span class="main">이벤트플러스(주)</span><span class="sub">020-Da2</span></div></td><td class="left"><div class="cell"><span class="main">대형 행사 통번역 패키지</span><span class="sub">전시/행사</span></div></td><td class="right"><div class="cell"><span class="main">4,753,000원</span><span class="sub">147,000</span></div></td><td><div class="cell"><span class="main">25-07-10</span><span class="sub">26-02-15</span></div></td><td><div class="cell"><span class="status wait">정산대기</span><span class="sub">행사 검수중</span></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <div class="bulkbar">
+            <div class="bulk-actions">
+              <span class="pagination">선택 0건</span>
+              <button class="btn"><i class="fa-solid fa-file-export"></i>선택정보내기</button>
+              <button class="btn"><i class="fa-solid fa-envelope"></i>이메일보내기</button>
+              <button class="btn"><i class="fa-solid fa-rotate-left"></i>환불처리</button>
+            </div>
+            <div class="pagination">1 / 3 페이지 · 50개씩 보기</div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script src="./table-design.js"></script>
+</body>
+</html>

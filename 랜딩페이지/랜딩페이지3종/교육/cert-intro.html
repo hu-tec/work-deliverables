@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>수강신청 | Times Education</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
+    <div class="container header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">TM</span><span><b>Times Education</b><small>AI 교육·자격 통합 플랫폼</small></span></a>
+      <nav class="gnb" aria-label="주요 메뉴">
+        <a href="./about.html">교육원소개</a>
+        <a href="./courses.html">시험 소개</a><a class="active" href="./cert-intro.html">수강신청</a><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a><a href="./contact.html">1:1문의</a>
+      </nav>
+      <div class="header-actions"><button class="mobile-menu" type="button">MENU</button><a class="btn btn--primary btn--sm" href="./apply.html">수강신청</a></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-title"><div class="container page-title-inner">
+      <div><span class="breadcrumb">Home / 수강신청</span><h1>수강신청</h1><p>센터와 과정 조건을 선택해 수강 가능한 강좌를 조회하고 신청하세요.</p></div>
+    </div></section>
+
+    <section class="section section--soft cert-apply-section"><div class="container">
+      <div class="section-head"><div><span class="label">COURSE APPLICATION</span><h2>수강신청 강좌 조회</h2></div><span class="note">센터, 구분, 분야/전공을 선택한 뒤 조회하세요</span></div>
+      <div class="apply-search-panel" aria-label="수강신청 강좌 검색">
+        <div class="course-group-board" aria-label="수강신청 선택 영역">
+          <section class="course-group-panel">
+            <div class="group-title"><span>01</span><strong>수강신청을 진행할 센터를 선택하세요.</strong></div>
+            <div class="group_list active" id="centerGroup" role="radiogroup" aria-label="센터 선택"></div>
+          </section>
+          <section class="course-group-panel">
+            <div class="group-title"><span>02</span><strong>구분을 선택하세요.</strong></div>
+            <div class="group_list" id="categoryGroup" role="radiogroup" aria-label="구분 선택"></div>
+          </section>
+          <section class="course-group-panel">
+            <div class="group-title"><span>03</span><strong>분야/전공을 선택하세요.</strong></div>
+            <div class="group_list" id="majorGroup" role="radiogroup" aria-label="분야/전공 선택"></div>
+          </section>
+        </div>
+        <p class="search-help">※ 센터 선택 시 구분, 분야/전공까지 모두 선택하여야 정보를 확인할 수 있습니다.</p>
+        <form class="course-search-form" id="courseSearchForm">
+          <div class="field-grid three search-extra-grid">
+            <div class="field-wrap">
+              <label class="label" for="courseKeyword">강좌명</label>
+              <input class="field" id="courseKeyword" type="search" placeholder="강좌명 입력">
+            </div>
+            <div class="field-wrap">
+              <span class="label">요일선택</span>
+              <div class="weekday-row" role="group" aria-label="요일 선택">
+                <label><input type="checkbox" value="월">월</label>
+                <label><input type="checkbox" value="화">화</label>
+                <label><input type="checkbox" value="수">수</label>
+                <label><input type="checkbox" value="목">목</label>
+                <label><input type="checkbox" value="금">금</label>
+                <label><input type="checkbox" value="토">토</label>
+                <label><input type="checkbox" value="일">일</label>
+              </div>
+            </div>
+            <div class="field-wrap">
+              <label class="label" for="teacherKeyword">강사명</label>
+              <input class="field" id="teacherKeyword" type="search" placeholder="강사명 입력">
+            </div>
+          </div>
+          <div class="search-actions">
+            <button class="btn btn--primary btn--lg" type="submit">조회</button>
+            <button class="btn btn--neutral btn--lg" type="button" id="resetSearch">초기화</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="course-result-panel" aria-live="polite">
+        <div class="result-head">
+          <div><span class="label">RESULT</span><h3>교육/강좌 목록</h3></div>
+          <div class="result-legend"><span class="status-pill">신규접수</span><span class="status-pill done">접수종료</span></div>
+        </div>
+        <div class="course-table-wrap">
+          <table class="course-apply-table">
+            <caption>교육/강좌 목록 : 번호, 센터, 강좌명, 요일/시간, 정원, 대상, 강사명, 신청</caption>
+            <thead><tr><th>번호</th><th>센터</th><th>강좌명</th><th>요일/시간</th><th>정원</th><th>대상</th><th>강사명</th><th>상태</th><th>상세</th></tr></thead>
+            <tbody id="courseResultBody"><tr><td colspan="9" class="empty-cell">센터와 구분, 분야/전공을 선택한 뒤 조회하세요.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div></section>
+
+  </main>
+
+  <section class="cta"><div class="container cta-inner">
+    <div><h2>수강 과정 선택이 어렵다면 상담받아보세요</h2><p>목표와 일정에 맞는 과정과 신청 절차를 안내합니다.</p></div>
+    <a class="btn btn--primary btn--lg" href="./contact.html">1:1 문의하기</a>
+  </div></section>
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>Times Education</h2><p>02-6207-9090</p></div>
+    <div><h3>시험</h3><a href="./courses.html">시험 소개</a><a href="./cert-intro.html">수강신청</a></div>
+    <div><h3>안내</h3><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a></div>
+    <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원소개</a></div>
+  </div><div class="copyright">© 2026 Times Media Inc. — layout_redesign</div></div></footer>
+  <script>
+    (function () {
+      const courses = [
+        {
+          id: "aite-trans-edu", center: "Times AI 시험센터", category: "자격 과정", major: "AI 번역",
+          title: "AITe AI 번역전문가 교육급수", day: "월·수", time: "19:00~21:00", quota: 30,
+          target: "AI 번역 입문자", teacher: "김민정", status: "신규접수", fee: "70,000원",
+          period: "2026.07.01 ~ 2026.07.24",
+          description: "AI 번역 결과를 분석하고 후편집하는 기초 실무 역량을 평가 대비와 함께 정리합니다.",
+          topics: ["기계번역 오류 유형", "문맥 기반 후편집", "품질 검수 체크리스트"]
+        },
+        {
+          id: "aite-trans-biz", center: "Times AI 시험센터", category: "자격 과정", major: "AI 번역",
+          title: "AITe AI 번역전문가 비즈니스급수", day: "토", time: "10:00~13:00", quota: 24,
+          target: "번역 실무자", teacher: "박서윤", status: "신규접수", fee: "100,000원",
+          period: "2026.07.06 ~ 2026.08.10",
+          description: "비즈니스 문서와 실무 텍스트를 중심으로 AI 번역 검수, 수정, 승인 기준을 훈련합니다.",
+          topics: ["비즈니스 문서 후편집", "용어 일관성 검수", "번역 품질 평가"]
+        },
+        {
+          id: "aite-prompt", center: "Times AI 시험센터", category: "자격 과정", major: "AI 프롬프트",
+          title: "AITe 프롬프트 전문가 과정", day: "화·목", time: "19:30~21:30", quota: 28,
+          target: "콘텐츠·기획 실무자", teacher: "이하늘", status: "신규접수", fee: "100,000원",
+          period: "2026.07.09 ~ 2026.08.01",
+          description: "목적별 프롬프트 설계와 결과 개선 과정을 평가 기준에 맞춰 실습합니다.",
+          topics: ["역할·조건 프롬프트", "결과물 개선 루프", "업무별 프롬프트 템플릿"]
+        },
+        {
+          id: "aite-ethics", center: "Times AI 시험센터", category: "자격 과정", major: "AI 윤리",
+          title: "AI 윤리시험 공통 대비반", day: "금", time: "18:30~20:30", quota: 40,
+          target: "AITe 전체 응시자", teacher: "정유진", status: "신규접수", fee: "별도 안내",
+          period: "2026.07.12 ~ 2026.07.26",
+          description: "AI 오용 방지, 데이터 윤리, 책임 기반 의사결정 등 공통 필수 시험 기준을 정리합니다.",
+          topics: ["저작권·개인정보", "편향성과 검증", "책임 있는 AI 활용"]
+        },
+        {
+          id: "itt-basic", center: "Times 통번역 센터", category: "자격 과정", major: "ITT 통번역",
+          title: "ITT 통번역 실무 입문", day: "월·목", time: "19:00~21:00", quota: 25,
+          target: "통번역 입문자", teacher: "최지훈", status: "신규접수", fee: "상담 후 안내",
+          period: "2026.07.03 ~ 2026.08.28",
+          description: "통역 표현, 번역 실무, 자격 대비를 함께 다루는 ITT 입문 강좌입니다.",
+          topics: ["기초 통역 표현", "문장 단위 번역", "모의평가 피드백"]
+        },
+        {
+          id: "tesol-cert", center: "Times 교육과정 센터", category: "자격 과정", major: "TESOL",
+          title: "TESOL 국제 영어교사 자격 과정", day: "토", time: "09:30~13:30", quota: 20,
+          target: "예비·현직 영어강사", teacher: "한수민", status: "접수종료", fee: "상담 후 안내",
+          period: "2026.06.01 ~ 2026.07.20",
+          description: "영어 교수법, 수업 설계, 시연 피드백을 통해 영어교사 자격 포트폴리오를 완성합니다.",
+          topics: ["영어 교수법", "수업안 설계", "수업 시연 피드백"]
+        }
+      ];
+
+      const centerGroup = document.getElementById("centerGroup");
+      const categoryGroup = document.getElementById("categoryGroup");
+      const majorGroup = document.getElementById("majorGroup");
+      const resultBody = document.getElementById("courseResultBody");
+      const keyword = document.getElementById("courseKeyword");
+      const teacherKeyword = document.getElementById("teacherKeyword");
+      const weekdayChecks = Array.from(document.querySelectorAll(".weekday-row input"));
+      const ALL_VALUE = "전체";
+      const selected = { center: "", category: "", major: "" };
+
+      function uniq(arr) { return Array.from(new Set(arr)).sort(); }
+      function isAll(value) { return value === ALL_VALUE; }
+      function matchesSelection(item, key) { return !selected[key] || isAll(selected[key]) || item[key] === selected[key]; }
+      function withAll(values) { return values.length ? [ALL_VALUE, ...values] : []; }
+      function renderGroup(group, values, key, emptyText) {
+        group.innerHTML = values.length
+          ? values.map((value) => `<button class="group-item ${selected[key] === value ? "active" : ""}" type="button" role="radio" aria-checked="${selected[key] === value ? "true" : "false"}" data-key="${key}" data-value="${value}">${value}</button>`).join("")
+          : `<div class="group-empty">${emptyText}</div>`;
+      }
+      function refreshGroups() {
+        renderGroup(centerGroup, withAll(uniq(courses.map((c) => c.center))), "center", "센터 정보가 없습니다.");
+        renderGroup(
+          categoryGroup,
+          selected.center ? withAll(uniq(courses.filter((c) => matchesSelection(c, "center")).map((c) => c.category))) : [],
+          "category",
+          "센터를 먼저 선택하세요."
+        );
+        renderGroup(
+          majorGroup,
+          selected.center && selected.category
+            ? withAll(uniq(courses.filter((c) => matchesSelection(c, "center") && matchesSelection(c, "category")).map((c) => c.major)))
+            : [],
+          "major",
+          "구분을 먼저 선택하세요."
+        );
+        centerGroup.classList.toggle("active", !selected.center);
+        categoryGroup.classList.toggle("active", Boolean(selected.center) && !selected.category);
+        majorGroup.classList.toggle("active", Boolean(selected.center && selected.category));
+      }
+      function resetResults(message) {
+        resultBody.innerHTML = `<tr><td colspan="9" class="empty-cell">${message}</td></tr>`;
+      }
+      function renderRows(items) {
+        if (!items.length) {
+          resetResults("등록/검색된 정보가 없습니다.");
+          return;
+        }
+        resultBody.innerHTML = items.map((item, index) => `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.center}</td>
+            <td class="course-title-cell">${item.title}</td>
+            <td>${item.day} ${item.time}</td>
+            <td>${item.quota}명</td>
+            <td>${item.target}</td>
+            <td>${item.teacher}</td>
+            <td><span class="status-pill ${item.status === "접수종료" ? "done" : ""}">${item.status}</span></td>
+            <td><a class="btn btn--outline btn--sm" href="./course-apply-detail.html?id=${encodeURIComponent(item.id)}">상세보기</a></td>
+          </tr>`).join("");
+      }
+
+      document.querySelector(".course-group-board").addEventListener("click", (e) => {
+        const btn = e.target.closest(".group-item");
+        if (!btn) return;
+        const key = btn.dataset.key;
+        selected[key] = btn.dataset.value;
+        if (key === "center") {
+          selected.category = "";
+          selected.major = "";
+          resetResults("구분과 분야/전공을 선택한 뒤 조회하세요.");
+        }
+        if (key === "category") {
+          selected.major = "";
+          resetResults("분야/전공을 선택한 뒤 조회하세요.");
+        }
+        if (key === "major") {
+          resetResults("조회 버튼을 누르면 선택한 조건의 강좌가 표시됩니다.");
+        }
+        refreshGroups();
+      });
+
+      document.getElementById("courseSearchForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!selected.center || !selected.category || !selected.major) {
+          resetResults("센터, 구분, 분야/전공을 모두 선택하세요.");
+          refreshGroups();
+          return;
+        }
+        const days = weekdayChecks.filter((item) => item.checked).map((item) => item.value);
+        const titleQ = keyword.value.trim();
+        const teacherQ = teacherKeyword.value.trim();
+        const items = courses.filter((item) =>
+          matchesSelection(item, "center") &&
+          matchesSelection(item, "category") &&
+          matchesSelection(item, "major") &&
+          (!titleQ || item.title.includes(titleQ)) &&
+          (!teacherQ || item.teacher.includes(teacherQ)) &&
+          (!days.length || days.some((day) => item.day.includes(day)))
+        );
+        renderRows(items);
+      });
+      document.getElementById("resetSearch").addEventListener("click", () => {
+        selected.center = "";
+        selected.category = "";
+        selected.major = "";
+        keyword.value = "";
+        teacherKeyword.value = "";
+        weekdayChecks.forEach((item) => { item.checked = false; });
+        resetResults("센터와 구분, 분야/전공을 선택한 뒤 조회하세요.");
+        refreshGroups();
+      });
+      refreshGroups();
+    })();
+  </script>
+  <script src="./site.js"></script>
+</body>
+</html>

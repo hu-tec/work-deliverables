@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>보유 스킬 체크리스트</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #d7dde7;
+      --soft: #f5f7fb;
+      --main: #14532d;
+      --main-soft: #dcfce7;
+      --other: #334155;
+      --other-soft: #e2e8f0;
+      --focus: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #eef2f7;
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .title-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(86px, 1fr));
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .summary-item {
+      min-width: 86px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+
+    .summary-label {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .summary-value {
+      display: block;
+      margin-top: 2px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #f8fafc;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tab {
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: #fff;
+      color: var(--other);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .tab[aria-selected="true"] {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .action-btn {
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 6px 10px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 18px;
+      padding: 20px;
+    }
+
+    .section-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .skill-group {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .group-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .group-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .group-desc {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .group-count {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: var(--soft);
+      color: var(--other);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .group-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 14px 16px 16px;
+    }
+
+    .lane {
+      min-width: 0;
+    }
+
+    .lane-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .lane-title strong {
+      color: var(--ink);
+      font-size: 12px;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .chip {
+      min-height: 30px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 850;
+      line-height: 1.2;
+    }
+
+    .chip::before {
+      content: "";
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      margin-right: 6px;
+      border: 1px solid #94a3b8;
+      border-radius: 999px;
+      background: #fff;
+      vertical-align: 0;
+    }
+
+    .chip.main {
+      border-color: #b7dfc5;
+      background: #f0fdf4;
+    }
+
+    .chip.other {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+    }
+
+    .chip[aria-checked="true"] {
+      border-color: var(--main);
+      background: var(--main);
+      color: #fff;
+    }
+
+    .chip.other[aria-checked="true"] {
+      border-color: var(--other);
+      background: var(--other);
+    }
+
+    .chip[aria-checked="true"]::before {
+      border-color: #fff;
+      background: #fff;
+      box-shadow: inset 0 0 0 2px currentColor;
+    }
+
+    .chip:focus-visible,
+    .tab:focus-visible,
+    .action-btn:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.25);
+      outline-offset: 2px;
+      border-color: var(--focus);
+    }
+
+    .side-panel {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .selected-list {
+      display: grid;
+      gap: 10px;
+      max-height: 520px;
+      overflow: auto;
+      padding: 14px;
+    }
+
+    .selected-empty {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .selected-group h3 {
+      margin: 0 0 6px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .selected-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .selected-tag {
+      border-radius: 999px;
+      padding: 4px 7px;
+      background: var(--other-soft);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    @media (max-width: 980px) {
+      .topbar,
+      .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .summary {
+        width: 100%;
+      }
+
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .side-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .app {
+        padding: 10px;
+      }
+
+      .group-body {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="shell" aria-labelledby="page-title">
+      <header class="topbar">
+        <div class="title-block">
+          <span class="badge">C</span>
+          <div>
+            <h1 id="page-title">보유 스킬 및 상세 체크리스트</h1>
+            <p class="subtitle">지원 직무에 맞춰 주로 사용하는 역량과 보완 역량을 선택합니다.</p>
+          </div>
+        </div>
+        <div class="summary" aria-label="선택 요약">
+          <div class="summary-item">
+            <span class="summary-label">전체 선택</span>
+            <span class="summary-value" id="total-count">0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">주로 사용</span>
+            <span class="summary-value" id="main-count">0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">그외 사용</span>
+            <span class="summary-value" id="other-count">0</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <div class="tabs" role="tablist" aria-label="스킬 영역 필터">
+          <button class="tab" type="button" role="tab" aria-selected="true" data-filter="all">전체</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-filter="ai">AI/디지털</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-filter="worktool">업무 도구</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-filter="experience">실무 경험</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-filter="job">직무 강조</button>
+        </div>
+        <div class="actions">
+          <button class="action-btn" type="button" id="select-main">주로 사용 선택</button>
+          <button class="action-btn" type="button" id="clear-all">전체 해제</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="section-stack" id="skill-list">
+          <section class="skill-group" data-area="ai">
+            <div class="group-head">
+              <div>
+                <h2 class="group-title">AI 개발/바이브코딩</h2>
+                <p class="group-desc">프롬프트 기반 프로토타입, 웹앱, 코드 수정, 배포 경험을 확인합니다.</p>
+              </div>
+              <span class="group-count">개발</span>
+            </div>
+            <div class="group-body">
+              <div class="lane">
+                <div class="lane-title"><strong>주로 사용</strong><span>핵심 도구</span></div>
+                <div class="chip-list">
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Cursor</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Windsurf</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">GitHub Copilot</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Claude Code</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">OpenAI Codex CLI</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Gemini CLI</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Replit Agent</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Bolt.new</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Lovable</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">v0</button>
+                </div>
+              </div>
+              <div class="lane">
+                <div class="lane-title"><strong>그외 사용</strong><span>추가 선택</span></div>
+                <div class="chip-list">
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Cline</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Roo Code</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Continue</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Aider</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Tabnine</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Devin</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Base44</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Firebase Studio</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Warp AI</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="skill-group" data-area="ai">
+            <div class="group-head">
+              <div>
+                <h2 class="group-title">범용 LLM/프롬프트</h2>
+                <p class="group-desc">문서 작성, 요약, 기획, 리서치, 사고 정리에 AI를 활용하는 역량입니다.</p>
+              </div>
+              <span class="group-count">AI 활용</span>
+            </div>
+            <div class="group-body">
+              <div class="lane">
+                <div class="lane-title"><strong>주로 사용</strong><span>업무 활용</span></div>
+                <div class="chip-list">
+                  <button class="chip main" type="button" role="radio" aria-checked="false">ChatGPT</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Claude</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Gemini</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Perplexity</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">NotebookLM</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Microsoft Copilot</button>
+                </div>
+              </div>
+              <div class="lane">
+                <div class="lane-title"><strong>그외 사용</strong><span>보완 도구</span></div>
+                <div class="chip-list">
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Grok</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Poe</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">You.com</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="skill-group" data-area="ai">
+            <div class="group-head">
+              <div>
+                <h2 class="group-title">디자인/발표/콘텐츠 제작</h2>
+                <p class="group-desc">발표자료, 카드뉴스, 홍보물, 이미지 생성, UI 초안을 빠르게 만드는 역량입니다.</p>
+              </div>
+              <span class="group-count">콘텐츠</span>
+            </div>
+            <div class="group-body">
+              <div class="lane">
+                <div class="lane-title"><strong>주로 사용</strong><span>제작 빈도 높음</span></div>
+                <div class="chip-list">
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Figma</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Gamma</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Canva AI</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Adobe Express</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Midjourney</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">DALL-E</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">PowerPoint</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">미리 캔버스</button>
+                </div>
+              </div>
+              <div class="lane">
+                <div class="lane-title"><strong>그외 사용</strong><span>상황별 활용</span></div>
+                <div class="chip-list">
+                  <button class="chip other" type="button" role="radio" aria-checked="false">FigJam</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Adobe Firefly</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Ideogram</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Leonardo AI</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Krea</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Beautiful.ai</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Pitch</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Tome</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="skill-group" data-area="worktool">
+            <div class="group-head">
+              <div>
+                <h2 class="group-title">문서/협업/교육 운영</h2>
+                <p class="group-desc">보고, 공유, 회의, 온라인 교육 운영에 필요한 기본 업무 도구입니다.</p>
+              </div>
+              <span class="group-count">업무 도구</span>
+            </div>
+            <div class="group-body">
+              <div class="lane">
+                <div class="lane-title"><strong>주로 사용</strong><span>운영 핵심</span></div>
+                <div class="chip-list">
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Notion</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Google Docs</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Microsoft Word</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Slack</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Microsoft Teams</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Zoom</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Google Meet</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Miro</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Kahoot</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Google Classroom</button>
+                </div>
+              </div>
+              <div class="lane">
+                <div class="lane-title"><strong>그외 사용</strong><span>보완 운영</span></div>
+                <div class="chip-list">
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Confluence</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Jira</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Trello</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Padlet</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Mentimeter</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Moodle</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Canvas LMS</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Webex</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="skill-group" data-area="worktool">
+            <div class="group-head">
+              <div>
+                <h2 class="group-title">영상/데이터/웹 운영</h2>
+                <p class="group-desc">영상 제작, 데이터 정리, 자동화, 웹 운영까지 실무 산출물 중심으로 확인합니다.</p>
+              </div>
+              <span class="group-count">제작/운영</span>
+            </div>
+            <div class="group-body">
+              <div class="lane">
+                <div class="lane-title"><strong>주로 사용</strong><span>반복 업무</span></div>
+                <div class="chip-list">
+                  <button class="chip main" type="button" role="radio" aria-checked="false">CapCut</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Premiere Pro</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">OBS</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Loom</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Excel</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Google Sheets</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Zapier</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Make</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">WordPress</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">Cafe24</button>
+                </div>
+              </div>
+              <div class="lane">
+                <div class="lane-title"><strong>그외 사용</strong><span>확장 도구</span></div>
+                <div class="chip-list">
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Descript</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Runway</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Final Cut Pro</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Airtable</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">n8n</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Power BI</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">AWS</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Vercel</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Netlify</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">Supabase</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="skill-group" data-area="experience">
+            <div class="group-head">
+              <div>
+                <h2 class="group-title">실무 경험/직무 역량</h2>
+                <p class="group-desc">도구 사용 여부가 아니라 실제로 맡아 처리할 수 있는 업무 역량입니다.</p>
+              </div>
+              <span class="group-count">경험</span>
+            </div>
+            <div class="group-body">
+              <div class="lane">
+                <div class="lane-title"><strong>주로 사용</strong><span>기본 업무</span></div>
+                <div class="chip-list">
+                  <button class="chip main" type="button" role="radio" aria-checked="false">일정 관리</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">고객 응대</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">교육생 관리</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">행정 문서 처리</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">자료 조사</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">보고서 작성</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">콘텐츠 운영</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">프로젝트 보조</button>
+                </div>
+              </div>
+              <div class="lane">
+                <div class="lane-title"><strong>그외 사용</strong><span>상황별 경험</span></div>
+                <div class="chip-list">
+                  <button class="chip other" type="button" role="radio" aria-checked="false">커뮤니티 운영</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">품질 검수</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">문서 버전 관리</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">결과 리포트</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">예외 상황 대응</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="skill-group" data-area="job">
+            <div class="group-head">
+              <div>
+                <h2 class="group-title">직무별 강조 역량</h2>
+                <p class="group-desc">마케팅, 회계, 행정, 교육 운영, 상담 직무에서 바로 강조할 수 있는 항목입니다.</p>
+              </div>
+              <span class="group-count">직무</span>
+            </div>
+            <div class="group-body">
+              <div class="lane">
+                <div class="lane-title"><strong>주로 사용</strong><span>면접 강조</span></div>
+                <div class="chip-list">
+                  <button class="chip main" type="button" role="radio" aria-checked="false">콘텐츠 기획</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">카드뉴스/썸네일 제작</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">SNS 채널 운영</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">캠페인 성과 정리</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">지출 증빙 정리</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">매출/매입 자료 정리</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">세금계산서/영수증 관리</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">정산표 작성</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">회의록 작성</button>
+                  <button class="chip main" type="button" role="radio" aria-checked="false">상담 내용 기록</button>
+                </div>
+              </div>
+              <div class="lane">
+                <div class="lane-title"><strong>그외 사용</strong><span>추가 어필</span></div>
+                <div class="chip-list">
+                  <button class="chip other" type="button" role="radio" aria-checked="false">광고 소재 제작</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">브랜드 톤앤매너 관리</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">키워드/트렌드 리서치</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">월별 비용 리포트</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">예산 집행 현황</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">강의 녹화/편집 지원</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">FAQ/응대 스크립트</button>
+                  <button class="chip other" type="button" role="radio" aria-checked="false">상담 이력 관리</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="side-panel" aria-label="선택된 항목">
+          <div class="panel-head">
+            <h2>선택된 역량</h2>
+          </div>
+          <div class="selected-list" id="selected-list">
+            <p class="selected-empty">아직 선택된 항목이 없습니다. 왼쪽에서 칩을 눌러 선택하세요.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const chips = Array.from(document.querySelectorAll(".chip"));
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const groups = Array.from(document.querySelectorAll(".skill-group"));
+    const totalCount = document.getElementById("total-count");
+    const mainCount = document.getElementById("main-count");
+    const otherCount = document.getElementById("other-count");
+    const selectedList = document.getElementById("selected-list");
+
+    function updateSummary() {
+      const selected = chips.filter((chip) => chip.getAttribute("aria-checked") === "true");
+      const selectedMain = selected.filter((chip) => chip.classList.contains("main"));
+      const selectedOther = selected.filter((chip) => chip.classList.contains("other"));
+
+      totalCount.textContent = selected.length;
+      mainCount.textContent = selectedMain.length;
+      otherCount.textContent = selectedOther.length;
+
+      if (!selected.length) {
+        selectedList.innerHTML = '<p class="selected-empty">아직 선택된 항목이 없습니다. 왼쪽에서 칩을 눌러 선택하세요.</p>';
+        return;
+      }
+
+      const byGroup = selected.reduce((acc, chip) => {
+        const group = chip.closest(".skill-group").querySelector(".group-title").textContent;
+        acc[group] ||= [];
+        acc[group].push(chip.textContent.trim());
+        return acc;
+      }, {});
+
+      selectedList.innerHTML = Object.entries(byGroup).map(([group, items]) => `
+        <section class="selected-group">
+          <h3>${group}</h3>
+          <div class="selected-tags">
+            ${items.map((item) => `<span class="selected-tag">${item}</span>`).join("")}
+          </div>
+        </section>
+      `).join("");
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const checked = chip.getAttribute("aria-checked") === "true";
+        chip.setAttribute("aria-checked", String(!checked));
+        updateSummary();
+      });
+    });
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const filter = tab.dataset.filter;
+        tabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+        groups.forEach((group) => {
+          group.hidden = filter !== "all" && group.dataset.area !== filter;
+        });
+      });
+    });
+
+    document.getElementById("select-main").addEventListener("click", () => {
+      chips.forEach((chip) => {
+        chip.setAttribute("aria-checked", String(chip.classList.contains("main")));
+      });
+      updateSummary();
+    });
+
+    document.getElementById("clear-all").addEventListener("click", () => {
+      chips.forEach((chip) => chip.setAttribute("aria-checked", "false"));
+      updateSummary();
+    });
+
+    updateSummary();
+  </script>
+</body>
+</html>

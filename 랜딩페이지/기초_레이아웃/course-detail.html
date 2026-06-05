@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>교육과정 상세 | Times Education</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
+    <div class="container header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">TM</span><span><b>Times Education</b><small>AI 교육·자격 통합 플랫폼</small></span></a>
+      <nav class="gnb" aria-label="주요 메뉴">
+        <a href="./about.html">교육원소개</a>
+        <a class="active" href="./courses.html">시험 소개</a>
+        <a href="./cert-intro.html">수강신청</a>
+        <a href="./exam-guide.html">시험 안내</a>
+        <a href="./community.html">커뮤니티</a>
+        <a href="./contact.html">1:1문의</a>
+      </nav>
+      <div class="header-actions">
+        <button class="mobile-menu" type="button">MENU</button>
+        <a class="btn btn--primary btn--sm" href="./apply.html">신청하기</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="detail-hero"><div class="container detail-hero-inner">
+      <span class="breadcrumb">Home / 시험 소개 / 상세</span>
+      <div class="cat" id="dCat"></div>
+      <h1 id="dTitle">교육과정 상세</h1>
+      <p id="dSummary"></p>
+      <div class="tags" id="dTags"></div>
+    </div></section>
+
+    <div class="container">
+      <nav class="course-subnav" id="subnav" aria-label="과정 메뉴"></nav>
+      <div class="detail-layout">
+        <div class="detail-main" id="detailMain"></div>
+        <aside class="apply-card" id="applyCard" aria-label="수강 신청"></aside>
+      </div>
+    </div>
+  </main>
+
+  <section class="cta" id="apply"><div class="container cta-inner">
+    <div><h2>나에게 맞는 과정인지 상담받아보세요</h2><p>학습 목표와 일정에 맞춰 과정과 시험을 안내합니다.</p></div>
+    <a class="btn btn--primary btn--lg" href="./contact.html">과정 상담하기</a>
+  </div></section>
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>Times Education</h2><p>02-6207-9090</p><p>AI 교육·자격 통합 플랫폼</p></div>
+    <div><h3>시험</h3><a href="./courses.html">시험 소개</a><a href="./cert-intro.html">수강신청</a></div>
+    <div><h3>안내</h3><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a></div>
+    <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원소개</a></div>
+  </div><div class="copyright">© 2026 Times Media Inc. — layout_redesign</div></div></footer>
+
+  <script src="./data.js"></script>
+  <script>
+    (function () {
+      const { COURSES, findCourse, getParam, escapeHtml } = window.SiteData;
+      const c = findCourse(getParam("id"));
+      document.title = `${c.title} | Times Education`;
+      document.getElementById("dCat").textContent = `${c.category} · ${c.status}`;
+      document.getElementById("dTitle").textContent = c.title;
+      document.getElementById("dSummary").textContent = c.summary;
+      document.getElementById("dTags").innerHTML = (c.tags || []).map((t) => `<span class="chip">${escapeHtml(t)}</span>`).join("");
+
+      // 서브내비 = 과정 전환
+      document.getElementById("subnav").innerHTML = COURSES.map((it) =>
+        `<a class="${it.id === c.id ? "active" : ""}" href="./course-detail.html?id=${encodeURIComponent(it.id)}">${escapeHtml(it.title)}</a>`).join("");
+
+      const li = (arr) => arr.map((x) => `<li>${escapeHtml(x)}</li>`).join("");
+      const infoRows = (arr) => (arr || []).map((r) => `<tr><th>${escapeHtml(r[0])}</th><td>${escapeHtml(r[1])}</td></tr>`).join("");
+      const isExam = Boolean(c.examOperation);
+      const detailTabLabel = isExam ? "시험 상세" : "과정 상세";
+      const guideTitle = isExam ? "시험 안내" : "교육과정 안내";
+      const curriculumTitle = isExam ? "시험 구성" : "주차별 커리큘럼";
+      const actionLabel = isExam ? "시험 접수하기" : "수강신청 하기";
+      const cardLabel = isExam ? "응시료" : "수강료";
+      const supportNote = isExam ? "급수·응시 방식은 시험별로 안내됩니다" : "상담 후 기수·반 배정 안내";
+
+      function renderAiteExamSections(course) {
+        if (!course.examComparison) return "";
+        return `
+        <section class="d-block" id="exam-philosophy">
+          <h3 class="b-title">시험 철학과 목표</h3>
+          <div class="exam-statement">
+            <strong>24시간 AI가 일하고 사람이 1시간 동안 판단해야 한다.</strong>
+            <span>사람이 결정하고 책임지는 시험</span>
+          </div>
+          <ul class="feature-line">${li(course.goals || [])}</ul>
+        </section>
+
+        <section class="d-block" id="exam-comparison">
+          <h3 class="b-title">시험 비교표</h3>
+          <table class="curri-table exam-table"><thead><tr><th>구분</th><th>시험 성격</th><th>평가·등급 기준</th></tr></thead>
+          <tbody>${course.examComparison.map((r) => `<tr><td><strong>${escapeHtml(r[0])}</strong></td><td>${escapeHtml(r[1])}</td><td>${escapeHtml(r[2])}</td></tr>`).join("")}</tbody></table>
+        </section>
+
+        <section class="d-block" id="exam-operation">
+          <h3 class="b-title">시험 운영</h3>
+          <table class="info-table"><tbody>${infoRows(course.examOperation)}</tbody></table>
+        </section>
+
+        <section class="d-block" id="exam-process">
+          <h3 class="b-title">응시 절차</h3>
+          <div class="process-grid exam-process-grid">
+            ${course.examProcess.map((r) => `<div class="process-card"><h4>${escapeHtml(r[0])}</h4><p>${escapeHtml(r[1])}</p></div>`).join("")}
+          </div>
+        </section>
+
+        <section class="d-block" id="ethics">
+          <h3 class="b-title">공통 필수 시험: AI 윤리시험</h3>
+          <div class="ethics-layout">
+            <div class="subcard need">
+              <h4><span class="tag-ico">!</span>${escapeHtml(course.ethics.title)}</h4>
+              ${(course.ethics.body || []).map((p) => `<p>${escapeHtml(p)}</p>`).join("")}
+            </div>
+            <table class="info-table"><tbody>${infoRows(course.ethics.table)}</tbody></table>
+          </div>
+        </section>
+
+        <section class="d-block" id="usage">
+          <h3 class="b-title">자격 취득 이후 활용처</h3>
+          <div class="usage-grid">
+            ${course.usage.map((r, i) => `<article class="strength-card"><span class="num">${i + 1}</span><h4>${escapeHtml(r[0])}</h4><p>${escapeHtml(r[1])}</p></article>`).join("")}
+          </div>
+        </section>`;
+      }
+
+      // 과정 특징(1줄) — 데이터 필드에서 파생
+      const featureLine = [
+        `${isExam ? "시험시간" : "교육기간"} ${c.duration}`,
+        `${isExam ? "응시대상" : "교육대상"} ${c.target}`,
+        ...(c.tags || []).slice(0, 2).map((t) => `${t} 중심 운영`)
+      ];
+
+      // 강점 4단 — features(핵심 장점) 사용, 4개 미만이면 AI 추천으로 보충
+      const genPool = ["체계적인 단계별 커리큘럼", "현장 전문가의 실습 피드백", "수료 후 포트폴리오 확보", "실무에 바로 적용 가능한 구성", "소수 정예 밀착 운영"];
+      const strengths = (c.features || []).map((t) => ({ t, ai: false }));
+      let gi = 0;
+      while (strengths.length < 4 && gi < genPool.length) {
+        if (!strengths.some((s) => s.t === genPool[gi])) strengths.push({ t: genPool[gi], ai: true });
+        gi++;
+      }
+      const strengths4 = strengths.slice(0, 4);
+      const cols = Math.min(4, Math.max(2, strengths4.length));
+
+      document.getElementById("detailMain").innerHTML = `
+        <nav class="tabs detail-tabs" id="detailTabs" aria-label="상세 정보 분류">
+          <a href="#common-info" class="active" data-detail-tab="common-info">공통사항</a>
+          <a href="#course-info" data-detail-tab="course-info">${detailTabLabel}</a>
+        </nav>
+
+        <div class="tab-panel detail-tab-stack active" id="detail-tab-common-info">
+        <!-- 수강안내 (접수 · 납부 · 환불 · 절차) -->
+        <section class="d-block" id="enroll">
+          <h3 class="b-title">${isExam ? "응시안내" : "수강안내"}</h3>
+          <div class="guide-block">
+            <table class="info-table"><tbody>
+              <tr><th>접수 방법</th><td>${isExam ? "온라인 접수 후 시험·급수 선택 및 응시료 결제" : "온라인 신청 또는 1:1 문의 후 상담 → 반 배정"}</td></tr>
+              <tr><th>${isExam ? "시험 일정" : "교육 일정"}</th><td>${escapeHtml(c.schedule)}</td></tr>
+              <tr><th>${cardLabel}</th><td>${escapeHtml(c.fee)}</td></tr>
+              <tr><th>납부 방법</th><td>${isExam ? "카드·계좌이체 (접수 완료 후 응시확인서 발급)" : "카드·계좌이체 (과정에 따라 분할 납부 가능, 상담 시 안내)"}</td></tr>
+              <tr><th>환불 규정</th><td>${isExam ? "시험 2주 전까지 전액 환불, 1주 전까지 응시료 50% 환불" : "교육 시작 전 100% 환불, 시작 후 진행률에 따라 관련 규정 적용"}</td></tr>
+              <tr><th>${isExam ? "자격 발급" : "증명·수료"}</th><td>${escapeHtml(c.completion || "수료 기준 충족 시 수료증 발급")}</td></tr>
+            </tbody></table>
+            <div class="process-grid">
+              ${isExam
+                ? `<div class="process-card"><h4>시험 선택</h4><p>응시할 시험 종목을 선택합니다.</p></div>
+                   <div class="process-card"><h4>급수 선택</h4><p>응시 목적에 맞는 급수를 확인합니다.</p></div>
+                   <div class="process-card"><h4>접수·결제</h4><p>응시료 결제 후 접수를 완료합니다.</p></div>
+                   <div class="process-card"><h4>확인서 출력</h4><p>응시확인서를 출력해 시험 당일 지참합니다.</p></div>`
+                : `<div class="process-card"><h4>상담·신청</h4><p>1:1 문의로 목표·일정을 상담하고 신청합니다.</p></div>
+                   <div class="process-card"><h4>접수·납부</h4><p>반 배정 후 수강료를 납부합니다.</p></div>
+                   <div class="process-card"><h4>수강</h4><p>기수 일정에 따라 실습 중심으로 수강합니다.</p></div>
+                   <div class="process-card"><h4>수료·발급</h4><p>기준 충족 시 수료증·포트폴리오를 확보합니다.</p></div>`}
+            </div>
+          </div>
+        </section>
+
+        <!-- 책임 강사 -->
+        <section class="d-block" id="instructor">
+          <h3 class="b-title">책임 강사</h3>
+          <div class="instructor"><div class="photo"><img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=400&q=80" alt="책임 강사"></div>
+          <div><h4>Times Education 전문 강사진</h4><ul><li>교육과정 설계 및 강사 양성 실무</li><li>AI 교육 콘텐츠 제작 및 현장 적용</li><li>수료 포트폴리오 피드백 운영</li></ul></div></div>
+        </section>
+        </div>
+
+        <div class="tab-panel detail-tab-stack" id="detail-tab-course-info">
+        <!-- 과정소개: 이미지 | 내용 (2단) -->
+        <section class="d-block" id="intro">
+          <h3 class="b-title">과정소개</h3>
+          <div class="intro-grid">
+            <div class="intro-img"><img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.title)}"></div>
+            <div class="intro-text">${c.intro.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}</div>
+          </div>
+        </section>
+
+        <!-- 과목 소개 -->
+        ${c.subjects ? `<section class="d-block" id="subjects">
+          <h3 class="b-title">과목 소개</h3>
+          <div class="subject-grid">
+            ${c.subjects.map((s, i) => `<div class="subject-card"><h4><span class="n">${i + 1}</span>${escapeHtml(s[0])}</h4><p>${escapeHtml(s[1])}</p></div>`).join("")}
+          </div>
+        </section>` : ""}
+
+        <!-- 필요성 | 추천 (2단) -->
+        <section class="d-block" id="need">
+          <h3 class="b-title">이 과정의 필요성 · 추천 대상</h3>
+          <div class="need-rec-grid">
+            <div class="subcard need"><h4><span class="tag-ico">!</span> 왜 이 과정이 필요한가</h4>
+              <ul class="check-list">${li(c.why || [])}</ul></div>
+            <div class="subcard rec"><h4><span class="tag-ico">+</span> 이런 분께 추천합니다</h4>
+              <ul class="check-list">${li(c.recommend || [])}</ul></div>
+          </div>
+        </section>
+
+        <!-- 교육 전·후 (1줄) -->
+        <section class="d-block" id="ba">
+          <h3 class="b-title">교육 전 · 교육 후</h3>
+          <table class="ba-table"><thead><tr><th>교육 전</th><th>교육 후</th></tr></thead>
+          <tbody>${(c.beforeAfter || []).map((r) => `<tr><td>${escapeHtml(r[0])}</td><td>${escapeHtml(r[1])}</td></tr>`).join("")}</tbody></table>
+        </section>
+
+        <!-- 과정 특징 (1줄) -->
+        <section class="d-block" id="features">
+          <h3 class="b-title">과정 특징</h3>
+          <ul class="feature-line">${li(featureLine)}</ul>
+        </section>
+
+        <!-- 핵심 강점 (4단) -->
+        <section class="d-block" id="strengths">
+          <h3 class="b-title">핵심 강점</h3>
+          <div class="strength-grid" data-cols="${cols}">
+            ${strengths4.map((s, i) => `<div class="strength-card"><span class="num">${i + 1}</span><p>${escapeHtml(s.t)}</p>${s.ai ? '<span class="ai-flag">AI 추천</span>' : ""}</div>`).join("")}
+          </div>
+        </section>
+
+        <!-- 교육과정 안내 (목표 · 구성 · 수료 기준) -->
+        <section class="d-block" id="guide">
+          <h3 class="b-title">${guideTitle}</h3>
+          <div class="guide-block">
+            ${c.goals ? `<div><strong>${isExam ? "평가 목표" : "교육 목표"}</strong><ul class="goal-list" style="margin-top:10px">${li(c.goals)}</ul></div>` : ""}
+            <table class="info-table"><tbody>
+              <tr><th>${isExam ? "시험 구성" : "교육 구성"}</th><td>${escapeHtml(c.duration)} · ${escapeHtml(c.schedule)}</td></tr>
+              <tr><th>${isExam ? "응시 대상" : "교육 대상"}</th><td>${escapeHtml(c.target)}</td></tr>
+              <tr><th>운영 방식</th><td>${isExam ? "온라인(U-BT) 또는 지필시험 (시험별 상이)" : "온라인 실시간 · 오프라인 · 혼합(기수별 운영)"}</td></tr>
+            </tbody></table>
+            ${c.completion ? `<div class="note-box">${isExam ? "자격 발급" : "수료 기준"} · ${escapeHtml(c.completion)}</div>` : ""}
+          </div>
+        </section>
+
+        <!-- 커리큘럼 -->
+        <section class="d-block" id="curriculum">
+          <h3 class="b-title">${curriculumTitle}</h3>
+          <table class="curri-table"><thead><tr><th>구분</th><th>주제</th><th>주요 내용</th></tr></thead>
+          <tbody>${(c.curriculum || []).map((r) => `<tr><td>${escapeHtml(r[0])}</td><td><strong>${escapeHtml(r[1])}</strong></td><td>${escapeHtml(r[2])}</td></tr>`).join("")}</tbody></table>
+        </section>
+
+        ${renderAiteExamSections(c)}
+
+        <!-- 수강후기 -->
+        <section class="d-block" id="reviews">
+          <h3 class="b-title">수강후기</h3>
+          <div class="review-grid">${(c.reviews || []).map(([q, p, who]) => `<article class="review-card"><blockquote>${escapeHtml(q)}</blockquote><p>${escapeHtml(p)}</p><div class="review-meta"><span>${escapeHtml(who)}</span><span>${escapeHtml(c.title)}</span></div></article>`).join("")}</div>
+        </section>
+        </div>`;
+
+      // 우측 수강료 패널 (design-b 채택)
+      document.getElementById("applyCard").innerHTML = `
+        <div class="ac-head"><div class="price-label">${cardLabel}</div><div class="price">${escapeHtml(c.fee)}</div></div>
+        <div class="ac-body">
+          <ul class="meta-list">
+            <li><span class="k">${isExam ? "시험시간" : "교육기간"}</span><span class="v">${escapeHtml(c.duration)}</span></li>
+            <li><span class="k">${isExam ? "시험일정" : "교육일시"}</span><span class="v">${escapeHtml(c.schedule)}</span></li>
+            <li><span class="k">${isExam ? "응시대상" : "교육대상"}</span><span class="v">${escapeHtml(c.target)}</span></li>
+            <li><span class="k">접수기간</span><span class="v">${isExam ? "회차별 공지" : "상시 모집"}</span></li>
+            <li><span class="k">상태</span><span class="v">${escapeHtml(c.status)}</span></li>
+          </ul>
+          <a class="btn btn--primary btn--lg" href="./apply.html">${actionLabel}</a>
+          <a class="btn btn--outline" href="./contact.html">상담 문의</a>
+          <p class="note">${supportNote}</p>
+        </div>`;
+
+      document.querySelectorAll("#detailTabs a").forEach((tab) => tab.addEventListener("click", (e) => {
+        e.preventDefault();
+        const name = tab.dataset.detailTab;
+        document.querySelectorAll("#detailTabs a").forEach((item) => item.classList.toggle("active", item === tab));
+        document.querySelectorAll("#detailMain .detail-tab-stack").forEach((panel) => {
+          panel.classList.toggle("active", panel.id === "detail-tab-" + name);
+        });
+      }));
+
+      if (location.hash) {
+        const target = document.querySelector(location.hash);
+        if (target && target.closest("#detail-tab-course-info")) {
+          document.querySelectorAll("#detailTabs a").forEach((item) => item.classList.toggle("active", item.dataset.detailTab === "course-info"));
+          document.querySelectorAll("#detailMain .detail-tab-stack").forEach((panel) => {
+            panel.classList.toggle("active", panel.id === "detail-tab-course-info");
+          });
+          setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+        }
+      }
+
+    })();
+  </script>
+  <script src="./site.js"></script>
+</body>
+</html>

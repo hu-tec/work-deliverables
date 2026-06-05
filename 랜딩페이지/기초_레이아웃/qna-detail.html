@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Q&amp;A 상세 | Times Education</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
+    <div class="container header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">TM</span><span><b>Times Education</b><small>AI 교육·자격 통합 플랫폼</small></span></a>
+      <nav class="gnb" aria-label="주요 메뉴">
+        <a href="./about.html">교육원소개</a>
+        <a href="./courses.html">시험 소개</a>
+        <a href="./cert-intro.html">수강신청</a>
+        <a href="./exam-guide.html">시험 안내</a>
+        <a class="active" href="./community.html">커뮤니티</a>
+        <a href="./contact.html">1:1문의</a>
+      </nav>
+      <div class="header-actions">
+        <button class="mobile-menu" type="button">MENU</button>
+        <a class="btn btn--primary btn--sm" href="./apply.html">신청하기</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-title"><div class="container page-title-inner">
+      <div><span class="breadcrumb">Home / 커뮤니티 / Q&amp;A</span><h1>Q&amp;A</h1><p>문의 내용과 담당자 답변을 확인합니다.</p></div>
+    </div></section>
+    <section class="section section--soft"><div class="container">
+      <article class="notice-view" id="qnaView"></article>
+      <div class="detail-actions"><a class="btn btn--outline" href="./community.html#qna">Q&amp;A 목록</a><a class="btn btn--primary" href="./contact.html">문의하기</a></div>
+    </div></section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>Times Education</h2><p>02-6207-9090</p></div>
+    <div><h3>시험</h3><a href="./courses.html">시험 소개</a><a href="./cert-intro.html">수강신청</a></div>
+    <div><h3>안내</h3><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a></div>
+    <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원소개</a></div>
+  </div><div class="copyright">© 2026 Times Media Inc. — layout_redesign</div></div></footer>
+
+  <script src="./data.js"></script>
+  <script>
+    (function () {
+      const { getParam, escapeHtml } = window.SiteData;
+      const qnas = [
+        {
+          id: "exam-ticket",
+          category: "시험",
+          title: "AITe 시험 응시 확인서 출력 위치가 궁금합니다.",
+          writer: "김*연",
+          date: "2026.04.22",
+          status: "답변 완료",
+          question: ["AITe 인증 시험 접수를 완료했습니다.", "응시 확인서를 어디에서 출력할 수 있는지 안내 부탁드립니다."],
+          answer: ["로그인 후 마이페이지의 자격·증명서 메뉴에서 응시 확인서를 확인할 수 있습니다.", "시험 회차와 이름을 확인한 뒤 PDF 저장 또는 출력으로 이용해주세요."]
+        },
+        {
+          id: "group-apply",
+          category: "접수",
+          title: "단체 접수 시 명단 양식이 따로 있나요?",
+          writer: "박*훈",
+          date: "2026.04.16",
+          status: "답변 완료",
+          question: ["기관에서 8명 단체 접수를 진행하려고 합니다.", "명단 작성 양식과 제출 방법이 따로 있는지 궁금합니다."],
+          answer: ["단체 접수는 자료실의 신청서 양식을 내려받아 작성한 뒤 1:1 문의로 첨부해주시면 됩니다.", "담당자가 명단 확인 후 접수 가능 회차와 결제 절차를 안내드립니다."]
+        },
+        {
+          id: "course-eval",
+          category: "과정",
+          title: "AI 강사 과정 수료 후 자격 평가 일정 문의",
+          writer: "이*진",
+          date: "2026.04.09",
+          status: "답변대기",
+          question: ["AI 강사 양성과정 수료 후 자격 평가를 바로 볼 수 있나요?", "평가 일정과 준비물이 궁금합니다."],
+          answer: []
+        }
+      ];
+      const qna = qnas.find((item) => item.id === getParam("id")) || qnas[0];
+      document.title = `${qna.title} | Times Education`;
+      const statusClass = qna.status === "답변 완료" ? "done" : "wait";
+      const answerHtml = qna.answer.length
+        ? qna.answer.map((p) => `<p>${escapeHtml(p)}</p>`).join("")
+        : "<p>담당자가 문의 내용을 확인 중입니다. 답변이 등록되면 이 화면에서 확인할 수 있습니다.</p>";
+      document.getElementById("qnaView").innerHTML = `
+        <div class="notice-view-head">
+          <h2><span class="cat-badge">${escapeHtml(qna.category)}</span> ${escapeHtml(qna.title)}</h2>
+          <div class="notice-view-meta"><span>작성자 ${escapeHtml(qna.writer)}</span><span>등록일 ${escapeHtml(qna.date)}</span><span class="status-pill ${statusClass}">${escapeHtml(qna.status)}</span></div>
+        </div>
+        <div class="notice-view-body qna-view-body">
+          <section class="qna-block">
+            <h3>문의 내용</h3>
+            ${qna.question.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}
+          </section>
+          <section class="qna-block qna-answer">
+            <h3>답변 내용</h3>
+            ${answerHtml}
+          </section>
+        </div>`;
+    })();
+  </script>
+  <script src="./site.js"></script>
+</body>
+</html>

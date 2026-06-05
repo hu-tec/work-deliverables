@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BO 사이드바 분류 정리 샘플</title>
+  <style>
+    :root {
+      --nav: #1e2a3a;
+      --nav-line: #334155;
+      --nav-text: #d8dee9;
+      --nav-muted: #93a4b8;
+      --blue: #2563eb;
+      --blue-soft: #dde7ff;
+      --page: #eef1f5;
+      --panel: #ffffff;
+      --line: #cfd6df;
+      --line-strong: #94a3b8;
+      --text: #111827;
+      --muted: #64748b;
+      --danger: #dc2626;
+      --warn: #d97706;
+      --ok: #059669;
+      --radius: 0;
+      --sidebar-width: 230px;
+      --font: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      --mono: Consolas, Monaco, "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 12px;
+      line-height: 1.42;
+      letter-spacing: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    button { cursor: pointer; }
+
+    .app {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--nav);
+      color: var(--nav-text);
+      border-right: 1px solid var(--nav-line);
+    }
+
+    .brand {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      border-bottom: 1px solid var(--nav-line);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .brand-mark {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      background: var(--blue);
+      color: #ffffff;
+    }
+
+    .sidebar-search {
+      padding: 8px;
+      border-bottom: 1px solid var(--nav-line);
+    }
+
+    .sidebar-search input {
+      width: 100%;
+      height: 28px;
+      border: 1px solid #465569;
+      border-radius: var(--radius);
+      background: #253449;
+      color: var(--nav-text);
+      padding: 0 8px;
+      font-size: 11px;
+      outline: none;
+    }
+
+    .sidebar-search input::placeholder { color: var(--nav-muted); }
+
+    .nav-section {
+      border-bottom: 1px solid var(--nav-line);
+      padding: 5px 0;
+    }
+
+    .nav-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 8px 5px;
+      color: var(--nav-muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-label strong {
+      color: inherit;
+      font-size: inherit;
+    }
+
+    .nav-label .count {
+      font-weight: 400;
+      color: #718096;
+    }
+
+    .nav-item {
+      width: 100%;
+      min-height: 27px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: 0;
+      border-left: 3px solid transparent;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--nav-text);
+      padding: 5px 8px 5px 13px;
+      text-align: left;
+      font-size: 11px;
+    }
+
+    .nav-item:hover {
+      background: #27374b;
+      color: #ffffff;
+    }
+
+    .nav-item.active {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .nav-item .dot {
+      width: 5px;
+      height: 5px;
+      background: currentColor;
+      flex: 0 0 auto;
+    }
+
+    .nav-item .badge {
+      margin-left: auto;
+      color: #718096;
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    .system .nav-label { color: #f6c177; }
+    .legacy .nav-label { color: #7b8798; }
+
+    .topbar {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+      padding: 0 14px;
+    }
+
+    .topbar-title {
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .topbar-meta {
+      display: flex;
+      gap: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .content {
+      padding: 12px 14px 28px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 7px 9px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 2px;
+      font-family: var(--mono);
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .panel-head {
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      padding: 8px 10px;
+    }
+
+    .panel-head h1,
+    .panel-head h2 {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .panel-head p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .panel-body {
+      padding: 8px 10px 10px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--line);
+      background: #f8fafc;
+      padding: 6px 6px 0;
+    }
+
+    .tab {
+      min-height: 29px;
+      border: 1px solid var(--line);
+      border-bottom: 0;
+      border-radius: var(--radius);
+      background: #edf2f7;
+      color: #334155;
+      padding: 5px 9px;
+      font-weight: 700;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: var(--panel);
+      color: var(--blue);
+      border-color: var(--line-strong);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid var(--line);
+      padding: 6px 7px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .table th {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 11px;
+    }
+
+    .table td {
+      background: #ffffff;
+    }
+
+    .table code {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--blue);
+    }
+
+    .status {
+      display: inline-block;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      padding: 2px 5px;
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status.ok { color: var(--ok); border-color: #86efac; background: #ecfdf5; }
+    .status.warn { color: var(--warn); border-color: #fcd34d; background: #fffbeb; }
+    .status.danger { color: var(--danger); border-color: #fca5a5; background: #fef2f2; }
+
+    .reason-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 6px;
+    }
+
+    .reason-list li {
+      border-left: 3px solid var(--blue);
+      background: #f8fafc;
+      padding: 7px 8px;
+    }
+
+    .reason-list strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .reason-list span {
+      color: var(--muted);
+    }
+
+    .plan-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0;
+      border: 1px solid var(--line);
+      border-bottom: 0;
+    }
+
+    .plan-list li {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .plan-list b {
+      background: #f1f5f9;
+      padding: 7px;
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .plan-list span {
+      padding: 7px;
+    }
+
+    .mobile-open {
+      display: none;
+      width: 32px;
+      height: 30px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+    }
+
+    .backdrop { display: none; }
+
+    @media (max-width: 980px) {
+      .app {
+        display: block;
+      }
+
+      .sidebar {
+        position: fixed;
+        z-index: 30;
+        inset: 0 auto 0 0;
+        width: min(86vw, var(--sidebar-width));
+        transform: translateX(-100%);
+        transition: transform 160ms ease;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .backdrop.open {
+        display: block;
+        position: fixed;
+        z-index: 20;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.45);
+      }
+
+      .mobile-open {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .layout,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-meta {
+        display: none;
+      }
+
+      .content {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" data-close></div>
+  <div class="app">
+    <aside class="sidebar" data-sidebar aria-label="BO 1depth와 2depth 사이드바">
+      <div class="brand">
+        <span class="brand-mark">BO</span>
+        <span>HutechC Studio</span>
+      </div>
+      <div class="sidebar-search">
+        <input type="search" placeholder="메뉴 검색..." aria-label="메뉴 검색">
+      </div>
+
+      <section class="nav-section" aria-labelledby="favorite-label">
+        <div class="nav-label" id="favorite-label"><strong>Favorites</strong><span class="count">5</span></div>
+        <button class="nav-item" type="button" data-view="worklog"><span class="dot"></span>업무일지<span class="badge">F1</span></button>
+        <button class="nav-item" type="button" data-view="rules"><span class="dot"></span>규정<span class="badge">F2</span></button>
+      </section>
+
+      <section class="nav-section" aria-labelledby="home-label">
+        <div class="nav-label" id="home-label"><strong>홈 · 내 업무</strong><span class="count">4</span></div>
+        <button class="nav-item" type="button" data-view="dashboard"><span class="dot"></span>대시보드</button>
+        <button class="nav-item" type="button" data-view="worklog"><span class="dot"></span>업무일지</button>
+        <button class="nav-item" type="button" data-view="work-overview"><span class="dot"></span>업무 총괄</button>
+        <button class="nav-item" type="button" data-view="my-attendance"><span class="dot"></span>내 출퇴근</button>
+      </section>
+
+      <section class="nav-section" aria-labelledby="knowledge-label">
+        <div class="nav-label" id="knowledge-label"><strong>지식 · 규정</strong><span class="count">5</span></div>
+        <button class="nav-item" type="button" data-view="guideline"><span class="dot"></span>사내업무지침</button>
+        <button class="nav-item active" type="button" aria-current="page" data-view="rules"><span class="dot"></span>규정<span class="badge">TAB</span></button>
+        <button class="nav-item" type="button" data-view="manual"><span class="dot"></span>매뉴얼</button>
+        <button class="nav-item" type="button" data-view="forms"><span class="dot"></span>서식 · 확인서</button>
+        <button class="nav-item" type="button" data-view="work-data"><span class="dot"></span>업무 자료</button>
+      </section>
+
+      <section class="nav-section" aria-labelledby="people-label">
+        <div class="nav-label" id="people-label"><strong>인사 · 채용</strong><span class="count">4</span></div>
+        <button class="nav-item" type="button" data-view="recruit"><span class="dot"></span>채용관리<span class="badge">TAB</span></button>
+        <button class="nav-item" type="button" data-view="attendance"><span class="dot"></span>출퇴근 관리</button>
+        <button class="nav-item" type="button" data-view="students"><span class="dot"></span>학생관리</button>
+        <button class="nav-item" type="button" data-view="lecturers"><span class="dot"></span>출강 · 강사관리</button>
+      </section>
+
+      <section class="nav-section" aria-labelledby="operation-label">
+        <div class="nav-label" id="operation-label"><strong>운영 · 거래처</strong><span class="count">6</span></div>
+        <button class="nav-item" type="button" data-view="meeting"><span class="dot"></span>미팅 · 일정</button>
+        <button class="nav-item" type="button" data-view="schedule"><span class="dot"></span>강의시간표</button>
+        <button class="nav-item" type="button" data-view="clients"><span class="dot"></span>거래처관리<span class="badge">TAB</span></button>
+        <button class="nav-item" type="button" data-view="receivable"><span class="dot"></span>미수금관리</button>
+        <button class="nav-item" type="button" data-view="project"><span class="dot"></span>프로젝트관리</button>
+        <button class="nav-item" type="button" data-view="photos"><span class="dot"></span>사진모음</button>
+      </section>
+
+      <section class="nav-section" aria-labelledby="content-label">
+        <div class="nav-label" id="content-label"><strong>기획 · 콘텐츠</strong><span class="count">6</span></div>
+        <button class="nav-item" type="button" data-view="taxonomy"><span class="dot"></span>업무 분류</button>
+        <button class="nav-item" type="button" data-view="curriculum"><span class="dot"></span>강사 커리큘럼</button>
+        <button class="nav-item" type="button" data-view="marketing"><span class="dot"></span>마케팅</button>
+        <button class="nav-item" type="button" data-view="prompt-guide"><span class="dot"></span>프롬프트 사용법</button>
+        <button class="nav-item" type="button" data-view="ai-plan"><span class="dot"></span>AI 강의안</button>
+        <button class="nav-item" type="button" data-view="site"><span class="dot"></span>커뮤니티 · 홈페이지</button>
+      </section>
+
+      <section class="nav-section system" aria-labelledby="system-label">
+        <div class="nav-label" id="system-label"><strong>System</strong><span class="count">Admin</span></div>
+        <button class="nav-item" type="button" data-view="admin"><span class="dot"></span>관리자통합</button>
+      </section>
+
+      <section class="nav-section legacy" aria-labelledby="legacy-label">
+        <div class="nav-label" id="legacy-label"><strong>Legacy</strong><span class="count">7</span></div>
+        <button class="nav-item" type="button" data-view="legacy"><span class="dot"></span>이전 메뉴 보관함</button>
+      </section>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="mobile-open" type="button" aria-label="사이드바 열기" data-open>☰</button>
+          <div>
+            <div class="topbar-title">BO 사이드바 분류 정리안</div>
+            <div style="color:var(--muted);font-size:11px;">1depth/2depth는 사이드바, 3depth 이하는 콘텐츠 영역</div>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          <span>GROUP 5</span>
+          <span>ADDON 3</span>
+          <span>RADIUS 0</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="summary-grid" aria-label="정리 효과 요약">
+          <div class="metric"><span>AS-IS Group</span><strong>10</strong></div>
+          <div class="metric"><span>TO-BE Group</span><strong>5+3</strong></div>
+          <div class="metric"><span>Sidebar Depth</span><strong>2</strong></div>
+          <div class="metric"><span>Content Depth</span><strong>3+</strong></div>
+        </div>
+
+        <div class="layout">
+          <section class="panel" aria-labelledby="content-title">
+            <div class="panel-head">
+              <div>
+                <h1 id="content-title" data-content-title>지식 · 규정 / 규정</h1>
+                <p data-content-desc>규정 통합, 관리, 편집, 레이아웃, 매뉴얼, 평가기준은 콘텐츠 탭으로 통합한다.</p>
+              </div>
+              <span class="status ok">ACTIVE</span>
+            </div>
+
+            <div class="tabs" aria-label="3depth 콘텐츠 탭" data-tabs>
+              <button class="tab active" type="button" aria-current="page">통합</button>
+            </div>
+
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width:18%;">2depth</th>
+                    <th style="width:22%;">3depth 처리</th>
+                    <th>4depth 이하 예시</th>
+                    <th style="width:16%;">상태</th>
+                  </tr>
+                </thead>
+                <tbody data-table-body>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <aside class="panel" aria-labelledby="plan-title">
+            <div class="panel-head">
+              <h2 id="plan-title">정리계획</h2>
+            </div>
+            <div class="panel-body">
+              <ol class="plan-list">
+                <li><b>01</b><span>현행 메뉴를 라우트 데이터로 추출한다.</span></li>
+                <li><b>02</b><span>5개 업무 대분류로 재배치한다.</span></li>
+                <li><b>03</b><span>시스템과 Legacy를 하단 부가영역으로 분리한다.</span></li>
+                <li><b>04</b><span>중복 화면은 콘텐츠 탭으로 통합한다.</span></li>
+                <li><b>05</b><span>BO 스타일: radius 0, 조밀한 간격을 적용한다.</span></li>
+              </ol>
+            </div>
+          </aside>
+
+          <aside class="panel" aria-labelledby="reason-title">
+            <div class="panel-head">
+              <h2 id="reason-title">왜 좋은가</h2>
+            </div>
+            <div class="panel-body">
+              <ul class="reason-list">
+                <li><strong>업무 시작점이 선명함</strong><span>홈 · 내 업무를 최상단에 두어 반복 업무 진입을 빠르게 만든다.</span></li>
+                <li><strong>중복 메뉴 감소</strong><span>같은 데이터의 여러 화면을 탭으로 묶어 사이드바 길이를 줄인다.</span></li>
+                <li><strong>권한 경계 분리</strong><span>인사/채용과 시스템 관리를 일반 업무와 분리해 운영 리스크를 낮춘다.</span></li>
+                <li><strong>이전 메뉴 사고 방지</strong><span>Legacy를 보관함에 격리해 현역 업무 흐름과 섞이지 않게 한다.</span></li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const sidebar = document.querySelector("[data-sidebar]");
+    const openButton = document.querySelector("[data-open]");
+    const closeLayer = document.querySelector("[data-close]");
+    const navButtons = document.querySelectorAll("[data-view]");
+    const contentTitle = document.querySelector("[data-content-title]");
+    const contentDesc = document.querySelector("[data-content-desc]");
+    const tabs = document.querySelector("[data-tabs]");
+    const tableBody = document.querySelector("[data-table-body]");
+
+    const screens = {
+      rules: {
+        group: "지식 · 규정",
+        title: "규정",
+        desc: "규정 통합, 관리, 편집, 레이아웃, 매뉴얼, 평가기준은 사이드바에 쪼개지 않고 규정 화면의 3depth 탭으로 통합한다.",
+        tabs: ["통합", "관리", "편집", "레이아웃", "매뉴얼", "평가기준"],
+        rows: [
+          ["규정", "통합", "전체 규정 목록, 부서, 분류, 최신 버전, 공개 상태", "ACTIVE"],
+          ["규정", "관리", "신규 등록, 사용 여부, 담당자, 승인자, 적용일", "ACTIVE"],
+          ["규정", "편집", "본문 편집, 변경 사유, 임시 저장, 개정 이력", "DRAFT"],
+          ["규정", "레이아웃", "목차 구조, 번호 체계, 출력 양식, 미리보기", "TAB"],
+          ["규정", "매뉴얼", "운영 설명, 작성 기준, 검토 절차, 예시 문서", "TAB"],
+          ["규정", "평가기준", "평가 항목, 점수 기준, 적용 범위, 검증 상태", "TAB"]
+        ]
+      },
+      recruit: {
+        group: "인사 · 채용",
+        title: "채용관리",
+        desc: "채용관리 안에서 지원서, 면접, 대시보드, 평가를 탭으로 묶어 지원자 데이터의 흐름을 한 화면에서 추적한다.",
+        tabs: ["지원서", "면접", "대시보드", "평가", "강사 후보"],
+        rows: [
+          ["채용관리", "지원서", "지원자 목록, 지원 경로, 희망 직무, 제출 상태", "ACTIVE"],
+          ["채용관리", "면접", "면접 일정, 면접관, 장소, 참석 여부, 메모", "ACTIVE"],
+          ["채용관리", "대시보드", "단계별 인원, 전환율, 지연 건, 월별 추이", "TAB"],
+          ["채용관리", "평가", "평가표, 점수, 코멘트, 합격/보류/탈락 상태", "ACTIVE"],
+          ["채용관리", "강사 후보", "강의 가능 분야, 경력, 출강 가능 일정, 계약 상태", "REVIEW"]
+        ]
+      },
+      clients: {
+        group: "운영 · 거래처",
+        title: "거래처관리",
+        desc: "거래처관리, 거래처 아웃콜, 출장 거래처를 하나의 2depth로 통합하고 상세 업무는 콘텐츠 탭으로 처리한다.",
+        tabs: ["거래처 목록", "아웃콜", "출장 거래처", "계약 이력", "미팅 기록"],
+        rows: [
+          ["거래처관리", "거래처 목록", "기관명, 담당자, 연락처, 지역, 계약 상태", "ACTIVE"],
+          ["거래처관리", "아웃콜", "콜 대상, 통화 결과, 재연락일, 후속 담당자", "ACTIVE"],
+          ["거래처관리", "출장 거래처", "출강 장소, 이동 정보, 담당 강사, 준비물", "TAB"],
+          ["거래처관리", "계약 이력", "계약 기간, 금액, 갱신 여부, 첨부 문서", "REVIEW"],
+          ["거래처관리", "미팅 기록", "미팅 일자, 참석자, 논의 내용, 액션 아이템", "ACTIVE"]
+        ]
+      },
+      dashboard: {
+        group: "홈 · 내 업무",
+        title: "대시보드",
+        desc: "로그인 직후 개인별 업무 시작점을 보여주는 허브 화면이다.",
+        tabs: ["오늘 할 일", "알림", "승인 대기", "최근 문서"],
+        rows: [
+          ["대시보드", "오늘 할 일", "업무일지 작성, 미팅 확인, 승인 요청 처리", "ACTIVE"],
+          ["대시보드", "알림", "규정 개정, 채용 일정, 거래처 후속 연락", "ACTIVE"],
+          ["대시보드", "승인 대기", "서약서, 규정 변경, 미수금 처리 승인", "REVIEW"]
+        ]
+      },
+      worklog: {
+        group: "홈 · 내 업무",
+        title: "업무일지",
+        desc: "개인 업무 기록과 팀 공유가 필요한 일지를 관리한다.",
+        tabs: ["내 일지", "팀 일지", "검토 요청", "월간 집계"],
+        rows: [
+          ["업무일지", "내 일지", "일자, 업무 내용, 진행 상태, 다음 액션", "ACTIVE"],
+          ["업무일지", "팀 일지", "부서별 공유 내역, 담당자, 협업 요청", "TAB"],
+          ["업무일지", "월간 집계", "작성률, 누락 건, 주요 이슈, 리포트", "TAB"]
+        ]
+      },
+      attendance: {
+        group: "인사 · 채용",
+        title: "출퇴근 관리",
+        desc: "출퇴근 관리 A/B 같은 중복 화면은 하나로 합치고 탭으로 상태를 나눈다.",
+        tabs: ["일별 현황", "월별 집계", "예외 처리", "수정 요청"],
+        rows: [
+          ["출퇴근 관리", "일별 현황", "직원, 출근, 퇴근, 지각, 조퇴, 외근", "ACTIVE"],
+          ["출퇴근 관리", "월별 집계", "근무일, 총 시간, 결근, 휴가, 초과근무", "TAB"],
+          ["출퇴근 관리", "예외 처리", "누락 기록, 승인자, 수정 사유, 처리 상태", "REVIEW"]
+        ]
+      },
+      legacy: {
+        group: "보관함",
+        title: "이전 메뉴 보관함",
+        desc: "이전 화면과 대체 화면은 현역 업무 흐름에서 분리하고, 필요할 때만 확인한다.",
+        tabs: ["이전 업무", "대체 화면", "리다이렉트", "삭제 후보"],
+        rows: [
+          ["Legacy", "이전 업무일지", "새 업무일지로 이동 안내, 읽기 전용 유지", "HIDDEN"],
+          ["Legacy", "이전 사내지침", "지식 · 규정의 사내업무지침으로 통합", "HIDDEN"],
+          ["Legacy", "면접 대체 화면", "채용관리 > 면접 탭으로 리다이렉트", "HIDDEN"]
+        ]
+      }
+    };
+
+    const fallbackScreen = {
+      group: "BO 메뉴",
+      title: "샘플 화면",
+      desc: "이 메뉴는 상세 데이터가 아직 정의되지 않은 상태다. 실제 적용 시 같은 방식으로 3depth 탭과 4depth 이하 표를 연결한다.",
+      tabs: ["개요", "목록", "설정"],
+      rows: [
+        ["샘플", "개요", "2depth 메뉴를 선택하면 콘텐츠 영역이 갱신되는 기본 패턴", "TAB"],
+        ["샘플", "목록", "업무 목록, 상태, 담당자, 최종 수정일", "DRAFT"],
+        ["샘플", "설정", "권한, 표시 여부, 기본 필터, 연결 라우트", "REVIEW"]
+      ]
+    };
+
+    function statusClass(status) {
+      if (status === "ACTIVE" || status === "TAB") return "ok";
+      if (status === "HIDDEN") return "warn";
+      if (status === "DRAFT" || status === "REVIEW") return "warn";
+      return "ok";
+    }
+
+    function renderScreen(screenKey) {
+      const screen = screens[screenKey] || fallbackScreen;
+
+      contentTitle.textContent = `${screen.group} / ${screen.title}`;
+      contentDesc.textContent = screen.desc;
+
+      tabs.innerHTML = screen.tabs.map((tab, index) => (
+        `<button class="tab${index === 0 ? " active" : ""}" type="button"${index === 0 ? ' aria-current="page"' : ""}>${tab}</button>`
+      )).join("");
+
+      tableBody.innerHTML = screen.rows.map((row) => (
+        `<tr>
+          <td><code>${row[0]}</code></td>
+          <td>${row[1]}</td>
+          <td>${row[2]}</td>
+          <td><span class="status ${statusClass(row[3])}">${row[3]}</span></td>
+        </tr>`
+      )).join("");
+    }
+
+    navButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        navButtons.forEach((item) => {
+          item.classList.remove("active");
+          item.removeAttribute("aria-current");
+        });
+        button.classList.add("active");
+        button.setAttribute("aria-current", "page");
+        renderScreen(button.dataset.view);
+        sidebar.classList.remove("open");
+        closeLayer.classList.remove("open");
+      });
+    });
+
+    openButton.addEventListener("click", () => {
+      sidebar.classList.add("open");
+      closeLayer.classList.add("open");
+    });
+
+    closeLayer.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      closeLayer.classList.remove("open");
+    });
+
+    renderScreen("rules");
+  </script>
+</body>
+</html>

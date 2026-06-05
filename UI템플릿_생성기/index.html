@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Builder</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">DS</div>
+        <div>
+          <h1>UI Builder</h1>
+          <p>design_system_major 기반 모듈 조립</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="resetButton" type="button">초기화</button>
+      </div>
+    </header>
+
+    <main class="builder-layout">
+      <aside class="inspector" aria-label="선택 영역">
+        <div class="panel-head">
+          <h2>선택</h2>
+          <span id="selectedInfo">없음</span>
+        </div>
+        <div class="selection-box">
+          <div id="selectedPreview" class="selected-preview">캔버스에서 영역을 선택하세요.</div>
+          <button id="deleteButton" class="danger-button" type="button">선택 삭제</button>
+        </div>
+        <div class="usage-note">
+          <strong>사용 방식</strong>
+          <p>오른쪽 모듈을 캔버스나 기존 영역 안으로 끌어다 놓습니다. 영역 안에 다시 영역을 넣어 중첩 구조를 만들 수 있습니다.</p>
+        </div>
+      </aside>
+
+      <section class="canvas-panel" aria-label="조립 캔버스">
+        <div class="canvas-toolbar">
+          <div>
+            <h2>Canvas</h2>
+            <p>모듈을 끌어와 화면 구조를 조립하는 영역</p>
+          </div>
+          <div class="legend">
+            <span>Click</span>
+            <span>Drag</span>
+            <span>Nested</span>
+          </div>
+        </div>
+        <div id="canvas" class="canvas"></div>
+      </section>
+
+      <aside class="palette" aria-label="design_system_major 모듈">
+        <div class="panel-head">
+          <h2>Modules</h2>
+          <span>design_system_major</span>
+        </div>
+
+        <div class="module-section">
+          <h3>상단</h3>
+          <button class="module-card" draggable="true" data-module-type="header-full" type="button">
+            <span class="module-preview header-preview">
+              <i></i><i></i><i></i>
+            </span>
+          </button>
+        </div>
+
+        <div class="module-section">
+          <h3>분할</h3>
+          <button class="module-card" draggable="true" data-module-type="grid-1" type="button">
+            <span class="module-preview cols-1"><i></i></span>
+          </button>
+          <button class="module-card" draggable="true" data-module-type="grid-2" type="button">
+            <span class="module-preview cols-2"><i></i><i></i></span>
+          </button>
+          <button class="module-card" draggable="true" data-module-type="grid-3" type="button">
+            <span class="module-preview cols-3"><i></i><i></i><i></i></span>
+          </button>
+          <button class="module-card" draggable="true" data-module-type="grid-4" type="button">
+            <span class="module-preview cols-4"><i></i><i></i><i></i><i></i></span>
+          </button>
+        </div>
+
+        <div class="module-section">
+          <h3>채움</h3>
+          <div class="mini-grid">
+            <button class="module-card is-mini" draggable="true" data-module-type="block" type="button"><span class="fill-preview block-preview"></span></button>
+            <button class="module-card is-mini" draggable="true" data-module-type="metric" type="button"><span class="fill-preview metric-preview"></span></button>
+            <button class="module-card is-mini" draggable="true" data-module-type="list" type="button"><span class="fill-preview list-preview"></span></button>
+            <button class="module-card is-mini" draggable="true" data-module-type="table" type="button"><span class="fill-preview table-preview"></span></button>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

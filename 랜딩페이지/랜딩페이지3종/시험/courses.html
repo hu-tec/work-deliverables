@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>시험 소개 | Times Education</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
+    <div class="container header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">TM</span><span><b>Times Education</b><small>AI 교육·자격 통합 플랫폼</small></span></a>
+      <nav class="gnb" aria-label="주요 메뉴">
+        <a class="active" href="./courses.html">시험 소개</a>
+        <a href="./cert-intro.html">자격증 소개</a>
+        <a href="./exam-guide.html">시험 안내</a>
+        <a href="./community.html">커뮤니티</a>
+        <a href="./contact.html">1:1문의</a>
+      </nav>
+      <div class="header-actions">
+        <button class="mobile-menu" type="button">MENU</button>
+        <a class="btn btn--primary btn--sm" href="./apply.html">신청하기</a>
+        <a class="btn btn--outline btn--sm" href="./about.html">교육원 소개</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-title"><div class="container page-title-inner">
+      <div><span class="breadcrumb">Home / 시험 소개</span><h1>시험·교육과정 소개</h1><p>AI 강사 양성부터 TESOL·자격시험·통번역까지, 분야별 과정과 시험을 안내합니다.</p></div>
+    </div></section>
+    <section class="section section--soft"><div class="container">
+      <div class="section-head"><div><span class="label">COURSES</span><h2>전체 과정</h2></div><span class="note">카드를 누르면 상세로 이동합니다</span></div>
+      <div class="course-grid" id="courseGrid"></div>
+    </div></section>
+  </main>
+
+  <section class="cta"><div class="container cta-inner">
+    <div><h2>나에게 맞는 과정인지 상담받아보세요</h2><p>학습 목표와 일정에 맞춰 과정과 시험을 안내합니다.</p></div>
+    <a class="btn btn--primary btn--lg" href="./contact.html">과정 상담하기</a>
+  </div></section>
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>Times Education</h2><p>02-6207-9090</p></div>
+    <div><h3>시험</h3><a href="./courses.html">시험 소개</a><a href="./cert-intro.html">자격증 소개</a></div>
+    <div><h3>안내</h3><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a></div>
+    <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원 소개</a></div>
+  </div><div class="copyright">© 2026 Times Media Inc. — layout_redesign</div></div></footer>
+
+  <script src="./data.js"></script>
+  <script>
+    (function () {
+      const { COURSES, escapeHtml } = window.SiteData;
+      document.getElementById("courseGrid").innerHTML = COURSES.map((c) => `
+        <a class="course-card" href="./course-detail.html?id=${encodeURIComponent(c.id)}">
+          <div class="thumb"><img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.title)}"><span class="status-tag">${escapeHtml(c.status)}</span></div>
+          <div class="body">
+            <span class="cat">${escapeHtml(c.category)}</span>
+            <h3>${escapeHtml(c.title)}</h3>
+            <p class="desc">${escapeHtml(c.summary)}</p>
+            <div class="tags">${(c.tags || []).map((t) => `<span class="chip">${escapeHtml(t)}</span>`).join("")}</div>
+          </div>
+        </a>`).join("");
+    })();
+  </script>
+  <script src="./site.js"></script>
+</body>
+</html>

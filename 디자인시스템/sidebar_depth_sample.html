@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BO 사이드바 Depth 구조 샘플</title>
+  <style>
+    :root {
+      --text-primary: #222222;
+      --text-secondary: #666666;
+      --text-muted: #808080;
+      --brand: #0088ff;
+      --brand-strong: #006dcc;
+      --bg-page: #f8f9fc;
+      --bg-base: #ffffff;
+      --bg-sidebar: #f2f4f8;
+      --bg-selected: #e7f2ff;
+      --border: #e3e5ed;
+      --border-strong: #b8d8f8;
+      --shadow: 0 8px 24px rgba(34, 34, 34, 0.12);
+      --sidebar-width: 260px;
+      --radius: 0;
+      --font: "Noto Sans KR", "Pretendard", "Apple SD Gothic Neo", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 13px;
+      line-height: 1.45;
+      letter-spacing: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid var(--border);
+      background: var(--bg-base);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .brand-mark {
+      width: 24px;
+      height: 24px;
+      border-radius: 0;
+      background: var(--brand);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .sidebar-header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .nav-scroll {
+      overflow-y: auto;
+      padding: 8px;
+      flex: 1;
+    }
+
+    .nav-group {
+      margin-bottom: 6px;
+    }
+
+    .depth-1 {
+      width: 100%;
+      min-height: 34px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 9px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .depth-1:hover,
+    .depth-1[aria-expanded="true"] {
+      border-color: var(--border-strong);
+      background: var(--bg-selected);
+      color: var(--brand-strong);
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 0;
+      border: 1px solid currentColor;
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .depth-2-list {
+      display: grid;
+      gap: 2px;
+      margin: 2px 0 0;
+      padding: 0 0 0 26px;
+      list-style: none;
+    }
+
+    .depth-2 {
+      width: 100%;
+      min-height: 30px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--text-secondary);
+      padding: 5px 8px;
+      text-align: left;
+    }
+
+    .depth-2:hover,
+    .depth-2.active {
+      border-color: var(--border-strong);
+      background: var(--bg-selected);
+      color: var(--brand-strong);
+      font-weight: 700;
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid var(--border);
+      padding: 8px;
+    }
+
+    .utility-button {
+      width: 100%;
+      min-height: 30px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-base);
+      color: var(--text-secondary);
+      text-align: left;
+      padding: 5px 8px;
+    }
+
+    .utility-button:hover {
+      border-color: var(--border-strong);
+      color: var(--brand-strong);
+    }
+
+    .main {
+      min-width: 0;
+      padding: 14px 18px 36px;
+    }
+
+    .mobile-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-base);
+      padding: 8px 12px;
+    }
+
+    .menu-button {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-base);
+    }
+
+    .content-head {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .breadcrumb {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .content-title-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .content-head p {
+      margin: 0;
+      color: var(--text-secondary);
+    }
+
+    .content-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .primary-button,
+    .secondary-button {
+      min-height: 32px;
+      border-radius: var(--radius);
+      padding: 6px 10px;
+      font-weight: 700;
+    }
+
+    .primary-button {
+      border: 1px solid var(--brand);
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    .secondary-button {
+      border: 1px solid var(--border);
+      background: var(--bg-base);
+      color: var(--text-secondary);
+    }
+
+    .depth-3-tabs {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      border-block: 1px solid var(--border);
+      background: rgba(248, 249, 252, 0.96);
+      padding: 8px 0;
+      margin-bottom: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .depth-3-tab {
+      flex: 0 0 auto;
+      min-height: 30px;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      background: var(--bg-base);
+      color: var(--text-secondary);
+      padding: 5px 10px;
+      font-weight: 700;
+    }
+
+    .depth-3-tab:hover,
+    .depth-3-tab.active {
+      border-color: var(--border-strong);
+      background: var(--bg-selected);
+      color: var(--brand-strong);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .section {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-base);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .section-body {
+      padding: 10px 12px;
+    }
+
+    .depth-4-list {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .depth-4-item {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #ffffff;
+      padding: 8px;
+    }
+
+    .depth-4-index {
+      width: 26px;
+      height: 26px;
+      border-radius: 0;
+      background: var(--bg-sidebar);
+      color: var(--text-secondary);
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .depth-4-item strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .depth-4-item span {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .status {
+      border-radius: 0;
+      background: #edf8e9;
+      color: #2f7d0c;
+      padding: 3px 6px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .meta-list {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .meta-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+
+    .meta-list li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .meta-list span {
+      color: var(--text-muted);
+    }
+
+    .mobile-backdrop {
+      display: none;
+    }
+
+    @media (max-width: 920px) {
+      .app {
+        display: block;
+      }
+
+      .mobile-bar {
+        display: flex;
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+
+      .sidebar {
+        position: fixed;
+        z-index: 30;
+        inset: 0 auto 0 0;
+        width: min(86vw, var(--sidebar-width));
+        transform: translateX(-100%);
+        transition: transform 160ms ease;
+        box-shadow: var(--shadow);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .mobile-backdrop.open {
+        display: block;
+        position: fixed;
+        z-index: 25;
+        inset: 0;
+        background: rgba(34, 34, 34, 0.35);
+      }
+
+      .main {
+        padding: 12px 10px 32px;
+      }
+
+      .content-title-row {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .content-actions {
+        justify-content: flex-start;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      h1 {
+        font-size: 18px;
+      }
+
+      .depth-4-item {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .status {
+        grid-column: 2;
+        justify-self: start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-bar">
+    <button class="menu-button" type="button" aria-label="사이드바 열기" data-open-sidebar>☰</button>
+    <strong>BO Depth 구조 샘플</strong>
+  </div>
+
+  <div class="mobile-backdrop" data-close-sidebar></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="1depth와 2depth 사이드바" data-sidebar>
+      <div class="sidebar-header">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">H</span>
+          <span>BO 관리 시스템</span>
+        </div>
+        <p>사이드바는 1depth와 2depth까지만 표시합니다.</p>
+      </div>
+
+      <nav class="nav-scroll" aria-label="주요 메뉴">
+        <div class="nav-group">
+          <button class="depth-1" type="button" aria-expanded="true">
+            <span class="nav-icon" aria-hidden="true">01</span>
+            <span>시험 운영</span>
+          </button>
+          <ul class="depth-2-list">
+            <li><button class="depth-2 active" type="button" aria-current="page" data-section="기본 설정">기본 설정</button></li>
+            <li><button class="depth-2" type="button" data-section="응시 대상">응시 대상</button></li>
+            <li><button class="depth-2" type="button" data-section="출제 및 채점">출제 및 채점</button></li>
+          </ul>
+        </div>
+
+        <div class="nav-group">
+          <button class="depth-1" type="button" aria-expanded="true">
+            <span class="nav-icon" aria-hidden="true">02</span>
+            <span>문제 은행</span>
+          </button>
+          <ul class="depth-2-list">
+            <li><button class="depth-2" type="button" data-section="전문 분야">전문 분야</button></li>
+            <li><button class="depth-2" type="button" data-section="영상 콘텐츠">영상 콘텐츠</button></li>
+            <li><button class="depth-2" type="button" data-section="문서 작성">문서 작성</button></li>
+          </ul>
+        </div>
+
+        <div class="nav-group">
+          <button class="depth-1" type="button" aria-expanded="true">
+            <span class="nav-icon" aria-hidden="true">03</span>
+            <span>교육 자료</span>
+          </button>
+          <ul class="depth-2-list">
+            <li><button class="depth-2" type="button" data-section="교육 과정">교육 과정</button></li>
+            <li><button class="depth-2" type="button" data-section="교재 단원">교재 단원</button></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="utility-button" type="button">설정</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="content-head">
+        <div class="breadcrumb" data-breadcrumb>시험 운영 / 기본 설정 / 시험 문항 구성</div>
+        <div class="content-title-row">
+          <div>
+            <h1 data-title>기본 설정</h1>
+            <p>선택한 2depth 안의 3depth 이하 분류는 콘텐츠 영역에서만 표시합니다.</p>
+          </div>
+          <div class="content-actions">
+            <button class="secondary-button" type="button">미리보기</button>
+            <button class="primary-button" type="button">저장</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="depth-3-tabs" aria-label="3depth 콘텐츠 탐색">
+        <button class="depth-3-tab active" type="button" aria-current="page" data-depth3="시험 문항 구성">시험 문항 구성</button>
+        <button class="depth-3-tab" type="button" data-depth3="채점 방식">채점 방식</button>
+        <button class="depth-3-tab" type="button" data-depth3="일정 운영">일정 운영</button>
+        <button class="depth-3-tab" type="button" data-depth3="결과 공개">결과 공개</button>
+      </div>
+
+      <div class="content-grid">
+        <section class="section" aria-labelledby="depth4-title">
+          <div class="section-header">
+            <h2 id="depth4-title" data-depth4-title>시험 문항 구성</h2>
+            <span class="status">3depth</span>
+          </div>
+          <div class="section-body">
+            <ul class="depth-4-list" aria-label="4depth 이하 항목">
+              <li class="depth-4-item">
+                <span class="depth-4-index">4-1</span>
+                <div>
+                  <strong data-item-one>객관식 문항</strong>
+                  <span>문항 수, 배점, 선택지 개수를 설정합니다.</span>
+                </div>
+                <span class="status">사용</span>
+              </li>
+              <li class="depth-4-item">
+                <span class="depth-4-index">4-2</span>
+                <div>
+                  <strong data-item-two>주관식 문항</strong>
+                  <span>답안 길이, 채점 기준, 검토 방식을 설정합니다.</span>
+                </div>
+                <span class="status">사용</span>
+              </li>
+              <li class="depth-4-item">
+                <span class="depth-4-index">4-3</span>
+                <div>
+                  <strong data-item-three>파일 제출</strong>
+                  <span>허용 확장자, 용량, 제출 횟수를 설정합니다.</span>
+                </div>
+                <span class="status">선택</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <aside class="section" aria-labelledby="summary-title">
+          <div class="section-header">
+            <h2 id="summary-title">현재 구조</h2>
+          </div>
+          <div class="section-body">
+            <ul class="meta-list">
+              <li><span>Sidebar 1depth</span><strong>시험 운영</strong></li>
+              <li><span>Sidebar 2depth</span><strong data-summary-depth2>기본 설정</strong></li>
+              <li><span>Content 3depth</span><strong data-summary-depth3>시험 문항 구성</strong></li>
+              <li><span>Content 4depth 이하</span><strong>본문 목록</strong></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const sidebar = document.querySelector("[data-sidebar]");
+    const backdrop = document.querySelector("[data-close-sidebar]");
+    const openSidebarButton = document.querySelector("[data-open-sidebar]");
+    const depth2Buttons = document.querySelectorAll(".depth-2");
+    const depth3Buttons = document.querySelectorAll(".depth-3-tab");
+    const title = document.querySelector("[data-title]");
+    const breadcrumb = document.querySelector("[data-breadcrumb]");
+    const depth4Title = document.querySelector("[data-depth4-title]");
+    const summaryDepth2 = document.querySelector("[data-summary-depth2]");
+    const summaryDepth3 = document.querySelector("[data-summary-depth3]");
+    const itemOne = document.querySelector("[data-item-one]");
+    const itemTwo = document.querySelector("[data-item-two]");
+    const itemThree = document.querySelector("[data-item-three]");
+
+    let selectedDepth2 = "기본 설정";
+    let selectedDepth3 = "시험 문항 구성";
+
+    const depth4Map = {
+      "시험 문항 구성": ["객관식 문항", "주관식 문항", "파일 제출"],
+      "채점 방식": ["자동 채점", "수동 채점", "재검토 요청"],
+      "일정 운영": ["접수 기간", "응시 기간", "결과 발표"],
+      "결과 공개": ["점수 공개", "해설 공개", "증명서 발급"]
+    };
+
+    function syncContent() {
+      title.textContent = selectedDepth2;
+      breadcrumb.textContent = `시험 운영 / ${selectedDepth2} / ${selectedDepth3}`;
+      depth4Title.textContent = selectedDepth3;
+      summaryDepth2.textContent = selectedDepth2;
+      summaryDepth3.textContent = selectedDepth3;
+
+      const items = depth4Map[selectedDepth3];
+      itemOne.textContent = items[0];
+      itemTwo.textContent = items[1];
+      itemThree.textContent = items[2];
+    }
+
+    depth2Buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        depth2Buttons.forEach((item) => {
+          item.classList.remove("active");
+          item.removeAttribute("aria-current");
+        });
+        button.classList.add("active");
+        button.setAttribute("aria-current", "page");
+        selectedDepth2 = button.dataset.section;
+        syncContent();
+      });
+    });
+
+    depth3Buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        depth3Buttons.forEach((item) => {
+          item.classList.remove("active");
+          item.removeAttribute("aria-current");
+        });
+        button.classList.add("active");
+        button.setAttribute("aria-current", "page");
+        selectedDepth3 = button.dataset.depth3;
+        syncContent();
+      });
+    });
+
+    openSidebarButton.addEventListener("click", () => {
+      sidebar.classList.add("open");
+      backdrop.classList.add("open");
+    });
+
+    backdrop.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      backdrop.classList.remove("open");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>인라인 Drawer 기준</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>인라인 Drawer 기준</h1>
+<p>기준 파일: <code>dense-drawer.css</code>, <code>dense-drawer.js</code>, <code>table_design/table-design.css</code>, <code>table_design/table-design.js</code></p>
+<p>이 문서는 회원 상세, 결제 상세, 매칭 상세처럼 목록 행에서 상세 작업영역을 열 때 적용한다.</p>
+<h2>원칙</h2>
+<ul>
+<li>Drawer는 기본적으로 overlay modal이 아니라 작업영역 오른쪽에 붙는 inline panel이다.</li>
+<li>사용자가 목록과 상세를 동시에 비교할 수 있어야 한다.</li>
+<li>선택된 행은 table row에서 시각적으로 강조한다.</li>
+<li>Drawer는 닫기, ESC 닫기, 저장, focus 복귀를 포함한다.</li>
+<li>넓게보기 상태에서는 목록을 접고 상세 작업영역이 전체 폭을 사용할 수 있다.</li>
+</ul>
+<h2>레이아웃 구조</h2>
+<pre><code>&lt;div class=&quot;table-workspace&quot; data-table-workspace&gt;
+  &lt;section class=&quot;table-card&quot;&gt;...&lt;/section&gt;
+  &lt;aside class=&quot;table-detail-drawer&quot; role=&quot;dialog&quot; aria-modal=&quot;false&quot;&gt;
+    &lt;form class=&quot;table-detail-panel&quot;&gt;
+      &lt;header class=&quot;table-detail-head&quot;&gt;...&lt;/header&gt;
+      &lt;div class=&quot;table-detail-body&quot;&gt;...&lt;/div&gt;
+      &lt;footer class=&quot;table-detail-actions&quot;&gt;...&lt;/footer&gt;
+    &lt;/form&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;</code></pre>
+<h2>열림 상태</h2>
+<ul>
+<li><code>table-workspace.is-drawer-open</code>을 추가한다.</li>
+<li>선택 행에는 <code>tr.is-open</code>을 추가한다.</li>
+<li>wide 상태는 <code>table-workspace.is-drawer-wide</code>를 추가한다.</li>
+<li>Drawer가 닫히면 선택 행 강조와 wide 상태를 제거한다.</li>
+</ul>
+<h2>상세 정보 재구성</h2>
+<p>목록에서는 묶음 컬럼을 유지하되, Drawer에서는 편집 가능한 단위로 분리한다.</p>
+<p>목록 셀:</p>
+<ul>
+<li>이름 / 나이·성별</li>
+<li>이메일 / 휴대폰</li>
+<li>주소 / 국가</li>
+<li>회원유형 / 구독상태</li>
+<li>매칭 / 상태</li>
+<li>결제 / 상태</li>
+</ul>
+<p>Drawer 필드:</p>
+<ul>
+<li>이름</li>
+<li>나이</li>
+<li>성별</li>
+<li>이메일</li>
+<li>휴대폰</li>
+<li>주소</li>
+<li>국가</li>
+<li>회원유형</li>
+<li>구독상태</li>
+<li>매칭상태</li>
+<li>결제상태</li>
+<li>운영 메모</li>
+</ul>
+<h2>Drawer 내부 구성</h2>
+<p>필수:</p>
+<ul>
+<li>제목, 요약, 닫기 버튼</li>
+<li>기본 정보 섹션</li>
+<li>이용 상태 섹션</li>
+<li>운영 메모</li>
+<li>닫기/저장 액션</li>
+</ul>
+<p>선택:</p>
+<ul>
+<li>좌측 회원기본정보 마스터</li>
+<li>상담/시험/결제/정산 작업영역</li>
+<li>타임라인</li>
+<li>태그</li>
+<li>체크리스트</li>
+<li>권한 매트릭스</li>
+</ul>
+<h2>접근성</h2>
+<ul>
+<li><code>role=&quot;dialog&quot;</code>를 사용한다.</li>
+<li>inline Drawer는 <code>aria-modal=&quot;false&quot;</code>를 사용한다.</li>
+<li>제목은 <code>aria-labelledby</code>로 연결한다.</li>
+<li>닫기 버튼은 <code>aria-label</code>을 제공한다.</li>
+<li>ESC로 닫는다.</li>
+<li>닫은 뒤에는 열었던 행 또는 버튼으로 focus를 복귀한다.</li>
+</ul>
+<h2>금지</h2>
+<ul>
+<li>행 아래에 아코디언처럼 상세 row를 길게 펼치지 않는다.</li>
+<li>상세 버튼 전용 컬럼을 반드시 만들려고 하지 않는다. 행 전체 클릭을 우선한다.</li>
+<li>Drawer를 열었을 때 어떤 행이 선택되었는지 표시하지 않는 상태를 만들지 않는다.</li>
+<li>sparse 데이터에서 빈 영역을 크게 남기지 않는다. 운영 메모와 상태 변경 action을 붙인다.</li>
+</ul>
+</body>
+</html>

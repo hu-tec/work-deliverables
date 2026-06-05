@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입 · 마크다운 에디터</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="auth-page" data-auth-page="signup">
+  <main class="auth-shell">
+    <section class="auth-card" aria-labelledby="authTitle">
+      <a class="auth-brand" href="/">마크다운 에디터</a>
+      <h1 id="authTitle">회원가입</h1>
+      <form class="auth-page-form" id="authPageForm">
+        <label for="usernameInput">사용자명</label>
+        <input id="usernameInput" name="username" type="text" autocomplete="username" minlength="2" maxlength="24" required>
+
+        <label for="passwordInput">비밀번호</label>
+        <input id="passwordInput" name="password" type="password" autocomplete="new-password" minlength="4" required>
+
+        <button type="submit">회원가입</button>
+      </form>
+      <p class="auth-message" id="authMessage" role="status"></p>
+      <p class="auth-switch">이미 계정이 있나요? <a href="/login">로그인</a></p>
+    </section>
+  </main>
+
+  <script src="/auth.js"></script>
+</body>
+</html>

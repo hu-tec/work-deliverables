@@ -1,0 +1,1258 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./layout.css" />
+    <title>BO Index Sample · 영역 기반 디자인 시스템</title>
+    <style>
+      :root {
+        --bo-sidebar-width: 236px;
+        --bo-drawer-width: 360px;
+        --bo-topbar-height: 46px;
+        --bo-row-height: 34px;
+      }
+
+      body {
+        overflow: hidden;
+        background: #eef1f6;
+        letter-spacing: 0;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        letter-spacing: 0;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+
+      .bo-app {
+        display: grid;
+        grid-template-columns: var(--bo-sidebar-width) minmax(0, 1fr);
+        height: 100vh;
+        color: var(--ds-color-text-primary);
+      }
+
+      .bo-sidebar {
+        display: grid;
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        border-right: 1px solid #cbd2df;
+        background: #172236;
+        color: #dbe4f2;
+        min-width: 0;
+      }
+
+      .bo-brand {
+        display: grid;
+        gap: 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 11px 12px;
+      }
+
+      .bo-brand strong {
+        color: #fff;
+        font-size: 14px;
+        line-height: 18px;
+      }
+
+      .bo-brand span {
+        color: #9fb0c8;
+        font-size: 11px;
+      }
+
+      .bo-sidebar-search {
+        padding: 8px;
+      }
+
+      .bo-sidebar-search input {
+        width: 100%;
+        height: 28px;
+        border: 1px solid #33435c;
+        border-radius: 0;
+        background: #101a2b;
+        color: #fff;
+        padding: 4px 8px;
+        font-size: 12px;
+      }
+
+      .bo-menu {
+        overflow: auto;
+        padding: 4px 8px 10px;
+      }
+
+      .bo-menu-group {
+        margin: 10px 0 4px;
+        color: #7f90aa;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .bo-menu-item {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 6px;
+        min-height: 30px;
+        border: 1px solid transparent;
+        background: transparent;
+        padding: 4px 6px;
+        color: #dbe4f2;
+        font-size: 12px;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .bo-menu-item:hover,
+      .bo-menu-item:focus-visible {
+        border-color: #40516d;
+        background: #21314b;
+        outline: 0;
+      }
+
+      .bo-menu-item[aria-current="page"] {
+        border-color: #2b8cff;
+        background: #0f3a68;
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .bo-menu-item span:nth-child(2) {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .bo-menu-count {
+        min-width: 18px;
+        border: 1px solid #40516d;
+        background: #101a2b;
+        color: #b9c7da;
+        padding: 0 4px;
+        font-size: 10px;
+        line-height: 16px;
+        text-align: center;
+      }
+
+      .bo-sidebar-foot {
+        display: grid;
+        gap: 6px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 8px;
+      }
+
+      .bo-user {
+        display: grid;
+        grid-template-columns: 24px minmax(0, 1fr);
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+      }
+
+      .bo-user-avatar {
+        display: inline-grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border: 1px solid #40516d;
+        background: #101a2b;
+        color: #fff;
+        font-weight: 800;
+      }
+
+      .bo-user strong,
+      .bo-user span {
+        display: block;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .bo-user span {
+        color: #9fb0c8;
+      }
+
+      .bo-main {
+        display: grid;
+        grid-template-rows: var(--bo-topbar-height) minmax(0, 1fr);
+        min-width: 0;
+      }
+
+      .bo-topbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #cbd2df;
+        background: #fff;
+        padding: 6px 10px;
+      }
+
+      .bo-titleline {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .bo-titleline h1 {
+        margin: 0;
+        font-size: 15px;
+        line-height: 20px;
+        white-space: nowrap;
+      }
+
+      .bo-breadcrumb {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        overflow: hidden;
+        color: var(--ds-color-text-muted);
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .bo-actions,
+      .bo-toolbar-actions,
+      .bo-filter-actions,
+      .bo-chip-row,
+      .bo-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .bo-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 26px;
+        border: 1px solid #cbd2df;
+        border-radius: 0;
+        background: #fff;
+        color: var(--ds-color-text-secondary);
+        padding: 3px 8px;
+        font-size: 12px;
+        line-height: 18px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .bo-btn:hover,
+      .bo-btn:focus-visible {
+        border-color: #8fbfed;
+        background: #eef7ff;
+        color: #005ca8;
+        outline: 0;
+      }
+
+      .bo-btn--primary {
+        border-color: var(--ds-color-brand-primary);
+        background: var(--ds-color-brand-primary);
+        color: #fff;
+      }
+
+      .bo-btn--danger {
+        border-color: var(--ds-color-accent-danger);
+        color: var(--ds-color-accent-danger-strong);
+      }
+
+      .bo-btn--icon {
+        width: 26px;
+        padding: 0;
+        font-size: 14px;
+      }
+
+      .bo-workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 0;
+      }
+
+      .bo-workspace.is-drawer-open {
+        grid-template-columns: minmax(0, 1fr) var(--bo-drawer-width);
+      }
+
+      .bo-content {
+        display: grid;
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        min-width: 0;
+        min-height: 0;
+      }
+
+      .bo-sectionbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        border-bottom: 1px solid #d8dee8;
+        background: #f8fafc;
+        padding: 8px 10px;
+      }
+
+      .bo-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+
+      .bo-tab {
+        min-height: 28px;
+        border: 1px solid #cbd2df;
+        border-radius: 0;
+        background: #fff;
+        padding: 4px 9px;
+        color: var(--ds-color-text-secondary);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .bo-tab[aria-selected="true"] {
+        border-color: #8fbfed;
+        background: #e7f2ff;
+        color: #005ca8;
+      }
+
+      .bo-filter {
+        display: grid;
+        gap: 6px;
+        border-bottom: 1px solid #d8dee8;
+        background: #fff;
+        padding: 8px 10px;
+      }
+
+      .bo-filter-grid {
+        display: grid;
+        grid-template-columns: 1.2fr repeat(5, minmax(110px, 0.7fr)) auto;
+        gap: 6px;
+        align-items: end;
+      }
+
+      .bo-field {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+      }
+
+      .bo-field label {
+        color: var(--ds-color-text-muted);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .bo-field input,
+      .bo-field select {
+        width: 100%;
+        height: 28px;
+        border: 1px solid #cbd2df;
+        border-radius: 0;
+        background: #fff;
+        padding: 3px 7px;
+        color: var(--ds-color-text-primary);
+        font-size: 12px;
+      }
+
+      .bo-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        min-height: 22px;
+        border: 1px solid #b8d8f8;
+        background: #f4f9ff;
+        color: #005ca8;
+        padding: 2px 6px;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .bo-chip button {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .bo-grid-zone {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 236px;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .bo-table-wrap {
+        min-width: 0;
+        overflow: auto;
+        background: #fff;
+      }
+
+      .bo-table {
+        width: 100%;
+        min-width: 1040px;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      .bo-table th,
+      .bo-table td {
+        height: var(--bo-row-height);
+        border-right: 1px solid #e2e7ef;
+        border-bottom: 1px solid #e2e7ef;
+        padding: 4px 7px;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      .bo-table th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #f1f5fa;
+        color: var(--ds-color-text-secondary);
+        font-size: 11px;
+      }
+
+      .bo-table tbody tr {
+        cursor: pointer;
+      }
+
+      .bo-table tbody tr:hover,
+      .bo-table tbody tr.is-selected {
+        background: #eef7ff;
+      }
+
+      .bo-table .is-number {
+        text-align: right;
+      }
+
+      .bo-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        min-height: 20px;
+        border: 1px solid #cbd2df;
+        background: #fff;
+        padding: 1px 6px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .bo-status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: currentColor;
+      }
+
+      .bo-status--ok {
+        border-color: #b7dca7;
+        background: #f4fbf1;
+        color: #2f7d0c;
+      }
+
+      .bo-status--wait {
+        border-color: #f3d489;
+        background: #fff9e8;
+        color: #8a5a00;
+      }
+
+      .bo-status--danger {
+        border-color: #f0b8b8;
+        background: #fff4f4;
+        color: #b42323;
+      }
+
+      .bo-status--info {
+        border-color: #b8d8f8;
+        background: #f4f9ff;
+        color: #005ca8;
+      }
+
+      .bo-sidepanel {
+        display: grid;
+        grid-template-rows: auto auto minmax(0, 1fr);
+        min-width: 0;
+        overflow: hidden;
+        border-left: 1px solid #d8dee8;
+        background: #f8fafc;
+      }
+
+      .bo-metric-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        padding: 8px;
+      }
+
+      .bo-metric {
+        display: grid;
+        gap: 2px;
+        border: 1px solid #d8dee8;
+        background: #fff;
+        padding: 7px;
+      }
+
+      .bo-metric span {
+        color: var(--ds-color-text-muted);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .bo-metric strong {
+        font-size: 18px;
+        line-height: 22px;
+      }
+
+      .bo-panel-block {
+        display: grid;
+        gap: 6px;
+        border-top: 1px solid #d8dee8;
+        padding: 8px;
+      }
+
+      .bo-panel-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .bo-log-list {
+        display: grid;
+        gap: 5px;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .bo-log-list li {
+        display: grid;
+        gap: 2px;
+        border: 1px solid #e2e7ef;
+        background: #fff;
+        padding: 6px;
+        font-size: 11px;
+      }
+
+      .bo-log-list time {
+        color: var(--ds-color-text-muted);
+      }
+
+      .bo-preview {
+        display: grid;
+        place-items: center;
+        min-height: 120px;
+        border: 1px dashed #b9c4d4;
+        background: #fff;
+        color: var(--ds-color-text-muted);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .bo-footerbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        border-top: 1px solid #d8dee8;
+        background: #fff;
+        padding: 6px 10px;
+        color: var(--ds-color-text-muted);
+        font-size: 11px;
+      }
+
+      .bo-drawer {
+        display: grid;
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        min-width: 0;
+        min-height: 0;
+        border-left: 1px solid #cbd2df;
+        background: #fff;
+      }
+
+      .bo-drawer-head {
+        display: grid;
+        gap: 4px;
+        border-bottom: 1px solid #d8dee8;
+        padding: 10px;
+      }
+
+      .bo-drawer-head-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .bo-drawer h2 {
+        margin: 0;
+        font-size: 15px;
+        line-height: 20px;
+      }
+
+      .bo-drawer-head p {
+        margin: 0;
+        color: var(--ds-color-text-muted);
+        font-size: 11px;
+      }
+
+      .bo-drawer-tabs {
+        display: flex;
+        border-bottom: 1px solid #d8dee8;
+        background: #f8fafc;
+      }
+
+      .bo-drawer-tabs button {
+        flex: 1 1 0;
+        min-height: 30px;
+        border: 0;
+        border-right: 1px solid #d8dee8;
+        background: transparent;
+        color: var(--ds-color-text-secondary);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .bo-drawer-tabs button[aria-selected="true"] {
+        background: #fff;
+        color: #005ca8;
+      }
+
+      .bo-drawer-body {
+        min-height: 0;
+        overflow: auto;
+        padding: 10px;
+      }
+
+      .bo-detail-list {
+        display: grid;
+        gap: 0;
+        border-top: 1px solid #e2e7ef;
+      }
+
+      .bo-detail-row {
+        display: grid;
+        grid-template-columns: 92px minmax(0, 1fr);
+        min-height: 30px;
+        border-bottom: 1px solid #e2e7ef;
+        font-size: 12px;
+      }
+
+      .bo-detail-row span,
+      .bo-detail-row strong {
+        padding: 6px;
+      }
+
+      .bo-detail-row span {
+        background: #f8fafc;
+        color: var(--ds-color-text-muted);
+        font-weight: 800;
+      }
+
+      .bo-detail-row strong {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .bo-note {
+        width: 100%;
+        min-height: 74px;
+        resize: vertical;
+        border: 1px solid #cbd2df;
+        border-radius: 0;
+        padding: 7px;
+        font-size: 12px;
+      }
+
+      .bo-drawer-foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 4px;
+        border-top: 1px solid #d8dee8;
+        padding: 8px;
+      }
+
+      .bo-guide {
+        display: none;
+        min-height: 0;
+        overflow: auto;
+        background: #eef1f6;
+        padding: 10px;
+      }
+
+      .bo-guide.is-active {
+        display: block;
+      }
+
+      .bo-guide-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(220px, 1fr));
+        gap: 8px;
+      }
+
+      .bo-guide-card {
+        display: grid;
+        gap: 6px;
+        border: 1px solid #cbd2df;
+        background: #fff;
+        padding: 10px;
+      }
+
+      .bo-guide-card h3 {
+        margin: 0;
+        font-size: 13px;
+      }
+
+      .bo-guide-card dl {
+        display: grid;
+        grid-template-columns: 70px minmax(0, 1fr);
+        gap: 4px 8px;
+        margin: 0;
+        font-size: 11px;
+      }
+
+      .bo-guide-card dt {
+        color: var(--ds-color-text-muted);
+        font-weight: 800;
+      }
+
+      .bo-guide-card dd {
+        margin: 0;
+        min-width: 0;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      @media (max-width: 1280px) {
+        .bo-workspace,
+        .bo-workspace.is-drawer-open {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .bo-drawer {
+          position: fixed;
+          top: var(--bo-topbar-height);
+          right: 0;
+          bottom: 0;
+          z-index: 20;
+          width: min(var(--bo-drawer-width), 94vw);
+          box-shadow: var(--ds-shadow-popup);
+        }
+
+        .bo-drawer[hidden] {
+          display: none !important;
+        }
+      }
+
+      @media (max-width: 980px) {
+        body {
+          overflow: auto;
+        }
+
+        .bo-app {
+          grid-template-columns: 1fr;
+          min-height: 100vh;
+          height: auto;
+        }
+
+        .bo-sidebar {
+          display: none;
+        }
+
+        .bo-main,
+        .bo-content {
+          min-height: 100vh;
+        }
+
+        .bo-filter-grid,
+        .bo-sectionbar,
+        .bo-grid-zone,
+        .bo-footerbar {
+          grid-template-columns: 1fr;
+        }
+
+        .bo-sidepanel {
+          border-left: 0;
+          border-top: 1px solid #d8dee8;
+        }
+
+        .bo-guide-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bo-app">
+      <aside class="bo-sidebar" aria-label="BO 주요 메뉴">
+        <div class="bo-brand">
+          <strong>HutechC BO</strong>
+          <span>영역 기반 디자인 시스템 샘플</span>
+        </div>
+        <div class="bo-sidebar-search">
+          <label class="sr-only" for="sidebar-search">메뉴 검색</label>
+          <input id="sidebar-search" type="search" placeholder="메뉴 검색" />
+        </div>
+        <nav class="bo-menu">
+          <div class="bo-menu-group">HOME</div>
+          <button class="bo-menu-item" type="button">
+            <span>⌂</span><span>내 업무</span><span class="bo-menu-count">6</span>
+          </button>
+          <button class="bo-menu-item" type="button" aria-current="page">
+            <span>▦</span><span>시험 운영</span><span class="bo-menu-count">18</span>
+          </button>
+          <button class="bo-menu-item" type="button">
+            <span>▣</span><span>신청서 관리</span><span class="bo-menu-count">9</span>
+          </button>
+
+          <div class="bo-menu-group">OPERATION</div>
+          <button class="bo-menu-item" type="button">
+            <span>◫</span><span>문제은행</span><span class="bo-menu-count">12</span>
+          </button>
+          <button class="bo-menu-item" type="button">
+            <span>□</span><span>채점/결과</span><span class="bo-menu-count">7</span>
+          </button>
+          <button class="bo-menu-item" type="button">
+            <span>₩</span><span>결제/정산</span><span class="bo-menu-count">4</span>
+          </button>
+          <button class="bo-menu-item" type="button">
+            <span>▤</span><span>공지/콘텐츠</span><span class="bo-menu-count">5</span>
+          </button>
+
+          <div class="bo-menu-group">SYSTEM</div>
+          <button class="bo-menu-item" type="button">
+            <span>◇</span><span>권한/보안</span><span class="bo-menu-count">3</span>
+          </button>
+          <button class="bo-menu-item" type="button">
+            <span>≡</span><span>감사 로그</span><span class="bo-menu-count">2</span>
+          </button>
+        </nav>
+        <div class="bo-sidebar-foot">
+          <div class="bo-user">
+            <span class="bo-user-avatar">A</span>
+            <span>
+              <strong>admin@hutechc</strong>
+              <span>최고관리자 · 운영팀</span>
+            </span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="bo-main">
+        <header class="bo-topbar">
+          <div class="bo-titleline">
+            <h1>시험 운영 통합 관리</h1>
+            <span class="bo-breadcrumb">시험 운영 / 접수 관리 / 응시자 목록</span>
+          </div>
+          <div class="bo-actions" aria-label="상단 작업">
+            <button class="bo-btn bo-btn--icon" type="button" aria-label="새로고침">↻</button>
+            <button class="bo-btn" type="button">미리보기</button>
+            <button class="bo-btn" type="button">임시저장</button>
+            <button class="bo-btn bo-btn--primary" type="button">변경 적용</button>
+          </div>
+        </header>
+
+        <div class="bo-workspace" data-workspace>
+          <section class="bo-content" aria-label="운영 목록 화면">
+            <div class="bo-sectionbar">
+              <div class="bo-tabs" role="tablist" aria-label="시험 운영 세부 메뉴">
+                <button class="bo-tab" type="button" role="tab" aria-selected="true" data-view-target="list">
+                  접수 목록
+                </button>
+                <button class="bo-tab" type="button" role="tab" aria-selected="false" data-view-target="guide">
+                  영역 가이드
+                </button>
+                <button class="bo-tab" type="button" role="tab" aria-selected="false">
+                  시험 설정
+                </button>
+                <button class="bo-tab" type="button" role="tab" aria-selected="false">
+                  채점 현황
+                </button>
+                <button class="bo-tab" type="button" role="tab" aria-selected="false">
+                  발급 이력
+                </button>
+              </div>
+              <div class="bo-toolbar-actions">
+                <button class="bo-btn" type="button">컬럼</button>
+                <button class="bo-btn" type="button">엑셀 다운로드</button>
+                <button class="bo-btn bo-btn--danger" type="button">선택 보류</button>
+              </div>
+            </div>
+
+            <div class="bo-filter" data-list-panel>
+              <div class="bo-filter-grid">
+                <div class="bo-field">
+                  <label for="keyword">통합 검색</label>
+                  <input id="keyword" type="search" value="TESOLC" />
+                </div>
+                <div class="bo-field">
+                  <label for="exam-type">시험</label>
+                  <select id="exam-type">
+                    <option>전체 시험</option>
+                    <option selected>TESOLC 2급</option>
+                    <option>AI 번역 1급</option>
+                  </select>
+                </div>
+                <div class="bo-field">
+                  <label for="status">상태</label>
+                  <select id="status">
+                    <option>전체</option>
+                    <option selected>접수/결제</option>
+                    <option>채점중</option>
+                    <option>완료</option>
+                  </select>
+                </div>
+                <div class="bo-field">
+                  <label for="manager">담당자</label>
+                  <select id="manager">
+                    <option>전체</option>
+                    <option selected>운영1팀</option>
+                  </select>
+                </div>
+                <div class="bo-field">
+                  <label for="from-date">시작일</label>
+                  <input id="from-date" type="date" value="2026-05-01" />
+                </div>
+                <div class="bo-field">
+                  <label for="to-date">종료일</label>
+                  <input id="to-date" type="date" value="2026-06-02" />
+                </div>
+                <div class="bo-filter-actions">
+                  <button class="bo-btn bo-btn--primary" type="button">검색</button>
+                  <button class="bo-btn" type="button" data-chip-reset>초기화</button>
+                </div>
+              </div>
+              <div class="bo-chip-row" aria-label="적용된 필터">
+                <span class="bo-chip">시험: TESOLC 2급 <button type="button" aria-label="시험 필터 삭제">×</button></span>
+                <span class="bo-chip">상태: 접수/결제 <button type="button" aria-label="상태 필터 삭제">×</button></span>
+                <span class="bo-chip">기간: 2026-05-01~2026-06-02 <button type="button" aria-label="기간 필터 삭제">×</button></span>
+              </div>
+            </div>
+
+            <div class="bo-grid-zone" data-list-panel>
+              <div class="bo-table-wrap" tabindex="0" aria-label="응시자 목록 가로 스크롤 영역">
+                <table class="bo-table">
+                  <thead>
+                    <tr>
+                      <th scope="col"><input type="checkbox" aria-label="전체 선택" /></th>
+                      <th scope="col">접수번호</th>
+                      <th scope="col">응시자</th>
+                      <th scope="col">시험/급수</th>
+                      <th scope="col">접수상태</th>
+                      <th scope="col">결제</th>
+                      <th scope="col">응시일</th>
+                      <th scope="col">담당자</th>
+                      <th scope="col">메모</th>
+                      <th scope="col" class="is-number">금액</th>
+                      <th scope="col">작업</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row-title="김서연 / TESOLC 2급">
+                      <td><input type="checkbox" aria-label="TES-260602-001 선택" /></td>
+                      <td>TES-260602-001</td>
+                      <td>김서연</td>
+                      <td>TESOLC 2급</td>
+                      <td><span class="bo-status bo-status--info">접수완료</span></td>
+                      <td><span class="bo-status bo-status--ok">결제완료</span></td>
+                      <td>2026-06-19</td>
+                      <td>운영1팀</td>
+                      <td>증빙 확인 필요</td>
+                      <td class="is-number">50,000</td>
+                      <td><button class="bo-btn" type="button" data-open-drawer>상세</button></td>
+                    </tr>
+                    <tr data-row-title="이도윤 / AI 번역 1급">
+                      <td><input type="checkbox" aria-label="TES-260602-002 선택" /></td>
+                      <td>TES-260602-002</td>
+                      <td>이도윤</td>
+                      <td>AI 번역 1급</td>
+                      <td><span class="bo-status bo-status--wait">검토중</span></td>
+                      <td><span class="bo-status bo-status--ok">결제완료</span></td>
+                      <td>2026-06-21</td>
+                      <td>운영2팀</td>
+                      <td>환불 규정 문의</td>
+                      <td class="is-number">80,000</td>
+                      <td><button class="bo-btn" type="button" data-open-drawer>상세</button></td>
+                    </tr>
+                    <tr data-row-title="박하린 / 문서작성 3급">
+                      <td><input type="checkbox" aria-label="TES-260602-003 선택" /></td>
+                      <td>TES-260602-003</td>
+                      <td>박하린</td>
+                      <td>문서작성 3급</td>
+                      <td><span class="bo-status bo-status--danger">보류</span></td>
+                      <td><span class="bo-status bo-status--wait">입금대기</span></td>
+                      <td>2026-06-22</td>
+                      <td>운영1팀</td>
+                      <td>이름 불일치</td>
+                      <td class="is-number">30,000</td>
+                      <td><button class="bo-btn" type="button" data-open-drawer>상세</button></td>
+                    </tr>
+                    <tr data-row-title="최민준 / TESOLC 1급">
+                      <td><input type="checkbox" aria-label="TES-260602-004 선택" /></td>
+                      <td>TES-260602-004</td>
+                      <td>최민준</td>
+                      <td>TESOLC 1급</td>
+                      <td><span class="bo-status bo-status--ok">확정</span></td>
+                      <td><span class="bo-status bo-status--ok">결제완료</span></td>
+                      <td>2026-06-19</td>
+                      <td>운영3팀</td>
+                      <td>-</td>
+                      <td class="is-number">70,000</td>
+                      <td><button class="bo-btn" type="button" data-open-drawer>상세</button></td>
+                    </tr>
+                    <tr data-row-title="정아린 / AI 윤리 2급">
+                      <td><input type="checkbox" aria-label="TES-260602-005 선택" /></td>
+                      <td>TES-260602-005</td>
+                      <td>정아린</td>
+                      <td>AI 윤리 2급</td>
+                      <td><span class="bo-status bo-status--info">접수완료</span></td>
+                      <td><span class="bo-status bo-status--ok">결제완료</span></td>
+                      <td>2026-06-23</td>
+                      <td>운영2팀</td>
+                      <td>단체 접수</td>
+                      <td class="is-number">50,000</td>
+                      <td><button class="bo-btn" type="button" data-open-drawer>상세</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <aside class="bo-sidepanel" aria-label="운영 상태 보조 패널">
+                <div class="bo-metric-grid">
+                  <article class="bo-metric">
+                    <span>오늘 접수</span>
+                    <strong>128</strong>
+                  </article>
+                  <article class="bo-metric">
+                    <span>미처리</span>
+                    <strong>17</strong>
+                  </article>
+                  <article class="bo-metric">
+                    <span>결제 완료</span>
+                    <strong>91%</strong>
+                  </article>
+                  <article class="bo-metric">
+                    <span>보류</span>
+                    <strong>6</strong>
+                  </article>
+                </div>
+                <div class="bo-panel-block">
+                  <div class="bo-panel-title">
+                    <span>사이트 미리보기</span>
+                    <button class="bo-btn" type="button">열기</button>
+                  </div>
+                  <div class="bo-preview">
+                    접수 페이지<br />상태/CTA/공지 노출 확인
+                  </div>
+                </div>
+                <div class="bo-panel-block">
+                  <div class="bo-panel-title">
+                    <span>운영 로그</span>
+                    <button class="bo-btn bo-btn--icon" type="button" aria-label="로그 새로고침">↻</button>
+                  </div>
+                  <ol class="bo-log-list">
+                    <li><strong>접수상태 일괄 변경</strong><time>2026-06-02 15:24 · admin</time></li>
+                    <li><strong>결제 확인 메모 추가</strong><time>2026-06-02 14:58 · 운영1팀</time></li>
+                    <li><strong>시험 일정 공지 수정</strong><time>2026-06-02 13:40 · 운영2팀</time></li>
+                  </ol>
+                </div>
+              </aside>
+            </div>
+
+            <section class="bo-guide" data-guide-panel aria-label="BO 영역 가이드">
+              <div class="bo-guide-grid">
+                <article class="bo-guide-card">
+                  <h3>Header / Topbar</h3>
+                  <dl>
+                    <dt>목적</dt><dd>현재 업무와 전역 액션을 고정 노출</dd>
+                    <dt>컴포넌트</dt><dd>breadcrumb, icon button, primary action</dd>
+                    <dt>상태</dt><dd>저장 전, 저장 중, 오류, 권한 제한</dd>
+                    <dt>반응형</dt><dd>모바일은 액션을 우선순위대로 축약</dd>
+                  </dl>
+                </article>
+                <article class="bo-guide-card">
+                  <h3>Sidebar</h3>
+                  <dl>
+                    <dt>목적</dt><dd>1depth/2depth 중심의 업무 탐색</dd>
+                    <dt>컴포넌트</dt><dd>menu item, count badge, user block</dd>
+                    <dt>상태</dt><dd>active, hover, disabled, collapsed</dd>
+                    <dt>주의</dt><dd>3depth 이후는 본문 탭/필터에서 처리</dd>
+                  </dl>
+                </article>
+                <article class="bo-guide-card">
+                  <h3>Filter / Toolbar</h3>
+                  <dl>
+                    <dt>목적</dt><dd>목록 조회 조건과 일괄 작업 제어</dd>
+                    <dt>컴포넌트</dt><dd>search, select, date range, chip</dd>
+                    <dt>상태</dt><dd>필터 적용, 결과 없음, 초기화</dd>
+                    <dt>접근성</dt><dd>label 연결과 삭제 버튼 aria-label 필요</dd>
+                  </dl>
+                </article>
+                <article class="bo-guide-card">
+                  <h3>Data Table</h3>
+                  <dl>
+                    <dt>목적</dt><dd>반복 데이터 탐색, 비교, 선택</dd>
+                    <dt>컴포넌트</dt><dd>checkbox, status badge, row action</dd>
+                    <dt>상태</dt><dd>selected, hover, empty, loading</dd>
+                    <dt>반응형</dt><dd>핵심 컬럼 유지 + 가로 스크롤</dd>
+                  </dl>
+                </article>
+                <article class="bo-guide-card">
+                  <h3>Detail Drawer</h3>
+                  <dl>
+                    <dt>목적</dt><dd>목록 맥락을 유지한 상세 확인/수정</dd>
+                    <dt>컴포넌트</dt><dd>summary, tabs, memo, history</dd>
+                    <dt>상태</dt><dd>open, close, dirty, saved</dd>
+                    <dt>접근성</dt><dd>열림 후 focus 이동과 닫힘 후 복귀</dd>
+                  </dl>
+                </article>
+                <article class="bo-guide-card">
+                  <h3>Status / Log / Preview</h3>
+                  <dl>
+                    <dt>목적</dt><dd>운영 판단에 필요한 보조 정보 제공</dd>
+                    <dt>컴포넌트</dt><dd>KPI, timeline, preview block</dd>
+                    <dt>상태</dt><dd>정상, 지연, 위험, 실패</dd>
+                    <dt>주의</dt><dd>색상만으로 상태를 전달하지 않음</dd>
+                  </dl>
+                </article>
+              </div>
+            </section>
+
+            <footer class="bo-footerbar" data-list-panel>
+              <span>선택 1건 · 전체 1,378건 · 마지막 동기화 2026-06-02 15:30</span>
+              <div class="bo-actions" aria-label="페이지 이동">
+                <button class="bo-btn" type="button">이전</button>
+                <button class="bo-btn bo-btn--primary" type="button">1</button>
+                <button class="bo-btn" type="button">2</button>
+                <button class="bo-btn" type="button">3</button>
+                <button class="bo-btn" type="button">다음</button>
+              </div>
+            </footer>
+          </section>
+
+          <aside class="bo-drawer" aria-label="응시자 상세" data-drawer hidden>
+            <div class="bo-drawer-head">
+              <div class="bo-drawer-head-row">
+                <h2 data-drawer-title>김서연 / TESOLC 2급</h2>
+                <button class="bo-btn bo-btn--icon" type="button" aria-label="상세 닫기" data-close-drawer>×</button>
+              </div>
+              <p>목록을 유지한 상태에서 접수, 결제, 메모, 이력을 확인하는 영역</p>
+            </div>
+            <div class="bo-drawer-tabs" role="tablist" aria-label="상세 정보 탭">
+              <button type="button" role="tab" aria-selected="true">요약</button>
+              <button type="button" role="tab" aria-selected="false">결제</button>
+              <button type="button" role="tab" aria-selected="false">이력</button>
+            </div>
+            <div class="bo-drawer-body">
+              <div class="bo-detail-list">
+                <div class="bo-detail-row"><span>접수번호</span><strong>TES-260602-001</strong></div>
+                <div class="bo-detail-row"><span>상태</span><strong><span class="bo-status bo-status--info">접수완료</span></strong></div>
+                <div class="bo-detail-row"><span>응시자</span><strong>김서연</strong></div>
+                <div class="bo-detail-row"><span>시험</span><strong>TESOLC 2급</strong></div>
+                <div class="bo-detail-row"><span>응시일</span><strong>2026-06-19</strong></div>
+                <div class="bo-detail-row"><span>결제금액</span><strong>50,000 KRW</strong></div>
+              </div>
+              <div class="bo-panel-block">
+                <div class="bo-panel-title"><span>운영 메모</span></div>
+                <textarea class="bo-note">증빙서류 이름과 신청자명이 일치하는지 확인 필요.</textarea>
+              </div>
+              <div class="bo-panel-block">
+                <div class="bo-panel-title"><span>최근 처리 이력</span></div>
+                <ol class="bo-log-list">
+                  <li><strong>접수 완료 처리</strong><time>2026-06-02 15:24 · admin</time></li>
+                  <li><strong>결제 확인</strong><time>2026-06-02 14:58 · 운영1팀</time></li>
+                  <li><strong>신청서 제출</strong><time>2026-06-02 14:41 · 사용자</time></li>
+                </ol>
+              </div>
+            </div>
+            <div class="bo-drawer-foot">
+              <button class="bo-btn" type="button">변경 취소</button>
+              <button class="bo-btn bo-btn--primary" type="button">상세 저장</button>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const viewTabs = document.querySelectorAll("[data-view-target]");
+      const listPanels = document.querySelectorAll("[data-list-panel]");
+      const guidePanel = document.querySelector("[data-guide-panel]");
+      const workspace = document.querySelector("[data-workspace]");
+      const drawer = document.querySelector("[data-drawer]");
+      const drawerTitle = document.querySelector("[data-drawer-title]");
+      const closeDrawer = document.querySelector("[data-close-drawer]");
+      const rows = document.querySelectorAll(".bo-table tbody tr");
+
+      function openDrawer(title) {
+        drawerTitle.textContent = title || "응시자 상세";
+        drawer.hidden = false;
+        workspace.classList.add("is-drawer-open");
+      }
+
+      function hideDrawer() {
+        drawer.hidden = true;
+        workspace.classList.remove("is-drawer-open");
+        rows.forEach((item) => item.classList.remove("is-selected"));
+      }
+
+      viewTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          viewTabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+          const guideActive = tab.dataset.viewTarget === "guide";
+          guidePanel.classList.toggle("is-active", guideActive);
+          listPanels.forEach((panel) => {
+            panel.hidden = guideActive;
+          });
+        });
+      });
+
+      rows.forEach((row) => {
+        row.addEventListener("click", () => {
+          rows.forEach((item) => item.classList.toggle("is-selected", item === row));
+          openDrawer(row.dataset.rowTitle);
+        });
+      });
+
+      document.querySelectorAll("[data-open-drawer]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const row = button.closest("tr");
+          rows.forEach((item) => item.classList.toggle("is-selected", item === row));
+          openDrawer(row?.dataset.rowTitle);
+        });
+      });
+
+      closeDrawer.addEventListener("click", () => {
+        hideDrawer();
+      });
+
+      document.querySelector("[data-chip-reset]").addEventListener("click", () => {
+        document.querySelectorAll(".bo-chip").forEach((chip) => chip.remove());
+      });
+
+      document.querySelectorAll(".bo-chip button").forEach((button) => {
+        button.addEventListener("click", () => button.closest(".bo-chip").remove());
+      });
+    </script>
+  </body>
+</html>

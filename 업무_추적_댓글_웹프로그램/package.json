@@ -1,0 +1,14 @@
+{
+  "name": "work-history-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Compact department and project work history tracker.",
+  "scripts": {
+    "start": "node src/server.js",
+    "check": "node --check src/server.js && node --check public/app.js && node --test",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  }
+}

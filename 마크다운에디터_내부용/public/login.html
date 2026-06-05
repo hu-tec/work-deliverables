@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 · 마크다운 에디터</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="auth-page" data-auth-page="login">
+  <main class="auth-shell">
+    <section class="auth-card" aria-labelledby="authTitle">
+      <a class="auth-brand" href="/">마크다운 에디터</a>
+      <h1 id="authTitle">로그인</h1>
+      <form class="auth-page-form" id="authPageForm">
+        <label for="usernameInput">사용자명</label>
+        <input id="usernameInput" name="username" type="text" autocomplete="username" required>
+
+        <label for="passwordInput">비밀번호</label>
+        <input id="passwordInput" name="password" type="password" autocomplete="current-password" required>
+
+        <button type="submit">로그인</button>
+      </form>
+      <p class="auth-message" id="authMessage" role="status"></p>
+      <p class="auth-switch">계정이 없나요? <a href="/signup">회원가입</a></p>
+    </section>
+  </main>
+
+  <script src="/auth.js"></script>
+</body>
+</html>

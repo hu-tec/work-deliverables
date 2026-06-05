@@ -1,0 +1,935 @@
+<html>
+   <head>
+      <style id="reset-css"> @layer figreset,figoverridable,reset,theme,base,figutils,components,utilities;@layer figoverridable{:root{font-synthesis:none}}@layer figutils{:root{--banner-height:48px;--banner-height-v2:40px;--full-height-with-banner:calc(100dvh - var(--banner-height))}@media (max-width:600px){.banner-v2-container{left:0 !important;right:0 !important;margin:0 auto !important}}.wrapper-with-banner .min-h-screen{min-height:var(--full-height-with-banner)}.wrapper-with-banner .h-screen{height:var(--full-height-with-banner)}}</style>
+      <meta name="color-scheme" content="light dark">
+      <style>
+         html, body, #container, #container > div {
+         height: 100%;
+         }
+      </style>
+      <link rel="stylesheet" href="https://s3-figma-foundry-cached-previews-production-sig.figma.com/f5c1cc9d-4ab7-4064-a8b2-3c67bc261780/index.css?Expires=1780876800&amp;Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&amp;Signature=t11jVYZSJN3Xsk9QdBbdFQgQm3y~sjPND96zuf4TVbuX23pkjPoVj50nGX7yYUTjSX7HB4KrVz5znQlk~-ein-qbc40DtXYrcm4YFjOoKbosOseQksYz11newZFj3yTv0YQQ8XjWqtgsSGDrF4k2wXDxvoTPaBWCql-3Xd7yzbhGS5L~b3pQFjpbd0N3WC9kz~ahbr2o3p3sjij29PS7j1guXy8C-O2m05HxsFO3ZJzMDKm9Xq5btcDxX4npqOh2Wej4kU0ajCShQtFq7PXXNts-jAuRhqaCkz5rytcsrvJ5AlEb8LkO4BPXvpK6RQc23IuOy9-0fHEplGhlBcZY8A__">
+      <link rel="stylesheet" href="https://s3-figma-foundry-cached-previews-production-sig.figma.com/f5c1cc9d-4ab7-4064-a8b2-3c67bc261780/index.css?Expires=1780876800&amp;Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&amp;Signature=t11jVYZSJN3Xsk9QdBbdFQgQm3y~sjPND96zuf4TVbuX23pkjPoVj50nGX7yYUTjSX7HB4KrVz5znQlk~-ein-qbc40DtXYrcm4YFjOoKbosOseQksYz11newZFj3yTv0YQQ8XjWqtgsSGDrF4k2wXDxvoTPaBWCql-3Xd7yzbhGS5L~b3pQFjpbd0N3WC9kz~ahbr2o3p3sjij29PS7j1guXy8C-O2m05HxsFO3ZJzMDKm9Xq5btcDxX4npqOh2Wej4kU0ajCShQtFq7PXXNts-jAuRhqaCkz5rytcsrvJ5AlEb8LkO4BPXvpK6RQc23IuOy9-0fHEplGhlBcZY8A__">
+   </head>
+   <body>
+      <script>
+         window.coreMessagePort = null
+         window.messagePort = null
+         
+         const allowedOrigins = [
+           'https://figma-gov.com',
+           'https://www.figma.com',
+           'https://staging.figma.com',
+           'https://devenv01.figma.engineering',
+           'https://local.figma.engineering:8443',
+           'http://localhost:9000',
+         ]
+         
+         const allowedOriginPatterns = [
+           /^https:\/\/[a-z0-9-]+\.figdev\.systems:8443$/,
+           /^https:\/\/[a-z0-9-]+\.figdev\.systems$/,
+         ]
+         
+         function isAllowedOrigin(origin) {
+           return allowedOrigins.includes(origin) || allowedOriginPatterns.some(p => p.test(origin))
+         }
+         
+         let messageId = 0
+         
+         window.addEventListener('message', (e) => {
+           function sendMessage(method, data) {
+             if (window.coreMessagePort) {
+               window.coreMessagePort.postMessage({
+                 method: 'status',
+                 args: data,
+                 messageId: 0
+               })
+               messageId++
+             }
+           }
+         
+           if (isAllowedOrigin(e.origin)) {
+             if (e.data.type === 'iframe-init') {
+               window.coreMessagePort = e.ports[0]
+               window.messagePort = e.ports[1]
+         
+               window.__PREVIEW_IFRAME_INITIAL_OPTIONS__ = e.data.previewIframeInitialOptions
+         
+               sendMessage('status', {
+                 state: 'init-received',
+                 isReady: false
+               })
+         
+               if (e.data.initScriptBlob) {
+                 import(URL.createObjectURL(e.data.initScriptBlob))
+               } else {
+                 const script = document.createElement('script')
+         
+                 script.onload = async () => {
+                   function sendReady() {
+                     sendMessage('status', {
+                       state: 'ready',
+                       isReady: true
+                     })
+                   }
+         
+                   if (window.__iframeScriptExecuted__) {
+                     sendReady()
+                     return
+                   }
+         
+                   let executeInterval = null
+                   let timeout = null
+         
+                   const timeoutPromise = new Promise((resolve) => {
+                     timeout = setTimeout(() => resolve('timeout'), 2000)
+                   })
+         
+                   const scriptExecutedPromise = new Promise((resolve) => {
+                     executeInterval = setInterval(() => {
+                       if (window.__iframeScriptExecuted__) {
+                         resolve('ready')
+                       }
+                     }, 50)
+                   })
+         
+                   const result = await Promise.race([timeoutPromise, scriptExecutedPromise])
+         
+                   clearTimeout(timeout)
+                   clearInterval(executeInterval)
+         
+                   if (result === 'ready') {
+                     sendReady()
+                   } else {
+                     sendMessage('status', {
+                       state: 'script-timeout',
+                       isReady: false
+                     })
+                   }
+                 }
+         
+                 script.onerror = (e) => {
+                   sendMessage('status', {
+                     state: 'script-load-error',
+                     isReady: false,
+                     error: e.message
+                   })
+                 }
+         
+                 script.src = e.data.initScriptURL
+                 // https://sentry.io/answers/script-error/
+                 script.crossOrigin = 'anonymous'
+                 document.body.appendChild(script)
+               }
+             }
+           }
+         })
+      </script>
+      <script src="https://www.figma.com/webpack-artifacts/assets/code_components_preview_iframe-540c55236895501d.min.js.br" crossorigin="anonymous"></script>
+      <div id="container">
+         <div class="tailwind">
+            <div id="fig-code-root" style="height: 100%;">
+               <div class="flex h-screen bg-background overflow-hidden">
+                  <aside class="w-56 border-r bg-card flex flex-col shrink-0 transition-all duration-200">
+                     <div class="p-3 border-b flex items-center gap-2">
+                        <button class="p-1.5 rounded-lg hover:bg-muted/50 text-muted-foreground">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x size-4">
+                              <path d="M18 6 6 18"></path>
+                              <path d="m6 6 12 12"></path>
+                           </svg>
+                        </button>
+                        <div class="flex items-center gap-1.5">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield size-4 text-primary">
+                              <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+                           </svg>
+                           <span class="text-sm">관리자 패널</span>
+                        </div>
+                     </div>
+                     <nav class="flex-1 p-2 space-y-1 overflow-y-auto">
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard size-4 shrink-0">
+                              <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                              <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                              <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                              <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+                           </svg>
+                           <span class="flex-1 text-left">대시보드</span>
+                        </button>
+                        <div>
+                           <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users size-4 shrink-0">
+                                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                 <circle cx="9" cy="7" r="4"></circle>
+                                 <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                              </svg>
+                              <span class="flex-1 text-left">회원</span><span class="bg-destructive text-destructive-foreground text-xs rounded-full px-1.5 py-0 min-w-[18px] text-center mr-1">2</span>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down size-3.5">
+                                 <path d="m6 9 6 6 6-6"></path>
+                              </svg>
+                           </button>
+                           <div class="ml-4 mt-1 space-y-0.5 border-l pl-3">
+                              <button class="flex items-center gap-2 w-full px-2.5 py-1.5 rounded-md text-xs transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/30">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe size-3.5">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                                    <path d="M2 12h20"></path>
+                                 </svg>
+                                 <span class="flex-1 text-left">전체</span>
+                              </button>
+                              <button class="flex items-center gap-2 w-full px-2.5 py-1.5 rounded-md text-xs transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/30">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building2 lucide-building-2 size-3.5">
+                                    <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
+                                    <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+                                    <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
+                                    <path d="M10 6h4"></path>
+                                    <path d="M10 10h4"></path>
+                                    <path d="M10 14h4"></path>
+                                    <path d="M10 18h4"></path>
+                                 </svg>
+                                 <span class="flex-1 text-left">기업</span>
+                              </button>
+                              <button class="flex items-center gap-2 w-full px-2.5 py-1.5 rounded-md text-xs transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/30">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award size-3.5">
+                                    <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+                                    <circle cx="12" cy="8" r="6"></circle>
+                                 </svg>
+                                 <span class="flex-1 text-left">전문가</span><span class="bg-destructive text-destructive-foreground text-xs rounded-full px-1.5 py-0 min-w-[16px] text-center">2</span>
+                              </button>
+                              <button class="flex items-center gap-2 w-full px-2.5 py-1.5 rounded-md text-xs transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/30">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user size-3.5">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                 </svg>
+                                 <span class="flex-1 text-left">일반</span>
+                              </button>
+                           </div>
+                        </div>
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity size-4 shrink-0">
+                              <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+                           </svg>
+                           <span class="flex-1 text-left">활동 관리</span>
+                        </button>
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors bg-primary text-primary-foreground">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet size-4 shrink-0">
+                              <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path>
+                              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
+                           </svg>
+                           <span class="flex-1 text-left">결제 관리</span>
+                        </button>
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-handshake size-4 shrink-0">
+                              <path d="m11 17 2 2a1 1 0 1 0 3-3"></path>
+                              <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"></path>
+                              <path d="m21 3 1 11h-2"></path>
+                              <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"></path>
+                              <path d="M3 4h8"></path>
+                           </svg>
+                           <span class="flex-1 text-left">매칭 관리</span>
+                        </button>
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap size-4 shrink-0">
+                              <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path>
+                              <path d="M22 10v6"></path>
+                              <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path>
+                           </svg>
+                           <span class="flex-1 text-left">시험 관리</span><span class="bg-destructive text-destructive-foreground text-xs rounded-full px-1.5 py-0 min-w-[18px] text-center">4</span>
+                        </button>
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-days size-4 shrink-0">
+                              <path d="M8 2v4"></path>
+                              <path d="M16 2v4"></path>
+                              <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                              <path d="M3 10h18"></path>
+                              <path d="M8 14h.01"></path>
+                              <path d="M12 14h.01"></path>
+                              <path d="M16 14h.01"></path>
+                              <path d="M8 18h.01"></path>
+                              <path d="M12 18h.01"></path>
+                              <path d="M16 18h.01"></path>
+                           </svg>
+                           <span class="flex-1 text-left">스케줄 관리</span>
+                        </button>
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-tree size-4 shrink-0">
+                              <path d="M21 12h-8"></path>
+                              <path d="M21 6H8"></path>
+                              <path d="M21 18h-8"></path>
+                              <path d="M3 6v4c0 1.1.9 2 2 2h3"></path>
+                              <path d="M3 10v6c0 1.1.9 2 2 2h3"></path>
+                           </svg>
+                           <span class="flex-1 text-left">대중소 관리</span>
+                        </button>
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square-text size-4 shrink-0">
+                              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                              <path d="M13 8H7"></path>
+                              <path d="M17 12H7"></path>
+                           </svg>
+                           <span class="flex-1 text-left">1:1 문의</span>
+                        </button>
+                        <button class="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column size-4 shrink-0">
+                              <path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
+                              <path d="M18 17V9"></path>
+                              <path d="M13 17V5"></path>
+                              <path d="M8 17v-3"></path>
+                           </svg>
+                           <span class="flex-1 text-left">통계</span>
+                        </button>
+                     </nav>
+                  </aside>
+                  <div class="flex-1 flex flex-col min-w-0">
+                     <header class="h-14 border-b bg-card flex items-center justify-between px-4 shrink-0">
+                        <h1 class="text-sm">결제 관리</h1>
+                        <div class="flex items-center gap-1.5"><button class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs transition-all bg-primary text-primary-foreground shadow-sm"><span>🌐</span>전체</button><button class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs transition-all bg-muted text-muted-foreground hover:bg-muted/80"><span>🤖</span>AI번역</button><button class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs transition-all bg-muted text-muted-foreground hover:bg-muted/80"><span>📄</span>통독문서</button><button class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs transition-all bg-muted text-muted-foreground hover:bg-muted/80"><span>🎓</span>교육센터</button><button class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs transition-all bg-muted text-muted-foreground hover:bg-muted/80"><span>🎪</span>전시/행사</button><button class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs transition-all bg-muted text-muted-foreground hover:bg-muted/80"><span>✏️</span>시험사이트</button></div>
+                        <div class="flex items-center gap-2">
+                           <button class="relative p-2 rounded-lg hover:bg-muted/50 text-muted-foreground">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell size-4">
+                                 <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
+                                 <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path>
+                              </svg>
+                              <span class="absolute -top-0.5 -right-0.5 bg-destructive text-destructive-foreground text-xs rounded-full w-4 h-4 flex items-center justify-center">6</span>
+                           </button>
+                           <div class="w-7 h-7 bg-primary/10 rounded-full flex items-center justify-center text-xs text-primary">A</div>
+                        </div>
+                     </header>
+                     <main class="flex-1 overflow-y-auto p-2">
+                        <div class="space-y-2">
+                           <div class="grid grid-cols-4 gap-2">
+                              <div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border">
+                                 <div data-slot="card-content" class="[&amp;:last-child]:pb-6 p-3">
+                                    <p class="text-xs text-muted-foreground">💰 총 매출</p>
+                                    <p class="text-xl mt-0.5">1,645.95<span class="text-xs text-muted-foreground ml-0.5">만</span></p>
+                                 </div>
+                              </div>
+                              <div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border">
+                                 <div data-slot="card-content" class="[&amp;:last-child]:pb-6 p-3">
+                                    <p class="text-xs text-muted-foreground">📈 순 매출</p>
+                                    <p class="text-xl mt-0.5">1,637.85<span class="text-xs text-muted-foreground ml-0.5">만</span></p>
+                                 </div>
+                              </div>
+                              <div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border">
+                                 <div data-slot="card-content" class="[&amp;:last-child]:pb-6 p-3">
+                                    <p class="text-xs text-muted-foreground">💸 환불</p>
+                                    <p class="text-xl mt-0.5">8.1<span class="text-xs text-muted-foreground ml-0.5">만</span></p>
+                                 </div>
+                              </div>
+                              <div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border">
+                                 <div data-slot="card-content" class="[&amp;:last-child]:pb-6 p-3">
+                                    <p class="text-xs text-muted-foreground">🧾 건수</p>
+                                    <p class="text-xl mt-0.5">28<span class="text-xs text-muted-foreground ml-0.5">건</span></p>
+                                 </div>
+                              </div>
+                           </div>
+                           <div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border">
+                              <div data-slot="card-content" class="[&amp;:last-child]:pb-6 p-3">
+                                 <p class="text-xs text-muted-foreground mb-2">🌐 사이트별 매출</p>
+                                 <div class="h-[180px] w-full">
+                                    <div class="recharts-responsive-container" style="width: 100%; height: 100%; min-width: 1px;">
+                                       <div class="recharts-wrapper" style="position: relative; cursor: default; width: 100%; height: 100%; max-height: 180px; max-width: 1290px;">
+                                          <svg class="recharts-surface" width="1290" height="180" viewBox="0 0 1290 180" style="width: 100%; height: 100%;">
+                                             <title></title>
+                                             <desc></desc>
+                                             <defs>
+                                                <clipPath id="recharts7-clip">
+                                                   <rect x="45" y="5" height="145" width="1240"></rect>
+                                                </clipPath>
+                                             </defs>
+                                             <g class="recharts-cartesian-grid">
+                                                <g class="recharts-cartesian-grid-horizontal">
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="45" y1="150" x2="1285" y2="150"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="45" y1="113.75" x2="1285" y2="113.75"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="45" y1="77.5" x2="1285" y2="77.5"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="45" y1="41.25" x2="1285" y2="41.25"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="45" y1="5" x2="1285" y2="5"></line>
+                                                </g>
+                                                <g class="recharts-cartesian-grid-vertical">
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="169" y1="5" x2="169" y2="150"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="417" y1="5" x2="417" y2="150"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="665" y1="5" x2="665" y2="150"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="913" y1="5" x2="913" y2="150"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="1161" y1="5" x2="1161" y2="150"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="45" y1="5" x2="45" y2="150"></line>
+                                                   <line stroke-dasharray="3 3" stroke="#eee" fill="none" x="45" y="5" width="1240" height="145" x1="1285" y1="5" x2="1285" y2="150"></line>
+                                                </g>
+                                             </g>
+                                             <g class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis">
+                                                <line orientation="bottom" width="1240" height="30" font-size="10" x="45" y="150" class="recharts-cartesian-axis-line" stroke="#666" fill="none" x1="45" y1="150" x2="1285" y2="150"></line>
+                                                <g class="recharts-cartesian-axis-ticks">
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="bottom" width="1240" height="30" font-size="10" x="45" y="150" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="169" y1="156" x2="169" y2="150"></line>
+                                                      <text orientation="bottom" width="1240" height="30" font-size="10" stroke="none" x="169" y="158" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="middle" fill="#666">
+                                                         <tspan x="169" dy="0.71em">AI번역</tspan>
+                                                      </text>
+                                                   </g>
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="bottom" width="1240" height="30" font-size="10" x="45" y="150" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="417" y1="156" x2="417" y2="150"></line>
+                                                      <text orientation="bottom" width="1240" height="30" font-size="10" stroke="none" x="417" y="158" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="middle" fill="#666">
+                                                         <tspan x="417" dy="0.71em">통독문서</tspan>
+                                                      </text>
+                                                   </g>
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="bottom" width="1240" height="30" font-size="10" x="45" y="150" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="665" y1="156" x2="665" y2="150"></line>
+                                                      <text orientation="bottom" width="1240" height="30" font-size="10" stroke="none" x="665" y="158" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="middle" fill="#666">
+                                                         <tspan x="665" dy="0.71em">교육센터</tspan>
+                                                      </text>
+                                                   </g>
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="bottom" width="1240" height="30" font-size="10" x="45" y="150" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="913" y1="156" x2="913" y2="150"></line>
+                                                      <text orientation="bottom" width="1240" height="30" font-size="10" stroke="none" x="913" y="158" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="middle" fill="#666">
+                                                         <tspan x="913" dy="0.71em">전시/행사</tspan>
+                                                      </text>
+                                                   </g>
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="bottom" width="1240" height="30" font-size="10" x="45" y="150" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="1161" y1="156" x2="1161" y2="150"></line>
+                                                      <text orientation="bottom" width="1240" height="30" font-size="10" stroke="none" x="1161" y="158" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="middle" fill="#666">
+                                                         <tspan x="1161" dy="0.71em">시험사이트</tspan>
+                                                      </text>
+                                                   </g>
+                                                </g>
+                                             </g>
+                                             <g class="recharts-layer recharts-cartesian-axis recharts-yAxis yAxis">
+                                                <line orientation="left" width="60" height="145" font-size="10" x="-15" y="5" class="recharts-cartesian-axis-line" stroke="#666" fill="none" x1="45" y1="5" x2="45" y2="150"></line>
+                                                <g class="recharts-cartesian-axis-ticks">
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="left" width="60" height="145" font-size="10" x="-15" y="5" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="39" y1="150" x2="45" y2="150"></line>
+                                                      <text orientation="left" width="60" height="145" font-size="10" stroke="none" x="37" y="150" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="end" fill="#666">
+                                                         <tspan x="37" dy="0.355em">0만</tspan>
+                                                      </text>
+                                                   </g>
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="left" width="60" height="145" font-size="10" x="-15" y="5" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="39" y1="113.75" x2="45" y2="113.75"></line>
+                                                      <text orientation="left" width="60" height="145" font-size="10" stroke="none" x="37" y="113.75" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="end" fill="#666">
+                                                         <tspan x="37" dy="0.355em">200만</tspan>
+                                                      </text>
+                                                   </g>
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="left" width="60" height="145" font-size="10" x="-15" y="5" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="39" y1="77.5" x2="45" y2="77.5"></line>
+                                                      <text orientation="left" width="60" height="145" font-size="10" stroke="none" x="37" y="77.5" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="end" fill="#666">
+                                                         <tspan x="37" dy="0.355em">400만</tspan>
+                                                      </text>
+                                                   </g>
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="left" width="60" height="145" font-size="10" x="-15" y="5" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="39" y1="41.25" x2="45" y2="41.25"></line>
+                                                      <text orientation="left" width="60" height="145" font-size="10" stroke="none" x="37" y="41.25" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="end" fill="#666">
+                                                         <tspan x="37" dy="0.355em">600만</tspan>
+                                                      </text>
+                                                   </g>
+                                                   <g class="recharts-layer recharts-cartesian-axis-tick">
+                                                      <line orientation="left" width="60" height="145" font-size="10" x="-15" y="5" class="recharts-cartesian-axis-tick-line" stroke="#666" fill="none" x1="39" y1="5" x2="45" y2="5"></line>
+                                                      <text orientation="left" width="60" height="145" font-size="10" stroke="none" x="37" y="7.5" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="end" fill="#666">
+                                                         <tspan x="37" dy="0.355em">800만</tspan>
+                                                      </text>
+                                                   </g>
+                                                </g>
+                                             </g>
+                                             <g class="recharts-layer recharts-bar">
+                                                <g class="recharts-layer recharts-bar-rectangles">
+                                                   <g class="recharts-layer">
+                                                      <g class="recharts-layer recharts-bar-rectangle">
+                                                         <path x="69.8" y="114.203125" width="198" height="35.796875" radius="3,3,0,0" name="AI번역" fill="#333" class="recharts-rectangle" d="M69.8,117.203125A 3,3,0,0,1,72.8,114.203125L 264.8,114.203125A 3,3,0,0,1,
+                                                            267.8,117.203125L 267.8,150L 69.8,150Z"></path>
+                                                      </g>
+                                                      <g class="recharts-layer recharts-bar-rectangle">
+                                                         <path x="317.8" y="108.53" width="198" height="41.47" radius="3,3,0,0" name="통독문서" fill="#333" class="recharts-rectangle" d="M317.8,111.53A 3,3,0,0,1,320.8,108.53L 512.8,108.53A 3,3,0,0,1,
+                                                            515.8,111.53L 515.8,150L 317.8,150Z"></path>
+                                                      </g>
+                                                      <g class="recharts-layer recharts-bar-rectangle">
+                                                         <path x="565.8" y="81.8953125" width="198" height="68.1046875" radius="3,3,0,0" name="교육센터" fill="#333" class="recharts-rectangle" d="M565.8,84.8953125A 3,3,0,0,1,568.8,81.8953125L 760.8,81.8953125A 3,3,0,0,1,
+                                                            763.8,84.8953125L 763.8,150L 565.8,150Z"></path>
+                                                      </g>
+                                                      <g class="recharts-layer recharts-bar-rectangle">
+                                                         <path x="813.8" y="22.21875" width="198" height="127.78125" radius="3,3,0,0" name="전시/행사" fill="#333" class="recharts-rectangle" d="M813.8,25.21875A 3,3,0,0,1,816.8,22.21875L 1008.8,22.21875A 3,3,0,0,1,
+                                                            1011.8,25.21875L 1011.8,150L 813.8,150Z"></path>
+                                                      </g>
+                                                      <g class="recharts-layer recharts-bar-rectangle">
+                                                         <path x="1061.8" y="124.824375" width="198" height="25.175624999999997" radius="3,3,0,0" name="시험사이트" fill="#333" class="recharts-rectangle" d="M1061.8,127.824375A 3,3,0,0,1,1064.8,124.824375L 1256.8,124.824375A 3,3,0,0,1,
+                                                            1259.8,127.824375L 1259.8,150L 1061.8,150Z"></path>
+                                                      </g>
+                                                   </g>
+                                                </g>
+                                                <g class="recharts-layer"></g>
+                                             </g>
+                                          </svg>
+                                          <div tabindex="-1" class="recharts-tooltip-wrapper recharts-tooltip-wrapper-right recharts-tooltip-wrapper-top" style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px; transform: translate(427px, 52px);">
+                                             <div class="recharts-default-tooltip" style="margin: 0px; padding: 10px; background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); white-space: nowrap;">
+                                                <p class="recharts-tooltip-label" style="margin: 0px;">통독문서</p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border">
+                              <div data-slot="card-content" class="[&amp;:last-child]:pb-6 p-0">
+                                 <div class="flex items-center justify-between p-2 border-b">
+                                    <p class="text-xs text-muted-foreground">결제 내역 · <span class="text-foreground">28</span>건</p>
+                                    <div class="flex items-center gap-2">
+                                       <button type="button" role="combobox" aria-controls="radix-:r5d:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" data-slot="select-trigger" data-size="default" class="border-input data-[placeholder]:text-muted-foreground [&amp;_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border bg-input-background px-3 py-2 whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 w-[120px] h-7 text-xs">
+                                          <span data-slot="select-value" style="pointer-events: none;">전체 구분</span>
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down size-4 opacity-50" aria-hidden="true">
+                                             <path d="m6 9 6 6 6-6"></path>
+                                          </svg>
+                                       </button>
+                                       <button type="button" role="combobox" aria-controls="radix-:r5e:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" data-slot="select-trigger" data-size="default" class="border-input data-[placeholder]:text-muted-foreground [&amp;_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border bg-input-background px-3 py-2 whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 w-[110px] h-7 text-xs">
+                                          <span data-slot="select-value" style="pointer-events: none;">전체 상태</span>
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down size-4 opacity-50" aria-hidden="true">
+                                             <path d="m6 9 6 6 6-6"></path>
+                                          </svg>
+                                       </button>
+                                    </div>
+                                 </div>
+                                 <div class="overflow-x-auto">
+                                    <div data-slot="table-container" class="relative w-full overflow-x-auto">
+                                       <table data-slot="table" class="w-full caption-bottom text-sm">
+                                          <thead data-slot="table-header" class="[&amp;_tr]:border-b">
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] w-[100px]">#</th>
+                                                <th data-slot="table-head" class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] w-[32px] text-center" title="사이트">🌐</th>
+                                                <th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">👤 회원</th>
+                                                <th data-slot="table-head" class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] w-[32px] text-center" title="구분">📋</th>
+                                                <th data-slot="table-head" class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] w-[90px] text-right">💰 금액</th>
+                                                <th data-slot="table-head" class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] w-[32px] text-center" title="결제수단">💳</th>
+                                                <th data-slot="table-head" class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] w-[32px] text-center" title="상태">📊</th>
+                                                <th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] w-[80px]">📅</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody data-slot="table-body" class="[&amp;_tr:last-child]:border-0">
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-AI-001</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="AI번역"><span class="text-sm">🤖</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">김민수</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">001-Ab2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="서비스의뢰"><span class="text-sm">📋</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">350,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="신용카드"><span class="text-sm">💳</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-15</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-AI-002</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="AI번역"><span class="text-sm">🤖</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">(주)글로벌텍</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">002-Aa2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="구독"><span class="text-sm">🔄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">990,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="무통장입금"><span class="text-sm">🏧</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-01</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-AI-003</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="AI번역"><span class="text-sm">🤖</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">James Wilson</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">004-Ab2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="서비스의뢰"><span class="text-sm">📋</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">520,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="토스페이"><span class="text-sm">🔵</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-12-28</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-AI-004</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="AI번역"><span class="text-sm">🤖</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">최윤호</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">005-Aa2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="포인트충전"><span class="text-sm">🪙</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">100,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="체크카드"><span class="text-sm">💳</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-12-15</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-AI-005</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="AI번역"><span class="text-sm">🤖</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">이정희</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">003-Aa1</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="구독"><span class="text-sm">🔄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">49,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="카카오페이"><span class="text-sm">🟡</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="환불"><span class="text-sm">💸</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-11-01</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-AI-006</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="AI번역"><span class="text-sm">🤖</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">장미영</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">006-Aa1</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="문서구매"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">15,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="포인트사용"><span class="text-sm">🪙</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-02-03</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TD-001</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="통독문서"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">한국문서관리(주)</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">009-Ba2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="서비스의뢰"><span class="text-sm">📋</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">720,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="계좌이체"><span class="text-sm">🏦</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-18</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TD-002</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="통독문서"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">Yuki Tanaka</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">008-Bb2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="문서구매"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">28,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="네이버페이"><span class="text-sm">🟢</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-12-20</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TD-003</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="통독문서"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">한국문서관리(주)</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">009-Ba2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="구독"><span class="text-sm">🔄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">1,490,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="무통장입금"><span class="text-sm">🏧</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-12-01</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TD-004</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="통독문서"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">Marie Dubois</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">011-Bb2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="서비스의뢰"><span class="text-sm">📋</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">280,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="신용카드"><span class="text-sm">💳</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="취소"><span class="text-sm">❌</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-08</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TD-005</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="통독문서"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">오승훈</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">010-Ba1</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="포인트충전"><span class="text-sm">🪙</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">50,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="토스페이"><span class="text-sm">🔵</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-05</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-ED-001</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="교육센터"><span class="text-sm">🎓</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">강서현</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">014-Ca2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험응시"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">45,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="카카오페이"><span class="text-sm">🟡</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-12-10</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-ED-002</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="교육센터"><span class="text-sm">🎓</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">(주)에듀파트너</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">015-Ca2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="서비스의뢰"><span class="text-sm">📋</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">600,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="계좌이체"><span class="text-sm">🏦</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-12</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-ED-003</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="교육센터"><span class="text-sm">🎓</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">Nguyen Thi Mai</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">017-Cb2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험응시"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">55,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="체크카드"><span class="text-sm">💳</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-25</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-ED-004</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="교육센터"><span class="text-sm">🎓</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">임태준</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">016-Ca1</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="구독"><span class="text-sm">🔄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">149,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="신용카드"><span class="text-sm">💳</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-01</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-ED-005</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="교육센터"><span class="text-sm">🎓</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">(주)에듀파트너</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">015-Ca2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="구독"><span class="text-sm">🔄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">2,900,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="무통장입금"><span class="text-sm">🏧</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-09-15</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-ED-006</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="교육센터"><span class="text-sm">🎓</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">노현우</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">018-Ca1</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="문서구매"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">8,500<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="포인트사용"><span class="text-sm">🪙</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-02-02</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-EX-001</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="전시/행사"><span class="text-sm">🎪</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">이벤트플러스(주)</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">020-Da2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="서비스의뢰"><span class="text-sm">📋</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">1,200,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="계좌이체"><span class="text-sm">🏦</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-15</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-EX-002</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="전시/행사"><span class="text-sm">🎪</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">신예진</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">019-Db2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="서비스의뢰"><span class="text-sm">📋</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">750,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="토스페이"><span class="text-sm">🔵</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-12-10</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-EX-003</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="전시/행사"><span class="text-sm">🎪</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">Li Wei</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">022-Db2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="포인트충전"><span class="text-sm">🪙</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">200,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="네이버페이"><span class="text-sm">🟢</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-05</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-EX-004</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="전시/행사"><span class="text-sm">🎪</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">이벤트플러스(주)</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">020-Da2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="구독"><span class="text-sm">🔄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">4,900,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="무통장입금"><span class="text-sm">🏧</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-07-10</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-EX-005</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="전시/행사"><span class="text-sm">🎪</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">문재혁</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">021-Da1</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="문서구매"><span class="text-sm">📄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">32,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="카카오페이"><span class="text-sm">🟡</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="환불"><span class="text-sm">💸</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-06-20</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TE-001</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험사이트"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">류하은</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">024-Eb2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험응시"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">50,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="신용카드"><span class="text-sm">💳</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-12-20</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TE-002</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험사이트"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">Maria Garcia</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">027-Eb2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험응시"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">60,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="네이버페이"><span class="text-sm">🟢</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-15</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TE-003</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험사이트"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">(주)스마트러닝</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">025-Ea2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="서비스의뢰"><span class="text-sm">📋</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">900,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="계좌이체"><span class="text-sm">🏦</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-22</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TE-004</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험사이트"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">권나연</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">028-Ea1</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험응시"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">45,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="체크카드"><span class="text-sm">💳</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="취소"><span class="text-sm">❌</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-01-20</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TE-005</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험사이트"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">서동현</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">026-Ea1</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="포인트충전"><span class="text-sm">🪙</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">300,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="토스페이"><span class="text-sm">🔵</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">25-11-30</td>
+                                             </tr>
+                                             <tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground font-mono">PAY-TE-006</td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="시험사이트"><span class="text-sm">✏️</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]">
+                                                   <div class="leading-tight">
+                                                      <p class="text-xs">류하은</p>
+                                                      <p class="text-xs text-muted-foreground font-mono">024-Eb2</p>
+                                                   </div>
+                                                </td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="구독"><span class="text-sm">🔄</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-right font-mono">79,000<span class="text-muted-foreground">원</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="카카오페이"><span class="text-sm">🟡</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-center" title="완료"><span class="text-sm">✅</span></td>
+                                                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-xs text-muted-foreground">26-02-01</td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </main>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <span id="recharts_measurement_span" aria-hidden="true" style="position: absolute; top: -20000px; left: 0px; padding: 0px; margin: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; white-space: pre; font-size: 10px; letter-spacing: normal;">0만</span>
+   </body>
+</html>

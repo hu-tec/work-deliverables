@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>상태/유형 칩 기준</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>상태/유형 칩 기준</h1>
+<p>기준 파일: <code>layout.css</code>, <code>table_design/table-design.css</code></p>
+<p>이 문서는 상태, 유형, 구독, 결제수단, 우선순위처럼 반복되는 값을 chip/pill로 표현하는 기준이다.</p>
+<h2>원칙</h2>
+<ul>
+<li>상태값은 색상 텍스트만 사용하지 않는다.</li>
+<li>chip은 텍스트, 상태 점 또는 아이콘, 연한 배경, border를 함께 가진다.</li>
+<li>같은 의미는 같은 색상 체계를 사용한다.</li>
+<li>텍스트는 항상 표시한다. 색상이나 아이콘만으로 상태를 전달하지 않는다.</li>
+<li>테이블 셀 안에서는 chip 크기를 작게 유지한다.</li>
+</ul>
+<h2>상태 의미 체계</h2>
+<table><tbody><tr><th>의미</th><th>클래스</th><th>예시</th><th>사용처</th></tr><tr><td>완료/성공/정상</td><td><code>status ok</code></td><td>완료, 결제완료, 배정완료, 성공</td><td>처리 완료, 결제 완료, 로그인 성공</td></tr><tr><td>대기/검토/정산</td><td><code>status wait</code></td><td>대기, 검수대기, 정산대기, 미납</td><td>확인 필요, 미처리, 보류</td></tr><tr><td>실패/취소/환불</td><td><code>status fail</code></td><td>취소, 환불, 환불완료</td><td>실패, 취소, 환불, 위험</td></tr><tr><td>진행/정보</td><td><code>status info</code></td><td>정상, 진행중, 운영중</td><td>진행 상태, 정보성 상태</td></tr></tbody></table>
+<h2>BO 테이블 상태 chip CSS 기준</h2>
+<pre><code>.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 20px;
+  padding: 2px 7px;
+  border: 1px solid var(--status-line);
+  border-radius: 999px;
+  background: var(--status-bg);
+  color: var(--status-color);
+  font-size: var(--bo-font-size-base);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status::before {
+  content: &quot;&quot;;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: currentColor;
+}</code></pre>
+<h2>유형/등급 badge 기준</h2>
+<table><tbody><tr><th>의미</th><th>클래스</th><th>예시</th></tr><tr><td>Primary 유형</td><td><code>badge blue</code></td><td>프리미엄, 주요 서비스</td></tr><tr><td>보조/전문가</td><td><code>badge violet</code></td><td>스탠다드, 전문가</td></tr><tr><td>위험/높음</td><td><code>badge red</code></td><td>Lv.A, 높음</td></tr><tr><td>성공/완료</td><td><code>badge green</code></td><td>활성, 완료</td></tr><tr><td>기본/무료</td><td><code>badge gray</code></td><td>free, 베이직</td></tr><tr><td>경고/보통</td><td><code>badge warn</code></td><td>보통, 확인필요</td></tr></tbody></table>
+<p>Badge도 원색 면을 피하고, 연한 배경 + 진한 텍스트 + border를 기본으로 한다.</p>
+<h2>결제상태/수단 표시</h2>
+<p>결제상태와 결제수단은 한 셀 안에 2줄로 묶는다.</p>
+<pre><code>&lt;td&gt;
+  &lt;div class=&quot;cell&quot;&gt;
+    &lt;span class=&quot;status ok&quot;&gt;결제완료&lt;/span&gt;
+    &lt;span class=&quot;sub&quot;&gt;신용카드&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/td&gt;</code></pre>
+<p><code>status + .sub</code>는 작은 보조 chip으로 표시한다.</p>
+<h2>매칭상태 표시</h2>
+<p>전문가명과 배정상태는 한 셀 안에서 이름 + 상태 chip으로 묶는다.</p>
+<pre><code>&lt;td&gt;
+  &lt;div class=&quot;cell&quot;&gt;
+    &lt;span class=&quot;main&quot;&gt;이정희&lt;/span&gt;
+    &lt;span class=&quot;status ok&quot;&gt;배정완료&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/td&gt;</code></pre>
+<h2>금지</h2>
+<ul>
+<li><code>완료</code>, <code>대기</code>, <code>환불</code>을 단순 초록/노랑/빨강 텍스트로만 표시하지 않는다.</li>
+<li>같은 의미의 상태에 화면마다 다른 색을 쓰지 않는다.</li>
+<li>chip 내부에 긴 문장을 넣지 않는다.</li>
+<li>상태 chip과 badge를 과도하게 크게 만들지 않는다.</li>
+<li>보조값을 회색 텍스트로만 두어 상태값과 구분이 약해지게 하지 않는다.</li>
+</ul>
+</body>
+</html>

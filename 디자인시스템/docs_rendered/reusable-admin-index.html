@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>관리자 재사용 디자인 프롬프트</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>관리자 재사용 디자인 프롬프트</h1>
+<p>BO 관리자 화면, 대량 테이블, 검색조건, inline Drawer를 만들 때 쓰는 최종 기준 문서다.</p>
+<h2>기준 문서</h2>
+<table><tbody><tr><th>문서</th><th>용도</th></tr><tr><td><code>03_BO_관리자화면_기준.md</code></td><td>관리자 화면 전체 shell, 업무 전환, 액션, 상세 편집 기준</td></tr><tr><td><code>04_BO_관리자용_레이아웃_기준.md</code></td><td>4단 그리드, 고밀도 업무 패널, 대시보드/상세 배치 기준</td></tr><tr><td><code>02_BO_테이블레이아웃_기준.md</code></td><td>대량 테이블, 검색필터, inline Drawer 테이블 화면 기준</td></tr></tbody></table>
+<h2>컴포넌트 문서</h2>
+<table><tbody><tr><th>문서</th><th>용도</th></tr><tr><td><code>components/검색필터_기준.md</code></td><td>고밀도 검색조건과 필터 그룹 구성 기준</td></tr><tr><td><code>components/상태_유형_칩_기준.md</code></td><td>상태값, 유형값, 구독/등급/결제수단 표시 기준</td></tr><tr><td><code>components/인라인_Drawer_기준.md</code></td><td>행 클릭 상세, 우측 inline Drawer, 넓게보기 작업영역 기준</td></tr><tr><td><code>components/테이블선택_Drawer_상세패널_기준.md</code></td><td>테이블 행 선택 후 열리는 상세 작업 패널, 상태 UI, 고정/변동 정보 기준</td></tr></tbody></table>
+<h2>사용 순서</h2>
+<ol>
+<li>관리자 화면 전체를 만들 때는 <code>03_BO_관리자화면_기준.md</code>를 먼저 적용한다.</li>
+<li>대시보드나 상세 작업 화면이면 <code>04_BO_관리자용_레이아웃_기준.md</code>를 함께 적용한다.</li>
+<li>대량 목록/검색/상세 테이블이면 <code>02_BO_테이블레이아웃_기준.md</code>를 함께 적용한다.</li>
+<li>상태/유형/필터/Drawer가 있으면 <code>components</code> 문서를 같이 적용한다.</li>
+<li>테이블 행 선택 후 상담/시험/결제/정산을 처리하는 상세 패널은 <code>components/테이블선택_Drawer_상세패널_기준.md</code>를 우선 적용한다.</li>
+</ol>
+</body>
+</html>

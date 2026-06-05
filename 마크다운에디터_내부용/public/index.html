@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마크다운 에디터</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>마크다운 에디터</h1>
+        <p>문서를 작성하고 선택 영역에 댓글을 남깁니다.</p>
+      </div>
+
+      <div class="auth-panel" id="authPanel">
+        <div class="auth-user" id="authUser"></div>
+        <div class="auth-links" id="authLinks">
+          <a href="/login">로그인</a>
+          <a href="/signup">회원가입</a>
+        </div>
+        <button id="logoutButton" type="button">로그아웃</button>
+      </div>
+
+      <div class="actions">
+        <button id="newDocumentButton" type="button">새 문서</button>
+        <label class="file-button" for="fileInput">파일 업로드</label>
+        <input id="fileInput" type="file" accept=".md,.markdown,.txt,text/markdown,text/plain">
+      </div>
+
+      <div class="document-list" id="documentList" aria-label="문서 목록"></div>
+    </aside>
+
+    <main class="workspace">
+      <section class="editor-panel">
+        <header class="toolbar">
+          <div class="document-fields">
+            <input id="titleInput" type="text" placeholder="문서 제목">
+            <input id="fileNameInput" type="text" placeholder="저장 파일명.md">
+          </div>
+          <div class="toolbar-actions">
+            <button id="saveButton" type="button">저장</button>
+            <button id="deleteDocumentButton" type="button">문서 삭제</button>
+            <button id="downloadWordButton" type="button">Word 다운로드</button>
+          </div>
+        </header>
+
+        <nav class="open-tabs" id="openTabs" aria-label="열린 문서 탭"></nav>
+
+        <div class="editor-grid">
+          <section class="editor-section">
+            <div class="section-header">
+              <strong>작성</strong>
+              <span id="selectionHint">댓글을 달 영역을 드래그하세요.</span>
+            </div>
+            <textarea id="markdownInput" spellcheck="false" placeholder="# 제목&#10;&#10;마크다운 문서를 작성하세요."></textarea>
+          </section>
+
+          <section class="preview-section">
+            <div class="section-header">
+              <strong>미리보기</strong>
+              <span id="documentStatus">대기 중</span>
+            </div>
+            <article id="preview" class="preview"></article>
+          </section>
+        </div>
+      </section>
+
+      <aside class="comment-panel">
+        <div class="panel-tabs" role="tablist" aria-label="오른쪽 패널">
+          <button id="commentsTabButton" class="active" type="button">댓글</button>
+          <button id="chatTabButton" type="button">채팅</button>
+        </div>
+
+        <div id="commentsPanel" class="side-panel active">
+          <div class="comment-form">
+            <h2>댓글</h2>
+            <div class="selected-text" id="selectedText">선택된 영역이 없습니다.</div>
+            <input id="authorInput" type="text" placeholder="작성자">
+            <textarea id="commentInput" rows="4" placeholder="작성내용"></textarea>
+            <input id="commentAttachmentInput" type="file" multiple>
+            <button id="addCommentButton" type="button" disabled>선택 영역에 댓글 달기</button>
+          </div>
+          <div class="comments" id="commentList"></div>
+        </div>
+
+        <div id="chatPanel" class="side-panel">
+          <div class="chat-form">
+            <h2>문서 채팅</h2>
+            <input id="chatAuthorInput" type="text" placeholder="작성자">
+            <textarea id="chatMessageInput" rows="4" placeholder="메시지"></textarea>
+            <button id="sendChatButton" type="button">채팅 저장</button>
+          </div>
+          <div class="chat-list" id="chatList"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

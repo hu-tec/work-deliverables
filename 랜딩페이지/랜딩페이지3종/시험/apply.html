@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>수강 신청 | Times Education</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
+    <div class="container header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">TM</span><span><b>Times Education</b><small>AI 교육·자격 통합 플랫폼</small></span></a>
+      <nav class="gnb" aria-label="주요 메뉴">
+        <a href="./courses.html">시험 소개</a>
+        <a href="./cert-intro.html">자격증 소개</a>
+        <a href="./exam-guide.html">시험 안내</a>
+        <a href="./community.html">커뮤니티</a>
+        <a href="./contact.html">1:1문의</a>
+      </nav>
+      <div class="header-actions">
+        <button class="mobile-menu" type="button">MENU</button>
+        <a class="btn btn--primary btn--sm" href="./apply.html">신청하기</a>
+        <a class="btn btn--outline btn--sm" href="./about.html">교육원 소개</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-title"><div class="container page-title-inner">
+      <div><span class="breadcrumb">Home / 신청하기</span><h1>수강 신청</h1><p>희망 과정과 기본 정보를 남겨주시면 담당자가 일정과 접수 절차를 안내합니다.</p></div>
+    </div></section>
+
+    <section class="section section--soft"><div class="container">
+      <div class="apply-page-layout">
+        <form class="apply-form-panel" id="applyForm">
+          <div class="section-head"><div><span class="label">APPLICATION</span><h2>신청서 작성</h2></div><span class="note">모든 항목 작성 후 바로 제출해 주세요</span></div>
+
+          <div class="apply-step is-active" data-step="1">
+            <div class="apply-block">
+              <h3>지원 구분</h3>
+              <div class="field-grid three">
+                <div class="field-wrap"><label class="label" for="courseGroup">과정 <span class="required">*</span></label><select class="field" name="courseGroup" id="courseGroup" required><option value="">과정 선택</option><option value="일반과정">일반과정</option><option value="AI 과정">AI 과정</option></select></div>
+                <div class="field-wrap"><label class="label" for="courseDetail">세부 과정 <span class="required">*</span></label><select class="field" name="courseDetail" id="courseDetail" required><option value="">세부 과정 선택</option></select></div>
+                <div class="field-wrap"><label class="label" for="applicationType">신청 유형 <span class="required">*</span></label><select class="field" name="applicationType" id="applicationType" required><option value="상담신청">상담신청</option><option value="레벨테스트">레벨테스트</option><option value="수업신청">수업신청</option><option value="설명회">설명회</option><option value="테스트 TIP">테스트 TIP</option></select></div>
+              </div>
+            </div>
+
+            <div class="apply-block">
+              <h3>기본 인적사항</h3>
+              <div class="field-grid">
+                <div class="field-wrap"><label class="label" for="name">성명 <span class="required">*</span></label><input class="field" name="name" id="name" placeholder="성명 입력" required></div>
+                <div class="field-wrap"><label class="label" for="phone">연락처 <span class="required">*</span></label><input class="field" name="phone" id="phone" maxlength="13" placeholder="010-1234-5678" required></div>
+                <div class="field-wrap"><label class="label" for="email">이메일 <span class="required">*</span></label><input class="field" name="email" id="email" type="email" placeholder="example@email.com" required></div>
+                <div class="field-wrap"><label class="label" for="birthDate">생년월일 <span class="required">*</span></label><input class="field" name="birthDate" id="birthDate" type="date" required></div>
+              </div>
+            </div>
+
+            <div class="apply-block">
+              <h3>국적 구분</h3>
+              <div class="choice-grid">
+                <label class="choice-card"><input type="radio" name="nationality" value="내국인">내국인</label>
+                <label class="choice-card"><input type="radio" name="nationality" value="외국인">외국인</label>
+                <label class="choice-card"><input type="radio" name="nationality" value="재외국인">재외국인</label>
+              </div>
+            </div>
+
+            <div class="apply-block">
+              <h3>추가 정보</h3>
+              <div class="field-grid">
+                <div class="field-wrap full">
+                  <span class="label">직업 <span class="required">*</span></span>
+                  <div class="choice-grid">
+                    <label class="choice-card"><input type="checkbox" name="job" value="학생">학생</label>
+                    <label class="choice-card"><input type="checkbox" name="job" value="대학생">대학생</label>
+                    <label class="choice-card"><input type="checkbox" name="job" value="직장인">직장인</label>
+                    <label class="choice-card"><input type="checkbox" name="job" value="교사">교사</label>
+                    <label class="choice-card"><input type="checkbox" name="job" value="기타">기타</label>
+                  </div>
+                </div>
+                <div class="field-wrap full">
+                  <span class="label">신청을 알게 된 경로 <span class="required">*</span></span>
+                  <div class="choice-grid">
+                    <label class="choice-card"><input type="checkbox" name="channel" value="네이버 검색">네이버 검색</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="인스타그램">인스타그램</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="유튜브">유튜브</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="지인 추천">지인 추천</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="오프라인 안내">오프라인 안내</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="기타">기타</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="apply-block hidden" id="inquiryBox">
+              <div class="field-wrap"><label class="label" for="inquiry">문의 내용 <span class="required">*</span></label><textarea class="field" name="inquiry" id="inquiry" placeholder="문의하실 내용을 상세히 적어주세요."></textarea></div>
+            </div>
+
+            <div class="apply-block">
+              <div class="field-wrap"><label class="label" for="introduction">자기소개 및 신청 목적 <span class="required">*</span></label><textarea class="field" name="introduction" id="introduction" placeholder="교육 참여 목적과 학습 목표를 간단히 적어주세요."></textarea></div>
+              <label class="agree-row"><input type="checkbox" name="privacy"> 개인정보 수집 및 이용에 동의합니다. <span class="required">*</span></label>
+            </div>
+
+            <div class="apply-actions">
+              <button class="btn btn--neutral btn--lg" type="reset">취소</button>
+              <button class="btn btn--primary btn--lg" type="submit">제출하기</button>
+            </div>
+          </div>
+
+          <div class="apply-step" data-step="3">
+            <div class="complete-box">
+              <div class="complete-mark">✓</div>
+              <h3>신청이 접수되었습니다</h3>
+              <p>담당자가 신청 내용을 확인한 뒤 연락드릴 예정입니다.</p>
+              <dl class="apply-summary" id="summary"></dl>
+              <button class="btn btn--primary btn--lg" type="button" id="restartButton">새 신청서 작성</button>
+            </div>
+          </div>
+        </form>
+
+        <aside class="apply-help panel">
+          <div class="section-head"><div><span class="label">GUIDE</span><h2>접수 안내</h2></div></div>
+          <table class="info-table apply-guide-table"><tbody>
+            <tr><th>처리 절차</th><td>신청 확인 → 상담 연락 → 반 배정 → 접수 완료</td></tr>
+            <tr><th>연락 기준</th><td>영업일 기준 1~2일 내 안내</td></tr>
+            <tr><th>문의 전화</th><td>02-6207-9090</td></tr>
+          </tbody></table>
+          <p>신청서 제출만으로 결제가 진행되지 않습니다. 수강료와 일정은 상담 후 확정됩니다.</p>
+        </aside>
+      </div>
+    </div></section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>Times Education</h2><p>02-6207-9090</p></div>
+    <div><h3>시험</h3><a href="./courses.html">시험 소개</a><a href="./cert-intro.html">자격증 소개</a></div>
+    <div><h3>안내</h3><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a></div>
+    <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원 소개</a></div>
+  </div><div class="copyright">© 2026 Times Media Inc. — layout_redesign</div></div></footer>
+
+  <script>
+    (function () {
+      const params = new URLSearchParams(location.search);
+      const form = document.getElementById("applyForm");
+      const courseGroup = document.getElementById("courseGroup");
+      const courseDetail = document.getElementById("courseDetail");
+      const applicationType = document.getElementById("applicationType");
+      const inquiryBox = document.getElementById("inquiryBox");
+      const phone = document.getElementById("phone");
+      const summary = document.getElementById("summary");
+      const steps = Array.from(document.querySelectorAll(".apply-step"));
+      const courseDetails = {
+        "일반과정": ["TESOL 영어교육 과정", "영어 방과후 교사", "ITT 통번역 과정"],
+        "AI 과정": ["AI 강사 양성과정", "AITe 인증 시험", "AI 프롬프트", "AI 윤리"]
+      };
+      const aliases = { "설명회신청": "설명회", "테스트 TIP 신청": "테스트 TIP", "1:1문의": "상담신청" };
+
+      function field(name) { return form.elements[name]; }
+      function selectedValue(name) { return form.querySelector(`[name="${name}"]:checked`)?.value || ""; }
+      function selectedValues(name) { return Array.from(form.querySelectorAll(`[name="${name}"]:checked`)).map((item) => item.value); }
+      function courseValue() { return [field("courseGroup").value, field("courseDetail").value].filter(Boolean).join(" / "); }
+      function setStep(step) { steps.forEach((item) => item.classList.toggle("is-active", Number(item.dataset.step) === step)); }
+      function normalizeType(type) { return aliases[type] || type || "수업신청"; }
+
+      function fillCourseDetails() {
+        const details = courseDetails[courseGroup.value] || [];
+        const previous = courseDetail.value;
+        courseDetail.innerHTML = '<option value="">세부 과정 선택</option>' + details.map((item) => `<option value="${item}">${item}</option>`).join("");
+        if (details.includes(previous)) courseDetail.value = previous;
+      }
+
+      function setApplicationType(type) {
+        applicationType.value = normalizeType(type);
+        inquiryBox.classList.toggle("hidden", applicationType.value !== "상담신청");
+      }
+
+      function validateStep1() {
+        if (!field("courseGroup").value) return alert("과정을 선택해주세요.");
+        if (!field("courseDetail").value) return alert("세부 과정을 선택해주세요.");
+        if (!field("name").value.trim()) return alert("성명을 입력해주세요.");
+        if (!field("phone").value.trim()) return alert("연락처를 입력해주세요.");
+        if (!field("email").checkValidity()) return alert("올바른 이메일을 입력해주세요.");
+        if (!field("birthDate").value) return alert("생년월일을 입력해주세요.");
+        if (!selectedValue("nationality")) return alert("국적 구분을 선택해주세요.");
+        return true;
+      }
+
+      function validateStep2() {
+        if (selectedValues("job").length === 0) return alert("직업을 1개 이상 선택해주세요.");
+        if (selectedValues("channel").length === 0) return alert("신청 경로를 1개 이상 선택해주세요.");
+        if (applicationType.value === "상담신청" && !field("inquiry").value.trim()) return alert("문의 내용을 입력해주세요.");
+        if (!field("introduction").value.trim()) return alert("자기소개 및 신청 목적을 입력해주세요.");
+        if (!field("privacy").checked) return alert("개인정보 수집 및 이용 동의가 필요합니다.");
+        return true;
+      }
+
+      function renderSummary() {
+        const rows = [
+          ["신청 유형", applicationType.value],
+          ["성명", field("name").value],
+          ["지원 구분", courseValue()],
+          ["연락처", field("phone").value]
+        ];
+        summary.innerHTML = rows.map(([label, value]) => `<div class="summary-row"><dt>${label}</dt><dd>${value}</dd></div>`).join("");
+      }
+
+      courseGroup.addEventListener("change", fillCourseDetails);
+      applicationType.addEventListener("change", () => setApplicationType(applicationType.value));
+      phone.addEventListener("input", () => {
+        const numbers = phone.value.replace(/\D/g, "").slice(0, 11);
+        if (numbers.length <= 3) phone.value = numbers;
+        else if (numbers.length <= 7) phone.value = `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+        else phone.value = `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
+      });
+      document.getElementById("restartButton").addEventListener("click", () => { form.reset(); fillCourseDetails(); setApplicationType("수업신청"); setStep(1); });
+      form.addEventListener("reset", () => {
+        window.setTimeout(() => {
+          fillCourseDetails();
+          setApplicationType("수업신청");
+          setStep(1);
+        }, 0);
+      });
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!validateStep1() || !validateStep2()) return;
+        renderSummary();
+        setStep(3);
+      });
+
+      setApplicationType(params.get("type") || "수업신청");
+      if (params.get("courseGroup")) courseGroup.value = params.get("courseGroup");
+      fillCourseDetails();
+      if (params.get("courseDetail")) courseDetail.value = params.get("courseDetail");
+    })();
+  </script>
+  <script src="./site.js"></script>
+</body>
+</html>

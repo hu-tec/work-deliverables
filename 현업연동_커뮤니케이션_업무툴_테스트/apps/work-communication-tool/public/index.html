@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>현업연동 커뮤니케이션 업무툴</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">WORKFLOW BO</div>
+        <div class="menu-title">업무 스트림</div>
+        <button class="menu-item active" type="button">참여중 리스트</button>
+        <button class="menu-item" type="button" data-scroll-create>새 업무 생성</button>
+        <button class="menu-item" type="button">초대한 미팅</button>
+        <button class="menu-item" type="button">초대된 프로젝트</button>
+        <button class="menu-item" type="button">보관함</button>
+        <div class="menu-title">운영 상태</div>
+        <button class="menu-item" type="button">지연주의</button>
+        <button class="menu-item" type="button">첨부 검토</button>
+      </aside>
+
+      <div class="main-shell">
+        <header class="topbar">
+          <div>
+            <strong>현업연동 커뮤니케이션 업무툴</strong>
+            <span>SQLite 로컬 저장</span>
+          </div>
+          <div class="top-actions">
+            <button class="ghost" id="refresh-button" type="button">새로고침</button>
+            <button class="primary" id="open-create-button" type="button">업무 등록</button>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="page-head">
+            <div>
+              <div class="breadcrumb">BO / 업무관리 / 커뮤니케이션 스트림</div>
+              <h1>업무 목록 및 선택 Drawer 상세패널</h1>
+            </div>
+            <div class="head-meta">행 선택 시 우측 처리 패널에서 댓글, 상태, 운영 메모를 관리합니다.</div>
+          </section>
+
+          <section class="dense-filter-card">
+            <div class="dense-search-main">
+              <label>통합검색</label>
+              <input id="filter-query" type="search" placeholder="제목, 담당자, 세부내용, 댓글 키워드">
+            </div>
+            <div class="dense-filter-flow">
+              <label>대분류
+                <select id="filter-category">
+                  <option value="">전체</option>
+                </select>
+              </label>
+              <label>상태
+                <select id="filter-status">
+                  <option value="">전체</option>
+                  <option value="WAIT">대기</option>
+                  <option value="IN_PROGRESS">진행중</option>
+                  <option value="RISK">지연주의</option>
+                  <option value="DONE">완료</option>
+                  <option value="HOLD">보류</option>
+                </select>
+              </label>
+              <label>우선순위
+                <select id="filter-priority">
+                  <option value="">전체</option>
+                  <option value="URGENT">긴급</option>
+                  <option value="HIGH">높음</option>
+                  <option value="NORMAL">보통</option>
+                  <option value="LOW">낮음</option>
+                </select>
+              </label>
+              <button class="ghost" id="clear-filter-button" type="button">초기화</button>
+            </div>
+            <div class="dense-active-filters" id="active-filters"></div>
+          </section>
+
+          <section class="summary-strip" id="summary-strip"></section>
+
+          <section class="table-workspace" id="table-workspace" data-table-workspace>
+            <section class="table-card">
+              <div class="table-headbar">
+                <div>
+                  <strong>현업 업무 마스터 그리드</strong>
+                  <span id="table-count">0건</span>
+                </div>
+                <button class="ghost" id="reopen-drawer-button" type="button">상세창 다시열기</button>
+              </div>
+              <div class="table-wrap">
+                <table class="bo-table">
+                  <colgroup>
+                    <col style="width: 34px">
+                    <col style="width: 52px">
+                    <col style="width: 64px">
+                    <col style="width: 64px">
+                    <col style="width: 180px">
+                    <col style="width: 260px">
+                    <col style="width: 280px">
+                    <col style="width: 96px">
+                    <col style="width: 96px">
+                    <col style="width: 82px">
+                    <col style="width: 190px">
+                    <col style="width: 140px">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>선택</th>
+                      <th>번호</th>
+                      <th>시작일</th>
+                      <th>생성인</th>
+                      <th>대/중/소 계층 분류</th>
+                      <th>대표 프로젝트 제목 / 중요 (칸 분리)</th>
+                      <th>세부내용 / 댓글 피드 (칸 분리)</th>
+                      <th>main마감일</th>
+                      <th>HOST마감일</th>
+                      <th>main게스트</th>
+                      <th>sub게스트 (5명 샘플 노출)</th>
+                      <th>공유 자료 (미리보기)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="work-rows"></tbody>
+                </table>
+                <p class="empty hidden" id="empty-state">표시할 업무가 없습니다.</p>
+              </div>
+              <div class="bulk-bar">
+                <span id="selected-info">선택 0건</span>
+                <button class="ghost" type="button">선택정보내기</button>
+                <button class="ghost" type="button">상태변경</button>
+                <button class="ghost" type="button">엑셀 내보내기</button>
+              </div>
+            </section>
+
+            <aside class="table-detail-drawer" id="table-detail-drawer" role="dialog" aria-modal="false" aria-labelledby="drawer-title">
+              <form class="table-detail-panel" id="detail-form">
+                <header class="table-detail-head">
+                  <div>
+                    <span class="drawer-kicker" id="drawer-kicker">업무 상세</span>
+                    <h2 id="drawer-title">업무를 선택하세요</h2>
+                    <p class="detail-summary" id="drawer-summary">목록 행을 클릭하면 상세 처리 패널이 열립니다.</p>
+                  </div>
+                  <div class="drawer-actions">
+                    <button class="ghost" id="wide-button" type="button" aria-pressed="false">넓게보기</button>
+                    <button class="ghost" id="close-drawer-button" type="button" aria-label="상세 닫기">닫기</button>
+                  </div>
+                </header>
+
+                <div class="table-detail-body">
+                  <section class="drawer-section-stack">
+                    <div class="detail-grid">
+                      <section class="detail-section fixed-master">
+                        <div class="section-row">
+                          <h3>고정 식별 정보</h3>
+                          <span id="detail-priority-chip"></span>
+                        </div>
+                        <div class="field-grid">
+                          <label>업무번호<input name="workNo" readonly></label>
+                          <label>시작일<input name="startDate"></label>
+                          <label>생성인<input name="creator"></label>
+                          <label>대분류<input name="categoryLarge"></label>
+                          <label>중분류<input name="categoryMiddle"></label>
+                          <label>소분류<input name="categorySmall"></label>
+                          <label>main 담당<input name="mainOwner"></label>
+                          <label>sub 협업자<input name="subOwners"></label>
+                          <label>main 마감<input name="mainDueDate"></label>
+                          <label>HOST 마감<input name="hostDueDate"></label>
+                        </div>
+                      </section>
+
+                      <section class="detail-section work-panel">
+                        <div class="member-dark-strip">
+                          <strong>업무 처리 패널</strong>
+                          <div>
+                            <button class="mini" type="submit">저장</button>
+                          </div>
+                        </div>
+                        <div class="control-row">
+                          <label>상태
+                            <select name="status">
+                              <option value="WAIT">대기</option>
+                              <option value="IN_PROGRESS">진행중</option>
+                              <option value="RISK">지연주의</option>
+                              <option value="DONE">완료</option>
+                              <option value="HOLD">보류</option>
+                            </select>
+                          </label>
+                          <label>우선순위
+                            <select name="priority">
+                              <option value="URGENT">긴급</option>
+                              <option value="HIGH">높음</option>
+                              <option value="NORMAL">보통</option>
+                              <option value="LOW">낮음</option>
+                            </select>
+                          </label>
+                        </div>
+                        <label>업무 제목<input name="title"></label>
+                        <label>세부내용<textarea name="description" rows="5"></textarea></label>
+                        <label>중요 및 리스크<textarea name="notice" rows="3"></textarea></label>
+                        <label>운영 메모<textarea name="operationalMemo" rows="3"></textarea></label>
+                      </section>
+                    </div>
+
+                    <section class="detail-section asset-section">
+                      <div class="section-row">
+                        <h3>공유 자산 파일 관리</h3>
+                        <span class="status info">로컬 메타 저장</span>
+                      </div>
+                      <div class="file-row">
+                        <span id="file-name">-</span>
+                        <input name="fileName" placeholder="파일명 입력">
+                        <button class="ghost" id="preview-button" type="button">미리보기</button>
+                      </div>
+                    </section>
+
+                    <section class="detail-section feed-section">
+                      <div class="tabs" id="activity-tabs">
+                        <button class="active" type="button" data-filter="ALL">전체</button>
+                        <button type="button" data-filter="CHANGE">변경</button>
+                        <button type="button" data-filter="COMMENT">댓글</button>
+                      </div>
+                      <div class="feed-grid">
+                        <div>
+                          <div class="section-row"><h3>활동 히스토리</h3><span id="activity-count">0건</span></div>
+                          <ul class="timeline" id="timeline"></ul>
+                        </div>
+                        <div>
+                          <div class="section-row"><h3>댓글 및 대댓글</h3><span id="comment-count">0건</span></div>
+                          <ul class="comments" id="comments"></ul>
+                          <div id="reply-banner" class="reply-banner hidden"></div>
+                          <div class="comment-form">
+                            <input id="reply-parent" type="hidden">
+                            <textarea id="comment-body" rows="3" placeholder="진행 사항이나 의견을 기록하세요."></textarea>
+                            <div class="form-actions">
+                              <button class="ghost hidden" id="cancel-reply-button" type="button">답글 취소</button>
+                              <button class="primary" id="comment-submit-button" type="button">댓글 등록</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </section>
+                </div>
+              </form>
+            </aside>
+          </section>
+
+          <section class="create-panel" id="create-panel">
+            <div class="section-row">
+              <h2>가로 압축형 신규 업무 생성</h2>
+              <span class="muted">등록 즉시 SQLite에 저장되고 목록/Drawer가 갱신됩니다.</span>
+            </div>
+            <form id="create-form" class="create-form">
+              <div class="create-grid">
+                <label>시작일<input name="startDate" value="26-06-04" required></label>
+                <label>생성인<input name="creator" value="운영자" required></label>
+                <label>대분류<select name="categoryLarge"><option>개발본부</option><option>기획홍보</option><option>운영본부</option><option>고객지원</option><option>전략기획</option></select></label>
+                <label>중분류<input name="categoryMiddle" value="프로그램" required></label>
+                <label>소분류<input name="categorySmall" value="코어엔진" required></label>
+                <label>상태<select name="status"><option value="WAIT">대기</option><option value="IN_PROGRESS">진행중</option><option value="RISK">지연주의</option><option value="DONE">완료</option><option value="HOLD">보류</option></select></label>
+                <label>우선순위<select name="priority"><option value="NORMAL">보통</option><option value="HIGH">높음</option><option value="URGENT">긴급</option><option value="LOW">낮음</option></select></label>
+                <label>main 마감<input name="mainDueDate" value="26-06-15" required></label>
+                <label>HOST 마감<input name="hostDueDate" value="26-06-18" required></label>
+                <label>main 담당<input name="mainOwner" value="홍길동" required></label>
+                <label class="span-2">sub 협업자<input name="subOwners" value="최민식, 송강호, 강동원"></label>
+                <label class="span-2">공유자료명<input name="fileName" value="attached_doc.pdf"></label>
+                <label class="span-4">업무 제목<input name="title" placeholder="핵심 타이틀 명칭" required></label>
+                <label class="span-2">세부내용<textarea name="description" rows="4" placeholder="1.&#10;2.&#10;3." required></textarea></label>
+                <label class="span-2">중요 및 특이사항<textarea name="notice" rows="4" placeholder="지연 리스크 및 부서간 조율 요망 건" required></textarea></label>
+              </div>
+              <div class="form-actions">
+                <button class="primary" type="submit">시스템 마스터 등록 발행</button>
+              </div>
+            </form>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <dialog id="preview-dialog">
+      <div class="preview-panel">
+        <div class="section-row">
+          <h2>공유자료 미리보기</h2>
+          <button class="ghost" id="close-preview-button" type="button">닫기</button>
+        </div>
+        <div id="preview-body" class="preview-body"></div>
+      </div>
+    </dialog>
+    <div class="toast hidden" id="toast"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>

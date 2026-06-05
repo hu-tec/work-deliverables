@@ -1,0 +1,445 @@
+HTML
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 AI NEXT-GEN HYBRID WORKSPACE - REFINE</title>
+    <style>
+        /* 1/3 축소 콤팩트 스타일 유지 */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; font-size: 11px; }
+        body { display: flex; flex-direction: column; height: 100vh; background-color: #f8fafc; color: #0f172a; overflow: hidden; }
+        
+        header { height: 40px; background-color: #1e1e24; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; border-bottom: 2px solid #0ea5e9; z-index: 100; }
+        .logo-zone { font-weight: 800; font-size: 12px; color: #38bdf8; }
+        
+        .top-tab-bar { height: 35px; background: #ffffff; border-bottom: 1px solid #cbd5e1; display: flex; align-items: center; padding: 0 10px; gap: 4px; }
+        .nav-tab { padding: 6px 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; font-weight: 600; color: #64748b; }
+        .nav-tab.active { background: #ffffff; color: #0ea5e9; border-color: #cbd5e1 #cbd5e1 transparent; box-shadow: inset 0 2px 0 #0ea5e9; }
+
+        .workspace-body { display: flex; flex: 1; overflow: hidden; }
+
+        /* 좌측 슬림 목차 */
+        .sidebar-slim { width: 140px; background-color: #1e293b; color: #cbd5e1; display: flex; flex-direction: column; padding: 8px 0; }
+        .sidebar-slim .menu-title { font-size: 9px; font-weight: bold; color: #64748b; padding: 4px 12px; text-transform: uppercase; }
+        .sidebar-slim .menu-item { padding: 7px 12px; cursor: pointer; color: #94a3b8; display: flex; align-items: center; justify-content: space-between; }
+        .sidebar-slim .menu-item:hover { background-color: #334155; color: white; }
+        .sidebar-slim .menu-item.active { background-color: #0ea5e9; color: white; font-weight: 700; }
+
+        .stage-pane { flex: 1; display: flex; overflow: hidden; position: relative; }
+
+        /* 2단: 테이블 구역 (상세창이 닫히면 전체 확장되도록 셋팅) */
+        .table-space { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: white; border-right: 1px solid #cbd5e1; transition: flex 0.25s ease; }
+        .filter-panel { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; display: flex; gap: 12px; align-items: center; }
+        .filter-panel select, .filter-panel input { padding: 3px 6px; border-radius: 4px; border: 1px solid #cbd5e1; background: white; }
+        
+        .table-scroll { flex: 1; overflow: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 1100px; table-layout: fixed; }
+        th { background: #f1f5f9; color: #334155; font-weight: 700; padding: 6px 8px; border-bottom: 2px solid #cbd5e1; border-right: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; }
+        td { padding: 6px 8px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #f1f5f9; vertical-align: top; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        tr:hover { background-color: #f0fdfa; cursor: pointer; }
+        tr.selected { background-color: #e0f2fe; }
+
+        /* 한 칸 분할 마커 구분선 기법 */
+        .marker-tag { display: inline-flex; align-items: center; gap: 3px; margin-right: 6px; padding: 1px 3px; background: #f1f5f9; border-radius: 3px; font-size: 10px; font-weight: 600; }
+        .marker-blue { color: #2563eb; }
+        .marker-green { color: #16a34a; }
+        .marker-orange { color: #ea580c; }
+
+        .table-comment-summary { margin-top: 3px; font-size: 10px; color: #64748b; background: #f8fafc; padding: 3px 5px; border-radius: 3px; border: 1px solid #f1f5f9; }
+        .summary-row { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* 마감일 타임라인 배지 개선 */
+        .time-badge { display: inline-block; padding: 1px 4px; border-radius: 3px; font-size: 10px; font-weight: bold; margin-left: 4px; }
+        .time-alert { background-color: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; }
+        .time-safe { background-color: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+
+        .badge { padding: 1px 4px; border-radius: 3px; font-size: 10px; font-weight: bold; color: white; }
+        .bg-red { background-color: #ef4444; }
+        .bg-gray { background-color: #64748b; }
+
+        /* ---------------------------------------------------- */
+        /* 3단: 우측 대형 상세 소통 룸 (2/3 크기 고정 및 인터랙션) */
+        /* ---------------------------------------------------- */
+        .big-detail-pane { width: 65%; background: #ffffff; display: flex; flex-direction: column; overflow: hidden; transition: transform 0.25s ease, width 0.25s ease; border-left: 1px solid #cbd5e1; }
+        .big-detail-pane.closed { display: none !important; }
+
+        .pane-tabs { display: flex; background: #f1f5f9; border-bottom: 1px solid #cbd5e1; justify-content: space-between; align-items: center; }
+        .tab-wrapper-left { display: flex; }
+        .pane-tab-item { padding: 8px 16px; cursor: pointer; font-weight: bold; color: #475569; border-right: 1px solid #cbd5e1; }
+        .pane-tab-item.active { background: white; color: #0284c7; border-bottom: 2px solid #0284c7; }
+        
+        /* 닫기 버튼 기믹 */
+        .pane-close-btn { background: #ef4444; color: white; border: none; padding: 3px 8px; margin-right: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .pane-close-btn:hover { background: #dc2626; }
+
+        /* 무틀(No-Frame) 가독성 극대화 상세 정보 배치 */
+        .no-frame-container { padding: 16px; background: #ffffff; border-bottom: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 10px; }
+        .info-meta-row { display: flex; flex-wrap: wrap; gap: 15px; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0; }
+        .meta-text-item { font-size: 11px; color: #475569; }
+        .meta-text-item strong { color: #0f172a; font-weight: 700; }
+        
+        .core-instruction-section { padding: 4px 0; }
+        .instruction-title { font-size: 11px; font-weight: bold; color: #0369a1; margin-bottom: 4px; display: flex; align-items: center; gap: 4px; }
+        .instruction-body-text { font-size: 11px; line-height: 1.6; color: #334155; padding-left: 4px; }
+
+        /* 다운로드 버튼 50% 축소 스케일링 컴포넌트 */
+        .shared-cabinet-mini { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 10px; display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+        .btn-download-half { padding: 2px 6px; font-size: 10px; background-color: #64748b; color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: 500; }
+        .btn-download-half:hover { background-color: #475569; }
+
+        /* 슬랙 피드 양식 */
+        .slack-chat-flow { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; background: #ffffff; border-top: 1px solid #e2e8f0; }
+        .slack-msg { display: flex; gap: 10px; align-items: flex-start; }
+        .slack-avatar { width: 26px; height: 26px; background: #0ea5e9; color: white; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .slack-msg-body { flex: 1; }
+        .slack-msg-header { display: flex; align-items: center; gap: 6px; }
+        .slack-username { font-weight: 700; color: #1e293b; }
+        .slack-timestamp { font-size: 9px; color: #94a3b8; }
+        .slack-text { color: #334155; line-height: 1.5; margin-top: 2px; }
+
+        .slack-input-station { padding: 10px; background: #ffffff; border-top: 1px solid #e2e8f0; }
+        .slack-input-box { border: 2px solid #cbd5e1; border-radius: 6px; padding: 6px; }
+        .slack-input-box textarea { width: 100%; border: none; outline: none; background: transparent; resize: none; min-height: 35px; }
+        .slack-toolbar { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
+
+        /* 생성 폼 */
+        .creation-screen { display: none; flex: 1; overflow-y: auto; padding: 20px; background: white; }
+        .creation-screen.active { display: block; }
+        .input-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; margin-bottom: 10px; }
+        .input-col-3 { grid-column: span 3; }
+        .input-col-4 { grid-column: span 4; }
+        .input-col-6 { grid-column: span 6; }
+        .input-col-12 { grid-column: span 12; }
+        .input-station label { font-weight: bold; color: #475569; display: block; margin-bottom: 4px; }
+        .input-station input, .input-station select { width: 100%; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-zone">⚡ 2026 AI CO-PILOT HYBRID SYSTEM</div>
+        <div style="font-size: 11px;">🛠️ 마스터 관리 모드 가동중</div>
+    </header>
+
+    <div class="top-tab-bar">
+        <div class="nav-tab active" id="main-tab-1" onclick="toggleMainLayout('workspace')">🖥️ 메인 워크스페이스</div>
+        <div class="nav-tab" id="main-tab-2" onclick="toggleMainLayout('create')">✨ 신규 프로젝트 등록 폼</div>
+    </div>
+
+    <div class="workspace-body">
+        
+        <nav class="sidebar-slim" id="left-sidebar">
+            <div class="menu-title">📂 미팅 및 프로젝트</div>
+            <div class="menu-item active" onclick="switchMenuState(this)">👥 참여중리스트</div>
+            <div class="menu-item" onclick="toggleMainLayout('create')">✨ 새로 만들기</div>
+            <div class="menu-item" onclick="switchMenuState(this)">💬 초대한 미팅</div>
+            <div class="menu-item" onclick="switchMenuState(this)">📥 초대된 미팅</div>
+            <div class="menu-item" onclick="switchMenuState(this)">📦 보관함</div>
+        </nav>
+
+        <div class="stage-pane">
+            
+            <div id="sub-frame-workspace" style="display: flex; width: 100%; height: 100%;">
+                
+                <div class="table-space" id="table-zone-container">
+                    <div class="filter-panel">
+                        <span>🔍 실시간 검색하기:</span>
+                        <input type="text" id="table-search-field" placeholder="제목, 담당자, 댓글 통합 필터링..." onkeyup="runTableSearch()">
+                        <span>🏷️ 대분류:</span>
+                        <select id="select-filter-l" onchange="runTableSearch()">
+                            <option value="">전체</option>
+                            <option value="개발본부">개발본부</option>
+                            <option value="기획홍보">기획홍보</option>
+                        </select>
+                        <button class="pane-close-btn" style="background:#64748b; margin:0;" onclick="openDetailPane()">📂 상세창 다시열기</button>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table id="master-grid">
+                            <colgroup>
+                                <col style="width: 25px;"><col style="width: 40px;"><col style="width: 50px;"><col style="width: 50px;">
+                                <col style="width: 170px;"><col style="width: 280px;"><col style="width: 110px;"><col style="width: 110px;"><col style="width: 75px;"><col style="width: 120px;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>🗹</th>
+                                    <th>번호</th>
+                                    <th>시작일</th>
+                                    <th>생성인</th>
+                                    <th>통합 계층 분류 체계 (대/중/소 마커 분류)</th>
+                                    <th>대표 프로젝트 제목 및 실시간 요약 (이름별 한줄 처리)</th>
+                                    <th>main마감일</th>
+                                    <th>HOST마감일</th>
+                                    <th>main게스트</th>
+                                    <th>실시간 공유자료</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="selected" onclick="loadNoFrameData(3237, '◆ 코어 프로그램 리팩토링 및 쿼리 최적화 건', '260604', '박지민', '개발본부', '프로그램', '코어엔진', '홍길동', '최민식, 송강호', '260615', '260618', '사양서 기준 싱글쿼테이션 오류 예외처리 강화할 것.', '1. 다국어 테이블 매핑 로직 점검&#10;2. 글로벌 인덱싱 튜닝&#10;3. 예외 로그 덤프 기능 구현', 'core_spec.pdf')">
+                                    <td><input type="checkbox" checked></td>
+                                    <td>3237</td>
+                                    <td>260604</td>
+                                    <td>박지민</td>
+                                    <td>
+                                        <span class="marker-tag marker-blue">🔷 개발본부</span>
+                                        <span class="marker-tag marker-green">🟢 프로그램</span>
+                                        <span class="marker-tag marker-orange">🔸 코어엔진</span>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight: bold; color: #1e40af;">◆ 코어 프로그램 리팩토링 및 쿼리 최적화 건</div>
+                                        <div class="table-comment-summary">
+                                            <div class="summary-row">💬 <strong>홍길동:</strong> 예외처리 로직 고도화 스크립트 반영 완료됐습니다...</div>
+                                            <div class="summary-row">💬 <strong>박지민:</strong> 인덱싱 예외 누락 검증 엄수 바람...</div>
+                                        </div>
+                                    </td>
+                                    <td>260615<span class="time-badge time-alert">D-11 (지연주의)</span></td>
+                                    <td>260618<span class="time-badge time-safe">D-14</span></td>
+                                    <td>홍길동</td>
+                                    <td>📎 core_spec.pdf</td>
+                                </tr>
+                                <tr onclick="loadNoFrameData(3236, '★ 메인 플랫폼 UI/UX 컴포넌트 추가 및 3단 그리드 반응형 개발', '260602', '이진국', '기획홍보', '디자인', '반응형UI', '김철수', '강동원, 배수지', '260612', '260624', '시안 최종 승인 대기 상태.', '1. 모바일 뷰 최적화 브레이크 포인트 설정&#10;2. 워크스페이스 가로 압축 창 최종 설계&#10;3. 이모지 컴포넌트 리스트 마크업', 'mockup_v1.png')">
+                                    <td><input type="checkbox"></td>
+                                    <td>3236</td>
+                                    <td>260602</td>
+                                    <td>이진국</td>
+                                    <td>
+                                        <span class="marker-tag marker-blue">🔷 기획홍보</span>
+                                        <span class="marker-tag marker-green">🟢 디자인</span>
+                                        <span class="marker-tag marker-orange">🔸 반응형UI</span>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight: bold; color: #1e40af;">★ 메인 플랫폼 UI/UX 컴포넌트 추가 및 3단 그리드 반응형 개발</div>
+                                        <div class="table-comment-summary">
+                                            <div class="summary-row">💬 <strong>김철수:</strong> 가로 압축형 등록창 레이아웃 빌드 완료...</div>
+                                        </div>
+                                    </td>
+                                    <td>260612<span class="time-badge time-alert">D-8 (마감임박)</span></td>
+                                    <td>260624<span class="time-badge time-safe">D-20</span></td>
+                                    <td>김철수</td>
+                                    <td>📎 mockup_v1.png</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="big-detail-pane" id="right-detail-pane">
+                    <div class="pane-tabs">
+                        <div class="tab-wrapper-left">
+                            <div class="pane-tab-item active">💬 슬랙형 실시간 이력 및 소통 룸</div>
+                        </div>
+                        <button class="pane-close-btn" onclick="closeDetailPane()">❌ 상세창 닫기</button>
+                    </div>
+
+                    <div class="no-frame-container">
+                        <div style="font-size: 13px; font-weight: 800; color: #1e3a8a; margin-bottom:4px;" id="nd-title">
+                            ◆ 코어 프로그램 리팩토링 및 쿼리 최적화 건
+                        </div>
+                        
+                        <div class="info-meta-row">
+                            <div class="meta-text-item">🔢 번호: <strong id="nd-no">3237</strong></div>
+                            <div class="meta-text-item">📅 시작: <strong id="nd-sdate">260604</strong></div>
+                            <div class="meta-text-item">👤 생성자: <strong id="nd-creator">박지민</strong></div>
+                            <div class="meta-text-item">🎯 분류: <strong id="nd-cate">개발본부 > 프로그램 > 코어엔진</strong></div>
+                            <div class="meta-text-item">👑 main책임: <strong id="nd-mguest">홍길동</strong></div>
+                            <div class="meta-text-item">👥 sub그룹: <strong id="nd-sguest">최민식, 송강호</strong></div>
+                            <div class="meta-text-item">🏁 기한(main/HOST): <strong id="nd-deadlines">260615 / 260618</strong></div>
+                        </div>
+
+                        <div class="core-instruction-section">
+                            <div class="instruction-title">📋 프로젝트 업무 명세 명세 (1-3 가이드라인)</div>
+                            <div class="instruction-body-text" id="nd-steps">
+                                1. 다국어 테이블 매핑 로직 점검<br>2. 글로벌 인덱싱 튜닝<br>3. 예외 로그 덤프 기능 구현
+                            </div>
+                        </div>
+
+                        <div class="core-instruction-section" style="border-top: 1px dashed #f3f4f6; padding-top:6px;">
+                            <div class="instruction-title" style="color:#ea580c;">⚠️ 중요 및 특이사항 (Risk Factor)</div>
+                            <div class="instruction-body-text" id="nd-notice" style="color:#c2410c; font-weight:500;">
+                                사양서 기준 싱글쿼테이션 오류 예외처리 강화할 것.
+                            </div>
+                        </div>
+
+                        <div class="core-instruction-section" style="border-top: 1px dashed #f3f4f6; padding-top:6px;">
+                            <div class="instruction-title" style="color:#475569;">📂 공유 자산 클라우드 파일함</div>
+                            <div class="shared-cabinet-mini">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span>📄</span>
+                                    <span id="nd-filename" style="font-weight:600;">core_spec.pdf</span>
+                                </div>
+                                <div style="display:flex; gap:4px;">
+                                    <button class="btn-download-half" onclick="alert('클라우드 고해상도 뷰어를 오픈합니다.')">🔍 미리보기</button>
+                                    <button class="btn-download-half" style="background:#0ea5e9;" onclick="alert('파일 다운로드가 완료되었습니다.')">📥 다운로드</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slack-chat-flow" id="slack-message-wall">
+                        <div class="slack-msg">
+                            <div class="slack-avatar" style="background:#8b5cf6;">JM</div>
+                            <div class="slack-msg-body">
+                                <div class="slack-msg-header"><span class="slack-username">박지민 (생성인)</span><span class="slack-timestamp">오전 11:22</span></div>
+                                <div class="slack-text">메인 쿼리 아키텍처 상 레이턴시 튈 확률이 높습니다. 인덱스 분리 신경 써주세요. 👍</div>
+                            </div>
+                        </div>
+                        <div class="slack-msg">
+                            <div class="slack-avatar" style="background:#ec4899;">GD</div>
+                            <div class="slack-msg-body">
+                                <div class="slack-msg-header"><span class="slack-username">홍길동 (main게스트)</span><span class="slack-timestamp">오전 11:45</span></div>
+                                <div class="slack-text">네, 예외처리 로그 덤프 스크립트 작성해서 패키징 테스트 진행중입니다! 🚀</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slack-input-station">
+                        <div class="slack-input-box">
+                            <textarea id="slack-text-console" placeholder="팀원들에게 히스토리를 공유하거나 댓글을 연속으로 작성해 보세요... (Ctrl + Enter 전송)"></textarea>
+                            <div class="slack-toolbar">
+                                <span style="color:#94a3b8; cursor:pointer;">📎 😃 🎙️ 허들연결</span>
+                                <button class="btn-download-half" style="background:#0ea5e9; font-size:11px; padding:3px 8px;" onclick="executeSlackSend()">💬 전송</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="sub-frame-create" class="creation-screen">
+                <div style="border-bottom:2px solid #0ea5e9; padding-bottom:8px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="font-weight:bold; color:#1e3a8a;">➕ 차세대 가로 압축형 통합 프로젝트 업무 등록기</h3>
+                    <button class="pane-close-btn" style="background:#64748b; margin:0;" onclick="toggleMainLayout('workspace')">🔙 메인 작업장 복귀</button>
+                </div>
+                
+                <form onsubmit="event.preventDefault(); alert('정형 마스터 스키마 등록 및 슬랙 채널 생성이 완료되었습니다.'); toggleMainLayout('workspace');">
+                    <div class="input-row">
+                        <div class="input-station input-col-3"><label>📅 시작 일자 (포맷: 260604)</label><input type="text" value="260604"></div>
+                        <div class="input-station input-col-3"><label>🔷 대분류</label><select><option>개발본부</option><option>기획홍보</option></select></div>
+                        <div class="input-station input-col-3"><label>🟢 중분류</label><select><option>프로그램</option><option>디자인</option></select></div>
+                        <div class="input-station input-col-3"><label>🔸 소분류</label><select><option>코어엔진</option><option>반응형UI</option></select></div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-station input-col-3"><label>🏁 기한 (main / HOST)</label><input type="text" value="260615 / 260618"></div>
+                        <div class="input-station input-col-3"><label>👑 main게스트 책임자 (단일)</label><select><option>홍길동</option><option>김철수</option></select></div>
+                        <div class="input-station input-col-6"><label>👥 sub게스트 협업 그룹 (다중 체크박스)</label>
+                            <div style="display:flex; gap:10px; padding-top:4px;"><label><input type="checkbox" checked> 최민식</label><label><input type="checkbox" checked> 송강호</label><label><input type="checkbox"> 강동원</label></div>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-station input-col-12"><label>📌 프로젝트 지시 핵심 제목</label><input type="text" placeholder="핵심 타이틀 명칭..."></div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-station input-col-6"><label>📋 세부 가이드라인 기입 (1번 ~ 3번 가이드 템플릿)</label><textarea style="width:100%; height:70px; border:1px solid #cbd5e1; border-radius:4px; padding:6px;" placeholder="1. &#10;2. &#10;3. "></textarea></div>
+                        <div class="input-station input-col-6"><label>⚠️ 중요 및 특이사항 기재</label><textarea style="width:100%; height:70px; border:1px solid #cbd5e1; border-radius:4px; padding:6px;" placeholder="지연 리스크 및 부서간 조율 요망 건..."></textarea></div>
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:10px;">
+                        <button type="submit" class="btn-download-half" style="background:#10b981; padding:6px 14px; font-size:11px;">💾 시스템 마스터 등록 발행</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 2번 핵심 기믹: 상세창 닫기 처리로 테이블 뷰 100% 확보
+        function closeDetailPane() {
+            document.getElementById('right-detail-pane').classList.add('closed');
+        }
+
+        // 상세창 다시 열기 기능
+        function openDetailPane() {
+            document.getElementById('right-detail-pane').classList.remove('closed');
+        }
+
+        // 상단 최상위 탭 스위칭 밸런서
+        function toggleMainLayout(target) {
+            document.getElementById('main-tab-1').classList.remove('active');
+            document.getElementById('main-tab-2').classList.remove('active');
+            document.getElementById('sub-frame-workspace').style.display = 'none';
+            document.getElementById('sub-frame-create').classList.remove('active');
+
+            if(target === 'workspace') {
+                document.getElementById('main-tab-1').classList.add('active');
+                document.getElementById('sub-frame-workspace').style.display = 'flex';
+            } else {
+                document.getElementById('main-tab-2').classList.add('active');
+                document.getElementById('sub-frame-create').classList.add('active');
+            }
+        }
+
+        // 좌측 서브 메뉴 활성화 가시성 제어
+        function switchMenuState(el) {
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            el.classList.add('active');
+            toggleMainLayout('workspace');
+        }
+
+        // 1번 피드백 반영: 레거시 박스 프레임을 소거하고 본문 데이터 바인딩 파싱
+        function loadNoFrameData(no, title, sdate, creator, cateL, cateM, cateS, mguest, sguest, mainDead, hostDead, notice, stepsText, filename) {
+            document.getElementById('nd-no').innerText = no;
+            document.getElementById('nd-title').innerText = title;
+            document.getElementById('nd-sdate').innerText = sdate;
+            document.getElementById('nd-creator').innerText = creator;
+            document.getElementById('nd-cate').innerText = `${cateL} > ${cateM} > ${cateS}`;
+            document.getElementById('nd-mguest').innerText = mguest;
+            document.getElementById('nd-sguest').innerText = sguest;
+            document.getElementById('nd-deadlines').innerText = `${mainDead} / ${hostDead}`;
+            document.getElementById('nd-notice').innerText = notice;
+            document.getElementById('nd-filename').innerText = filename;
+            document.getElementById('nd-steps').innerHTML = stepsText.replace(/\n/g, '<br>');
+
+            openDetailPane(); // 행 클릭 시 자동으로 상세창 오픈 바인딩
+
+            const rows = document.querySelectorAll('#master-grid tbody tr');
+            rows.forEach(r => r.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        // 슬랙형 메시지 실시간 전송 콘솔 로직
+        function executeSlackSend() {
+            const consoleArea = document.getElementById('slack-text-console');
+            if(!consoleArea.value.trim()) return;
+
+            const wall = document.getElementById('slack-message-wall');
+            const now = new Date();
+            const timestampStr = `오후 ${String(now.getHours() % 12 || 12).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            const node = document.createElement('div');
+            node.className = 'slack-msg';
+            node.innerHTML = `
+                <div class="slack-avatar" style="background:#10b981;">OP</div>
+                <div class="slack-msg-body">
+                    <div class="slack-msg-header"><span class="slack-username">현재 운영자 (나)</span><span class="slack-timestamp">${timestampStr}</span></div>
+                    <div class="slack-text">${consoleArea.value.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
+            wall.appendChild(node);
+            consoleArea.value = '';
+            wall.scrollTop = wall.scrollHeight;
+        }
+
+        // 통합 텍스트 검색 및 분류 필터링 엔진
+        function runTableSearch() {
+            const query = document.getElementById('table-search-field').value.toLowerCase();
+            const filterL = document.getElementById('select-filter-l').value;
+            const rows = document.querySelectorAll('#master-grid tbody tr');
+
+            rows.forEach(row => {
+                const textContent = row.innerText.toLowerCase();
+                const colCateText = row.cells[4].innerText;
+
+                const matchText = textContent.includes(query);
+                const matchL = filterL === "" || colCateText.includes(filterL);
+
+                if(matchText && matchL) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>관리자패널 전체회원</title>
+  <!-- 기준 프롬프트: docs/DB_v2_신규테이블_페이지_프롬프트.md -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="./table-design.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="관리자 메뉴">
+      <div class="brand"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>관리자 패널</span></div>
+      <nav class="nav">
+        <button class="nav-button"><i class="nav-icon fa-solid fa-table-columns"></i><span class="nav-label">대시보드</span></button>
+        <button class="nav-button active"><i class="nav-icon fa-solid fa-users"></i><span class="nav-label">회원</span><span class="nav-count">2</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-bolt"></i><span class="nav-label">활동 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-wallet"></i><span class="nav-label">결제 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-handshake"></i><span class="nav-label">매칭 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-graduation-cap"></i><span class="nav-label">시험 관리</span><span class="nav-count">4</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-calendar-days"></i><span class="nav-label">스케줄 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-database"></i><span class="nav-label">신규 테이블 관리</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-comments"></i><span class="nav-label">1:1 문의</span></button>
+        <button class="nav-button"><i class="nav-icon fa-solid fa-chart-line"></i><span class="nav-label">통계</span></button>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="topbar-title">회원 &gt; 전체</div>
+        <div class="topbar-actions">
+          <button class="btn"><i class="fa-solid fa-floppy-disk"></i>저장</button>
+          <button class="btn primary"><i class="fa-solid fa-user-plus"></i>회원 추가</button>
+          <button class="btn"><i class="fa-solid fa-file-export"></i>엑셀 내보내기</button>
+        </div>
+      </header>
+
+      <section class="page">
+        <div class="page-head">
+          <div>
+            <div class="breadcrumb">관리자 &gt; 회원 &gt; 전체</div>
+            <h1>전체 회원 관리</h1>
+            <div class="meta">회원 유형과 서비스 이용 상태를 묶음 컬럼으로 빠르게 확인한다.</div>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn"><i class="fa-solid fa-sliders"></i>컬럼설정</button>
+            <button class="btn"><i class="fa-solid fa-rotate-left"></i>필터초기화</button>
+          </div>
+        </div>
+
+        <div class="major-tabs" role="tablist" aria-label="사이트 대분류">
+          <button class="major-tab active" type="button"><i class="fa-solid fa-globe"></i>전체 <span class="count">(50명)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-robot"></i>AI번역 <span class="count">(13명)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-file-lines"></i>통독문서 <span class="count">(9명)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-graduation-cap"></i>교육센터 <span class="count">(11명)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-ticket"></i>전시/행사 <span class="count">(7명)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-pen-to-square"></i>시험사이트 <span class="count">(10명)</span></button>
+        </div>
+
+        <div class="sub-tabs" role="tablist" aria-label="회원 하위 탭">
+          <button class="sub-tab active" type="button" data-target="all-members">전체 회원 <span class="count">(전체 50명)</span></button>
+          <button class="sub-tab" type="button" data-target="normal-members">일반 회원 <span class="count">(전체 24명)</span></button>
+          <button class="sub-tab" type="button" data-target="company-members">기업 회원 <span class="count">(전체 12명)</span></button>
+          <button class="sub-tab" type="button" data-target="expert-members">전문가 <span class="count">(전체 14명)</span></button>
+        </div>
+
+        <form class="dense-filter-card" data-dense-filter aria-label="회원 검색 및 필터">
+          <div class="dense-filter-head">
+            <button class="filter-toggle" type="button">선택된 검색조건 <span data-filter-count>0</span> <i class="fa-solid fa-chevron-up"></i></button>
+          </div>
+          <div class="dense-filter-flow" aria-label="회원 조건">
+            <section class="dense-filter-role-group" aria-label="회원 기본 조건">
+              <div class="dense-filter-role-body">
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>회원유형</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox" checked> 전체</label>
+                  <label class="dense-check"><input type="checkbox" checked> 일반회원</label>
+                  <label class="dense-check"><input type="checkbox" checked> 정식회원</label>
+                  <label class="dense-check"><input type="checkbox" checked> 기업회원</label>
+                  <label class="dense-check"><input type="checkbox" checked> 전문가</label>
+                  </div>
+                </fieldset>
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>성별</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox" checked> 전체</label>
+                  <label class="dense-check"><input type="checkbox" checked> M</label>
+                  <label class="dense-check"><input type="checkbox" checked> F</label>
+                  </div>
+                </fieldset>
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>구독상태</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox"> 전체</label>
+                  <label class="dense-check"><input type="checkbox"> 프리미엄</label>
+                  <label class="dense-check"><input type="checkbox"> 스탠다드</label>
+                  <label class="dense-check"><input type="checkbox"> 베이직</label>
+                  <label class="dense-check"><input type="checkbox"> free</label>
+                  </div>
+                </fieldset>
+              </div>
+            </section>
+            <section class="dense-filter-role-group" aria-label="서비스 상태 조건">
+              <div class="dense-filter-role-body">
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>서비스유형</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox" checked> AI번역</label>
+                  <label class="dense-check"><input type="checkbox"> 통독문서</label>
+                  <label class="dense-check"><input type="checkbox"> 교육센터</label>
+                  <label class="dense-check"><input type="checkbox"> 전시/행사</label>
+                  <label class="dense-check"><input type="checkbox"> 시험사이트</label>
+                  </div>
+                </fieldset>
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>매칭상태</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox" checked> 전체</label>
+                  <label class="dense-check"><input type="checkbox" checked> 완료</label>
+                  <label class="dense-check"><input type="checkbox"> 대기</label>
+                  <label class="dense-check"><input type="checkbox"> 취소</label>
+                  <label class="dense-check"><input type="checkbox"> 검토중</label>
+                  </div>
+                </fieldset>
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>전문가레벨</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox"> 전체</label>
+                  <label class="dense-check"><input type="checkbox"> Lv.S</label>
+                  <label class="dense-check"><input type="checkbox"> Lv.A</label>
+                  <label class="dense-check"><input type="checkbox"> Lv.B</label>
+                  <label class="dense-check"><input type="checkbox"> Lv.C</label>
+                  </div>
+                </fieldset>
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>시험종목</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox"> 전체</label>
+                  <label class="dense-check"><input type="checkbox"> 번역시험</label>
+                  <label class="dense-check"><input type="checkbox"> 영어교육</label>
+                  <label class="dense-check"><input type="checkbox"> AI윤리</label>
+                  <label class="dense-check"><input type="checkbox"> 문서관리</label>
+                  </div>
+                </fieldset>
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>결제상태</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox" checked> 전체</label>
+                  <label class="dense-check"><input type="checkbox" checked> 정상</label>
+                  <label class="dense-check"><input type="checkbox"> 미납</label>
+                  <label class="dense-check"><input type="checkbox"> 환불</label>
+                  <label class="dense-check"><input type="checkbox"> 정산대기</label>
+                  </div>
+                </fieldset>
+              </div>
+            </section>
+            <section class="dense-filter-role-group" aria-label="운영 접근 조건">
+              <div class="dense-filter-role-body">
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>알림</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox"> 전체</label>
+                  <label class="dense-check"><input type="checkbox"> SMS</label>
+                  <label class="dense-check"><input type="checkbox"> 알림톡</label>
+                  <label class="dense-check"><input type="checkbox"> 이메일</label>
+                  </div>
+                </fieldset>
+                <fieldset class="dense-filter-group" data-filter-group>
+                <legend>기기</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox"> 전체</label>
+                  <label class="dense-check"><input type="checkbox"> PC</label>
+                  <label class="dense-check"><input type="checkbox"> Mobile</label>
+                  <label class="dense-check"><input type="checkbox"> Tablet</label>
+                  </div>
+                </fieldset>
+              </div>
+            </section>
+            <section class="dense-filter-role-group" aria-label="분류 기간 조건">
+              <div class="dense-filter-role-body">
+                <fieldset class="dense-filter-group filter-select-group">
+                <legend>카테고리</legend>
+                  <div class="dense-filter-options">
+                  <select name="categoryMajor"><option>대분류</option><option>교육</option><option>비즈니스</option><option>시험</option></select>
+                  <select name="categoryMiddle"><option>중분류</option><option>온라인</option><option>오프라인</option><option>기관</option></select>
+                  <select name="categorySmall"><option>소분류</option><option>초급</option><option>중급</option><option>고급</option></select>
+                  </div>
+                </fieldset>
+                <fieldset class="dense-filter-group filter-date-group">
+                <legend>기간설정</legend>
+                  <div class="dense-filter-options">
+                  <select name="dateType"><option>가입일순</option><option>결제일순</option><option>활동일순</option><option>시험일순</option></select>
+                  <input type="date" name="startDate">
+                  <span class="date-separator">~</span>
+                  <input type="date" name="endDate">
+                  <button class="filter-chip" type="button" aria-pressed="false">오늘</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">1주</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">1개월</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">3개월</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">6개월</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">1년</button>
+                  </div>
+                </fieldset>
+                 <fieldset class="dense-filter-group" data-filter-group>
+                <legend>가입채널</legend>
+                  <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox"> 전체</label>
+                  <label class="dense-check"><input type="checkbox"> 이메일</label>
+                  <label class="dense-check"><input type="checkbox"> 홈페이지</label>
+                  <label class="dense-check"><input type="checkbox"> 구글</label>
+                  <label class="dense-check"><input type="checkbox"> 추천</label>
+                  <label class="dense-check"><input type="checkbox"> 관리자등록</label>
+                  <label class="dense-check"><input type="checkbox"> 기관계약</label>
+                  </div>
+                </fieldset>
+              </div>
+            </section>
+          </div>
+          <div class="filter-keyword-row filter-keyword-row--grouped">
+            <div class="dense-filter-role-title"><strong>검색어</strong><span>식별자·연락처</span></div>
+            <div class="filter-keyword-controls">
+              <select name="keywordType"><option>전체</option><option>이름</option><option>이메일</option><option>관리번호</option><option>연락처</option><option>그룹명</option></select>
+              <input type="search" name="keyword" placeholder="검색어 입력">
+              <button class="btn primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
+              <button class="btn" type="reset"><i class="fa-solid fa-rotate-left"></i>초기화</button>
+            </div>
+          </div>
+          <div class="dense-active-filters" data-active-filters aria-live="polite"></div>
+        </form>
+        <section class="table-card">
+          <article class="table-section active" id="all-members">
+            <div class="table-headbar">
+              <div class="table-title">전체 회원 <small>전체 50명</small></div>
+              <button class="btn"><i class="fa-solid fa-sliders"></i>회원 컬럼 편집</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <colgroup>
+                  <col style="width:44px"><col style="width:92px"><col style="width:128px"><col style="width:180px"><col style="width:150px"><col style="width:118px"><col style="width:116px"><col style="width:122px"><col style="width:110px"><col style="width:92px"><col style="width:72px"><col style="width:92px"><col style="width:170px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" aria-label="전체 선택"></th>
+                    <th class="sticky-id">회원<br>관리번호</th>
+                    <th>이름<br>나이·성별</th>
+                    <th>이메일<br>휴대폰</th>
+                    <th>주소<br>국가</th>
+                    <th>회원유형<br>구독</th>
+                    <th>가입일<br>채널</th>
+                    <th>최근 로그인<br>체류시간</th>
+                    <th>전문가<br>레벨·평점</th>
+                    <th>매칭<br>상태</th>
+                    <th>등급</th>
+                    <th>결제<br>상태</th>
+                    <th>메모</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox" aria-label="001-Ab2 선택"></td>
+                    <td class="sticky-id">001-Ab2</td>
+                    <td><div class="cell"><span class="main">김민수</span><span class="sub">34세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">minsu.kim@email.com</span><span class="sub">010-1234-5678</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 강남구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-03-15</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">42m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="AI번역 정기 이용 회원">AI번역 정기 이용 회원</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="002-Aa2 선택"></td>
+                    <td class="sticky-id">002-Aa2</td>
+                    <td><div class="cell"><span class="main">(주)글로벌텍</span><span class="sub">45세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">admin@globaltek.co.kr</span><span class="sub">02-555-1234</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 서초구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-01-20</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">1h 15m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="대형 고객사 - 월 정기 결제">대형 고객사 - 월 정기 결제</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="003-Aa1 선택"></td>
+                    <td class="sticky-id">003-Aa1</td>
+                    <td><div class="cell"><span class="main">이정희</span><span class="sub">38세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">junghee.lee@email.com</span><span class="sub">010-9876-5432</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 마포구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-11-05</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">2h 30m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.A</span></span><span class="sub">4.4</span></div></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="A등급 우수 전문가">A등급 우수 전문가</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="004-Ab2 선택"></td>
+                    <td class="sticky-id">004-Ab2</td>
+                    <td><div class="cell"><span class="main">홍길동</span><span class="sub">50세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">admin@aitranslation.co.kr</span><span class="sub">010-1111-0000</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 중구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">관리자</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-01-01</span><span class="sub">내부</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">5h</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="마스터 관리자 - 모든 사이트 총괄">마스터 관리자 - 모든 사이트 총괄</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="005-Aa2 선택"></td>
+                    <td class="sticky-id">005-Aa2</td>
+                    <td><div class="cell"><span class="main">박서연</span><span class="sub">29세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">seoyeon.park@email.com</span><span class="sub">010-2234-8810</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 성남시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-07-12</span><span class="sub">구글</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-07</span><span class="sub">16m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="시험사이트 신규 가입">시험사이트 신규 가입</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="006-Aa1 선택"></td>
+                    <td class="sticky-id">006-Aa1</td>
+                    <td><div class="cell"><span class="main">최도윤</span><span class="sub">41세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">doyun.choi@email.com</span><span class="sub">010-3345-7821</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">부산 해운대구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-02-04</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-06</span><span class="sub">38m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="통독문서 이용 빈도 높음">통독문서 이용 빈도 높음</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="007-Ab2 선택"></td>
+                    <td class="sticky-id">007-Ab2</td>
+                    <td><div class="cell"><span class="main">한지아</span><span class="sub">32세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">jia.han@email.com</span><span class="sub">010-4456-6732</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">대구 수성구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-10-18</span><span class="sub">추천</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">1h 02m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.B</span></span><span class="sub">4.8</span></div></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="법률 번역 전문가">법률 번역 전문가</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="008-Aa2 선택"></td>
+                    <td class="sticky-id">008-Aa2</td>
+                    <td><div class="cell"><span class="main">오세훈</span><span class="sub">36세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">sehun.oh@email.com</span><span class="sub">010-5567-5643</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">인천 연수구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-04-22</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-04</span><span class="sub">9m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="결제 전환 후보">결제 전환 후보</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="009-Aa1 선택"></td>
+                    <td class="sticky-id">009-Aa1</td>
+                    <td><div class="cell"><span class="main">한국문서관리(주)</span><span class="sub">52세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">info@hankookdoc.co.kr</span><span class="sub">02-333-4567</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 영등포구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-12-01</span><span class="sub">기관계약</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">3h 12m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="공공기관 계약">공공기관 계약</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="010-Ab2 선택"></td>
+                    <td class="sticky-id">010-Ab2</td>
+                    <td><div class="cell"><span class="main">장미영</span><span class="sub">42세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">miyoung.jang@email.com</span><span class="sub">010-2222-4444</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">광주 북구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-08-15</span><span class="sub">추천</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">2h 04m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.A</span></span><span class="sub">4.3</span></div></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="VIP 전문가 - 의료 전문">VIP 전문가 - 의료 전문</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="011-Aa2 선택"></td>
+                    <td class="sticky-id">011-Aa2</td>
+                    <td><div class="cell"><span class="main">윤태호</span><span class="sub">27세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">taeho.yoon@email.com</span><span class="sub">010-6678-4554</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">대전 유성구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-11-09</span><span class="sub">SNS</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-01</span><span class="sub">5m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>C</td>
+                    <td><span class="status wait">미납</span></td>
+                    <td class="left"><div class="main" title="무료 체험 종료 예정">무료 체험 종료 예정</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="012-Aa1 선택"></td>
+                    <td class="sticky-id">012-Aa1</td>
+                    <td><div class="cell"><span class="main">문가은</span><span class="sub">31세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">gaeun.moon@email.com</span><span class="sub">010-7789-3465</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 송파구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-05-28</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">47m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="교육센터 강좌 수강">교육센터 강좌 수강</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="013-Ab2 선택"></td>
+                    <td class="sticky-id">013-Ab2</td>
+                    <td><div class="cell"><span class="main">에듀링크(주)</span><span class="sub">44세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">support@edulink.co.kr</span><span class="sub">031-902-1188</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 고양시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-03-03</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-05</span><span class="sub">55m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="교육 단체 계정">교육 단체 계정</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="014-Aa2 선택"></td>
+                    <td class="sticky-id">014-Aa2</td>
+                    <td><div class="cell"><span class="main">강서현</span><span class="sub">25세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">seohyun.kang@email.com</span><span class="sub">010-8890-2376</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">울산 남구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-09-17</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">25-12-10</span><span class="sub">21m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="영어교육 지도사 응시">영어교육 지도사 응시</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="015-Aa1 선택"></td>
+                    <td class="sticky-id">015-Aa1</td>
+                    <td><div class="cell"><span class="main">임준혁</span><span class="sub">39세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">junhyuk.lim@email.com</span><span class="sub">010-9901-1287</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 관악구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-09-30</span><span class="sub">관리자등록</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">1h 44m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.S</span></span><span class="sub">4.8</span></div></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="AI 윤리 강사 후보">AI 윤리 강사 후보</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="016-Ab2 선택"></td>
+                    <td class="sticky-id">016-Ab2</td>
+                    <td><div class="cell"><span class="main">정다은</span><span class="sub">28세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">daeun.jung@email.com</span><span class="sub">010-1012-2198</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 수원시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-12-21</span><span class="sub">구글</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-30</span><span class="sub">12m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>C</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="가입 후 미응시">가입 후 미응시</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="017-Aa2 선택"></td>
+                    <td class="sticky-id">017-Aa2</td>
+                    <td><div class="cell"><span class="main">미래전시기획</span><span class="sub">48세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">contact@futureexpo.co.kr</span><span class="sub">02-777-9012</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 용산구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-07-11</span><span class="sub">제휴사</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-07</span><span class="sub">2h 18m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="전시 통번역 패키지 상담">전시 통번역 패키지 상담</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="018-Aa1 선택"></td>
+                    <td class="sticky-id">018-Aa1</td>
+                    <td><div class="cell"><span class="main">서민재</span><span class="sub">33세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">minjae.seo@email.com</span><span class="sub">010-2123-3009</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">충북 청주시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-06-06</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-03</span><span class="sub">29m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="통독문서 정기 결제">통독문서 정기 결제</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="019-Ab2 선택"></td>
+                    <td class="sticky-id">019-Ab2</td>
+                    <td><div class="cell"><span class="main">노유진</span><span class="sub">30세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">yujin.no@email.com</span><span class="sub">010-3234-4910</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경남 창원시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-01-14</span><span class="sub">추천</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-02</span><span class="sub">34m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.C</span></span><span class="sub">4.4</span></div></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="전문가 서류 검토중">전문가 서류 검토중</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="020-Aa2 선택"></td>
+                    <td class="sticky-id">020-Aa2</td>
+                    <td><div class="cell"><span class="main">류하은</span><span class="sub">24세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">haeun.ryu@email.com</span><span class="sub">010-4345-5821</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 동작구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-10-02</span><span class="sub">SNS</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-28</span><span class="sub">7m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status fail">취소</span></td>
+                    <td>C</td>
+                    <td><span class="status fail">환불</span></td>
+                    <td class="left"><div class="main" title="시험 취소 환불 완료">시험 취소 환불 완료</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="021-Aa1 선택"></td>
+                    <td class="sticky-id">021-Aa1</td>
+                    <td><div class="cell"><span class="main">백현우</span><span class="sub">37세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">hyunwoo.baek@email.com</span><span class="sub">010-5456-6732</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 안양시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-06-24</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">1h 09m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="프리미엄 전환 완료">프리미엄 전환 완료</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="022-Ab2 선택"></td>
+                    <td class="sticky-id">022-Ab2</td>
+                    <td><div class="cell"><span class="main">신아린</span><span class="sub">35세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">arin.shin@email.com</span><span class="sub">010-6567-7643</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">세종시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-08-19</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-01</span><span class="sub">18m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="교육 문의 진행중">교육 문의 진행중</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="023-Aa2 선택"></td>
+                    <td class="sticky-id">023-Aa2</td>
+                    <td><div class="cell"><span class="main">트랜스랩코리아</span><span class="sub">46세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">ops@translab.co.kr</span><span class="sub">02-889-1200</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 금천구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-05-08</span><span class="sub">기관계약</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">2h 47m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="번역 API 연동 논의">번역 API 연동 논의</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="024-Aa1 선택"></td>
+                    <td class="sticky-id">024-Aa1</td>
+                    <td><div class="cell"><span class="main">마지훈</span><span class="sub">40세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">jihoon.ma@email.com</span><span class="sub">010-7678-8554</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">전북 전주시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-04-20</span><span class="sub">관리자등록</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-06</span><span class="sub">52m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.B</span></span><span class="sub">4.9</span></div></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="기술문서 리뷰 가능">기술문서 리뷰 가능</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="025-Ab2 선택"></td>
+                    <td class="sticky-id">025-Ab2</td>
+                    <td><div class="cell"><span class="main">배수빈</span><span class="sub">26세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">subin.bae@email.com</span><span class="sub">010-8789-9465</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">강원 춘천시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">26-01-04</span><span class="sub">구글</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-04</span><span class="sub">11m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>C</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="신규 무료 회원">신규 무료 회원</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="026-Aa2 선택"></td>
+                    <td class="sticky-id">026-Aa2</td>
+                    <td><div class="cell"><span class="main">김도현</span><span class="sub">43세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">dohyun.kim@email.com</span><span class="sub">010-9890-0376</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 은평구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-02-27</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-05</span><span class="sub">24m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="시험 재응시 예정">시험 재응시 예정</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="027-Aa1 선택"></td>
+                    <td class="sticky-id">027-Aa1</td>
+                    <td><div class="cell"><span class="main">송예린</span><span class="sub">29세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">yerin.song@email.com</span><span class="sub">010-1901-1287</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 화성시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-03-29</span><span class="sub">추천</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-07</span><span class="sub">1h 21m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.B</span></span><span class="sub">4.4</span></div></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="포트폴리오 보완 요청">포트폴리오 보완 요청</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="028-Ab2 선택"></td>
+                    <td class="sticky-id">028-Ab2</td>
+                    <td><div class="cell"><span class="main">케이이벤트(주)</span><span class="sub">51세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">admin@kevent.co.kr</span><span class="sub">02-2666-7800</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 강서구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-11-19</span><span class="sub">제휴사</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-06</span><span class="sub">1h 57m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="행사 운영 장기 계약">행사 운영 장기 계약</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="029-Aa2 선택"></td>
+                    <td class="sticky-id">029-Aa2</td>
+                    <td><div class="cell"><span class="main">조하늘</span><span class="sub">22세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">haneul.cho@email.com</span><span class="sub">010-2012-2198</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">부산 수영구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">26-01-16</span><span class="sub">SNS</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-02</span><span class="sub">6m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>C</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="자격시험 관심 회원">자격시험 관심 회원</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="030-Aa1 선택"></td>
+                    <td class="sticky-id">030-Aa1</td>
+                    <td><div class="cell"><span class="main">안재원</span><span class="sub">36세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">jaewon.ahn@email.com</span><span class="sub">010-3123-3009</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 성동구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-07-07</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">39m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="문서 패키지 구매">문서 패키지 구매</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="031-Ab2 선택"></td>
+                    <td class="sticky-id">031-Ab2</td>
+                    <td><div class="cell"><span class="main">유나영</span><span class="sub">34세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">nayoung.yoo@email.com</span><span class="sub">010-4234-4910</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">대전 서구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-03-17</span><span class="sub">관리자등록</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">3h 06m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.S</span></span><span class="sub">4.8</span></div></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="우선 배정 전문가">우선 배정 전문가</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="032-Aa2 선택"></td>
+                    <td class="sticky-id">032-Aa2</td>
+                    <td><div class="cell"><span class="main">이벤트플러스(주)</span><span class="sub">49세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">pay@eventplus.co.kr</span><span class="sub">02-720-6677</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 종로구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-07-10</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-03</span><span class="sub">44m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="행사 종료 후 정산 대기">행사 종료 후 정산 대기</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="033-Aa1 선택"></td>
+                    <td class="sticky-id">033-Aa1</td>
+                    <td><div class="cell"><span class="main">권소라</span><span class="sub">31세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">sora.kwon@email.com</span><span class="sub">010-5345-5821</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">인천 부평구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-05-11</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-31</span><span class="sub">17m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="AI번역 단건 구매">AI번역 단건 구매</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="034-Ab2 선택"></td>
+                    <td class="sticky-id">034-Ab2</td>
+                    <td><div class="cell"><span class="main">남기준</span><span class="sub">45세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">gijun.nam@email.com</span><span class="sub">010-6456-6732</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 부천시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-10-06</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-07</span><span class="sub">1h 36m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="월간 리포트 발송 대상">월간 리포트 발송 대상</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="035-Aa2 선택"></td>
+                    <td class="sticky-id">035-Aa2</td>
+                    <td><div class="cell"><span class="main">문서테크랩</span><span class="sub">39세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">hello@doctechlab.co.kr</span><span class="sub">02-868-3344</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 구로구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-04-01</span><span class="sub">제휴사</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-01</span><span class="sub">33m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>B</td>
+                    <td><span class="status wait">미납</span></td>
+                    <td class="left"><div class="main" title="계약 갱신 확인 필요">계약 갱신 확인 필요</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="036-Aa1 선택"></td>
+                    <td class="sticky-id">036-Aa1</td>
+                    <td><div class="cell"><span class="main">전우빈</span><span class="sub">28세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">woobin.jeon@email.com</span><span class="sub">010-7567-7643</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">광주 서구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-12-08</span><span class="sub">구글</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-29</span><span class="sub">8m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>C</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="로그인 빈도 낮음">로그인 빈도 낮음</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="037-Ab2 선택"></td>
+                    <td class="sticky-id">037-Ab2</td>
+                    <td><div class="cell"><span class="main">하서윤</span><span class="sub">33세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">seoyun.ha@email.com</span><span class="sub">010-8678-8554</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 강동구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-06-14</span><span class="sub">추천</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-04</span><span class="sub">49m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.C</span></span><span class="sub">4.6</span></div></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="생활문서 분야">생활문서 분야</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="038-Aa2 선택"></td>
+                    <td class="sticky-id">038-Aa2</td>
+                    <td><div class="cell"><span class="main">오픈러닝센터</span><span class="sub">47세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">admin@openlearning.co.kr</span><span class="sub">031-778-3300</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 용인시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-02-22</span><span class="sub">기관계약</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">2h 11m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="교육센터 단체 접수">교육센터 단체 접수</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="039-Aa1 선택"></td>
+                    <td class="sticky-id">039-Aa1</td>
+                    <td><div class="cell"><span class="main">차은호</span><span class="sub">30세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">eunho.cha@email.com</span><span class="sub">010-9789-9465</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">대구 달서구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-09-23</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-27</span><span class="sub">14m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status fail">취소</span></td>
+                    <td>B</td>
+                    <td><span class="status fail">환불</span></td>
+                    <td class="left"><div class="main" title="중복 결제 환불">중복 결제 환불</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="040-Ab2 선택"></td>
+                    <td class="sticky-id">040-Ab2</td>
+                    <td><div class="cell"><span class="main">민지수</span><span class="sub">27세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">jisu.min@email.com</span><span class="sub">010-0890-0376</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 노원구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-08-02</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-06</span><span class="sub">28m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="통독문서 즐겨찾기 많음">통독문서 즐겨찾기 많음</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="041-Aa2 선택"></td>
+                    <td class="sticky-id">041-Aa2</td>
+                    <td><div class="cell"><span class="main">정바른</span><span class="sub">44세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">bareun.jung@email.com</span><span class="sub">010-1902-1287</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">울산 중구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-12-14</span><span class="sub">관리자등록</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">1h 18m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.A</span></span><span class="sub">4.2</span></div></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="산업안전 번역 전문">산업안전 번역 전문</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="042-Aa1 선택"></td>
+                    <td class="sticky-id">042-Aa1</td>
+                    <td><div class="cell"><span class="main">스마트컨벤션</span><span class="sub">50세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">biz@smartconvention.co.kr</span><span class="sub">051-440-2200</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">부산 동구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-09-09</span><span class="sub">제휴사</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-05</span><span class="sub">1h 52m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="컨벤션 통역 견적 검토">컨벤션 통역 견적 검토</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="043-Ab2 선택"></td>
+                    <td class="sticky-id">043-Ab2</td>
+                    <td><div class="cell"><span class="main">최유찬</span><span class="sub">23세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">yuchan.choi@email.com</span><span class="sub">010-2013-2198</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">제주 제주시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">26-01-22</span><span class="sub">SNS</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-03</span><span class="sub">10m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>C</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="신규 가입 온보딩">신규 가입 온보딩</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="044-Aa2 선택"></td>
+                    <td class="sticky-id">044-Aa2</td>
+                    <td><div class="cell"><span class="main">고은채</span><span class="sub">32세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">eunchae.ko@email.com</span><span class="sub">010-3124-3009</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 남양주시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-05-30</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-02</span><span class="sub">26m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="자격증 재발급 문의">자격증 재발급 문의</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="045-Aa1 선택"></td>
+                    <td class="sticky-id">045-Aa1</td>
+                    <td><div class="cell"><span class="main">윤서준</span><span class="sub">38세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">seojoon.yoon@email.com</span><span class="sub">010-4235-4910</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 동대문구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-07-28</span><span class="sub">추천</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">58m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.B</span></span><span class="sub">4.6</span></div></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="배정 가능 일정 확인">배정 가능 일정 확인</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="046-Ab2 선택"></td>
+                    <td class="sticky-id">046-Ab2</td>
+                    <td><div class="cell"><span class="main">에이아이문서(주)</span><span class="sub">43세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">contact@aidoc.co.kr</span><span class="sub">02-555-9090</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 강남구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-06-03</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">2h 29m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="AI번역 대량 요청">AI번역 대량 요청</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="047-Aa2 선택"></td>
+                    <td class="sticky-id">047-Aa2</td>
+                    <td><div class="cell"><span class="main">김라온</span><span class="sub">26세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">raon.kim@email.com</span><span class="sub">010-5346-5821</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">경기 평택시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">일반회원</span><span><span class="badge gray">free</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-11-18</span><span class="sub">구글</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-25</span><span class="sub">4m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>C</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="휴면 전환 모니터링">휴면 전환 모니터링</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="048-Aa1 선택"></td>
+                    <td class="sticky-id">048-Aa1</td>
+                    <td><div class="cell"><span class="main">서지완</span><span class="sub">35세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">jiwan.seo@email.com</span><span class="sub">010-6457-6732</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">전남 목포시</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-02-13</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-07</span><span class="sub">37m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="시험 합격 후 증명서 신청">시험 합격 후 증명서 신청</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="049-Ab2 선택"></td>
+                    <td class="sticky-id">049-Ab2</td>
+                    <td><div class="cell"><span class="main">류다인</span><span class="sub">29세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">dain.ryu@email.com</span><span class="sub">010-7568-7643</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 서대문구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-04-16</span><span class="sub">관리자등록</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-01</span><span class="sub">31m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.C</span></span><span class="sub">4.2</span></div></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>B</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="초기 평가 완료">초기 평가 완료</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="050-Aa2 선택"></td>
+                    <td class="sticky-id">050-Aa2</td>
+                    <td><div class="cell"><span class="main">글로벌아카데미</span><span class="sub">48세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">admin@globalacademy.co.kr</span><span class="sub">042-880-7100</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">대전 유성구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-01-25</span><span class="sub">기관계약</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">2h 40m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="단체 시험 운영 계약">단체 시험 운영 계약</div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="normal-members">
+            <div class="table-headbar"><div class="table-title">일반 회원 <small>전체 24명</small></div></div>
+            <div class="table-wrap">
+              <table>
+                <colgroup><col style="width:92px"><col style="width:128px"><col style="width:180px"><col style="width:118px"><col style="width:116px"><col style="width:122px"><col style="width:170px"></colgroup>
+                <thead><tr><th class="sticky-id">회원<br>관리번호</th><th>이름<br>나이·성별</th><th>이메일<br>휴대폰</th><th>회원유형<br>구독</th><th>가입일<br>채널</th><th>최근 로그인<br>체류시간</th><th>메모</th></tr></thead>
+                <tbody>
+                  <tr><td class="sticky-id">001-Ab2</td><td><div class="cell"><span class="main">김민수</span><span class="sub">34세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td><td class="left"><div class="cell"><span class="main">minsu.kim@email.com</span><span class="sub">010-1234-5678</span></div></td><td><div class="cell"><span class="main">정식회원</span><span class="badge gray">베이직</span></div></td><td><div class="cell"><span class="main">25-03-15</span><span class="sub">이메일</span></div></td><td><div class="cell"><span class="main">26-02-08</span><span class="sub">42m</span></div></td><td class="left"><div class="main">AI번역 정기 이용 회원</div></td></tr>
+                  <tr><td class="sticky-id">004-Ab2</td><td><div class="cell"><span class="main">James Wilson</span><span class="sub">41세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td><td class="left"><div class="cell"><span class="main">james.wilson@gmail.com</span><span class="sub">212-555-0147</span></div></td><td><div class="cell"><span class="main">일반회원</span><span class="badge gray">free</span></div></td><td><div class="cell"><span class="main">25-06-10</span><span class="sub">구글</span></div></td><td><div class="cell"><span class="main">26-02-07</span><span class="sub">18m</span></div></td><td class="left"><div class="main">해외 거주 회원</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="company-members">
+            <div class="table-headbar"><div class="table-title">기업 회원 <small>전체 12명</small></div></div>
+            <div class="table-wrap">
+              <table>
+                <colgroup><col style="width:92px"><col style="width:150px"><col style="width:180px"><col style="width:150px"><col style="width:118px"><col style="width:170px"></colgroup>
+                <thead><tr><th class="sticky-id">회원<br>관리번호</th><th>기업명<br>담당자</th><th>이메일<br>전화</th><th>주소<br>사업자#</th><th>가입일<br>채널</th><th>메모</th></tr></thead>
+                <tbody>
+                  <tr><td class="sticky-id">002-Aa2</td><td><div class="cell"><span class="main">(주)글로벌텍</span><span class="sub">관리자</span></div></td><td class="left"><div class="cell"><span class="main">admin@globaltek.co.kr</span><span class="sub">02-555-1234</span></div></td><td class="left"><div class="cell"><span class="main">서울 서초구</span><span class="sub">123-45-67890</span></div></td><td><div class="cell"><span class="main">25-01-20</span><span class="sub">홈페이지</span></div></td><td class="left"><div class="main">대형 고객사 - 월 정기 결제</div></td></tr>
+                  <tr><td class="sticky-id">009-Ba2</td><td><div class="cell"><span class="main">한국문서관리(주)</span><span class="sub">기관 담당</span></div></td><td class="left"><div class="cell"><span class="main">info@hankookdoc.co.kr</span><span class="sub">02-333-4567</span></div></td><td class="left"><div class="cell"><span class="main">서울 영등포구</span><span class="sub">234-56-78901</span></div></td><td><div class="cell"><span class="main">24-12-01</span><span class="sub">기관계약</span></div></td><td class="left"><div class="main">공공기관 계약</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="expert-members">
+            <div class="table-headbar"><div class="table-title">전문가 <small>전체 14명</small></div></div>
+            <div class="table-wrap">
+              <table>
+                <colgroup><col style="width:92px"><col style="width:128px"><col style="width:180px"><col style="width:118px"><col style="width:110px"><col style="width:92px"><col style="width:170px"></colgroup>
+                <thead><tr><th class="sticky-id">회원<br>관리번호</th><th>이름<br>나이·성별</th><th>이메일<br>휴대폰</th><th>가입일<br>채널</th><th>전문가<br>레벨·평점</th><th>매칭<br>상태</th><th>메모</th></tr></thead>
+                <tbody>
+                  <tr><td class="sticky-id">003-Aa1</td><td><div class="cell"><span class="main">이정희</span><span class="sub">38세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td><td class="left"><div class="cell"><span class="main">junghee.lee@email.com</span><span class="sub">010-9876-5432</span></div></td><td><div class="cell"><span class="main">24-11-05</span><span class="sub">이메일</span></div></td><td><div class="cell"><span class="badge red">Lv.A</span><span class="sub">4.9</span></div></td><td><span class="status wait">대기</span></td><td class="left"><div class="main">A등급 우수 전문가</div></td></tr>
+                  <tr><td class="sticky-id">006-Aa1</td><td><div class="cell"><span class="main">장미영</span><span class="sub">42세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td><td class="left"><div class="cell"><span class="main">miyoung.jang@email.com</span><span class="sub">010-2222-4444</span></div></td><td><div class="cell"><span class="main">24-08-15</span><span class="sub">추천</span></div></td><td><div class="cell"><span class="badge red">Lv.A</span><span class="sub">5.0</span></div></td><td><span class="status ok">완료</span></td><td class="left"><div class="main">VIP 전문가 - 의료 전문</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <div class="bulkbar">
+            <div class="bulk-actions">
+              <span class="pagination">선택 0명</span>
+              <button class="btn"><i class="fa-solid fa-file-export"></i>선택정보내기</button>
+              <button class="btn"><i class="fa-solid fa-envelope"></i>이메일보내기</button>
+              <button class="btn"><i class="fa-solid fa-comment-sms"></i>SMS전송</button>
+              <button class="btn"><i class="fa-solid fa-user-gear"></i>상태변경</button>
+            </div>
+            <div class="pagination">1 / 1 페이지 · 50명씩 보기</div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script src="./table-design.js"></script>
+</body>
+</html>

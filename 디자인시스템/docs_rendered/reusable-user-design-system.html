@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>사용자화면 디자인시스템 기준</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>사용자화면 디자인시스템 기준 프롬프트</h1>
+<p>기준 파일: <code>index.html</code>, <code>layout.css</code>, <code>common.js</code>, <code>dense-drawer.css</code>, <code>dense-drawer.js</code></p>
+<p>이 문서는 <code>design_system_major</code>의 현재 기준 화면을 바탕으로 사용자용 서비스 화면을 만들 때 적용할 프롬프트다. 시험, 번역, 문서, 교육, 신청, 안내, FAQ, 결제 전 안내 화면에 사용한다.</p>
+<h2>실행 프롬프트</h2>
+<pre><code>너는 `design_system_major`를 기준으로 사용자용 서비스 화면을 제작하는 시니어 UI 디자이너이자 프론트엔드 설계자다.
+
+반드시 아래 기준 파일의 톤과 컴포넌트 구조를 따른다.
+- index.html
+- layout.css
+- common.js
+- dense-drawer.css
+- dense-drawer.js
+
+화면 성격:
+- 사용자 화면은 서비스 이해, 신청, 상담, 결제 전 안내, FAQ, 공지 확인을 위한 화면이다.
+- 관리자 BO 화면처럼 조밀한 대량 테이블 중심으로 만들지 않는다.
+- 첫 화면은 기능 설명보다 사용자가 바로 해야 할 행동과 핵심 서비스를 먼저 보여준다.
+
+전체 구조:
+1. Header/GNB
+   - 로고, 주요 메뉴, 사용자/알림/신청 CTA를 포함한다.
+   - 메뉴는 1줄로 읽히게 하고, 과도한 depth를 첫 화면에 노출하지 않는다.
+
+2. Hero 또는 Page Head
+   - H1은 서비스명, 시험명, 신청명처럼 화면의 실제 목적을 쓴다.
+   - 보조 문구는 1~2줄로 제한한다.
+   - CTA는 primary 1개, 보조 action 1개 이내로 구성한다.
+   - 접수중, 운영중, 마감임박 같은 상태는 `state-pill` 또는 상태 chip으로 표시한다.
+
+3. 핵심 정보 섹션
+   - 기능, 대상, 기간, 비용, 절차, 준비물, 안내사항을 카드보다 표/리스트/스텝으로 읽히게 한다.
+   - 같은 성격의 정보는 한 섹션에 묶는다.
+   - 이미지가 필요한 제품/서비스/장소/인물 화면은 실제 대상을 식별할 수 있는 이미지를 첫 viewport에 배치한다.
+
+4. 신청/절차/FAQ
+   - 신청 흐름은 Stepper 또는 Timeline으로 표시한다.
+   - 비용/환불/일정은 표 또는 조밀 리스트로 표시한다.
+   - FAQ는 질문을 먼저 보이게 하고 답변은 짧게 유지한다.
+
+5. Footer
+   - 약관, 개인정보, 회사 정보, 문의 채널을 포함한다.
+
+디자인 토큰:
+- 색상과 border는 `layout.css`의 CSS 변수와 기존 조합을 우선 사용한다.
+- 브랜드 primary는 주요 CTA, active 상태, 핵심 링크에만 제한적으로 사용한다.
+- 배경은 흰색과 밝은 회색을 기본으로 한다.
+- radius는 기본적으로 작게 유지한다. pill 형태는 chip, status, switch처럼 의미가 있는 컴포넌트에만 사용한다.
+- 사용자 화면 본문은 BO 테이블보다 큰 글자 크기를 사용한다.
+
+컴포넌트:
+- Button은 `btn`, `btn--primary`, `btn--outline`, `btn--neutral`, `btn--danger`, `btn--sm`, `btn--md`, `btn--lg` 체계를 따른다.
+- Link는 버튼처럼 보이게 만들지 말고 본문 이동은 `text-link` 계열로 처리한다.
+- Tab은 목적에 따라 underline, box, pill, segmented 중 하나로 구분한다.
+- 상태는 `state-pill` 또는 `components/상태_유형_칩_기준.md`의 chip 규칙을 따른다.
+- 검색/필터가 필요하면 `components/검색필터_기준.md`를 따른다.
+- Drawer 상세가 필요하면 `components/인라인_Drawer_기준.md`를 따른다.
+
+접근성:
+- 버튼, 링크, 입력, 탭은 focus-visible 상태가 있어야 한다.
+- 탭은 `role=&quot;tablist&quot;`, `aria-selected`를 맞춘다.
+- 토스트는 `aria-live=&quot;polite&quot;`를 사용한다.
+- 모달/Drawer는 제목과 닫기 버튼, ESC 닫기, focus 복귀를 포함한다.
+- 상태는 색상만으로 전달하지 않고 텍스트를 함께 제공한다.
+
+반응형:
+- 모바일에서는 Hero, CTA, 핵심 일정/신청 정보가 먼저 읽히게 한다.
+- 표가 필요한 경우 무리하게 카드로 바꾸지 말고 핵심 열 우선 표시 또는 가로 스크롤을 허용한다.
+- 텍스트는 부모 안에서 줄바꿈되게 하고, 겹침/잘림을 만들지 않는다.
+
+금지:
+- BO 테이블용 8px 초밀도 스타일을 사용자 화면 본문 기본값으로 쓰지 않는다.
+- 큰 설명 카드만 반복해서 첫 화면을 채우지 않는다.
+- 보라/파랑 그라데이션, 장식용 blob, 의미 없는 일러스트를 기본 hero로 쓰지 않는다.
+- 상태를 빨강/노랑/초록 글자색만으로 표시하지 않는다.
+- 기존 클래스와 토큰을 무시하고 새로운 디자인 언어를 만들지 않는다.
+
+산출물:
+- 기준 토큰을 따르는 사용자용 화면
+- Header, 본문 핵심 섹션, CTA, FAQ 또는 안내 영역, Footer
+- 접근성 속성
+- 모바일 대응
+- 상태/유형 반복값은 chip 또는 pill로 정리</code></pre>
+<h2>출력 체크리스트</h2>
+<ul>
+<li>H1이 화면 목적을 직접 말하는가?</li>
+<li>CTA가 첫 viewport에서 보이는가?</li>
+<li>상태/유형값이 텍스트 색상만으로 표시되지 않는가?</li>
+<li><code>layout.css</code> 기준 토큰과 클래스가 우선 사용되었는가?</li>
+<li>BO 테이블 화면처럼 과도하게 조밀해지지 않았는가?</li>
+</ul>
+</body>
+</html>

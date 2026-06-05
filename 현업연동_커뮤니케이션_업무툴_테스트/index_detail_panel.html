@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 AI NEXT-GEN WORKSPACE - MASTER COMPONENT</title>
+    <style>
+        /* [가독성 원칙] 전체 기본 서체는 얇게(300), 중요 강조소만 두껍게(700) 제어 */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, sans-serif; font-size: 11px; font-weight: 300; }
+        strong, b, th, .bold-text { font-weight: 700; }
+        body { display: flex; flex-direction: column; height: 100vh; background-color: #f8fafc; color: #0f172a; overflow: hidden; }
+        
+        /* 상단 헤더 */
+        header { height: 40px; background-color: #1e1e24; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; border-bottom: 2px solid #0ea5e9; z-index: 100; }
+        .logo-zone { font-weight: 800; font-size: 12px; color: #38bdf8; }
+        .search-wrapper input { width: 300px; padding: 4px 8px; border-radius: 4px; border: 1px solid #334155; background: #2a2a35; color: white; }
+
+        /* 메인 레이아웃 바디 */
+        .workspace-body { display: flex; flex: 1; overflow: hidden; }
+
+        /* 1단: 좌측 목차 (원본 메뉴 12개 항목 무손실 고정 매핑) */
+        .sidebar-v3 { width: 145px; background-color: #1e293b; color: #cbd5e1; display: flex; flex-direction: column; padding: 5px 0; border-right: 1px solid #0f172a; overflow-y: auto; }
+        .sidebar-v3 .menu-section-title { font-size: 9px; font-weight: bold; color: #64748b; padding: 6px 12px; text-transform: uppercase; background-color: #0f172a; margin: 2px 0; }
+        .sidebar-v3 .menu-item { padding: 6px 15px; cursor: pointer; color: #94a3b8; border-bottom: 1px solid #233146; }
+        .sidebar-v3 .menu-item:hover { background-color: #334155; color: white; }
+        .sidebar-v3 .menu-item.active { background-color: #0ea5e9; color: white; font-weight: bold; }
+
+        /* 3-Pane 메인 무대 스테이지 */
+        .stage-pane { flex: 1; display: flex; overflow: hidden; }
+
+        /* 2단: 중앙 마스터 그리드 테이블 구역 */
+        .table-space { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: white; border-right: 1px solid #cbd5e1; }
+        .table-toolbar { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
+        
+        .table-scroll { flex: 1; overflow: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 1400px; table-layout: fixed; }
+        th { background: #f1f5f9; color: #334155; padding: 8px; border-bottom: 2px solid #cbd5e1; border-right: 1px solid #e2e8f0; text-align: left; position: sticky; top: 0; z-index: 10; }
+        td { padding: 8px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #f1f5f9; vertical-align: top; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        tr:hover { background-color: #f0fdfa; cursor: pointer; }
+        tr.selected { background-color: #e0f2fe; }
+
+        /* [구획 교정] 피드 컨테이너 정의: 중요(두껍게), 댓글(얇게) */
+        .feed-box-notice { margin-top: 4px; font-size: 10px; background: #fff5f5; border-left: 3px solid #ef4444; padding: 3px 5px; border-radius: 3px; color: #b91c1c; }
+        .feed-box-comment { margin-top: 4px; font-size: 10px; background: #f8fafc; border: 1px solid #e2e8f0; padding: 3px 5px; border-radius: 3px; color: #64748b; display: flex; flex-direction: column; gap: 2px; }
+        .summary-row { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; }
+
+        /* 배지 시스템 */
+        .time-badge { display: inline-block; padding: 1px 4px; border-radius: 3px; font-size: 10px; font-weight: bold; margin-left: 4px; }
+        .time-alert { background-color: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; }
+        .time-safe { background-color: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+        .marker-tag { display: inline-flex; align-items: center; gap: 3px; margin-right: 4px; padding: 1px 4px; font-weight: 600; }
+        .marker-blue { color: #2563eb; } .marker-green { color: #16a34a; } .marker-orange { color: #ea580c; border: 1px solid #fed7aa; background: #fff7ed; border-radius: 10px; font-size: 10px; }
+
+        /* ---------------------------------------------------- */
+        /* 3단: 우측 대형 상세 소통 룸 (X 닫기 버튼 탑재) */
+        /* ---------------------------------------------------- */
+        .big-detail-pane { width: 55%; background: #eef2f7; display: flex; flex-direction: column; overflow: hidden; border-left: 1px solid #cbd5e1; transition: width 0.2s ease; }
+        .big-detail-pane.closed { width: 0px; display: none !important; }
+        
+        .pane-tabs { display: flex; background: #f1f5f9; border-bottom: 1px solid #cbd5e1; justify-content: space-between; align-items: center; }
+        .pane-tab-item { padding: 8px 16px; font-weight: bold; color: #0284c7; background: white; border-right: 1px solid #cbd5e1; }
+        .pane-close-btn { background: #ef4444; color: white; border: none; padding: 4px 10px; margin-right: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
+        .no-frame-container {
+            margin: 12px;
+            padding: 0;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            overflow: hidden;
+        }
+        .detail-module-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .detail-kicker { font-size: 9px; font-weight: 800; color: #64748b; letter-spacing: 0; margin-bottom: 4px; }
+        .detail-title { font-size: 13px; font-weight: 800; color: #1e3a8a; line-height: 1.35; }
+        .detail-state-badge {
+            flex: 0 0 auto;
+            min-height: 22px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .info-meta-wrapper {
+            display: flex;
+            gap: 1px;
+            padding: 1px;
+            background: #e2e8f0;
+        }
+        .meta-text-item {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            padding: 8px 10px;
+            color: #475569;
+            line-height: 1.35;
+        }
+        .meta-text-item strong { color: #0f172a; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .detail-module-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            padding: 12px;
+        }
+        .instruction-section {
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: #ffffff;
+            overflow: hidden;
+        }
+        .instruction-section.span-2 { grid-column: span 2; }
+        .instruction-section.span-4,
+        .instruction-section.full-width { grid-column: 1 / -1; }
+        .instruction-title {
+            padding: 7px 9px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            color: #0369a1;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        .instruction-body {
+            min-height: 54px;
+            padding: 9px 10px;
+            color: #334155;
+            line-height: 1.6;
+            background: #ffffff;
+        }
+        .instruction-section.risk-module { border-color: #fed7aa; background: #fff7ed; }
+        .instruction-section.risk-module .instruction-title { color: #c2410c; background: #fffbeb; border-bottom-color: #fed7aa; }
+        .instruction-section.risk-module .instruction-body { color: #c2410c; background: #fffaf3; font-weight: 600; }
+        .shared-cabinet-mini {
+            min-height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 9px 10px;
+            background: #ffffff;
+        }
+        .asset-name { min-width: 0; display: flex; align-items: center; gap: 6px; color: #334155; }
+        .asset-name span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+        .module-actions { display: flex; gap: 4px; flex: 0 0 auto; }
+        .btn-download-half { padding: 2px 7px; font-size: 10px; background-color: #64748b; color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: 700; min-height: 22px; }
+        .btn-download-half:hover { background-color: #475569; }
+        @media (max-width: 900px) {
+            .info-meta-wrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .detail-module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .instruction-section.span-2 { grid-column: span 1; }
+        }
+        @media (max-width: 640px) {
+            .info-meta-wrapper { grid-template-columns: 1fr; }
+            .detail-module-grid { grid-template-columns: 1fr; }
+            .instruction-section.span-2 { grid-column: 1 / -1; }
+            .detail-module-header { flex-direction: column; }
+            .detail-state-badge { align-self: flex-start; }
+        }
+
+        /* 슬랙 스타일 커뮤니케이션 */
+        .slack-chat-flow { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; background: #ffffff; border-top: 1px solid #e2e8f0; }
+        .slack-msg { display: flex; gap: 10px; align-items: flex-start; }
+        .slack-avatar { width: 26px; height: 26px; background: #0ea5e9; color: white; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .slack-msg-body { flex: 1; }
+        .slack-username { font-weight: 700; color: #1e293b; }
+        .slack-text { color: #334155; line-height: 1.5; margin-top: 2px; }
+
+        .slack-input-station { padding: 10px; background: #ffffff; border-top: 1px solid #e2e8f0; }
+        .slack-input-box { border: 2px solid #cbd5e1; border-radius: 6px; padding: 6px; }
+        .slack-input-box textarea { width: 100%; border: none; outline: none; background: transparent; resize: none; min-height: 35px; }
+        .slack-toolbar { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
+
+        /* 하단 즉시 생성 폼 구역 */
+        .immediate-form-zone { background: #f1f5f9; border-top: 2px solid #cbd5e1; padding: 8px 12px; }
+        .compressed-row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+        .compact-field { display: flex; align-items: center; gap: 4px; }
+        .compact-field label { font-weight: bold; color: #475569; white-space: nowrap; }
+        .immediate-form-zone input[type="text"], .immediate-form-zone select { padding: 3px 6px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; height: 24px; }
+        .btn-trigger-add { padding: 3px 12px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; height: 24px; }
+
+        /* 편집기 툴바 및 텍스트 박스 */
+        .wysiwyg-editor-toolbar { display: flex; gap: 2px; background: #e2e8f0; border: 1px solid #cbd5e1; border-bottom: none; border-radius: 4px 4px 0 0; padding: 2px 4px; width: 100%; }
+        .editor-btn { background: white; border: 1px solid #cbd5e1; border-radius: 2px; padding: 1px 4px; cursor: pointer; font-size: 9px; font-weight: bold; }
+        textarea.wysiwyg-textarea-box { width: 100%; height: 75px; border: 1px solid #cbd5e1; border-radius: 0 0 4px 4px; padding: 6px; resize: none; background: white; }
+
+        /* 모달 미리보기 구조 */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-window { width: 500px; background: white; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); overflow: hidden; }
+        .modal-header { background: #f1f5f9; padding: 8px 12px; font-weight: bold; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; }
+        .modal-body { padding: 20px; text-align: center; background: #fafafa; min-height: 180px; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-zone">⚡ 2026 AI CO-PILOT PLATFORM WORKSPACE</div>
+        <div class="search-wrapper"><input type="text" id="top-search-filter" placeholder="🔍 프로젝트 본문, 담당자 실시간 통합 검색..." onkeyup="runGridSearch()"></div>
+        <div style="font-size: 11px;">시스템 마스터 총괄 계정</div>
+    </header>
+
+    <div class="workspace-body">
+        
+        <nav class="sidebar-v3">
+            <div class="menu-section-title">📊 메인 대시보드</div>
+            <div class="menu-item active" onclick="switchMenuState(this)">👥 참여중리스트</div>
+            <div class="menu-item" onclick="switchMenuState(this)">✨ 새로 만들기</div>
+            <div class="menu-section-title">📅 미팅/회의 프로세스</div>
+            <div class="menu-item" onclick="switchMenuState(this)">💬 초대한 미팅</div>
+            <div class="menu-item" onclick="switchMenuState(this)">📥 초대된미팅</div>
+            <div class="menu-item" onclick="switchMenuState(this)">🏁 종료된미팅</div>
+            <div class="menu-section-title">🚀 고도화 추적 링크</div>
+            <div class="menu-item" onclick="switchMenuState(this)">📤 초대한프로젝트</div>
+            <div class="menu-item" onclick="switchMenuState(this)">📥 초대된프로젝트</div>
+            <div class="menu-item" onclick="switchMenuState(this)">🔒 종료된프로젝트</div>
+            <div class="menu-section-title">📦 시스템 스토리지</div>
+            <div class="menu-item" onclick="switchMenuState(this)">📦 보관함</div>
+            <div class="menu-item" onclick="switchMenuState(this)">📊 전체 리스트</div>
+        </nav>
+
+        <div class="stage-pane">
+            
+            <div class="table-space" id="center-grid-container">
+                <div class="table-toolbar">
+                    <h3 style="font-size: 11px; font-weight: bold; color: #1e293b;">📋 현업 연동 커뮤니케이션 업무 스트림 현황</h3>
+                    <button class="btn-trigger-add" style="background:#64748b; height:20px; font-size:10px; padding:2px 6px;" onclick="openDetailPane()">📂 우측 상세창 열기</button>
+                </div>
+
+                <div class="table-scroll">
+                    <table id="master-flow-table">
+                        <colgroup>
+                            <col style="width: 25px;"><col style="width: 40px;"><col style="width: 50px;"><col style="width: 50px;">
+                            <col style="width: 150px;"><col style="width: 220px;"><col style="width: 220px;"><col style="width: 80px;">
+                            <col style="width: 80px;"><col style="width: 65px;"><col style="width: 160px;"><col style="width: 110px;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>🗹</th>
+                                <th>번호</th>
+                                <th>시작일</th>
+                                <th>생성인</th>
+                                <th>대/중/소 계층 분류</th>
+                                <th>대표 프로젝트 제목 / 중요 (칸 분리)</th>
+                                <th>📋 세부내용 / 댓글 피드 (칸 분리)</th>
+                                <th>main마감일</th>
+                                <th>HOST마감일</th>
+                                <th>main게스트</th>
+                                <th>sub게스트 (5명 샘플 노출)</th>
+                                <th>공유 자료 (미리보기)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="selected" onclick="syncDetailNoFrame(3237, '◆ 코어 프로그램 리팩토링 및 쿼리 최적화 건', '260604', '박지민', '개발본부', '프로그램', '코어엔진', '홍길동', '최민식, 송강호, 강동원, 배수지, 하정우', '260615', '260618', '사양서 기준 싱글쿼테이션 오류 예외처리 강화할 것.', '1. 다국어 테이블 매핑 로직 점검&#10;2. 글로벌 인덱싱 튜닝&#10;3. 예외 로그 덤프 기능 구현', 'core_spec.pdf')">
+                                <td><input type="checkbox" checked></td>
+                                <td>3237</td>
+                                <td>260604</td>
+                                <td>박지민</td>
+                                <td><span class="marker-tag marker-blue">개발본부</span>&gt;<span class="marker-tag marker-green">프로그램</span>&gt;<span class="marker-tag marker-orange">코어엔진</span></td>
+                                
+                                <td>
+                                    <div style="color: #1e40af; font-weight: 300;">◆ 코어 프로그램 리팩토링 및 쿼리 최적화 건</div>
+                                    <div class="feed-box-notice">
+                                        ⚠️ <span class="bold-text">중요: 사양서 기준 싱글쿼테이션 오류 예외처리 강화할 것.</span>
+                                    </div>
+                                </td>
+                                
+                                <td>
+                                    <div style="color:#334155; line-height:1.4; font-weight: 300;">
+                                        1. 다국어 테이블 매핑 로직 점검<br>2. 글로벌 인덱싱 튜닝<br>3. 예외 로그 덤프 기능 구현
+                                    </div>
+                                    <div class="feed-box-comment" style="font-weight: 300;">
+                                        <div class="summary-row">💬 홍길동: 예외처리 로직 고도화 패키징 테스트 완료...</div>
+                                        <div class="summary-row">💬 박지민: 인덱싱 튜닝 사양 준수 철저히 검증 요망...</div>
+                                    </div>
+                                </td>
+                                
+                                <td>260615<span class="time-badge time-alert">11일전</span></td>
+                                <td>260618<span class="time-badge time-safe">14일전</span></td>
+                                <td>홍길동</td>
+                                <td>최민식, 송강호, 강동원, 배수지, 하정우</td>
+                                <td><button class="btn-download-half" style="background:#0284c7; color:white;" onclick="callPreviewEngine('core_spec.pdf')">📎 core_spec.pdf</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="immediate-form-zone">
+                    <div style="font-weight: bold; color: #2563eb; margin-bottom: 5px;">➕ 가로 압축 연동형 프로젝트 및 미팅 프로세스 즉시 생성기</div>
+                    <form onsubmit="event.preventDefault(); pushNewRowToGrid();">
+                        <div class="compressed-row">
+                            <div class="compact-field"><label>📅 기한 (main / HOST):</label><input type="text" id="add-dead" value="260615 / 260618" style="width:110px;"></div>
+                            <div class="compact-field"><label>👑 main게스트 책임자 (단일):</label>
+                                <select id="add-mguest">
+                                    <option>홍길동</option>
+                                    <option>김철수</option>
+                                </select>
+                            </div>
+                            <div class="compact-field">
+                                <label>👥 sub게스트 협업 그룹 (5명 체크):</label>
+                                <label style="font-weight:normal;"><input type="checkbox" checked> 최민식</label>
+                                <label style="font-weight:normal;"><input type="checkbox" checked> 송강호</label>
+                                <label style="font-weight:normal;"><input type="checkbox" checked> 강동원</label>
+                                <label style="font-weight:normal;"><input type="checkbox" checked> 배수지</label>
+                                <label style="font-weight:normal;"><input type="checkbox" checked> 하정우</label>
+                            </div>
+                            <div class="compact-field">
+                                <label>⚙️ 분류 시스템:</label>
+                                <select id="add-l"><option>개발본부</option></select>
+                                <select id="add-m"><option>프로그램</option></select>
+                                <select id="add-s"><option>코어엔진</option></select>
+                            </div>
+                            <div class="compact-field"><label>시작일:</label><input type="text" id="add-sdate" value="260604" style="width:45px;"></div>
+                        </div>
+                        
+                        <div class="compressed-row">
+                            <div class="compact-field" style="flex: 1;"><label>📌 프로젝트 지시 핵심 제목:</label><input type="text" id="add-title" placeholder="핵심 헤드라인 안건 타이틀 명칭..." style="width:100%;"></div>
+                        </div>
+
+                        <div class="compressed-row" style="align-items: stretch;">
+                            <div style="flex: 1; display:flex; flex-direction:column;">
+                                <label style="font-weight:bold; color:#475569; margin-bottom:2px;">📋 세부내용 기입 (1번 ~ 3번 자동 가이드 템플릿)</label>
+                                <div class="wysiwyg-editor-toolbar">
+                                    <button type="button" class="editor-btn"><b>B</b></button>
+                                    <button type="button" class="editor-btn"><i>I</i></button>
+                                    <button type="button" class="editor-btn">📝 표 삽입</button>
+                                    <button type="button" class="editor-btn" style="color:blue;">📎 링크 연동</button>
+                                </div>
+                                <textarea id="add-steps" class="wysiwyg-textarea-box" placeholder="1. &#10;2. &#10;3. "></textarea>
+                            </div>
+                            <div style="flex: 1; display:flex; flex-direction:column;">
+                                <label style="font-weight:bold; color:#475569; margin-bottom:2px;">⚠️ 중요 및 특이사항 기재</label>
+                                <div class="wysiwyg-editor-toolbar">
+                                    <button type="button" class="editor-btn" style="color:red;">⚠️ Risk 지정</button>
+                                    <button type="button" class="editor-btn">알림 대상 지정 ▾</button>
+                                </div>
+                                <textarea id="add-notice" class="wysiwyg-textarea-box" placeholder="지연 리스크 및 부서간 조율 요망 건..."></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:flex-end; margin-top:5px;">
+                            <button type="submit" class="btn-trigger-add">💾 시스템 마스터 등록 발행</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="big-detail-pane" id="right-detail-pane">
+                <div class="pane-tabs">
+                    <div class="pane-tab-item">💬 슬랙형 실시간 이력 및 연속 소통 룸</div>
+                    <button class="pane-close-btn" onclick="closeDetailPane()">❌ 상세창 닫기</button>
+                </div>
+
+                <div class="no-frame-container">
+                    <div class="detail-module-header">
+                        <div>
+                            <div class="detail-kicker">TABLE SELECTED DRAWER DETAIL PANEL</div>
+                            <div class="detail-title" id="nd-title">◆ 코어 프로그램 리팩토링 및 쿼리 최적화 건</div>
+                        </div>
+                        <div class="detail-state-badge">선택 항목 상세</div>
+                    </div>
+                    <div class="info-meta-wrapper">
+                        <div class="info-meta-row">
+                            <div class="meta-text-item">🔢 번호: <strong id="nd-no">3237</strong></div>
+                            <div class="meta-text-item">📅 시작일자: <strong id="nd-sdate">260604</strong></div>
+                            <div class="meta-text-item">👤 최초생성인: <strong id="nd-creator">박지민</strong></div>
+                            <div class="meta-text-item">🎯 계층분류: <strong id="nd-cate">개발본부 > 프로그램 > 코어엔진</strong></div>
+                            <div class="meta-text-item">👑 main책임: <strong id="nd-mguest">홍길동</strong></div>
+                            <div class="meta-text-item">👥 sub그룹(5명): <strong id="nd-sguest">최민식, 송강호, 강동원, 배수지, 하정우</strong></div>
+                            <div class="meta-text-item">🏁 기한(main/HOST): <strong id="nd-deadlines">260615 / 260618</strong></div>
+                            <div class="meta-text-item">📌 상태: <strong>진행중</strong></div>
+                        </div>
+                        <div class="detail-module-grid">
+                            <div class="instruction-section span-2">
+                                <div class="instruction-title">📋 프로젝트 업무 가이드라인 (1-3 체계)</div>
+                                <div class="instruction-body" id="nd-steps">
+                                    1. 다국어 테이블 매핑 로직 점검<br>2. 글로벌 인덱싱 튜닝<br>3. 예외 로그 덤프 기능 구현
+                                </div>
+                            </div>
+
+                            <div class="instruction-section risk-module span-2">
+                                <div class="instruction-title">⚠️ 중요 및 특이사항 (Risk Factor)</div>
+                                <div class="instruction-body" id="nd-notice">
+                                    사양서 기준 싱글쿼테이션 오류 예외처리 강화할 것.
+                                </div>
+                            </div>
+
+                            <div class="instruction-section span-4">
+                                <div class="instruction-title">📂 공유 자산 파일 관리 스페이스</div>
+                                <div class="shared-cabinet-mini">
+                                    <div class="asset-name">
+                                        <span>📄</span>
+                                        <span id="nd-filename">core_spec.pdf</span>
+                                    </div>
+                                    <div class="module-actions">
+                                        <button class="btn-download-half" onclick="callPreviewEngine(document.getElementById('nd-filename').innerText)">🔍 미리보기</button>
+                                        <button class="btn-download-half" style="background:#0ea5e9; color:white;" onclick="alert('다운로드가 완료되었습니다.')">📥 다운로드</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slack-chat-flow" id="slack-timeline-wall">
+                    <div class="slack-msg">
+                        <div class="slack-avatar" style="background:#8b5cf6;">JM</div>
+                        <div class="slack-msg-body">
+                            <div class="slack-msg-header"><span class="slack-username">박지민 (생성인)</span></div>
+                            <div class="slack-text">메인 쿼리 로직 상에서 데이터 동기화 딜레이 예외처리 덤프 신경 써주세요.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slack-input-station">
+                    <div class="slack-input-box">
+                        <textarea id="slack-msg-console" placeholder="댓글을 연속 작성하세요... (Ctrl + Enter 전송)"></textarea>
+                        <div class="slack-toolbar">
+                            <span style="color:#94a3b8; cursor:pointer;">📎 😃 🎙️ 허들 참여</span>
+                            <button class="btn-download-half" style="background:#0ea5e9; font-size:11px; padding:3px 8px; color:white;" onclick="addSlackLiveMessage()">💬 전송</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="preview-modal-wrapper">
+        <div class="modal-window">
+            <div class="modal-header">
+                <span id="modal-title-text">공유 자산 통합 미리보기 시스템</span>
+                <span style="cursor:pointer; color:red; font-weight:bold;" onclick="closePreviewModal()">❌ 닫기</span>
+            </div>
+            <div class="modal-body" id="modal-render-zone"></div>
+        </div>
+    </div>
+
+    <script>
+        function closeDetailPane() {
+            document.getElementById('right-detail-pane').classList.add('closed');
+        }
+
+        function openDetailPane() {
+            document.getElementById('right-detail-pane').classList.remove('closed');
+        }
+
+        function addSlackLiveMessage() {
+            const area = document.getElementById('slack-msg-console');
+            if(!area.value.trim()) return;
+
+            const wall = document.getElementById('slack-timeline-wall');
+            const now = new Date();
+            const timeStr = `오후 ${String(now.getHours() % 12 || 12).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            const msg = document.createElement('div');
+            msg.className = 'slack-msg';
+            msg.innerHTML = `
+                <div class="slack-avatar" style="background:#10b981;">OP</div>
+                <div class="slack-msg-body">
+                    <div class="slack-msg-header"><span class="slack-username">운영 관리자 (나)</span> <span style="color:#94a3b8; font-size:9px;">${timeStr}</span></div>
+                    <div class="slack-text">${area.value.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
+            wall.appendChild(msg);
+            area.value = '';
+            wall.scrollTop = wall.scrollHeight;
+        }
+
+        function syncDetailNoFrame(no, title, sdate, creator, cateL, cateM, cateS, mguest, sguest, mainDead, hostDead, notice, stepsText, filename) {
+            document.getElementById('nd-no').innerText = no;
+            document.getElementById('nd-title').innerText = title;
+            document.getElementById('nd-sdate').innerText = sdate;
+            document.getElementById('nd-creator').innerText = creator;
+            document.getElementById('nd-cate').innerText = `${cateL} > ${cateM} > ${cateS}`;
+            document.getElementById('nd-mguest').innerText = mguest;
+            document.getElementById('nd-sguest').innerText = sguest;
+            document.getElementById('nd-deadlines').innerText = `${mainDead} / ${hostDead}`;
+            document.getElementById('nd-notice').innerText = notice;
+            document.getElementById('nd-filename').innerText = filename;
+            document.getElementById('nd-steps').innerHTML = stepsText.replace(/\n/g, '<br>');
+
+            openDetailPane();
+
+            const rows = document.querySelectorAll('#master-flow-table tbody tr');
+            rows.forEach(r => r.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function callPreviewEngine(filename) {
+            document.getElementById('modal-title-text').innerText = `📄 파일 스캔 미리보기: ${filename}`;
+            const zone = document.getElementById('modal-render-zone');
+            
+            if(filename.endsWith('.png') || filename.endsWith('.jpg')) {
+                zone.innerHTML = `<img src="https://via.placeholder.com/420x200/0ea5e9/ffffff?text=IMAGE+MOCKUP+PREVIEW" style="max-width:100%; border-radius:4px;">`;
+            } else {
+                zone.innerHTML = `<div style="background:#f1f5f9; padding:20px; border-radius:4px; width:100%; text-align:left; font-weight:300;">
+                    <strong>[PDF 통합 클라우드 검수 임베드 모듈]</strong><br><br>
+                    다운로드 없이 즉시 스펙 검증이 가능한 실시간 인라인 미리보기 영역입니다.
+                </div>`;
+            }
+            document.getElementById('preview-modal-wrapper').style.display = 'flex';
+        }
+
+        function closePreviewModal() {
+            document.getElementById('preview-modal-wrapper').style.display = 'none';
+        }
+
+        function pushNewRowToGrid() {
+            const title = document.getElementById('add-title').value || "신규 3단 마스터 연동 안건";
+            const sdate = document.getElementById('add-sdate').value;
+            const cateL = document.getElementById('add-l').value;
+            const cateM = document.getElementById('add-m').value;
+            const cateS = document.getElementById('add-s').value;
+            const dead = document.getElementById('add-dead').value;
+            const mguest = document.getElementById('add-mguest').value;
+            const steps = document.getElementById('add-steps').value;
+            const notice = document.getElementById('add-notice').value;
+
+            const tbody = document.querySelector('#master-flow-table tbody');
+            const nextId = Math.floor(Math.random() * 1000) + 4000;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="checkbox"></td>
+                <td>${nextId}</td>
+                <td>${sdate}</td>
+                <td>운영자</td>
+                <td><span class="marker-tag marker-blue">${cateL}</span>&gt;<span class="marker-tag marker-green">${cateM}</span>&gt;<span class="marker-tag marker-orange">${cateS}</span></td>
+                <td>
+                    <div style="font-weight: 300; color: #1e40af;">${title}</div>
+                    <div class="table-comment-summary">
+                        <div class="summary-row notice-row">⚠️ <strong>중요: ${notice || '특이사항 없음'}</strong></div>
+                    </div>
+                </td>
+                <td>
+                    <div style="font-weight: 300; line-height:1.4;">${steps.replace(/\n/g, '<br>')}</div>
+                    <div class="table-comment-summary">
+                        <div class="summary-row" style="font-weight: 300;">💬 <strong>운영자:</strong> 즉시 폼 피드로 신규 안건을 인젝션했습니다.</div>
+                    </div>
+                </td>
+                <td>${dead.split('/')[0]}<span class="time-badge time-alert">추적</span></td>
+                <td>${dead.split('/')[1] || '261231'}<span class="time-badge time-safe">여유</span></td>
+                <td>${mguest}</td>
+                <td>최민식, 송강호, 강동원, 배수지, 하정우</td>
+                <td><button class="btn-download-half" style="background:#0284c7; color:white;" onclick="callPreviewEngine('attached_doc.pdf')">📎 attached_doc.pdf</button></td>
+            `;
+
+            tr.onclick = function() {
+                syncDetailNoFrame(nextId, title, sdate, '운영자', cateL, cateM, cateS, mguest, '최민식, 송강호, 강동원, 배수지, 하정우', dead.split('/')[0], dead.split('/')[1]||'261231', notice, steps, 'attached_doc.pdf');
+            };
+
+            tbody.appendChild(tr);
+            alert('업무 안건이 마스터 리스트 하단에 즉시 추가 발행 처리되었습니다.');
+            document.getElementById('add-title').value = '';
+        }
+
+        function runGridSearch() {
+            const query = document.getElementById('top-search-filter').value.toLowerCase();
+            const rows = document.querySelectorAll('#master-flow-table tbody tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? "" : "none";
+            });
+        }
+
+        function switchMenuState(el) {
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            el.classList.add('active');
+        }
+    </script>
+</body>
+</html>

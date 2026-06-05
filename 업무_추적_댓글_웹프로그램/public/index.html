@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>업무 히스토리 트래커</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <section id="login-view" class="login-shell">
+      <form id="login-form" class="login-card">
+        <div class="brand-mark">WORKLOG</div>
+        <h1>업무 히스토리 트래커</h1>
+        <p class="subtle">프로젝트와 부서 업무의 변경, 댓글, 첨부를 한 화면에서 추적합니다.</p>
+        <label>이메일
+          <input id="login-email" name="email" type="email" value="manager@demo.local" required>
+        </label>
+        <label>비밀번호
+          <input id="login-password" name="password" type="password" value="demo1234" required>
+        </label>
+        <button class="primary full" type="submit">로그인</button>
+        <p id="login-error" class="error" aria-live="polite"></p>
+        <div class="demo-note">
+          <strong>데모 계정</strong>
+          <span>admin@demo.local / manager@demo.local / member@demo.local</span>
+          <span>비밀번호: demo1234</span>
+        </div>
+      </form>
+    </section>
+
+    <div id="app-view" class="app hidden">
+      <header class="app-header">
+        <div class="brand-mark">WORKLOG</div>
+        <div class="context">
+          <select id="header-department" aria-label="현재 부서"></select>
+        </div>
+        <div class="user-menu">
+          <strong id="current-user"></strong>
+          <span id="current-role" class="role"></span>
+          <button id="logout" class="ghost">로그아웃</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="list-pane">
+          <div class="pane-heading">
+            <h1>업무 목록</h1>
+            <button id="new-work" class="primary">+ 업무 등록</button>
+          </div>
+          <form id="filters" class="filters">
+            <input id="filter-query" type="search" placeholder="제목 또는 내용 검색">
+            <select id="filter-project"><option value="">전체 프로젝트</option></select>
+            <select id="filter-status">
+              <option value="">전체 상태</option>
+              <option value="OPEN">대기</option>
+              <option value="IN_PROGRESS">진행중</option>
+              <option value="BLOCKED">보류</option>
+              <option value="DONE">완료</option>
+              <option value="ARCHIVED">보관</option>
+            </select>
+            <button class="ghost" type="submit">조회</button>
+          </form>
+          <div class="table-wrap">
+            <table class="work-table">
+              <thead>
+                <tr><th>상태</th><th>우선순위</th><th>업무</th><th>프로젝트</th><th>담당자</th><th>최근 변경</th></tr>
+              </thead>
+              <tbody id="work-rows"></tbody>
+            </table>
+            <p id="empty-work" class="empty hidden">표시할 업무가 없습니다.</p>
+          </div>
+        </section>
+
+        <section id="detail-empty" class="detail-empty">
+          <strong>업무를 선택하세요</strong>
+          <span>관련 논의와 변경 이력이 이 영역에 표시됩니다.</span>
+        </section>
+        <section id="detail-pane" class="detail-pane hidden">
+          <div class="detail-title">
+            <div>
+              <span id="detail-path" class="path"></span>
+              <h2 id="detail-title"></h2>
+            </div>
+            <div class="title-actions">
+              <span id="detail-priority"></span>
+              <select id="detail-status" aria-label="업무 상태"></select>
+            </div>
+          </div>
+          <div class="detail-grid">
+            <aside class="summary">
+              <h3>업무 정보</h3>
+              <dl id="work-meta"></dl>
+              <p id="work-description" class="description"></p>
+              <div class="section-row">
+                <h3>첨부파일</h3>
+                <label class="attach-button">+ 추가<input id="attachment-file" type="file"></label>
+              </div>
+              <ul id="attachment-list" class="attachment-list"></ul>
+              <p id="attachment-message" class="error" aria-live="polite"></p>
+            </aside>
+            <div class="feed">
+              <div class="tabs" id="activity-tabs">
+                <button class="active" data-filter="ALL">전체</button>
+                <button data-filter="CHANGE">변경</button>
+                <button data-filter="COMMENT">댓글</button>
+                <button data-filter="FILE">파일</button>
+              </div>
+              <section class="timeline-section">
+                <h3>활동 히스토리</h3>
+                <ul id="timeline" class="timeline"></ul>
+              </section>
+              <section class="comment-section">
+                <div class="section-row"><h3>댓글 및 대댓글</h3><span id="comment-count"></span></div>
+                <ul id="comments" class="comments"></ul>
+                <form id="comment-form" class="comment-form">
+                  <input id="reply-parent" type="hidden">
+                  <div id="reply-banner" class="reply-banner hidden"></div>
+                  <textarea id="comment-body" rows="3" placeholder="진행 사항이나 의견을 기록하세요." required></textarea>
+                  <div class="form-actions">
+                    <button id="cancel-reply" type="button" class="ghost hidden">답글 취소</button>
+                    <button type="submit" class="primary">댓글 등록</button>
+                  </div>
+                </form>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="work-dialog">
+      <form id="work-form" class="work-form" method="dialog">
+        <div class="section-row"><h2>새 업무 등록</h2><button type="button" id="close-work" class="ghost">닫기</button></div>
+        <label>제목 <input name="title" maxlength="200" required></label>
+        <label>내용 <textarea name="description" rows="5"></textarea></label>
+        <div class="form-columns">
+          <label>프로젝트 <select name="projectId" id="create-project"></select></label>
+          <label>담당자 <select name="assigneeId" id="create-assignee"></select></label>
+          <label>상태
+            <select name="status"><option value="OPEN">대기</option><option value="IN_PROGRESS">진행중</option><option value="BLOCKED">보류</option><option value="DONE">완료</option></select>
+          </label>
+          <label>우선순위
+            <select name="priority"><option value="MEDIUM">보통</option><option value="HIGH">높음</option><option value="URGENT">긴급</option><option value="LOW">낮음</option></select>
+          </label>
+        </div>
+        <p id="work-error" class="error"></p>
+        <div class="form-actions"><button class="primary" type="submit">저장</button></div>
+      </form>
+    </dialog>
+    <div id="toast" class="toast hidden" aria-live="polite"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>

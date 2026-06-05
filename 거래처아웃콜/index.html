@@ -1,0 +1,1755 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>거래처 아웃콜 BO</title>
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --panel: #fff;
+        --line: #d8dde5;
+        --line-soft: #eceff3;
+        --head: #eceef2;
+        --text: #20242c;
+        --muted: #6f7785;
+        --primary: #0088ff;
+        --primary-soft: #e8f4ff;
+        --primary-line: #9bcfff;
+        --danger: #dc3d3d;
+        --warning: #cc8800;
+        --success: #178a3a;
+        --info: #2563eb;
+        --nav: #172236;
+        --nav-line: #2d3a50;
+        --nav-muted: #99a8bc;
+        --radius: 4px;
+        --sidebar-width: 224px;
+        --drawer-width: clamp(560px, 52vw, 820px);
+        --topbar-height: 48px;
+        --bo-font: 11px;
+        --bo-font-small: 10px;
+        --bo-font-table: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: var(--bo-font);
+        letter-spacing: 0;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+        letter-spacing: 0;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+
+      button:focus-visible,
+      input:focus-visible,
+      select:focus-visible,
+      textarea:focus-visible,
+      tr[tabindex]:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 1px;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        display: grid;
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        min-width: 0;
+        border-right: 1px solid var(--nav-line);
+        background: var(--nav);
+        color: #dbe4f2;
+      }
+
+      .brand {
+        display: grid;
+        gap: 2px;
+        padding: 11px 12px;
+        border-bottom: 1px solid var(--nav-line);
+      }
+
+      .brand strong {
+        color: #fff;
+        font-size: 14px;
+        line-height: 18px;
+      }
+
+      .brand span {
+        color: var(--nav-muted);
+        font-size: var(--bo-font-small);
+      }
+
+      .sidebar-search {
+        padding: 8px;
+        border-bottom: 1px solid var(--nav-line);
+      }
+
+      .sidebar-search input {
+        width: 100%;
+        height: 28px;
+        border: 1px solid #3c4b64;
+        border-radius: 0;
+        background: #101a2b;
+        color: #fff;
+        padding: 0 8px;
+      }
+
+      .nav {
+        overflow: auto;
+        padding: 6px 8px 10px;
+      }
+
+      .nav-label {
+        margin: 10px 0 4px;
+        color: #7f90aa;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .nav-button {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 16px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 7px;
+        min-height: 29px;
+        border: 1px solid transparent;
+        border-radius: 0;
+        background: transparent;
+        color: #dbe4f2;
+        padding: 4px 6px;
+        text-align: left;
+      }
+
+      .nav-button:hover,
+      .nav-button:focus-visible {
+        border-color: #40516d;
+        background: #21314b;
+      }
+
+      .nav-button.active {
+        border-color: #2b8cff;
+        background: #0f3a68;
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .nav-button span:nth-child(2) {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .nav-count {
+        min-width: 18px;
+        border: 1px solid #40516d;
+        background: #101a2b;
+        color: #b9c7da;
+        padding: 0 4px;
+        font-size: 10px;
+        line-height: 16px;
+        text-align: center;
+      }
+
+      .sidebar-foot {
+        display: grid;
+        gap: 7px;
+        padding: 8px;
+        border-top: 1px solid var(--nav-line);
+      }
+
+      .user-box {
+        display: grid;
+        grid-template-columns: 24px minmax(0, 1fr);
+        gap: 6px;
+        align-items: center;
+      }
+
+      .avatar {
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border: 1px solid #40516d;
+        background: #101a2b;
+        color: #fff;
+        font-weight: 800;
+      }
+
+      .user-box strong,
+      .user-box span {
+        display: block;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .user-box span {
+        color: var(--nav-muted);
+      }
+
+      .content {
+        display: grid;
+        grid-template-rows: var(--topbar-height) minmax(0, 1fr);
+        min-width: 0;
+        height: 100vh;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        height: var(--topbar-height);
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+        padding: 0 14px;
+      }
+
+      .topbar-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .topbar-title strong {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      .topbar-title span {
+        min-width: 0;
+        overflow: hidden;
+        color: var(--muted);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .topbar-actions,
+      .button-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        min-height: 28px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        color: #414855;
+        padding: 0 10px;
+        white-space: nowrap;
+      }
+
+      .btn:hover {
+        border-color: #aeb7c4;
+        background: #f8fafc;
+      }
+
+      .btn.primary {
+        border-color: var(--primary);
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .btn.danger {
+        border-color: #f1b8b8;
+        background: #fff5f5;
+        color: var(--danger);
+      }
+
+      .icon-btn {
+        min-width: 36px;
+        padding: 0 6px;
+      }
+
+      .page {
+        min-width: 0;
+        overflow: auto;
+        padding: 14px;
+      }
+
+      .page-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      .breadcrumb {
+        margin-bottom: 3px;
+        color: var(--muted);
+        font-size: var(--bo-font-small);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 20px;
+        line-height: 28px;
+        letter-spacing: 0;
+      }
+
+      .meta {
+        margin-top: 3px;
+        color: var(--muted);
+      }
+
+      .major-tabs,
+      .sub-tabs {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+
+      .major-tab,
+      .sub-tab,
+      .filter-chip {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        color: #4d5562;
+        white-space: nowrap;
+      }
+
+      .major-tab {
+        min-height: 30px;
+        padding: 0 11px;
+        font-weight: 700;
+      }
+
+      .sub-tab,
+      .filter-chip {
+        min-height: 24px;
+        padding: 0 8px;
+      }
+
+      .major-tab.active,
+      .sub-tab.active,
+      .filter-chip[aria-pressed="true"] {
+        border-color: var(--primary);
+        background: var(--primary-soft);
+        color: #006dca;
+        font-weight: 800;
+      }
+
+      .dense-filter-card,
+      .table-card,
+      .summary-strip,
+      .quick-panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+      }
+
+      .dense-filter-card {
+        margin-bottom: 8px;
+      }
+
+      .dense-search-main {
+        display: grid;
+        grid-template-columns: minmax(240px, 1fr) repeat(4, minmax(118px, 150px)) auto auto;
+        gap: 7px;
+        align-items: end;
+        padding: 9px 10px;
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .dense-search-field {
+        display: grid;
+        gap: 3px;
+        min-width: 0;
+      }
+
+      .dense-search-field span,
+      .dense-filter-group legend {
+        color: var(--muted);
+        font-size: var(--bo-font-small);
+        font-weight: 700;
+      }
+
+      .field {
+        width: 100%;
+        min-width: 0;
+        height: 28px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--text);
+        padding: 0 8px;
+      }
+
+      textarea.field {
+        height: auto;
+        min-height: 64px;
+        padding: 7px 8px;
+        resize: vertical;
+      }
+
+      .dense-filter-flow {
+        display: grid;
+        gap: 0;
+        padding: 4px 10px 8px;
+      }
+
+      .dense-filter-group {
+        display: grid;
+        align-items: start;
+        gap: 6px;
+        margin: 0;
+        border: 0;
+        border-bottom: 1px solid var(--line-soft);
+        padding: 6px 0;
+      }
+
+      .dense-filter-group:last-child {
+        border-bottom: 0;
+      }
+
+      .dense-filter-options {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        min-width: 0;
+      }
+
+      .dense-check {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        min-height: 24px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        padding: 0 8px 0 6px;
+        white-space: nowrap;
+      }
+
+      .dense-check input {
+        width: 13px;
+        height: 13px;
+        margin: 0;
+      }
+
+      .dense-active-filters {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        min-height: 30px;
+        padding: 0 10px 8px 74px;
+      }
+
+      .filter-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        min-height: 22px;
+        border: 1px solid var(--primary-line);
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: #006dca;
+        padding: 0 8px;
+        font-weight: 700;
+      }
+
+      .filter-tag button,
+      .filter-clear {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        padding: 0;
+      }
+
+      .filter-clear {
+        min-height: 22px;
+        color: var(--muted);
+        text-decoration: underline;
+      }
+
+      .summary-strip {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        margin-bottom: 8px;
+        overflow: hidden;
+      }
+
+      .summary-item {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+        padding: 8px 10px;
+        border-right: 1px solid var(--line-soft);
+      }
+
+      .summary-item:last-child {
+        border-right: 0;
+      }
+
+      .summary-item span {
+        color: var(--muted);
+        font-size: var(--bo-font-small);
+      }
+
+      .summary-item strong {
+        font-size: 16px;
+        line-height: 20px;
+      }
+
+      .table-workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .table-workspace.is-drawer-open {
+        grid-template-columns: minmax(0, 1fr) var(--drawer-width);
+      }
+
+      .table-workspace.is-drawer-wide {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .table-workspace.is-drawer-wide .table-card {
+        display: none;
+      }
+
+      .table-headbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: center;
+        min-height: 38px;
+        padding: 0 10px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .table-headbar h2 {
+        margin: 0;
+        font-size: 13px;
+        line-height: 18px;
+      }
+
+      .table-headbar p {
+        margin: 2px 0 0;
+        color: var(--muted);
+      }
+
+      .table-wrap {
+        overflow: auto;
+        max-height: calc(100vh - 388px);
+      }
+
+      table {
+        width: 100%;
+        min-width: 1120px;
+        border-collapse: collapse;
+        table-layout: fixed;
+        font-size: var(--bo-font-table);
+      }
+
+      thead th {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        height: 34px;
+        border-bottom: 1px solid var(--line);
+        border-right: 1px solid var(--line-soft);
+        background: var(--head);
+        color: #4b5260;
+        padding: 5px 7px;
+        text-align: left;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      tbody td {
+        height: 46px;
+        border-bottom: 1px solid var(--line-soft);
+        border-right: 1px solid var(--line-soft);
+        background: #fff;
+        padding: 5px 7px;
+        vertical-align: middle;
+      }
+
+      tbody tr {
+        position: relative;
+      }
+
+      tbody tr:hover td {
+        background: #f8fbff;
+      }
+
+      tbody tr.is-open td {
+        background: var(--primary-soft);
+      }
+
+      tbody tr.is-open td:first-child {
+        box-shadow: inset 3px 0 0 var(--primary);
+      }
+
+      th:first-child,
+      td:first-child {
+        width: 34px;
+        text-align: center;
+      }
+
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 74px;
+      }
+
+      th:nth-child(3),
+      td:nth-child(3) {
+        width: 106px;
+      }
+
+      th:nth-child(4),
+      td:nth-child(4) {
+        width: 152px;
+      }
+
+      th:nth-child(5),
+      td:nth-child(5) {
+        width: 132px;
+      }
+
+      th:nth-child(6),
+      td:nth-child(6) {
+        width: 128px;
+      }
+
+      th:nth-child(7),
+      td:nth-child(7) {
+        width: 96px;
+      }
+
+      th:nth-child(8),
+      td:nth-child(8) {
+        width: 112px;
+      }
+
+      th:nth-child(10),
+      td:nth-child(10) {
+        width: 82px;
+      }
+
+      .cell {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+      }
+
+      .main,
+      .sub,
+      .memo-line {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .main {
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .sub {
+        color: var(--muted);
+      }
+
+      .status,
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        width: fit-content;
+        min-height: 20px;
+        border: 1px solid var(--status-line, #cfd7e3);
+        border-radius: 999px;
+        background: var(--status-bg, #f3f5f8);
+        color: var(--status-color, #536070);
+        padding: 2px 7px;
+        font-size: var(--bo-font-small);
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .status::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+
+      .status.ok {
+        --status-line: #b7dfc2;
+        --status-bg: #effaf2;
+        --status-color: var(--success);
+      }
+
+      .status.wait {
+        --status-line: #f0d69b;
+        --status-bg: #fff8e8;
+        --status-color: var(--warning);
+      }
+
+      .status.fail {
+        --status-line: #f1b8b8;
+        --status-bg: #fff1f1;
+        --status-color: var(--danger);
+      }
+
+      .status.info {
+        --status-line: #bfd4ff;
+        --status-bg: #f0f6ff;
+        --status-color: var(--info);
+      }
+
+      .badge.blue {
+        border-color: #bfd4ff;
+        background: #f0f6ff;
+        color: #1d4ed8;
+      }
+
+      .badge.gray {
+        border-color: #d7dde6;
+        background: #f7f8fa;
+        color: #5b6472;
+      }
+
+      .badge.warn {
+        border-color: #f0d69b;
+        background: #fff8e8;
+        color: #9a6200;
+      }
+
+      .row-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 4px;
+      }
+
+      .bulk-bar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 8px;
+        min-height: 40px;
+        border-top: 1px solid var(--line);
+        padding: 6px 10px;
+        background: #fafbfc;
+      }
+
+      .bulk-bar strong {
+        color: #006dca;
+      }
+
+      .table-detail-drawer {
+        min-width: 0;
+      }
+
+      .table-detail-panel {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        height: calc(100vh - 184px);
+        min-height: 520px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+      }
+
+      .table-detail-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 8px;
+        padding: 10px;
+        border-bottom: 1px solid var(--line);
+        background: #fbfcfe;
+      }
+
+      .drawer-kicker {
+        margin: 0 0 3px;
+        color: var(--primary);
+        font-size: var(--bo-font-small);
+        font-weight: 800;
+      }
+
+      .table-detail-title {
+        margin: 0;
+        font-size: 16px;
+        line-height: 20px;
+      }
+
+      .detail-summary {
+        margin: 3px 0 0;
+        color: var(--muted);
+      }
+
+      .drawer-head-actions {
+        display: flex;
+        gap: 5px;
+      }
+
+      .table-detail-body {
+        min-height: 0;
+        overflow: auto;
+        padding: 9px;
+      }
+
+      .drawer-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        align-items: start;
+      }
+
+      .table-workspace.is-drawer-wide .drawer-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .table-workspace.is-drawer-wide .drawer-section--span-2 {
+        grid-column: span 2;
+      }
+
+      .member-master-detail {
+        display: grid;
+        gap: 8px;
+        border-top: 2px solid #0b2550;
+        background: #f4f8ff;
+        padding-top: 8px;
+      }
+
+      .member-master-titlebar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        min-height: 34px;
+        background: #071b37;
+        color: #fff;
+        padding: 7px 8px;
+      }
+
+      .member-master-titlebar strong {
+        display: block;
+        font-size: 11px;
+      }
+
+      .member-master-titlebar span {
+        color: #b9c7dd;
+        font-size: var(--bo-font-small);
+      }
+
+      .member-master-status {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+
+      .member-master-grid {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+        gap: 8px;
+        align-items: start;
+      }
+
+      .member-profile-panel,
+      .member-work-panel {
+        min-width: 0;
+      }
+
+      .member-work-panel {
+        display: grid;
+        gap: 8px;
+      }
+
+      .member-work-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        align-items: start;
+      }
+
+      .table-workspace.is-drawer-wide .member-master-grid {
+        grid-template-columns: minmax(280px, 0.32fr) minmax(0, 1fr);
+      }
+
+      .table-workspace.is-drawer-wide .member-work-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .member-work-grid .drawer-section--span-2 {
+        grid-column: span 2;
+      }
+
+      .drawer-section {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+      }
+
+      .drawer-section-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+        min-height: 30px;
+        border-bottom: 1px solid var(--line-soft);
+        background: #f8fafc;
+        padding: 0 8px;
+        font-weight: 800;
+      }
+
+      .drawer-fields {
+        display: grid;
+        gap: 0;
+      }
+
+      .drawer-field {
+        display: grid;
+        grid-template-columns: 82px minmax(0, 1fr);
+        min-height: 30px;
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .drawer-field:last-child {
+        border-bottom: 0;
+      }
+
+      .drawer-field span {
+        display: flex;
+        align-items: center;
+        border-right: 1px solid var(--line-soft);
+        background: #fbfcfe;
+        color: var(--muted);
+        padding: 6px 8px;
+        font-weight: 700;
+      }
+
+      .drawer-field strong,
+      .drawer-field input,
+      .drawer-field select {
+        min-width: 0;
+        border: 0;
+        background: #fff;
+        color: var(--text);
+        padding: 6px 8px;
+        font-weight: 700;
+      }
+
+      .drawer-field input,
+      .drawer-field select {
+        width: 100%;
+        font-weight: 500;
+      }
+
+      .drawer-work-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 8px;
+      }
+
+      .drawer-log-list {
+        display: grid;
+      }
+
+      .drawer-log {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr) auto;
+        gap: 6px;
+        align-items: center;
+        min-height: 30px;
+        border-bottom: 1px solid var(--line-soft);
+        padding: 5px 8px;
+      }
+
+      .drawer-log:last-child {
+        border-bottom: 0;
+      }
+
+      .drawer-log time {
+        color: var(--muted);
+        font-size: var(--bo-font-small);
+      }
+
+      .drawer-log p {
+        min-width: 0;
+        overflow: hidden;
+        margin: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .table-detail-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 6px;
+        border-top: 1px solid var(--line);
+        padding: 8px;
+        background: #fafbfc;
+      }
+
+      .toast {
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        z-index: 50;
+        display: none;
+        min-width: 220px;
+        border: 1px solid #b7dfc2;
+        border-radius: var(--radius);
+        background: #effaf2;
+        color: var(--success);
+        padding: 10px 12px;
+        font-weight: 800;
+      }
+
+      .toast.is-visible {
+        display: block;
+      }
+
+      @media (max-width: 1180px) {
+        .app {
+          grid-template-columns: 190px minmax(0, 1fr);
+        }
+
+        .dense-search-main {
+          grid-template-columns: minmax(220px, 1fr) repeat(2, minmax(120px, 1fr)) auto auto;
+        }
+
+        .summary-strip {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .table-workspace.is-drawer-open {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .drawer-grid,
+        .member-master-grid,
+        .table-workspace.is-drawer-wide .drawer-grid,
+        .table-workspace.is-drawer-wide .member-master-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .member-work-grid,
+        .table-workspace.is-drawer-wide .member-work-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .table-detail-panel {
+          height: auto;
+          min-height: 460px;
+        }
+      }
+
+      @media (max-width: 760px) {
+        body {
+          overflow: auto;
+        }
+
+        .app {
+          display: block;
+          height: auto;
+          overflow: visible;
+        }
+
+        .sidebar {
+          position: static;
+          height: auto;
+          max-height: 260px;
+        }
+
+        .content {
+          display: block;
+          height: auto;
+          overflow: visible;
+        }
+
+        .topbar,
+        .page-head,
+        .table-headbar,
+        .bulk-bar {
+          grid-template-columns: 1fr;
+          height: auto;
+          align-items: start;
+          padding: 9px 10px;
+        }
+
+        .page {
+          overflow: visible;
+          padding: 10px;
+        }
+
+        .dense-search-main {
+          grid-template-columns: 1fr;
+        }
+
+        .dense-filter-group {
+          grid-template-columns: 1fr;
+        }
+
+        .dense-active-filters {
+          padding-left: 10px;
+        }
+
+        .summary-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .table-wrap {
+          max-height: none;
+        }
+
+        .table-detail-panel {
+          min-height: 0;
+        }
+
+        .drawer-grid,
+        .member-master-grid,
+        .member-work-grid,
+        .table-workspace.is-drawer-wide .drawer-grid,
+        .table-workspace.is-drawer-wide .member-master-grid,
+        .table-workspace.is-drawer-wide .member-work-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .member-work-grid .drawer-section--span-2 {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" aria-label="BO 메뉴">
+        <div class="brand">
+          <strong>HutechC BO</strong>
+          <span>거래처 아웃콜 운영</span>
+        </div>
+        <div class="sidebar-search">
+          <label>
+            <span class="sr-only">메뉴 검색</span>
+            <input type="search" placeholder="메뉴 검색">
+          </label>
+        </div>
+        <nav class="nav">
+          <div class="nav-label">홈 · 내 업무</div>
+          <button class="nav-button" type="button"><span>·</span><span>대시보드</span><span class="nav-count">4</span></button>
+          <button class="nav-button" type="button"><span>·</span><span>업무일지</span></button>
+          <div class="nav-label">운영 · 거래처</div>
+          <button class="nav-button" type="button"><span>·</span><span>미팅 · 일정</span></button>
+          <button class="nav-button active" type="button" aria-current="page"><span>·</span><span>거래처관리</span><span class="nav-count">62</span></button>
+          <button class="nav-button" type="button"><span>·</span><span>아웃콜</span><span class="nav-count">18</span></button>
+          <button class="nav-button" type="button"><span>·</span><span>미수금관리</span></button>
+          <button class="nav-button" type="button"><span>·</span><span>프로젝트관리</span></button>
+          <div class="nav-label">인사 · 채용</div>
+          <button class="nav-button" type="button"><span>·</span><span>채용관리</span></button>
+          <button class="nav-button" type="button"><span>·</span><span>출강 · 강사관리</span></button>
+          <div class="nav-label">시스템 관리</div>
+          <button class="nav-button" type="button"><span>·</span><span>권한 설정</span></button>
+          <button class="nav-button" type="button"><span>·</span><span>감사 로그</span></button>
+        </nav>
+        <div class="sidebar-foot">
+          <div class="user-box">
+            <span class="avatar">BO</span>
+            <div>
+              <strong>관리자</strong>
+              <span>운영팀 · manager</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div class="topbar-title">
+            <strong>거래처 아웃콜</strong>
+            <span>오늘 후속 5건 · 미응답 3건 · 보류 7건</span>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn" type="button">컬럼설정</button>
+            <button class="btn" type="button">엑셀내보내기</button>
+            <button class="btn primary" type="button">신규 거래처</button>
+          </div>
+        </header>
+
+        <div class="page">
+          <section class="page-head">
+            <div>
+              <div class="breadcrumb">운영 · 거래처 &gt; 거래처관리 &gt; 아웃콜</div>
+              <h1>거래처 아웃콜 관리</h1>
+              <div class="meta">최근 7일 업데이트 18건 · 담당자 배정 43건 · 후속일 경과 4건</div>
+            </div>
+            <div class="button-row">
+              <button class="btn" type="button">필터 초기화</button>
+              <button class="btn danger" type="button">선택 삭제</button>
+            </div>
+          </section>
+
+          <div class="major-tabs" role="tablist" aria-label="업무 대분류">
+            <button class="major-tab active" type="button" role="tab" aria-selected="true">전체 거래처 (62건)</button>
+            <button class="major-tab" type="button" role="tab" aria-selected="false">개발 · 기획 (24건)</button>
+            <button class="major-tab" type="button" role="tab" aria-selected="false">컨설팅 (18건)</button>
+            <button class="major-tab" type="button" role="tab" aria-selected="false">사업계획서 (20건)</button>
+          </div>
+
+          <div class="sub-tabs" role="tablist" aria-label="상세 업무">
+            <button class="sub-tab active" type="button" role="tab" aria-selected="true">아웃콜 목록 (전체 62건)</button>
+            <button class="sub-tab" type="button" role="tab" aria-selected="false">후속 연락 (대기 18건)</button>
+            <button class="sub-tab" type="button" role="tab" aria-selected="false">계약 검토 (진행 7건)</button>
+            <button class="sub-tab" type="button" role="tab" aria-selected="false">보류 · 제외 (12건)</button>
+          </div>
+
+          <form class="dense-filter-card" data-dense-filter>
+            <div class="dense-search-main">
+              <label class="dense-search-field">
+                <span>검색어</span>
+                <input class="field" type="search" name="keyword" placeholder="회사명, 담당자, 연락처, 메모 검색">
+              </label>
+              <label class="dense-search-field">
+                <span>시작일</span>
+                <input class="field" type="date" name="start">
+              </label>
+              <label class="dense-search-field">
+                <span>종료일</span>
+                <input class="field" type="date" name="end">
+              </label>
+              <label class="dense-search-field">
+                <span>담당자</span>
+                <select class="field" name="owner">
+                  <option>전체</option>
+                  <option>운영팀</option>
+                  <option>대표님</option>
+                  <option>외부협력</option>
+                </select>
+              </label>
+              <label class="dense-search-field">
+                <span>정렬</span>
+                <select class="field" name="sort">
+                  <option>최근 등록순</option>
+                  <option>상태 우선</option>
+                  <option>후속일 빠른순</option>
+                  <option>회사명순</option>
+                </select>
+              </label>
+              <button class="btn primary" type="submit">검색</button>
+              <button class="btn" type="reset">초기화</button>
+            </div>
+
+            <div class="dense-filter-flow">
+              <fieldset class="dense-filter-group" data-single-choice>
+                <legend>상태</legend>
+                <div class="dense-filter-options">
+                  <button class="filter-chip" type="button" aria-pressed="true">전체</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">대기</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">진행중</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">완료</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">보류</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">제외</button>
+                </div>
+              </fieldset>
+              <fieldset class="dense-filter-group">
+                <legend>분야</legend>
+                <div class="dense-filter-options">
+                  <button class="filter-chip" type="button" aria-pressed="true">전체</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">개발</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">기획</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">컨설팅</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">사업계획서</button>
+                  <button class="filter-chip" type="button" aria-pressed="false">마케팅</button>
+                </div>
+              </fieldset>
+              <fieldset class="dense-filter-group">
+                <legend>후속</legend>
+                <div class="dense-filter-options">
+                  <label class="dense-check"><input type="checkbox" name="follow" value="today">오늘 연락</label>
+                  <label class="dense-check"><input type="checkbox" name="follow" value="this-week">이번주 후속</label>
+                  <label class="dense-check"><input type="checkbox" name="follow" value="missing">메모 없음</label>
+                  <label class="dense-check"><input type="checkbox" name="follow" value="phone">전화번호 있음</label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="dense-active-filters" data-active-filters></div>
+          </form>
+
+          <section class="summary-strip" aria-label="아웃콜 요약">
+            <div class="summary-item"><span>전체 거래처</span><strong>62</strong></div>
+            <div class="summary-item"><span>대기</span><strong>18</strong></div>
+            <div class="summary-item"><span>진행중</span><strong>9</strong></div>
+            <div class="summary-item"><span>완료</span><strong>23</strong></div>
+            <div class="summary-item"><span>보류/제외</span><strong>12</strong></div>
+            <div class="summary-item"><span>오늘 후속</span><strong>5</strong></div>
+          </section>
+
+          <div class="table-workspace" data-table-workspace>
+            <section class="table-card">
+              <header class="table-headbar">
+                <div>
+                  <h2>아웃콜 목록</h2>
+                  <p>최근 수정 26-04-19 17:20 · 전화번호 보유 54건 · 메모 누락 6건</p>
+                </div>
+                <div class="button-row">
+                  <button class="btn" type="button">선택정보내기</button>
+                  <button class="btn" type="button">상태변경</button>
+                  <button class="btn" type="button">SMS전송</button>
+                </div>
+              </header>
+              <div class="table-wrap">
+                <table aria-label="거래처 아웃콜 목록">
+                  <thead>
+                    <tr>
+                      <th><input type="checkbox" aria-label="전체 선택"></th>
+                      <th>등록일</th>
+                      <th>분야 / 출처</th>
+                      <th>거래처 / 담당</th>
+                      <th>연락처 / 채널</th>
+                      <th>상태 / 후속</th>
+                      <th>담당 / 우선</th>
+                      <th>최근 메모</th>
+                      <th>변경 이력</th>
+                      <th>액션</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr tabindex="0" role="button" aria-controls="table-detail-drawer" data-id="C-0426">
+                      <td><input type="checkbox" aria-label="루브릭랩 선택"></td>
+                      <td><div class="cell"><span class="main">26-04-18</span><span class="sub">원본 04/18</span></div></td>
+                      <td><div class="cell"><span class="badge blue">개발</span><span class="sub">홈페이지 문의</span></div></td>
+                      <td><div class="cell"><span class="main">루브릭랩</span><span class="sub">박지훈 팀장</span></div></td>
+                      <td><div class="cell"><span class="main">010-8123-5021</span><span class="sub">전화 우선</span></div></td>
+                      <td><div class="cell"><span class="status info">진행중</span><span class="sub">26-04-22 후속</span></div></td>
+                      <td><div class="cell"><span class="main">운영팀</span><span class="badge warn">높음</span></div></td>
+                      <td><span class="memo-line" title="AI 교육 플랫폼 견적 요청. 개발 범위 확인 후 제안서 발송 예정">AI 교육 플랫폼 견적 요청. 개발 범위 확인 후 제안서 발송 예정</span></td>
+                      <td><div class="cell"><span class="main">3건</span><span class="sub">26-04-19 수정</span></div></td>
+                      <td><div class="row-actions"><button class="btn icon-btn" type="button" title="편집" aria-label="편집">편집</button></div></td>
+                    </tr>
+                    <tr tabindex="0" role="button" aria-controls="table-detail-drawer" data-id="C-0412">
+                      <td><input type="checkbox" aria-label="에이사이드 선택"></td>
+                      <td><div class="cell"><span class="main">26-03-26</span><span class="sub">원본 3/26</span></div></td>
+                      <td><div class="cell"><span class="badge blue">개발</span><span class="sub">기존 DB</span></div></td>
+                      <td><div class="cell"><span class="main">에이사이드</span><span class="sub">정윤성</span></div></td>
+                      <td><div class="cell"><span class="main">010-3304-1935</span><span class="sub">휴대폰</span></div></td>
+                      <td><div class="cell"><span class="status wait">대기</span><span class="sub">일정 확인</span></div></td>
+                      <td><div class="cell"><span class="main">대표님</span><span class="badge gray">보통</span></div></td>
+                      <td><span class="memo-line" title="개발 협업 가능성 확인 필요. 연락 후 회신 대기">개발 협업 가능성 확인 필요. 연락 후 회신 대기</span></td>
+                      <td><div class="cell"><span class="main">1건</span><span class="sub">26-03-26 등록</span></div></td>
+                      <td><div class="row-actions"><button class="btn icon-btn" type="button" title="편집" aria-label="편집">편집</button></div></td>
+                    </tr>
+                    <tr tabindex="0" role="button" aria-controls="table-detail-drawer" data-id="C-0408">
+                      <td><input type="checkbox" aria-label="비즈파트너즈 선택"></td>
+                      <td><div class="cell"><span class="main">26-03-25</span><span class="sub">원본 03/25</span></div></td>
+                      <td><div class="cell"><span class="badge gray">컨설팅</span><span class="sub">소개</span></div></td>
+                      <td><div class="cell"><span class="main">비즈파트너즈</span><span class="sub">전영석 세무사</span></div></td>
+                      <td><div class="cell"><span class="main">010-7130-3133</span><span class="sub">전화</span></div></td>
+                      <td><div class="cell"><span class="status fail">제외</span><span class="sub">미팅 취소</span></div></td>
+                      <td><div class="cell"><span class="main">운영팀</span><span class="badge gray">낮음</span></div></td>
+                      <td><span class="memo-line" title="컨설팅 방향 제시와 아이디어 제공까지만 가능하다고 하여 미팅 취소">컨설팅 방향 제시와 아이디어 제공까지만 가능하다고 하여 미팅 취소</span></td>
+                      <td><div class="cell"><span class="main">4건</span><span class="sub">26-03-25 종료</span></div></td>
+                      <td><div class="row-actions"><button class="btn icon-btn" type="button" title="편집" aria-label="편집">편집</button></div></td>
+                    </tr>
+                    <tr tabindex="0" role="button" aria-controls="table-detail-drawer" data-id="C-0399">
+                      <td><input type="checkbox" aria-label="윤희정 선택"></td>
+                      <td><div class="cell"><span class="main">26-03-18</span><span class="sub">원본 03/18</span></div></td>
+                      <td><div class="cell"><span class="badge blue">기획</span><span class="sub">포트폴리오</span></div></td>
+                      <td><div class="cell"><span class="main">개인 프리랜서</span><span class="sub">윤희정</span></div></td>
+                      <td><div class="cell"><span class="main">010-3299-2522</span><span class="sub">문자 가능</span></div></td>
+                      <td><div class="cell"><span class="status wait">대기</span><span class="sub">검토 필요</span></div></td>
+                      <td><div class="cell"><span class="main">운영팀</span><span class="badge warn">확인</span></div></td>
+                      <td><span class="memo-line" title="포트폴리오 링크 수신. 기획 업무 가능 범위 확인 필요">포트폴리오 링크 수신. 기획 업무 가능 범위 확인 필요</span></td>
+                      <td><div class="cell"><span class="main">2건</span><span class="sub">26-03-19 메모</span></div></td>
+                      <td><div class="row-actions"><button class="btn icon-btn" type="button" title="편집" aria-label="편집">편집</button></div></td>
+                    </tr>
+                    <tr tabindex="0" role="button" aria-controls="table-detail-drawer" data-id="C-0386">
+                      <td><input type="checkbox" aria-label="낭랑행정사 선택"></td>
+                      <td><div class="cell"><span class="main">26-03-08</span><span class="sub">원본 03/08</span></div></td>
+                      <td><div class="cell"><span class="badge gray">사업계획서</span><span class="sub">외부 미팅</span></div></td>
+                      <td><div class="cell"><span class="main">낭랑행정사</span><span class="sub">엄정호</span></div></td>
+                      <td><div class="cell"><span class="main">010-3054-1409</span><span class="sub">전화</span></div></td>
+                      <td><div class="cell"><span class="status ok">완료</span><span class="sub">피드백 완료</span></div></td>
+                      <td><div class="cell"><span class="main">대표님</span><span class="badge gray">보통</span></div></td>
+                      <td><span class="memo-line" title="피드백 진행. 다음 서류 피드백 요청 시 비용 지급 예정">피드백 진행. 다음 서류 피드백 요청 시 비용 지급 예정</span></td>
+                      <td><div class="cell"><span class="main">5건</span><span class="sub">26-03-10 완료</span></div></td>
+                      <td><div class="row-actions"><button class="btn icon-btn" type="button" title="편집" aria-label="편집">편집</button></div></td>
+                    </tr>
+                    <tr tabindex="0" role="button" aria-controls="table-detail-drawer" data-id="C-0371">
+                      <td><input type="checkbox" aria-label="이희수팀장 선택"></td>
+                      <td><div class="cell"><span class="main">26-02-16</span><span class="sub">원본 02/16</span></div></td>
+                      <td><div class="cell"><span class="badge gray">컨설팅</span><span class="sub">가격 문의</span></div></td>
+                      <td><div class="cell"><span class="main">비즈파트너즈</span><span class="sub">이희수 팀장</span></div></td>
+                      <td><div class="cell"><span class="main">010-4798-6312</span><span class="sub">전화</span></div></td>
+                      <td><div class="cell"><span class="status fail">보류</span><span class="sub">단가 이슈</span></div></td>
+                      <td><div class="cell"><span class="main">대표님</span><span class="badge gray">낮음</span></div></td>
+                      <td><span class="memo-line" title="견적 500만원 수준. 커미션 별도 가능성 있어 보류">견적 500만원 수준. 커미션 별도 가능성 있어 보류</span></td>
+                      <td><div class="cell"><span class="main">3건</span><span class="sub">26-02-18 보류</span></div></td>
+                      <td><div class="row-actions"><button class="btn icon-btn" type="button" title="편집" aria-label="편집">편집</button></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <footer class="bulk-bar">
+                <div>선택 <strong data-selected-count>0</strong>건 · 전체 62건 · 현재 페이지 1/7</div>
+                <div class="button-row">
+                  <button class="btn" type="button">이전</button>
+                  <button class="btn primary" type="button">1</button>
+                  <button class="btn" type="button">2</button>
+                  <button class="btn" type="button">다음</button>
+                </div>
+              </footer>
+            </section>
+
+            <aside class="table-detail-drawer" id="table-detail-drawer" role="dialog" aria-modal="false" aria-labelledby="drawer-title" hidden>
+              <form class="table-detail-panel" data-detail-form>
+                <header class="table-detail-head">
+                  <div>
+                    <p class="drawer-kicker">거래처 상세</p>
+                    <h2 class="table-detail-title" id="drawer-title">거래처를 선택하세요</h2>
+                    <p class="detail-summary" data-detail-summary>목록 행을 선택하면 상세 정보와 후속 메모가 표시됩니다.</p>
+                  </div>
+                  <div class="drawer-head-actions">
+                    <button class="btn" type="button" data-wide aria-pressed="false">넓게보기</button>
+                    <button class="btn icon-btn" type="button" data-close aria-label="상세 닫기">닫기</button>
+                  </div>
+                </header>
+                <div class="table-detail-body">
+                  <div class="member-master-detail">
+                    <div class="member-master-titlebar">
+                      <div>
+                        <strong>거래처 상세 작업</strong>
+                        <span>기본정보와 처리 패널을 분리해 상담/상태/이력을 동시에 관리</span>
+                      </div>
+                      <div class="member-master-status">
+                        <span class="status info" data-detail-status>선택대기</span>
+                      </div>
+                    </div>
+                    <div class="member-master-grid">
+                      <section class="drawer-section member-profile-panel">
+                        <div class="drawer-section-head">
+                          <span>기본 정보</span>
+                          <span>고정 정보</span>
+                        </div>
+                        <div class="drawer-fields">
+                          <label class="drawer-field"><span>관리번호</span><input name="id" readonly></label>
+                          <label class="drawer-field"><span>거래처</span><input name="company"></label>
+                          <label class="drawer-field"><span>담당자</span><input name="contact"></label>
+                          <label class="drawer-field"><span>연락처</span><input name="phone"></label>
+                          <label class="drawer-field"><span>분야</span><input name="category"></label>
+                          <label class="drawer-field"><span>담당</span><input name="owner"></label>
+                        </div>
+                      </section>
+
+                      <div class="member-work-panel">
+                        <div class="member-work-grid">
+                          <section class="drawer-section">
+                            <div class="drawer-section-head">
+                              <span>상태 변경</span>
+                              <span>후속 액션</span>
+                            </div>
+                            <div class="drawer-work-tabs">
+                              <button class="filter-chip" type="button" aria-pressed="false">대기</button>
+                              <button class="filter-chip" type="button" aria-pressed="false">진행중</button>
+                              <button class="filter-chip" type="button" aria-pressed="false">완료</button>
+                              <button class="filter-chip" type="button" aria-pressed="false">보류</button>
+                              <button class="filter-chip" type="button" aria-pressed="false">제외</button>
+                            </div>
+                            <div class="drawer-fields">
+                              <label class="drawer-field"><span>후속일</span><input type="date" name="followDate"></label>
+                              <label class="drawer-field"><span>우선순위</span><select name="priority"><option>높음</option><option>보통</option><option>낮음</option><option>확인</option></select></label>
+                            </div>
+                          </section>
+
+                          <section class="drawer-section">
+                            <div class="drawer-section-head">
+                              <span>빠른 처리</span>
+                              <span>작업 버튼</span>
+                            </div>
+                            <div class="drawer-work-tabs">
+                              <button class="btn" type="button">콜 완료</button>
+                              <button class="btn" type="button">문자 발송</button>
+                              <button class="btn" type="button">후속 등록</button>
+                              <button class="btn danger" type="button">제외 처리</button>
+                            </div>
+                          </section>
+
+                          <section class="drawer-section drawer-section--span-2">
+                            <div class="drawer-section-head">
+                              <span>상담 메모</span>
+                              <span>저장 대상</span>
+                            </div>
+                            <div style="padding: 8px;">
+                              <textarea class="field" name="memo" rows="5" placeholder="상담 메모와 다음 조치를 입력합니다."></textarea>
+                            </div>
+                          </section>
+
+                          <section class="drawer-section drawer-section--span-2">
+                            <div class="drawer-section-head">
+                              <span>변경 이력</span>
+                              <span data-log-count>0건</span>
+                            </div>
+                            <div class="drawer-log-list" data-log-list>
+                              <article class="drawer-log"><time>-</time><p>선택된 거래처가 없습니다.</p><span class="badge gray">대기</span></article>
+                            </div>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <footer class="table-detail-actions">
+                  <button class="btn" type="button" data-close>닫기</button>
+                  <button class="btn danger" type="button">삭제</button>
+                  <button class="btn primary" type="submit">저장</button>
+                </footer>
+              </form>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" role="status" aria-live="polite" data-toast>저장되었습니다.</div>
+
+    <script>
+      const workspace = document.querySelector("[data-table-workspace]");
+      const drawer = document.querySelector("#table-detail-drawer");
+      const detailForm = document.querySelector("[data-detail-form]");
+      const rows = [...document.querySelectorAll("tbody tr")];
+      const selectedCount = document.querySelector("[data-selected-count]");
+      const toast = document.querySelector("[data-toast]");
+      let lastTrigger = null;
+
+      function textFrom(element, selector) {
+        return element.querySelector(selector)?.textContent.trim() || "";
+      }
+
+      function statusClass(label) {
+        if (["완료"].includes(label)) return "status ok";
+        if (["대기", "보류"].includes(label)) return "status wait";
+        if (["제외"].includes(label)) return "status fail";
+        return "status info";
+      }
+
+      function getRowData(row) {
+        const cells = row.querySelectorAll("td");
+        return {
+          id: row.dataset.id,
+          date: textFrom(cells[1], ".main"),
+          category: textFrom(cells[2], ".badge"),
+          source: textFrom(cells[2], ".sub"),
+          company: textFrom(cells[3], ".main"),
+          contact: textFrom(cells[3], ".sub"),
+          phone: textFrom(cells[4], ".main"),
+          channel: textFrom(cells[4], ".sub"),
+          status: textFrom(cells[5], ".status"),
+          follow: textFrom(cells[5], ".sub"),
+          owner: textFrom(cells[6], ".main"),
+          priority: textFrom(cells[6], ".badge"),
+          memo: cells[7].textContent.trim(),
+          logCount: textFrom(cells[8], ".main"),
+          logUpdated: textFrom(cells[8], ".sub")
+        };
+      }
+
+      function openDrawer(row) {
+        const data = getRowData(row);
+        lastTrigger = row;
+        rows.forEach((item) => item.classList.toggle("is-open", item === row));
+        workspace.classList.add("is-drawer-open");
+        drawer.hidden = false;
+
+        document.querySelector("#drawer-title").textContent = data.company;
+        document.querySelector("[data-detail-summary]").textContent = `${data.id} · ${data.contact} · ${data.phone}`;
+        const status = document.querySelector("[data-detail-status]");
+        status.className = statusClass(data.status);
+        status.textContent = data.status;
+
+        detailForm.elements.id.value = data.id;
+        detailForm.elements.company.value = data.company;
+        detailForm.elements.contact.value = data.contact;
+        detailForm.elements.phone.value = data.phone;
+        detailForm.elements.category.value = `${data.category} / ${data.source}`;
+        detailForm.elements.owner.value = data.owner;
+        detailForm.elements.priority.value = ["높음", "보통", "낮음", "확인"].includes(data.priority) ? data.priority : "보통";
+        detailForm.elements.memo.value = data.memo;
+
+        document.querySelectorAll(".drawer-work-tabs .filter-chip").forEach((chip) => {
+          chip.setAttribute("aria-pressed", String(chip.textContent.trim() === data.status));
+        });
+
+        document.querySelector("[data-log-count]").textContent = data.logCount;
+        document.querySelector("[data-log-list]").innerHTML = [
+          `<article class="drawer-log"><time>${data.logUpdated || data.date}</time><p>${data.memo}</p><span class="${statusClass(data.status)}">${data.status}</span></article>`,
+          `<article class="drawer-log"><time>${data.date}</time><p>${data.category} 거래처로 등록됨</p><span class="badge gray">등록</span></article>`
+        ].join("");
+
+        drawer.querySelector("[data-close]").focus();
+      }
+
+      function closeDrawer() {
+        workspace.classList.remove("is-drawer-open", "is-drawer-wide");
+        rows.forEach((item) => item.classList.remove("is-open"));
+        drawer.hidden = true;
+        const wide = document.querySelector("[data-wide]");
+        wide.setAttribute("aria-pressed", "false");
+        wide.textContent = "넓게보기";
+        if (lastTrigger) lastTrigger.focus();
+      }
+
+      rows.forEach((row) => {
+        row.addEventListener("click", (event) => {
+          if (event.target.closest("input, button")) return;
+          openDrawer(row);
+        });
+        row.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openDrawer(row);
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-close]").forEach((button) => {
+        button.addEventListener("click", closeDrawer);
+      });
+
+      document.querySelector("[data-wide]").addEventListener("click", (event) => {
+        const pressed = event.currentTarget.getAttribute("aria-pressed") === "true";
+        event.currentTarget.setAttribute("aria-pressed", String(!pressed));
+        event.currentTarget.textContent = pressed ? "넓게보기" : "기본보기";
+        workspace.classList.toggle("is-drawer-wide", !pressed);
+      });
+
+      detailForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        toast.classList.add("is-visible");
+        window.setTimeout(() => toast.classList.remove("is-visible"), 1600);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !drawer.hidden) closeDrawer();
+      });
+
+      document.querySelector("[data-dense-filter]").addEventListener("click", (event) => {
+        const chip = event.target.closest(".filter-chip");
+        const remove = event.target.closest("[data-filter-remove]");
+        const clear = event.target.closest("[data-filter-clear]");
+        const root = event.currentTarget;
+
+        if (chip) {
+          const group = chip.closest(".dense-filter-group");
+          const isAll = chip.textContent.trim() === "전체";
+          if (group.hasAttribute("data-single-choice") || isAll) {
+            group.querySelectorAll(".filter-chip").forEach((item) => item.setAttribute("aria-pressed", String(item === chip)));
+          } else {
+            chip.setAttribute("aria-pressed", String(chip.getAttribute("aria-pressed") !== "true"));
+            const allChip = [...group.querySelectorAll(".filter-chip")].find((item) => item.textContent.trim() === "전체");
+            if (allChip && chip !== allChip) allChip.setAttribute("aria-pressed", "false");
+          }
+          renderFilters(root);
+        }
+
+        if (remove) {
+          const label = remove.dataset.filterRemove;
+          root.querySelectorAll(".filter-chip").forEach((item) => {
+            if (item.textContent.trim() === label) item.setAttribute("aria-pressed", "false");
+          });
+          root.querySelectorAll(".dense-check").forEach((item) => {
+            if (item.textContent.trim() === label) item.querySelector("input").checked = false;
+          });
+          renderFilters(root);
+        }
+
+        if (clear) {
+          root.querySelectorAll(".filter-chip").forEach((item) => item.setAttribute("aria-pressed", String(item.textContent.trim() === "전체")));
+          root.querySelectorAll(".dense-check input").forEach((input) => input.checked = false);
+          renderFilters(root);
+        }
+      });
+
+      document.querySelector("[data-dense-filter]").addEventListener("change", (event) => renderFilters(event.currentTarget));
+      document.querySelector("[data-dense-filter]").addEventListener("submit", (event) => {
+        event.preventDefault();
+        renderFilters(event.currentTarget);
+      });
+      document.querySelector("[data-dense-filter]").addEventListener("reset", (event) => {
+        window.setTimeout(() => renderFilters(event.currentTarget), 0);
+      });
+
+      function renderFilters(root) {
+        const output = root.querySelector("[data-active-filters]");
+        const chips = [...root.querySelectorAll('.filter-chip[aria-pressed="true"]')]
+          .map((chip) => chip.textContent.trim())
+          .filter((label) => label !== "전체");
+        const checks = [...root.querySelectorAll(".dense-check input:checked")]
+          .map((input) => input.closest(".dense-check").textContent.trim());
+        const labels = [...chips, ...checks];
+        output.innerHTML = labels.map((label) => `<span class="filter-tag">${label}<button type="button" data-filter-remove="${label}" aria-label="${label} 필터 제거">x</button></span>`).join("");
+        if (labels.length) output.insertAdjacentHTML("beforeend", '<button class="filter-clear" type="button" data-filter-clear>필터 전체 해제</button>');
+      }
+
+      document.querySelectorAll('tbody input[type="checkbox"]').forEach((input) => {
+        input.addEventListener("change", () => {
+          selectedCount.textContent = String(document.querySelectorAll('tbody input[type="checkbox"]:checked').length);
+        });
+      });
+
+      renderFilters(document.querySelector("[data-dense-filter]"));
+    </script>
+  </body>
+</html>

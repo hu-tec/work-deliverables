@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>강좌 상세 | Times Education</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
+    <div class="container header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">TM</span><span><b>Times Education</b><small>AI 교육·자격 통합 플랫폼</small></span></a>
+      <nav class="gnb" aria-label="주요 메뉴">
+        <a href="./about.html">교육원소개</a>
+        <a href="./courses.html">시험 소개</a><a class="active" href="./cert-intro.html">수강신청</a><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a><a href="./contact.html">1:1문의</a>
+      </nav>
+      <div class="header-actions"><button class="mobile-menu" type="button">MENU</button><a class="btn btn--primary btn--sm" href="./apply.html">신청하기</a></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-title"><div class="container page-title-inner">
+      <div><span class="breadcrumb">Home / 수강신청</span><h1>수강신청</h1><p>교육/강좌 상세 정보를 확인하고 수강신청을 진행합니다.</p></div>
+    </div></section>
+
+    <section class="section section--soft"><div class="container course-read-page" id="courseReadPage"></div></section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>Times Education</h2><p>02-6207-9090</p></div>
+    <div><h3>시험</h3><a href="./courses.html">시험 소개</a><a href="./cert-intro.html">수강신청</a></div>
+    <div><h3>안내</h3><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a></div>
+    <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원소개</a></div>
+  </div><div class="copyright">© 2026 Times Media Inc. — layout_redesign</div></div></footer>
+
+  <script>
+    (function () {
+      const courses = [
+        {
+          id: "aite-trans-edu", center: "Times AI 시험센터", category: "자격시험", major: "AI 번역",
+          title: "AITe AI 번역전문가 교육급수", day: "월·수", time: "19:00~21:00", quota: 30, applied: 8,
+          target: "AI 번역 입문자", teacher: "김민정", status: "신규접수", fee: "70,000원",
+          period: "2026.07.01 ~ 2026.07.24", place: "온라인 U-BT 시험센터", method: "선착접수",
+          description: "AI 번역 결과를 분석하고 후편집하는 기초 실무 역량을 평가 대비와 함께 정리합니다.",
+          topics: ["수강 대상 : AI 번역 입문자 및 업무에 AI 번역을 활용하는 실무자", "준비물 : 노트북, 필기구", "기계번역 오류 유형", "문맥 기반 후편집", "품질 검수 체크리스트"]
+        },
+        {
+          id: "aite-trans-biz", center: "Times AI 시험센터", category: "자격시험", major: "AI 번역",
+          title: "AITe AI 번역전문가 비즈니스급수", day: "토", time: "10:00~13:00", quota: 24, applied: 12,
+          target: "번역 실무자", teacher: "박서윤", status: "신규접수", fee: "100,000원",
+          period: "2026.07.06 ~ 2026.08.10", place: "Times AI 시험센터 2강의실", method: "선착접수",
+          description: "비즈니스 문서와 실무 텍스트를 중심으로 AI 번역 검수, 수정, 승인 기준을 훈련합니다.",
+          topics: ["수강 대상 : 번역 실무자, 콘텐츠 검수 담당자", "준비물 : 노트북", "비즈니스 문서 후편집", "용어 일관성 검수", "번역 품질 평가"]
+        },
+        {
+          id: "aite-prompt", center: "Times AI 시험센터", category: "자격시험", major: "AI 프롬프트",
+          title: "AITe 프롬프트 전문가 과정", day: "화·목", time: "19:30~21:30", quota: 28, applied: 17,
+          target: "콘텐츠·기획 실무자", teacher: "이하늘", status: "신규접수", fee: "100,000원",
+          period: "2026.07.09 ~ 2026.08.01", place: "온라인 실시간", method: "선착접수",
+          description: "목적별 프롬프트 설계와 결과 개선 과정을 평가 기준에 맞춰 실습합니다.",
+          topics: ["수강 대상 : 콘텐츠·기획 실무자", "준비물 : 노트북", "역할·조건 프롬프트", "결과물 개선 루프", "업무별 프롬프트 템플릿"]
+        },
+        {
+          id: "aite-ethics", center: "Times AI 시험센터", category: "자격시험", major: "AI 윤리",
+          title: "AI 윤리시험 공통 대비반", day: "금", time: "18:30~20:30", quota: 40, applied: 21,
+          target: "AITe 전체 응시자", teacher: "정유진", status: "신규접수", fee: "별도 안내",
+          period: "2026.07.12 ~ 2026.07.26", place: "온라인 U-BT 시험센터", method: "선착접수",
+          description: "AI 오용 방지, 데이터 윤리, 책임 기반 의사결정 등 공통 필수 시험 기준을 정리합니다.",
+          topics: ["수강 대상 : AITe 전체 응시자", "준비물 : 신분증, 필기구", "저작권·개인정보", "편향성과 검증", "책임 있는 AI 활용"]
+        },
+        {
+          id: "itt-basic", center: "Times 통번역 센터", category: "자격과정", major: "ITT 통번역",
+          title: "ITT 통번역 실무 입문", day: "월·목", time: "19:00~21:00", quota: 25, applied: 10,
+          target: "통번역 입문자", teacher: "최지훈", status: "신규접수", fee: "상담 후 안내",
+          period: "2026.07.03 ~ 2026.08.28", place: "Times 통번역 센터 1강의실", method: "상담 후 접수",
+          description: "통역 표현, 번역 실무, 자격 대비를 함께 다루는 ITT 입문 강좌입니다.",
+          topics: ["수강 대상 : 통번역 입문자", "준비물 : 노트, 필기구", "기초 통역 표현", "문장 단위 번역", "모의평가 피드백"]
+        },
+        {
+          id: "tesol-cert", center: "Times 교육과정 센터", category: "자격과정", major: "TESOL",
+          title: "TESOL 국제 영어교사 자격 과정", day: "토", time: "09:30~13:30", quota: 20, applied: 20,
+          target: "예비·현직 영어강사", teacher: "한수민", status: "접수종료", fee: "상담 후 안내",
+          period: "2026.06.01 ~ 2026.07.20", place: "Times 교육과정 센터", method: "선착접수",
+          description: "영어 교수법, 수업 설계, 시연 피드백을 통해 영어교사 자격 포트폴리오를 완성합니다.",
+          topics: ["수강 대상 : 예비·현직 영어강사", "준비물 : 노트북", "영어 교수법", "수업안 설계", "수업 시연 피드백"]
+        }
+      ];
+
+      const escapeHtml = (v) => String(v == null ? "" : v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+      const id = new URLSearchParams(location.search).get("id");
+      const c = courses.find((item) => item.id === id) || courses[0];
+      document.title = `${c.title} | Times Education`;
+
+      document.getElementById("courseReadPage").innerHTML = `
+        <div class="course-read-notice">
+          <strong>수강신청 기간입니다.</strong>
+          <span>2026-06-04 ~ 2026-06-30</span>
+        </div>
+
+        <section class="read-block">
+          <h2 class="read-title">강좌 상세</h2>
+          <table class="read-info-table"><tbody>
+            <tr><th>강좌명</th><td colspan="3">${escapeHtml(c.title)}</td></tr>
+            <tr><th>운영센터</th><td>${escapeHtml(c.center)}</td><th>구분</th><td>${escapeHtml(c.category)} / ${escapeHtml(c.major)}</td></tr>
+            <tr><th>수강기간</th><td>${escapeHtml(c.period)}</td><th>교육장소</th><td>${escapeHtml(c.place)}</td></tr>
+            <tr><th>시간/요일</th><td>${escapeHtml(c.time)} / ${escapeHtml(c.day)}</td><th>교육대상</th><td>${escapeHtml(c.target)}</td></tr>
+            <tr><th>강사명</th><td>${escapeHtml(c.teacher)}</td><th>접수방식</th><td>${escapeHtml(c.method)}</td></tr>
+            <tr><th>신청인원/정원</th><td>${escapeHtml(c.applied)} / ${escapeHtml(c.quota)}</td><th>접수상태</th><td><span class="status-pill ${c.status === "접수종료" ? "done" : ""}">${escapeHtml(c.status)}</span></td></tr>
+          </tbody></table>
+        </section>
+
+        <section class="read-block">
+          <h2 class="read-title">강좌 수강 신청</h2>
+          <h3 class="read-subtitle">수강기간 선택</h3>
+          <table class="course-apply-table read-apply-table">
+            <thead><tr><th>선택</th><th>상품명</th><th>수강료</th><th>수강기간</th><th>총액</th></tr></thead>
+            <tbody><tr><td><input type="radio" checked aria-label="수강기간 선택"></td><td>${escapeHtml(c.title)}</td><td>${escapeHtml(c.fee)}</td><td>${escapeHtml(c.period)}</td><td>${escapeHtml(c.fee)}</td></tr></tbody>
+          </table>
+          <h3 class="read-subtitle">실수강자 선택</h3>
+          <table class="course-apply-table read-apply-table">
+            <thead><tr><th>선택</th><th>접수 가능 여부</th><th>수강자명</th><th>구분</th><th>생년월일</th></tr></thead>
+            <tbody><tr><td colspan="5" class="empty-cell">로그인을 하셔야만 이용가능합니다.</td></tr></tbody>
+          </table>
+        </section>
+
+        <section class="read-block">
+          <h2 class="read-title">환불 규정 안내</h2>
+          <table class="read-info-table"><tbody>
+            <tr><th>수업 시작 전</th><td>이미 낸 학습비 전액 반환</td></tr>
+            <tr><th>총 수업시간 1/3 경과 전</th><td>이미 낸 학습비의 2/3 해당 금액 반환</td></tr>
+            <tr><th>총 수업시간 1/2 경과 전</th><td>이미 낸 학습비의 1/2 해당 금액 반환</td></tr>
+            <tr><th>총 수업시간 1/2 경과 후</th><td>반환하지 않음</td></tr>
+          </tbody></table>
+          <label class="refund-check"><input type="checkbox"> 환불 규정을 확인하였습니다.</label>
+        </section>
+
+        <div class="read-actions">
+          <a class="btn btn--neutral btn--lg" href="./cert-intro.html">목록으로</a>
+          <a class="btn btn--primary btn--lg" href="./apply.html">수강신청</a>
+        </div>
+
+        <section class="read-block">
+          <h2 class="read-title">강좌 상세 정보</h2>
+          <h3 class="read-subtitle">강좌 소개</h3>
+          <div class="read-description">
+            <p>${escapeHtml(c.description)}</p>
+            <ul>${c.topics.map((topic) => `<li>${escapeHtml(topic)}</li>`).join("")}</ul>
+          </div>
+          <h3 class="read-subtitle">강사 안내</h3>
+          <div class="teacher-box">
+            <div class="teacher-photo" aria-hidden="true">${escapeHtml(c.teacher).slice(0, 1)}</div>
+            <div><strong>강사명 : ${escapeHtml(c.teacher)}</strong><p>${escapeHtml(c.major)} 분야 실무 강의 및 자격 평가 대비를 담당합니다.</p></div>
+          </div>
+        </section>
+
+        <div class="read-actions">
+          <a class="btn btn--neutral btn--lg" href="./cert-intro.html">목록으로</a>
+        </div>`;
+    })();
+  </script>
+  <script src="./site.js"></script>
+</body>
+</html>

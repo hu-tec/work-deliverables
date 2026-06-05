@@ -1,0 +1,12 @@
+{
+  "name": "markdown-editor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "마크다운 편집, 파일 저장, 댓글 관리를 지원하는 로컬 Node 앱",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Studio 개선안 — 전/후 비교 (사이드바 단순화 + 직각 플랫)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;600;700&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ===================== 공통 ===================== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Noto Sans KR', system-ui, sans-serif;
+    background: #e9edf2;
+    color: #1f2733;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* 상단 헤더 + 탭 */
+  .head { padding: 14px 22px 0; flex-shrink: 0; }
+  .page-title { font-size: 19px; font-weight: 700; }
+  .page-sub { font-size: 12.5px; color: #5b6573; margin-top: 2px; }
+  .page-sub code { background:#dde3ec; padding:1px 5px; border-radius:3px; font-size:11.5px; }
+
+  .tabs { display: flex; gap: 6px; margin-top: 12px; align-items: flex-end; }
+  .tab {
+    border: 1px solid #c7ced8; border-bottom: none; background: #dfe4ea;
+    padding: 9px 18px; font-size: 13px; font-weight: 600; color: #5b6573; cursor: pointer;
+    border-radius: 8px 8px 0 0; display: flex; align-items: center; gap: 8px;
+  }
+  .tab .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .tab[data-tab="before"] .dot { background: #e0654a; }
+  .tab[data-tab="after"]  .dot { background: #2563eb; }
+  .tab[data-tab="summary"] .dot { background: #6b7280; }
+  .tab:hover { background: #eef1f5; color: #2b3340; }
+  .tab.active { background: #fff; color: #1f2733; border-color: #c7ced8; position: relative; top: 1px; }
+
+  /* 본문 영역 */
+  .stage { flex: 1; min-height: 0; padding: 0 22px 18px; }
+  .view { display: none; height: 100%; }
+  .view.active { display: block; }
+
+  /* 앱 프레임 (전체 폭) */
+  .app { height: 100%; display: flex; flex-direction: column; overflow: hidden;
+         border: 1px solid #c7ced8; background: #fff; }
+  .app-body { flex: 1; display: flex; min-height: 0; }
+
+  .note-bar {
+    font-size: 12px; padding: 7px 14px; display:flex; gap:14px; flex-wrap:wrap; align-items:center;
+    border-bottom: 1px solid #ececf0;
+  }
+  .note-bar b { font-weight:700; }
+  .before .note-bar { background:#fff5f2; color:#9a4a36; border-color:#f3d9d1; }
+  .after  .note-bar { background:#eef3ff; color:#1d4ed8; border-color:#d3deff; }
+  .note-bar .k { background:#fff; border:1px solid currentColor; padding:1px 7px; border-radius:4px; font-size:11px; }
+
+  /* ============================================================
+     ===============  BEFORE : 둥근 / 라이트 / 긴 메뉴  ===========
+     ============================================================ */
+  .before .topbar {
+    height: 54px; background: #fff; border-bottom: 1px solid #ececf0;
+    display: flex; align-items: center; gap: 10px; padding: 0 18px;
+  }
+  .before .brand { font-weight: 700; font-size: 15px; color: #030213; }
+  .before .topbar .search {
+    margin-left: auto; width: 260px; height: 36px; border: 1px solid #e3e5ea;
+    border-radius: 8px; padding: 0 12px; font-size: 12.5px; color: #717182; background:#fafafb;
+    display:flex; align-items:center;
+  }
+  .before .avatar { width: 34px; height: 34px; border-radius: 9999px; background:#030213; color:#fff;
+                    display:flex; align-items:center; justify-content:center; font-size:12px; }
+
+  .before .sidebar {
+    width: 240px; flex-shrink: 0; background: #fbfbfc; border-right: 1px solid #ececf0;
+    overflow-y: auto; padding: 10px 12px;
+  }
+  .before .grp-label { font-size: 11px; font-weight: 700; color: #9a9aa8; padding: 12px 8px 4px; }
+  .before .nav {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 13px; color: #45464f; padding: 9px 11px; margin: 2px 0;
+    border-radius: 8px; cursor: pointer;            /* ← 둥근 모서리 */
+  }
+  .before .nav:hover { background: #f1f1f4; }
+  .before .nav.active { background: #ececf0; color: #030213; font-weight: 600; }
+  .before .nav .ic { width: 16px; text-align:center; opacity:.6; }
+  .before .more { font-size: 11px; color: #b1b1bd; padding: 4px 12px; }
+
+  .before .content { flex: 1; overflow-y: auto; background: #fff; padding: 24px 28px; }
+  .before .content-head { font-size:18px; font-weight:700; margin-bottom:16px; }
+  .before .card {
+    background: #fff; border: 1px solid #0000001a; border-radius: 14px;   /* ← 큰 라운드 */
+    box-shadow: 0 4px 16px rgba(0,0,0,.07);                               /* ← 그림자 */
+    padding: 22px; margin-bottom: 16px; max-width: 880px;
+  }
+  .before .card h3 { font-size: 15px; margin-bottom: 12px; }
+  .before .pill {
+    display:inline-block; font-size: 12px; padding: 5px 14px; border-radius: 9999px;  /* ← 알약 */
+    background:#ececf0; color:#45464f; margin-right:6px; margin-bottom:4px;
+  }
+  .before .pill.blue { background:#e7ecff; color:#3b5bdb; }
+  .before .btn {
+    font-size: 13px; padding: 9px 18px; border-radius: 8px; border: none;            /* ← 라운드 */
+    background:#030213; color:#fff; cursor:pointer; margin-right:8px;
+  }
+  .before .btn.ghost { background:#fff; border:1px solid #e3e5ea; color:#45464f; }
+  .before .field {
+    max-width:880px; height:40px; border:1px solid #e3e5ea; border-radius:8px;         /* ← 라운드 */
+    padding:0 14px; font-size:13px; color:#717182; margin-top:10px; background:#fafafb;
+    display:flex; align-items:center;
+  }
+  .before .grid2 { display:grid; grid-template-columns:repeat(3,minmax(0,260px)); gap:14px; margin-bottom:16px; }
+  .before .stat { background:#fff; border:1px solid #0000001a; border-radius:14px; box-shadow:0 4px 16px rgba(0,0,0,.07); padding:18px; }
+  .before .stat .l { font-size:12px; color:#717182; }
+  .before .stat .v { font-size:26px; font-weight:700; margin-top:4px; }
+
+  /* ============================================================
+     ===============  AFTER : 직각 / 네이비 / 단순 메뉴  ==========
+     ============================================================ */
+  .after .topbar {
+    height: 40px; background: #1e2a3a; border-bottom: 1px solid #6b7280;
+    display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  }
+  .after .brand { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:12px;
+                  color:#e8ecf4; letter-spacing:.06em; text-transform:uppercase; }
+  .after .topbar .kpi { font-family:'JetBrains Mono',monospace; font-size:11px; color:#9ba5b4; text-transform:uppercase; }
+  .after .topbar .kpi b { color:#fff; margin-left:4px; }
+  .after .avatar { margin-left:auto; width:26px; height:26px; background:#2563eb; color:#fff;
+                   display:flex; align-items:center; justify-content:center; font-size:10px;
+                   font-family:'JetBrains Mono',monospace; }  /* ← 직각 */
+
+  .after .sidebar {
+    width: 210px; flex-shrink: 0; background: #1e2a3a; border-right: 1px solid #6b7280;
+    overflow-y: auto; padding: 8px; font-family:'IBM Plex Sans Condensed',sans-serif;
+  }
+  .after .side-search {
+    height: 28px; background:#27374b; border:1px solid #3c4a5e; color:#9ba5b4;
+    font-size:11px; padding:0 8px; display:flex; align-items:center; gap:6px; margin-bottom:8px;
+  }
+  .after .grp {
+    font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.08em;
+    color:#9ba5b4; text-transform:uppercase; padding:9px 8px 5px; cursor:pointer;
+    display:flex; align-items:center; justify-content:space-between; user-select:none;
+    border-top:1px solid #2c3a4d;
+  }
+  .after .grp:first-of-type { border-top:none; }
+  .after .grp .chev { transition: transform .15s; font-size:9px; }
+  .after .grp.collapsed .chev { transform: rotate(-90deg); }
+  .after .grp:hover { color:#e8ecf4; }
+  .after .sub { display:block; }
+  .after .grp.collapsed + .sub { display:none; }
+  .after .nav {
+    font-size: 11.5px; color:#cbd3df; padding:6px 8px 6px 18px; cursor:pointer;
+    border-left:3px solid transparent;                       /* ← 직각 + 좌측 바 자리 */
+    display:flex; align-items:center; gap:6px;
+  }
+  .after .nav:hover { background:#27374b; color:#fff; }
+  .after .nav.active {
+    background:#dde3ff; color:#1d4ed8; font-weight:700; border-left:3px solid #2563eb;  /* ← 파랑 활성 */
+  }
+  .after .nav .badge { margin-left:auto; font-size:8px; color:#7c8aa0; font-family:'JetBrains Mono',monospace; }
+  .after .sys-grp { color:#f0b86e; }
+  .after .legacy-grp { color:#7c8aa0; }
+
+  .after .content { flex:1; overflow-y:auto; background:#f0f2f5; padding:14px 16px; }
+  .after .content-head {
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; color:#1e2a3a; margin-bottom:12px;
+    border-bottom:1px solid #d1d5db; padding-bottom:8px;
+  }
+  .after .card {
+    background:#fff; border:1px solid #d1d5db; border-radius:0;          /* ← 직각 */
+    box-shadow:none;                                                      /* ← 그림자 없음 */
+    padding:12px 14px; margin-bottom:8px; border-left:3px solid #2563eb; max-width:980px; /* ← pillar 바 */
+  }
+  .after .card h3 { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+                    letter-spacing:.08em; text-transform:uppercase; color:#374151; margin-bottom:9px; }
+  .after .tag {
+    display:inline-block; font-family:'JetBrains Mono',monospace; font-size:9px; padding:3px 8px;
+    border:1px solid #9ba5b4; border-radius:0; background:#f7f8fa; color:#374151; margin-right:4px; margin-bottom:3px;
+    letter-spacing:.05em;  /* ← 직각 */
+  }
+  .after .tag.blue { border-color:#2563eb; background:#dde3ff; color:#1d4ed8; }
+  .after .btn {
+    font-family:'IBM Plex Sans Condensed',sans-serif; font-size:11px; font-weight:600;
+    padding:6px 14px; border-radius:0; border:1px solid #2563eb;          /* ← 직각 */
+    background:#2563eb; color:#fff; cursor:pointer; margin-right:6px; letter-spacing:.04em;
+  }
+  .after .btn.ghost { background:#fff; border-color:#9ba5b4; color:#374151; }
+  .after .field {
+    max-width:980px; height:28px; border:1px solid #d1d5db; border-radius:0;   /* ← 직각 */
+    padding:0 8px; font-size:11px; color:#6b7280; margin-top:8px; background:#f7f8fa;
+    display:flex; align-items:center;
+  }
+  .after .kpi-grid { display:grid; grid-template-columns:repeat(4,minmax(0,180px)); gap:6px; margin-bottom:8px; }
+  .after .kpi-cell { background:#f7f8fa; border:1px solid #d1d5db; padding:7px 9px; }
+  .after .kpi-cell .l { font-size:9px; color:#6b7280; text-transform:uppercase; display:block; }
+  .after .kpi-cell .v { font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:700; color:#111827; }
+
+  /* ===================== 변경 요약 ===================== */
+  .summary-view { height:100%; overflow-y:auto; background:#fff; border:1px solid #c7ced8; padding:22px 26px; }
+  .summary-view h2 { font-size:16px; margin-bottom:12px; }
+  .summary-view table { width:100%; border-collapse:collapse; font-size:13px; max-width:980px; }
+  .summary-view th, .summary-view td { border:1px solid #dfe3ea; padding:8px 12px; text-align:left; }
+  .summary-view th { background:#f4f6f9; }
+  .summary-view td.b { color:#c0563c; }
+  .summary-view td.a { color:#1d4ed8; font-weight:600; }
+  .summary-view .hint { font-size:12px; color:#8a94a3; margin-top:12px; max-width:980px; }
+  .summary-view .hint code { background:#f0f2f5; padding:1px 5px; border-radius:3px; }
+</style>
+</head>
+<body>
+
+  <div class="head">
+    <div class="page-title">AI Studio 개선안 — 전 / 후 비교</div>
+    <div class="page-sub">대상 <code>http://54.116.15.136:81/app</code> · ① 사이드바 메뉴 단순화 + ② 둥근 모서리 → 직각 플랫(관제형) · 상단 탭으로 전환</div>
+    <div class="tabs">
+      <div class="tab active" data-tab="before"><span class="dot"></span>BEFORE — 현재</div>
+      <div class="tab" data-tab="after"><span class="dot"></span>AFTER — 개선</div>
+      <div class="tab" data-tab="summary"><span class="dot"></span>변경 요약</div>
+    </div>
+  </div>
+
+  <div class="stage">
+
+    <!-- ============================= BEFORE ============================= -->
+    <div class="view active" data-view="before">
+      <div class="app before">
+        <div class="note-bar">
+          <b>현재 상태</b>
+          <span class="k">둥근 모서리 10~14px</span>
+          <span class="k">그림자 있음</span>
+          <span class="k">라이트 사이드바</span>
+          <span class="k">10개 그룹 · 약 49개 메뉴 평면 나열</span>
+        </div>
+        <div class="topbar">
+          <div class="brand">HutechC 사내 Studio</div>
+          <div class="search">🔍 검색…</div>
+          <div class="avatar">HU</div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="grp-label">업무</div>
+            <div class="nav active"><span class="ic">📄</span>사내업무지침</div>
+            <div class="nav"><span class="ic">📊</span>업무 총괄</div>
+            <div class="nav"><span class="ic">📁</span>업무 자료</div>
+            <div class="nav"><span class="ic">📝</span>업무일지</div>
+            <div class="nav"><span class="ic">✍</span>서약서</div>
+            <div class="nav"><span class="ic">📘</span>레슨플랜</div>
+            <div class="nav"><span class="ic">📚</span>매뉴얼 리스트</div>
+            <div class="more">+ 2개 더</div>
+
+            <div class="grp-label">채용 / 인사</div>
+            <div class="nav"><span class="ic">🧑‍💼</span>채용관리</div>
+            <div class="nav"><span class="ic">⏰</span>출퇴근 관리 A</div>
+            <div class="nav"><span class="ic">⏱</span>출퇴근 관리 B</div>
+
+            <div class="grp-label">학생관리</div>
+            <div class="nav"><span class="ic">🎓</span>학생관리</div>
+
+            <div class="grp-label">관리 / 운영</div>
+            <div class="nav"><span class="ic">📞</span>거래처 아웃콜</div>
+            <div class="nav"><span class="ic">🖼</span>사진모음</div>
+            <div class="nav"><span class="ic">🤝</span>미팅</div>
+            <div class="nav"><span class="ic">🗓</span>강의시간표</div>
+            <div class="nav"><span class="ic">💰</span>미수금관리</div>
+            <div class="nav"><span class="ic">⚙️</span>관리자통합</div>
+            <div class="nav"><span class="ic">🏢</span>거래처관리</div>
+            <div class="nav"><span class="ic">📌</span>프로젝트관리</div>
+            <div class="more">+ 3개 더</div>
+
+            <div class="grp-label">규정</div>
+            <div class="nav"><span class="ic">📕</span>규정 통합</div>
+            <div class="nav"><span class="ic">📕</span>규정관리</div>
+            <div class="nav"><span class="ic">📕</span>규정편집</div>
+            <div class="nav"><span class="ic">📕</span>규정 레이아웃</div>
+            <div class="nav"><span class="ic">📕</span>규정매뉴얼</div>
+            <div class="nav"><span class="ic">📕</span>평가기준</div>
+            <div class="more">+ 2개 더</div>
+
+            <div class="grp-label">서식 / 확인서</div>
+            <div class="nav"><span class="ic">🧾</span>서식 / 확인서</div>
+
+            <div class="grp-label">출강관리</div>
+            <div class="nav"><span class="ic">🚗</span>출강강사관리</div>
+            <div class="nav"><span class="ic">🏬</span>거래처관리(출장)</div>
+
+            <div class="grp-label">기획 / 업무기획</div>
+            <div class="nav"><span class="ic">🗂</span>업무 분류</div>
+            <div class="nav"><span class="ic">👩‍🏫</span>강사커리</div>
+            <div class="nav"><span class="ic">📣</span>마케팅</div>
+            <div class="nav"><span class="ic">💬</span>프롬사용법</div>
+            <div class="nav"><span class="ic">🤖</span>AI 강의안</div>
+
+            <div class="grp-label">커뮤니티 / 홈페이지</div>
+            <div class="nav"><span class="ic">💭</span>커뮤니티</div>
+            <div class="nav"><span class="ic">🌐</span>홈페이지</div>
+
+            <div class="grp-label">대체 · 이전 메뉴</div>
+            <div class="nav"><span class="ic">🕓</span>업무일지(이전)</div>
+            <div class="nav"><span class="ic">🕓</span>사내지침(이전)</div>
+            <div class="nav"><span class="ic">🕓</span>면접(이전)</div>
+            <div class="nav"><span class="ic">🕓</span>규정(이전)</div>
+            <div class="nav"><span class="ic">🕓</span>채용(이전)</div>
+            <div class="nav"><span class="ic">🕓</span>매뉴얼(이전)</div>
+            <div class="nav"><span class="ic">🕓</span>대시보드(이전)</div>
+          </div>
+
+          <div class="content">
+            <div class="content-head">사내업무지침</div>
+            <div class="grid2">
+              <div class="stat"><div class="l">오늘 업무</div><div class="v">5</div></div>
+              <div class="stat"><div class="l">미결</div><div class="v">12</div></div>
+              <div class="stat"><div class="l">이번 주 등록</div><div class="v">38</div></div>
+            </div>
+            <div class="card">
+              <h3>지침 관리</h3>
+              <span class="pill blue">업무지침</span><span class="pill">사내규정</span><span class="pill">전체 부서</span>
+              <div class="field">🔍 지침 제목으로 검색…</div>
+              <div style="margin-top:16px;">
+                <button class="btn">+ 새 지침</button>
+                <button class="btn ghost">프롬프트</button>
+                <button class="btn ghost">필터</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>특징</h3>
+              <p style="font-size:13px;color:#717182;">둥근 카드(14px) · 부드러운 그림자 · 알약형 배지 · 넓은 여백의 소비자형 SaaS 룩. 사이드바는 49개 메뉴가 모두 펼쳐져 길게 스크롤됩니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================= AFTER ============================= -->
+    <div class="view" data-view="after">
+      <div class="app after">
+        <div class="note-bar">
+          <b>개선안</b>
+          <span class="k">직각 0px</span>
+          <span class="k">그림자 없음 · 1px 테두리</span>
+          <span class="k">다크 네이비 사이드바</span>
+          <span class="k">5대그룹 접이식 + 즐겨찾기 / 시스템 / 보관함</span>
+          <span class="k">그룹 헤더 클릭 → 접기·펼치기</span>
+        </div>
+        <div class="topbar">
+          <div class="brand">HUTECHC STUDIO</div>
+          <div class="kpi">미결<b>12</b></div>
+          <div class="kpi">오늘 업무<b>5</b></div>
+          <div class="avatar">HU</div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="side-search">🔍 검색 (전체 점프)</div>
+
+            <div class="grp">⭐ 즐겨찾기 <span class="chev">▾</span></div>
+            <div class="sub">
+              <div class="nav active">업무일지 <span class="badge">★</span></div>
+              <div class="nav">업무 총괄 <span class="badge">★</span></div>
+              <div class="nav">규정 <span class="badge">★</span></div>
+            </div>
+
+            <div class="grp">🏠 홈 · 내 업무 <span class="chev">▾</span></div>
+            <div class="sub">
+              <div class="nav">대시보드</div>
+              <div class="nav">업무일지</div>
+              <div class="nav">업무 총괄</div>
+              <div class="nav">내 출퇴근</div>
+            </div>
+
+            <div class="grp">📚 지식 · 규정 <span class="chev">▾</span></div>
+            <div class="sub">
+              <div class="nav">사내업무지침</div>
+              <div class="nav">규정 <span class="badge">탭6</span></div>
+              <div class="nav">매뉴얼 리스트</div>
+              <div class="nav">서식 · 확인서</div>
+              <div class="nav">업무 자료 · 서약서</div>
+            </div>
+
+            <div class="grp collapsed">👥 인사 · 채용 <span class="chev">▾</span></div>
+            <div class="sub">
+              <div class="nav">채용관리 <span class="badge">탭4</span></div>
+              <div class="nav">출퇴근 관리</div>
+              <div class="nav">학생관리</div>
+              <div class="nav">출강 · 강사관리</div>
+            </div>
+
+            <div class="grp collapsed">🏢 운영 · 거래처 <span class="chev">▾</span></div>
+            <div class="sub">
+              <div class="nav">미팅 · 강의시간표</div>
+              <div class="nav">거래처관리 <span class="badge">탭3</span></div>
+              <div class="nav">미수금관리</div>
+              <div class="nav">프로젝트관리</div>
+              <div class="nav">사진모음</div>
+            </div>
+
+            <div class="grp collapsed">🧭 기획 · 콘텐츠 <span class="chev">▾</span></div>
+            <div class="sub">
+              <div class="nav">업무 분류 · 강사커리</div>
+              <div class="nav">마케팅</div>
+              <div class="nav">프롬프트 · AI 강의안</div>
+              <div class="nav">커뮤니티 · 홈페이지</div>
+            </div>
+
+            <div class="grp sys-grp collapsed">⚙️ 시스템 관리 <span class="chev">▾</span></div>
+            <div class="sub">
+              <div class="nav">관리자통합 <span class="badge">ADMIN</span></div>
+            </div>
+
+            <div class="grp legacy-grp collapsed">🗄️ 보관함(Legacy) <span class="chev">▾</span></div>
+            <div class="sub">
+              <div class="nav">이전 메뉴 7종</div>
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="content-head">사내업무지침</div>
+            <div class="kpi-grid">
+              <div class="kpi-cell"><span class="l">오늘 업무</span><span class="v">5</span></div>
+              <div class="kpi-cell"><span class="l">미결</span><span class="v">12</span></div>
+              <div class="kpi-cell"><span class="l">이번 주</span><span class="v">38</span></div>
+              <div class="kpi-cell"><span class="l">규정 보기</span><span class="v">6→1</span></div>
+            </div>
+            <div class="card">
+              <h3>지침 관리</h3>
+              <span class="tag blue">업무지침</span><span class="tag">사내규정</span><span class="tag">전체 부서</span>
+              <div class="field">🔍 지침 제목으로 검색…</div>
+              <div style="margin-top:10px;">
+                <button class="btn">+ 새 지침</button>
+                <button class="btn ghost">프롬프트</button>
+                <button class="btn ghost">필터</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>규정 (통합 화면)</h3>
+              <p style="font-size:11.5px;color:#6b7280;">직각(0px) · 그림자 없음 · 1px 회색 테두리 · 좌측 컬러 바 · 모노 라벨의 고밀도 관제 룩.
+              규정 통합/관리/편집/레이아웃/매뉴얼/평가기준은 메뉴가 아니라 <b>이 화면 안 탭</b>으로 통합됩니다.</p>
+            </div>
+            <div class="card">
+              <h3>특징</h3>
+              <p style="font-size:11.5px;color:#6b7280;">사이드바는 5개 대그룹만 보이고, 나머지는 접혀 있어 평상시 표시 항목이 ≈8개로 줄어듭니다. 시스템 관리는 권한 분리, 이전 메뉴는 보관함에 격리됩니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================= 변경 요약 ============================= -->
+    <div class="view" data-view="summary">
+      <div class="summary-view">
+        <h2>변경 요약</h2>
+        <table>
+          <thead><tr><th>항목</th><th>BEFORE (현재)</th><th>AFTER (개선)</th></tr></thead>
+          <tbody>
+            <tr><td>최상위 그룹</td><td class="b">10개</td><td class="a">5개 (+ 즐겨찾기/시스템/보관함)</td></tr>
+            <tr><td>평상시 보이는 항목</td><td class="b">≈49 (전부 펼침)</td><td class="a">≈8 (헤더 + 즐겨찾기)</td></tr>
+            <tr><td>규정 관련 메뉴</td><td class="b">6~8개</td><td class="a">1개 (화면 내 탭)</td></tr>
+            <tr><td>거래처 관련 메뉴</td><td class="b">3개</td><td class="a">1개 (화면 내 탭)</td></tr>
+            <tr><td>이전/대체 메뉴</td><td class="b">7개 (현역과 혼재)</td><td class="a">0개 (보관함 격리)</td></tr>
+            <tr><td>모서리(border-radius)</td><td class="b">8~14px 둥글게 + 알약형</td><td class="a">0px 완전 직각</td></tr>
+            <tr><td>그림자</td><td class="b">soft shadow</td><td class="a">없음 (1px 테두리)</td></tr>
+            <tr><td>사이드바</td><td class="b">라이트, 둥근 활성</td><td class="a">다크 네이비, 파랑 직각 활성</td></tr>
+            <tr><td>밀도 / 폰트</td><td class="b">넓은 여백 · 일반 산세리프</td><td class="a">고밀도 · 모노 라벨 + 콘덴스드</td></tr>
+          </tbody>
+        </table>
+        <p class="hint">핵심 디자인 전환은 shadcn/ui의 <code>--radius: .625rem → 0</code> 한 줄이면 카드·버튼·입력·탭이 일괄 직각화됩니다.
+        상세: <code>02-디자인-개선안(border-radius).md</code> · 메뉴 구조: <code>01-사이드바-메뉴-단순화-가이드.md</code></p>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  // 상단 탭 전환
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
+      document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelector('.view[data-view="' + t.dataset.tab + '"]').classList.add('active');
+    });
+  });
+  // AFTER 사이드바: 그룹 헤더 클릭 → 접기/펼치기
+  document.querySelectorAll('.after .grp').forEach(function (g) {
+    g.addEventListener('click', function () { g.classList.toggle('collapsed'); });
+  });
+  // AFTER 메뉴 항목 클릭 → 활성 표시 이동
+  document.querySelectorAll('.after .nav').forEach(function (n) {
+    n.addEventListener('click', function (e) {
+      e.stopPropagation();
+      document.querySelectorAll('.after .nav.active').forEach(function (a) { a.classList.remove('active'); });
+      n.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

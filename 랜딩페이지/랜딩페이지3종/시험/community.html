@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>커뮤니티 | Times Education</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
+    <div class="container header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">TM</span><span><b>Times Education</b><small>AI 교육·자격 통합 플랫폼</small></span></a>
+      <nav class="gnb" aria-label="주요 메뉴">
+        <a href="./courses.html">시험 소개</a>
+        <a href="./cert-intro.html">자격증 소개</a>
+        <a href="./exam-guide.html">시험 안내</a>
+        <a class="active" href="./community.html">커뮤니티</a>
+        <a href="./contact.html">1:1문의</a>
+      </nav>
+      <div class="header-actions">
+        <button class="mobile-menu" type="button">MENU</button>
+        <a class="btn btn--primary btn--sm" href="./apply.html">신청하기</a>
+        <a class="btn btn--outline btn--sm" href="./about.html">교육원 소개</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-title"><div class="container page-title-inner">
+      <div><span class="breadcrumb">Home / 커뮤니티</span><h1>커뮤니티</h1><p>공지사항, 자주 묻는 질문, 수강후기, 자료실을 하나의 탭 구조로 운영합니다.</p></div>
+    </div></section>
+
+    <section class="section section--soft"><div class="container">
+      <nav class="tabs" id="commTabs" aria-label="커뮤니티 분류">
+        <a href="#notice" class="active" data-tab="notice">공지사항</a>
+        <a href="#faq" data-tab="faq">자주 묻는 질문</a>
+        <a href="#qna" data-tab="qna">Q&amp;A</a>
+        <a href="#reviews" data-tab="reviews">수강후기</a>
+        <a href="#data" data-tab="data">자료실</a>
+      </nav>
+
+      <div class="tab-panel active" id="tab-notice">
+        <div class="section-head"><div><span class="label">NOTICE</span><h2>공지사항</h2></div><span class="note">교육원 공식 안내 게시판</span></div>
+        <nav class="subtabs" id="noticeSubtabs" aria-label="공지 분류"></nav>
+        <div class="board-bar">
+          <div class="board-count">전체 <strong id="noticeTotal">0</strong>건</div>
+          <form class="board-search" onsubmit="return false;">
+            <span class="search-scope" role="group" aria-label="검색 분류">
+              <button type="button" class="scope-btn active" aria-pressed="true">제목</button>
+              <button type="button" class="scope-btn" aria-pressed="false">작성자</button>
+            </span>
+            <input type="search" placeholder="검색어를 입력하세요" aria-label="검색어">
+            <button class="btn btn--outline btn--sm" type="submit">검색</button>
+          </form>
+        </div>
+        <div style="overflow-x:auto"><table class="board">
+          <thead><tr><th class="col-no">번호</th><th class="col-cat">분류</th><th>제목</th><th class="col-writer">작성자</th><th class="col-date">등록일</th><th class="col-views">조회</th></tr></thead>
+          <tbody id="noticeBody"></tbody>
+        </table></div>
+        <nav class="pagination" aria-label="페이지"><span>&laquo;</span><span class="current">1</span><a href="#">2</a><a href="#">3</a><span>&raquo;</span></nav>
+      </div>
+
+      <div class="tab-panel" id="tab-faq">
+        <div class="section-head"><div><span class="label">FAQ</span><h2>자주 묻는 질문</h2></div><span class="note">질문을 누르면 답변이 펼쳐집니다</span></div>
+        <nav class="subtabs" id="faqSubtabs" aria-label="자주 묻는 질문 분류"></nav>
+        <div class="board-bar">
+          <div class="board-count">전체 <strong id="faqTotal">0</strong>건</div>
+        </div>
+        <div class="faq-list" id="faqList"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-qna">
+        <div class="section-head"><div><span class="label">Q&amp;A</span><h2>Q&amp;A</h2></div><span class="note">개별 문의와 답변을 확인할 수 있습니다</span></div>
+        <nav class="subtabs" id="qnaSubtabs" aria-label="Q&A 분류"></nav>
+        <div class="board-bar">
+          <div class="board-count">전체 <strong id="qnaTotal">0</strong>건</div>
+          <a class="btn btn--outline btn--sm" href="./contact.html">문의하기</a>
+        </div>
+        <div style="overflow-x:auto"><table class="board qna-board">
+          <thead><tr><th class="col-no">번호</th><th class="col-cat">분류</th><th>제목</th><th class="col-writer">작성자</th><th class="col-date">등록일</th><th class="col-status">상태</th></tr></thead>
+          <tbody id="qnaBody"></tbody>
+        </table></div>
+      </div>
+
+      <div class="tab-panel" id="tab-reviews">
+        <div class="section-head"><div><span class="label">REVIEWS</span><h2>수강후기</h2></div><span class="note">수료생이 직접 남긴 후기</span></div>
+        <nav class="subtabs" id="reviewSubtabs" aria-label="수강후기 분류"></nav>
+        <div class="review-grid" id="reviewGrid"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-data">
+        <div class="section-head"><div><span class="label">DATA</span><h2>자료실</h2></div><span class="note">교재·요강·신청서 다운로드</span></div>
+        <nav class="subtabs" id="dataSubtabs" aria-label="자료실 분류"></nav>
+        <div class="data-list" id="dataList"></div>
+      </div>
+    </div></section>
+  </main>
+
+  <section class="cta"><div class="container cta-inner">
+    <div><h2>찾는 자료가 없다면 문의를 남겨주세요</h2><p>담당자가 필요한 자료와 과정 안내를 연결해드립니다.</p></div>
+    <a class="btn btn--primary btn--lg" href="./contact.html">1:1 문의하기</a>
+  </div></section>
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>Times Education</h2><p>02-6207-9090</p></div>
+    <div><h3>시험</h3><a href="./courses.html">시험 소개</a><a href="./cert-intro.html">자격증 소개</a></div>
+    <div><h3>안내</h3><a href="./exam-guide.html">시험 안내</a><a href="./community.html">커뮤니티</a></div>
+    <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원 소개</a></div>
+  </div><div class="copyright">© 2026 Times Media Inc. — layout_redesign</div></div></footer>
+
+  <script src="./data.js"></script>
+  <script>
+    (function () {
+      const { NOTICES, COURSES, escapeHtml } = window.SiteData;
+      const tabs = document.querySelectorAll("#commTabs a");
+      function activate(name) {
+        tabs.forEach((t) => { const on = t.dataset.tab === name; t.classList.toggle("active", on); t.setAttribute("aria-selected", on ? "true" : "false"); });
+        document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.id === "tab-" + name));
+      }
+      tabs.forEach((t) => t.addEventListener("click", (e) => { e.preventDefault(); activate(t.dataset.tab); history.replaceState(null, "", "#" + t.dataset.tab); }));
+      const hash = (location.hash || "").replace("#", "");
+      if (["notice", "faq", "qna", "reviews", "data"].includes(hash)) activate(hash);
+
+      document.querySelectorAll(".scope-btn").forEach((b) => b.addEventListener("click", () => {
+        document.querySelectorAll(".scope-btn").forEach((x) => { x.classList.remove("active"); x.setAttribute("aria-pressed", "false"); });
+        b.classList.add("active"); b.setAttribute("aria-pressed", "true");
+      }));
+
+      const pinned = NOTICES.filter((n) => n.pinned);
+      const normal = NOTICES.filter((n) => !n.pinned);
+      const rows = [];
+      pinned.forEach((n) => rows.push(row(n, null)));
+      normal.forEach((n, i) => rows.push(row(n, normal.length - i)));
+      document.getElementById("noticeBody").innerHTML = rows.join("");
+      function row(n, no) {
+        const noCell = no === null ? '<span class="pin-no">공지</span>' : no;
+        const isNew = ["ai-course-2026", "ai-ethics"].includes(n.id) ? '<span class="new-dot">N</span>' : "";
+        return `<tr data-cat="${escapeHtml(n.category)}" data-pinned="${n.pinned ? "1" : "0"}">
+          <td class="col-no">${noCell}</td>
+          <td class="col-cat"><span class="cat-badge" data-cat="${escapeHtml(n.category)}">${escapeHtml(n.category)}</span></td>
+          <td class="subject"><a href="./notice-detail.html?id=${encodeURIComponent(n.id)}">${escapeHtml(n.title)}</a>${isNew}</td>
+          <td class="col-writer">${escapeHtml(n.writer)}</td>
+          <td class="col-date">${escapeHtml(n.date)}</td>
+          <td class="col-views">${n.views.toLocaleString()}</td>
+        </tr>`;
+      }
+
+      // 공지 분류 서브탭 (전체 + 데이터에서 추출한 분류)
+      const cats = ["전체", ...Array.from(new Set(NOTICES.map((n) => n.category)))];
+      const countOf = (cat) => cat === "전체" ? NOTICES.length : NOTICES.filter((n) => n.category === cat).length;
+      const subtabs = document.getElementById("noticeSubtabs");
+      subtabs.innerHTML = cats.map((cat, i) =>
+        `<button type="button" class="${i === 0 ? "active" : ""}" data-cat="${escapeHtml(cat)}" aria-pressed="${i === 0}">${escapeHtml(cat)}<span class="cnt">${countOf(cat)}</span></button>`).join("");
+      const totalEl = document.getElementById("noticeTotal");
+      function filterNotice(cat) {
+        let shown = 0;
+        document.querySelectorAll("#noticeBody tr").forEach((tr) => {
+          // 고정(공지)글은 '전체'와 해당 분류에서만 노출
+          const match = cat === "전체" || tr.dataset.cat === cat;
+          tr.style.display = match ? "" : "none";
+          if (match) shown++;
+        });
+        totalEl.textContent = shown;
+      }
+      subtabs.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+        subtabs.querySelectorAll("button").forEach((x) => { x.classList.remove("active"); x.setAttribute("aria-pressed", "false"); });
+        b.classList.add("active"); b.setAttribute("aria-pressed", "true");
+        filterNotice(b.dataset.cat);
+      }));
+      filterNotice("전체");
+
+      const commonFaqs = [
+        { category: "공통", q: "온라인 수강이 가능한가요?", a: "과정별로 온라인·오프라인·혼합 운영이 다르므로 일정표에서 확인할 수 있습니다." },
+        { category: "공통", q: "자격시험만 응시할 수 있나요?", a: "일부 자격시험은 과정 수강 없이 회차별 응시가 가능합니다." },
+        { category: "공통", q: "증명서는 언제 발급되나요?", a: "수료 조건 충족 후 마이페이지 또는 행정실을 통해 발급합니다." },
+        { category: "공통", q: "수강료 분할 납부가 되나요?", a: "과정에 따라 분할 납부가 가능하며 상담 시 안내드립니다." },
+        { category: "공통", q: "수료 후 결과물은 무엇인가요?", a: "교안·콘텐츠·시연 영상 등 포트폴리오로 활용할 결과물을 완성합니다." },
+        { category: "시험", q: "과정 수강 없이 응시할 수 있나요?", a: "일부 급수는 과정 수강 없이 회차별로 응시할 수 있습니다." },
+        { category: "시험", q: "응시 확인서는 어떻게 받나요?", a: "접수 완료 후 마이페이지에서 발급됩니다." },
+        { category: "시험", q: "재응시가 가능한가요?", a: "다음 회차에 다시 접수해 응시할 수 있습니다." }
+      ];
+      const courseFaqs = COURSES.flatMap((course) => (course.faq || []).map(([q, a]) => ({
+        category: course.title,
+        q,
+        a
+      })));
+      const faqs = [...commonFaqs, ...courseFaqs];
+      document.getElementById("faqList").innerHTML = faqs.map((item) => `
+        <div class="faq-item" data-cat="${escapeHtml(item.category)}">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span class="cat-badge">${escapeHtml(item.category)}</span><span>${escapeHtml(item.q)}</span><span class="arrow">▾</span>
+          </button>
+          <div class="faq-a"><p>${escapeHtml(item.a)}</p></div>
+        </div>`).join("");
+
+      const faqCats = ["전체", "공통", "시험", ...COURSES.filter((course) => course.faq && course.faq.length).map((course) => course.title)];
+      const faqCountOf = (cat) => cat === "전체" ? faqs.length : faqs.filter((item) => item.category === cat).length;
+      const faqSubtabs = document.getElementById("faqSubtabs");
+      faqSubtabs.innerHTML = faqCats.map((cat, i) =>
+        `<button type="button" class="${i === 0 ? "active" : ""}" data-cat="${escapeHtml(cat)}" aria-pressed="${i === 0}">${escapeHtml(cat)}<span class="cnt">${faqCountOf(cat)}</span></button>`).join("");
+      const faqTotalEl = document.getElementById("faqTotal");
+      function filterFaq(cat) {
+        let shown = 0;
+        document.querySelectorAll("#faqList .faq-item").forEach((item) => {
+          const match = cat === "전체" || item.dataset.cat === cat;
+          item.style.display = match ? "" : "none";
+          item.classList.remove("open");
+          const button = item.querySelector(".faq-q");
+          if (button) button.setAttribute("aria-expanded", "false");
+          if (match) shown++;
+        });
+        faqTotalEl.textContent = shown;
+      }
+      faqSubtabs.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+        faqSubtabs.querySelectorAll("button").forEach((x) => { x.classList.remove("active"); x.setAttribute("aria-pressed", "false"); });
+        b.classList.add("active"); b.setAttribute("aria-pressed", "true");
+        filterFaq(b.dataset.cat);
+      }));
+      document.querySelectorAll("#faqList .faq-q").forEach((b) => b.addEventListener("click", () => {
+        const it = b.parentElement; it.classList.toggle("open"); b.setAttribute("aria-expanded", it.classList.contains("open") ? "true" : "false");
+      }));
+      filterFaq("전체");
+
+      const qnas = [
+        ["exam-ticket", "시험", "AITe 시험 응시 확인서 출력 위치가 궁금합니다.", "김*연", "2026.04.22", "답변 완료"],
+        ["group-apply", "접수", "단체 접수 시 명단 양식이 따로 있나요?", "박*훈", "2026.04.16", "답변 완료"],
+        ["course-eval", "과정", "AI 강사 과정 수료 후 자격 평가 일정 문의", "이*진", "2026.04.09", "답변대기"]
+      ];
+      document.getElementById("qnaBody").innerHTML = qnas.map(([id, category, title, writer, date, status], i) => `
+        <tr data-cat="${escapeHtml(category)}">
+          <td class="col-no">${qnas.length - i}</td>
+          <td class="col-cat"><span class="cat-badge">${escapeHtml(category)}</span></td>
+          <td class="subject"><a href="./qna-detail.html?id=${encodeURIComponent(id)}">${escapeHtml(title)}</a></td>
+          <td class="col-writer">${escapeHtml(writer)}</td>
+          <td class="col-date">${escapeHtml(date)}</td>
+          <td class="col-status"><span class="status-pill ${status === "답변 완료" ? "done" : "wait"}">${escapeHtml(status)}</span></td>
+        </tr>`).join("");
+      const qnaCats = ["전체", ...Array.from(new Set(qnas.map(([, category]) => category)))];
+      const qnaCountOf = (cat) => cat === "전체" ? qnas.length : qnas.filter(([, category]) => category === cat).length;
+      const qnaSubtabs = document.getElementById("qnaSubtabs");
+      qnaSubtabs.innerHTML = qnaCats.map((cat, i) =>
+        `<button type="button" class="${i === 0 ? "active" : ""}" data-cat="${escapeHtml(cat)}" aria-pressed="${i === 0}">${escapeHtml(cat)}<span class="cnt">${qnaCountOf(cat)}</span></button>`).join("");
+      const qnaTotalEl = document.getElementById("qnaTotal");
+      function filterQna(cat) {
+        let shown = 0;
+        document.querySelectorAll("#qnaBody tr").forEach((tr) => {
+          const match = cat === "전체" || tr.dataset.cat === cat;
+          tr.style.display = match ? "" : "none";
+          if (match) shown++;
+        });
+        qnaTotalEl.textContent = shown;
+      }
+      qnaSubtabs.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+        qnaSubtabs.querySelectorAll("button").forEach((x) => { x.classList.remove("active"); x.setAttribute("aria-pressed", "false"); });
+        b.classList.add("active"); b.setAttribute("aria-pressed", "true");
+        filterQna(b.dataset.cat);
+      }));
+      filterQna("전체");
+
+      const reviews = COURSES.flatMap((course) => (course.reviews || []).map(([q, p, who]) => ({
+        category: course.title,
+        q,
+        p,
+        who
+      })));
+      document.getElementById("reviewGrid").innerHTML = reviews.map((item) => `
+        <article class="review-card" data-cat="${escapeHtml(item.category)}"><blockquote>${escapeHtml(item.q)}</blockquote><p>${escapeHtml(item.p)}</p>
+        <div class="review-meta"><span>${escapeHtml(item.who)}</span><span>${escapeHtml(item.category)}</span></div></article>`).join("");
+      const reviewCats = ["전체", ...COURSES.filter((course) => course.reviews && course.reviews.length).map((course) => course.title)];
+      const reviewCountOf = (cat) => cat === "전체" ? reviews.length : reviews.filter((item) => item.category === cat).length;
+      const reviewSubtabs = document.getElementById("reviewSubtabs");
+      reviewSubtabs.innerHTML = reviewCats.map((cat, i) =>
+        `<button type="button" class="${i === 0 ? "active" : ""}" data-cat="${escapeHtml(cat)}" aria-pressed="${i === 0}">${escapeHtml(cat)}<span class="cnt">${reviewCountOf(cat)}</span></button>`).join("");
+      function filterReviews(cat) {
+        document.querySelectorAll("#reviewGrid .review-card").forEach((card) => {
+          card.style.display = cat === "전체" || card.dataset.cat === cat ? "" : "none";
+        });
+      }
+      reviewSubtabs.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+        reviewSubtabs.querySelectorAll("button").forEach((x) => { x.classList.remove("active"); x.setAttribute("aria-pressed", "false"); });
+        b.classList.add("active"); b.setAttribute("aria-pressed", "true");
+        filterReviews(b.dataset.cat);
+      }));
+      filterReviews("전체");
+
+      const files = [
+        ["과정", "과정 안내서", "전체 교육과정 개요와 비교표", "PDF"],
+        ["시험", "시험 요강", "급수별 평가 기준과 준비 항목", "PDF"],
+        ["서식", "신청서 양식", "오프라인 접수·단체 등록 서류", "DOCX"],
+        ["과정", "AI 강사과정 커리큘럼", "주차별 상세 커리큘럼", "PDF"]
+      ];
+      document.getElementById("dataList").innerHTML = files.map(([category, name, desc, ext]) => `
+        <div class="data-row" data-cat="${escapeHtml(category)}"><span class="file-ico">${ext}</span>
+        <div><div class="file-name"><span class="cat-badge">${escapeHtml(category)}</span>${escapeHtml(name)}</div><div class="file-desc">${escapeHtml(desc)}</div></div>
+        <a class="btn btn--outline btn--sm" href="#">다운로드</a></div>`).join("");
+      const dataCats = ["전체", ...Array.from(new Set(files.map(([category]) => category)))];
+      const dataCountOf = (cat) => cat === "전체" ? files.length : files.filter(([category]) => category === cat).length;
+      const dataSubtabs = document.getElementById("dataSubtabs");
+      dataSubtabs.innerHTML = dataCats.map((cat, i) =>
+        `<button type="button" class="${i === 0 ? "active" : ""}" data-cat="${escapeHtml(cat)}" aria-pressed="${i === 0}">${escapeHtml(cat)}<span class="cnt">${dataCountOf(cat)}</span></button>`).join("");
+      function filterData(cat) {
+        document.querySelectorAll("#dataList .data-row").forEach((row) => {
+          row.style.display = cat === "전체" || row.dataset.cat === cat ? "" : "none";
+        });
+      }
+      dataSubtabs.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+        dataSubtabs.querySelectorAll("button").forEach((x) => { x.classList.remove("active"); x.setAttribute("aria-pressed", "false"); });
+        b.classList.add("active"); b.setAttribute("aria-pressed", "true");
+        filterData(b.dataset.cat);
+      }));
+      filterData("전체");
+    })();
+  </script>
+  <script src="./site.js"></script>
+</body>
+</html>
