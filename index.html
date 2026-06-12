@@ -31,30 +31,31 @@
       header {
         background: var(--ink);
         color: #fff;
-        padding: 34px 22px 26px
+        padding: 8px 10px
       }
 
       .wrap,
       main {
-        max-width: 1240px;
-        margin: 0 auto
+        width: 100%;
+        max-width: none;
+        margin: 0
       }
 
       h1 {
-        margin: 0 0 10px;
-        font-size: 30px
+        margin: 0 0 2px;
+        font-size: 24px
       }
 
       .sub {
         margin: 0;
         color: #d7dde3;
-        line-height: 1.6
+        line-height: 1.25
       }
 
       .tabs {
         display: flex;
-        gap: 8px;
-        margin-top: 22px
+        gap: 4px;
+        margin-top: 6px
       }
 
       .tab {
@@ -62,7 +63,7 @@
         border-radius: 8px;
         background: rgba(255, 255, 255, .08);
         color: #fff;
-        padding: 10px 14px;
+        padding: 5px 8px;
         cursor: pointer;
         font: inherit
       }
@@ -73,7 +74,7 @@
       }
 
       main {
-        padding: 24px 22px 38px
+        padding: 6px
       }
 
       .panel {
@@ -94,7 +95,7 @@
       }
 
       .head {
-        padding: 16px;
+        padding: 6px 8px;
         border-bottom: 1px solid var(--line)
       }
 
@@ -104,16 +105,16 @@
       }
 
       .note {
-        margin: 8px 0 0;
+        margin: 2px 0 0;
         color: var(--muted);
-        line-height: 1.55;
+        line-height: 1.25;
         font-size: 13px
       }
 
       .search {
         width: 100%;
-        margin-top: 12px;
-        padding: 11px 12px;
+        margin-top: 5px;
+        padding: 6px 8px;
         border: 1px solid var(--line);
         border-radius: 8px;
         font-size: 14px;
@@ -128,8 +129,8 @@
       .view-toggle {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 12px
+        gap: 4px;
+        margin-top: 5px
       }
 
       .view-button {
@@ -137,7 +138,7 @@
         border-radius: 7px;
         background: #fff;
         color: var(--text);
-        padding: 8px 11px;
+        padding: 5px 8px;
         cursor: pointer;
         font: inherit;
         font-size: 13px
@@ -151,9 +152,9 @@
 
       .sections {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-        padding: 16px
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 5px;
+        padding: 5px
       }
 
       .section {
@@ -170,7 +171,7 @@
 
       .section h3 {
         margin: 0;
-        padding: 13px 14px;
+        padding: 5px 7px;
         border-bottom: 1px solid var(--line);
         background: #fafbfc;
         font-size: 15px
@@ -201,7 +202,7 @@
       .work-table th,
       .work-table td {
         border-bottom: 1px solid var(--line);
-        padding: 10px 11px;
+        padding: 4px 5px;
         text-align: left;
         vertical-align: top;
         font-size: 13px
@@ -243,8 +244,8 @@
       .card-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 10px;
-        padding: 12px;
+        gap: 5px;
+        padding: 5px;
         margin-bottom: 0
       }
 
@@ -254,7 +255,7 @@
         border-radius: 8px;
         background: #fff;
         color: var(--text);
-        padding: 13px 14px;
+        padding: 6px 7px;
         text-decoration: none
       }
 
@@ -273,7 +274,7 @@
       .html-card span,
       .doc-button span {
         display: block;
-        margin-top: 6px;
+        margin-top: 2px;
         color: var(--muted);
         font-size: 12px;
         line-height: 1.35;
@@ -282,19 +283,27 @@
 
       .md-layout {
         display: grid;
-        grid-template-columns: minmax(320px, 430px) minmax(0, 1fr);
-        gap: 18px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
         align-items: start
+      }
+
+      .library {
+        grid-column: span 1
+      }
+
+      .viewer {
+        grid-column: span 3
       }
 
       .doc-list {
         list-style: none;
         margin: 0;
-        padding: 0 8px 12px
+        padding: 0 4px 4px
       }
 
       .doc-list li {
-        margin: 4px 0
+        margin: 1px 0
       }
 
       .doc-button {
@@ -304,7 +313,7 @@
         border-radius: 7px;
         background: transparent;
         color: var(--text);
-        padding: 10px 9px;
+        padding: 5px 6px;
         text-align: left;
         cursor: pointer;
         font: inherit
@@ -317,15 +326,15 @@
 
       .viewer {
         position: sticky;
-        top: 18px;
-        min-height: calc(100vh - 42px)
+        top: 6px;
+        min-height: calc(100vh - 12px)
       }
 
       .viewer-actions {
         display: flex;
-        gap: 8px;
+        gap: 4px;
         flex-wrap: wrap;
-        margin-top: 12px
+        margin-top: 5px
       }
 
       .viewer-actions a,
@@ -334,7 +343,7 @@
         border-radius: 7px;
         background: #fff;
         color: var(--text);
-        padding: 8px 10px;
+        padding: 5px 7px;
         text-decoration: none;
         cursor: pointer;
         font: inherit;
@@ -342,8 +351,8 @@
       }
 
       .markdown {
-        padding: 20px 24px 30px;
-        line-height: 1.7;
+        padding: 6px 8px;
+        line-height: 1.35;
         word-break: keep-all;
         overflow-wrap: anywhere
       }
@@ -351,8 +360,8 @@
       .markdown h1,
       .markdown h2,
       .markdown h3 {
-        line-height: 1.35;
-        margin: 1.2em 0 .5em
+        line-height: 1.2;
+        margin: .45em 0 .2em
       }
 
       .markdown h1 {
@@ -362,7 +371,7 @@
       .markdown h2 {
         font-size: 22px;
         border-bottom: 1px solid var(--line);
-        padding-bottom: 6px
+        padding-bottom: 2px
       }
 
       .markdown h3 {
@@ -370,7 +379,7 @@
       }
 
       .markdown p {
-        margin: .7em 0
+        margin: .25em 0
       }
 
       .markdown ul {
@@ -388,7 +397,7 @@
         background: #101820;
         color: #eef3f7;
         border-radius: 8px;
-        padding: 14px;
+        padding: 6px;
         overflow: auto
       }
 
@@ -399,29 +408,34 @@
       }
 
       .markdown blockquote {
-        margin: 1em 0;
-        padding: 8px 14px;
+        margin: .35em 0;
+        padding: 4px 7px;
         border-left: 4px solid var(--accent);
         background: #f4f8f7
       }
 
       .placeholder {
         color: var(--muted);
-        padding: 22px 24px;
-        line-height: 1.7
+        padding: 8px;
+        line-height: 1.35
       }
 
       @media(max-width:920px) {
         header {
-          padding: 28px 16px 22px
+          padding: 6px
         }
 
         main {
-          padding: 18px 16px
+          padding: 4px
         }
 
         .md-layout {
           grid-template-columns: 1fr
+        }
+
+        .library,
+        .viewer {
+          grid-column: auto
         }
 
         .viewer {
@@ -438,8 +452,8 @@
         }
 
         .sections {
-          grid-template-columns: 1fr;
-          padding: 12px
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          padding: 4px
         }
       }
     </style>
