@@ -220,16 +220,42 @@
       }
 
       .work-table .num {
-        width: 48px;
+        width: 28px;
         color: var(--muted);
         text-align: right
       }
 
+      .work-table .title-file {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+      }
+
+      .work-table .title-text {
+        font-size: 11px;
+        font-weight: 600
+      }
+
+      .work-table .doc-table-button {
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        padding: 0;
+        cursor: pointer;
+        font: inherit;
+        text-align: left
+      }
+
+      .work-table .doc-table-button:hover {
+        color: var(--accent);
+        text-decoration: underline
+      }
+
       .work-table .date {
-        width: 96px;
+        width: 50px;
         color: var(--muted);
         white-space: nowrap;
-        font-size: 6px
+        font-size: 8px
       }
 
       .work-table a {
@@ -475,8 +501,8 @@
             <h2 class="section-title">HTML 산출물</h2>
             <p class="note">기본은 표 보기입니다. 파일명을 클릭하면 새 탭에서 해당 HTML 화면을 확인합니다.</p><input id="html-search" class="search" type="search" placeholder="HTML 제목 또는 경로 검색">
             <div class="view-toggle" aria-label="HTML 보기 방식">
-              <button class="view-button active" type="button" data-view="table">표로 보기</button>
-              <button class="view-button" type="button" data-view="card">카드형으로 보기</button>
+              <button class="view-button active" type="button" data-list="html" data-view="table">표로 보기</button>
+              <button class="view-button" type="button" data-list="html" data-view="card">카드형으로 보기</button>
             </div>
           </div>
           <div id="html-sections" class="sections"></div>
@@ -488,6 +514,10 @@
             <div class="head">
               <h2 class="section-title">Markdown 산출물</h2>
               <p class="note">MD 파일은 본문을 이 페이지에 내장해 로컬에서도 바로 열리도록 했습니다.</p><input id="md-search" class="search" type="search" placeholder="Markdown 제목 또는 경로 검색">
+              <div class="view-toggle" aria-label="Markdown 보기 방식">
+                <button class="view-button active" type="button" data-list="md" data-view="table">표로 보기</button>
+                <button class="view-button" type="button" data-list="md" data-view="card">카드형으로 보기</button>
+              </div>
             </div>
             <div id="md-sections"></div>
           </section>
@@ -1085,6 +1115,7 @@
         rawLink = document.getElementById('raw-link'),
         copyLink = document.getElementById('copy-link');
       let htmlView = 'table';
+      let mdView = 'table';
 
       function esc(v) {
         return String(v).replace(/[&<>"']/g, c => ({
@@ -1101,6 +1132,31 @@
           (a[d.section] || (a[d.section] = [])).push(d);
           return a
         }, {})
+      }
+
+      function formatDate(v) {
+        return String(v).replace(/^20(\d{2}-\d{2}-\d{2})$/, '$1')
+      }
+
+      function createdDate(d) {
+        return formatDate(d.createdDate || d.date)
+      }
+
+      function modifiedDate(d) {
+        return formatDate(d.modifiedDate || d.date)
+      }
+
+      function shortTitle(d) {
+        let title = String(d.title);
+        if (d.section === '디자인시스템') {
+          title = title.replace(/^디자인시스템\s*-\s*/, '디자인-');
+          if (title === '디자인시스템') return '디자인';
+        }
+        if (d.section === '랜딩페이지') {
+          if (title === '랜딩페이지 기초 레이아웃') return '랜딩-기초';
+          title = title.replace(/^랜딩페이지\s*-\s*/, '랜딩-');
+        }
+        return title
       }
 
       function inlineMd(v) {
@@ -1173,14 +1229,20 @@
       }
 
       function renderTable(items) {
-        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>제목</th><th>파일명</th><th>날짜</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td>' + esc(d.title) + '</td><td><a href="' + encodeURI(d.path) + '" target="_blank" rel="noopener">' + esc(d.path) + '</a></td><td class="date">' + esc(d.date) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>제목</th><th>파일명</th><th>만든날짜</th><th>수정날짜</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="title-text">' + esc(shortTitle(d)) + '</td><td class="title-file"><a href="' + encodeURI(d.path) + '" target="_blank" rel="noopener">' + esc(d.path) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td></tr>').join('') +
+          '</tbody></table></div>'
+      }
+
+      function renderMdTable(items) {
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>제목</th><th>파일명</th><th>만든날짜</th><th>수정날짜</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file">' + esc(d.path) + '</td><td class="date">' + esc(createdDate(d)) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderCards(items) {
         return '<div class="card-grid">' +
-          items.map(d => '<a class="html-card" href="' + encodeURI(d.path) + '" target="_blank" rel="noopener"><strong>' + esc(d.title) + '</strong><span>수정일 ' + esc(d.date) + ' · ' + esc(d.path) + '</span></a>').join('') +
+          items.map(d => '<a class="html-card" href="' + encodeURI(d.path) + '" target="_blank" rel="noopener"><strong>' + esc(shortTitle(d)) + '</strong><span>만든날짜 ' + esc(createdDate(d)) + ' · 수정날짜 ' + esc(modifiedDate(d)) + ' · ' + esc(d.path) + '</span></a>').join('') +
           '</div>'
       }
 
@@ -1195,15 +1257,15 @@
         const term = mdSearch.value.trim().toLowerCase(),
           filtered = DATA.mdDocs.filter(d => !term || (d.section + ' ' + d.title + ' ' + d.path + ' ' + d.date).toLowerCase().includes(term)),
           grouped = group(filtered);
-        mdSections.innerHTML = Object.keys(grouped).map(section => '<section class="section"><h3>' + esc(section) + ' <span class="count">' + grouped[section].length + '개</span></h3><ul class="doc-list">' + grouped[section].map(d => '<li><button class="doc-button" type="button" data-path="' + esc(d.path) + '"><strong>' + esc(d.title) + '</strong><span>수정일 ' + esc(d.date) + ' · ' + esc(d.path) + '</span></button></li>').join('') + '</ul></section>').join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
+        mdSections.innerHTML = Object.keys(grouped).map(section => '<section class="section"><h3>' + esc(section) + ' <span class="count">' + grouped[section].length + '개</span></h3>' + (mdView === 'table' ? renderMdTable(grouped[section]) : '<ul class="doc-list">' + grouped[section].map(d => '<li><button class="doc-button" type="button" data-path="' + esc(d.path) + '"><strong>' + esc(shortTitle(d)) + '</strong><span>만든날짜 ' + esc(createdDate(d)) + ' · 수정날짜 ' + esc(modifiedDate(d)) + ' · ' + esc(d.path) + '</span></button></li>').join('') + '</ul>') + '</section>').join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
       }
 
       function openDoc(p) {
         const doc = DATA.mdDocs.find(d => d.path === p);
         if (!doc) return;
-        document.querySelectorAll('.doc-button').forEach(b => b.classList.toggle('active', b.dataset.path === p));
-        titleEl.textContent = doc.title;
-        pathEl.textContent = '수정일 ' + doc.date + ' · ' + doc.path;
+        document.querySelectorAll('[data-path]').forEach(b => b.classList.toggle('active', b.dataset.path === p));
+        titleEl.textContent = shortTitle(doc);
+        pathEl.textContent = '만든날짜 ' + createdDate(doc) + ' · 수정날짜 ' + modifiedDate(doc) + ' · ' + doc.path;
         rawLink.href = encodeURI(doc.path);
         rawLink.hidden = false;
         copyLink.hidden = false;
@@ -1217,19 +1279,26 @@
         document.getElementById(tab.dataset.panel).classList.add('active')
       }));
       document.querySelectorAll('.view-button').forEach(button => button.addEventListener('click', () => {
+        const list = button.dataset.list || 'html';
+        if (list === 'md') {
+          mdView = button.dataset.view;
+          document.querySelectorAll('.view-button[data-list="md"]').forEach(item => item.classList.toggle('active', item === button));
+          renderMdList();
+          return
+        }
         htmlView = button.dataset.view;
-        document.querySelectorAll('.view-button').forEach(item => item.classList.toggle('active', item === button));
+        document.querySelectorAll('.view-button[data-list="html"]').forEach(item => item.classList.toggle('active', item === button));
         renderHtmlList()
       }));
       mdSections.addEventListener('click', e => {
-        const b = e.target.closest('.doc-button');
+        const b = e.target.closest('[data-path]');
         if (b) openDoc(b.dataset.path)
       });
       htmlSearch.addEventListener('input', renderHtmlList);
       mdSearch.addEventListener('input', renderMdList);
       copyLink.addEventListener('click', async () => {
         try {
-          await navigator.clipboard.writeText(pathEl.textContent.replace(/^수정일 [0-9-]+ · /, ''));
+          await navigator.clipboard.writeText(pathEl.textContent.replace(/^만든날짜 [0-9-]+ · 수정날짜 [0-9-]+ · /, ''));
           copyLink.textContent = '복사됨';
           setTimeout(() => copyLink.textContent = '경로 복사', 1200)
         } catch (e) {
