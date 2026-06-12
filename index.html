@@ -226,12 +226,19 @@
       }
 
       .work-table .title-file {
+        max-width: none;
+        min-width: 130px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis
       }
 
       .work-table .title-text {
+        display: block;
+        max-width: 86px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         font-size: 11px;
         font-weight: 600
       }
@@ -252,7 +259,7 @@
       }
 
       .work-table .date {
-        width: 50px;
+        width: 42px;
         color: var(--muted);
         white-space: nowrap;
         font-size: 8px
@@ -271,7 +278,7 @@
 
       .card-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 5px;
         padding: 5px;
         margin-bottom: 0
@@ -284,7 +291,10 @@
         background: #fff;
         color: var(--text);
         padding: 6px 7px;
-        text-decoration: none
+        text-decoration: none;
+        cursor: pointer;
+        font: inherit;
+        text-align: left
       }
 
       .html-card:hover {
@@ -314,6 +324,182 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 6px;
         align-items: start
+      }
+
+      .md-layout.card-mode .library {
+        grid-column: 1 / -1
+      }
+
+      .md-layout.card-mode .viewer {
+        display: none
+      }
+
+      .md-layout.preview-only .library {
+        display: none
+      }
+
+      .md-layout.preview-only .viewer {
+        display: block;
+        grid-column: 1 / -1
+      }
+
+      .preview-frame {
+        display: block;
+        width: 100%;
+        height: calc(100vh - 92px);
+        border: 0;
+        background: #fff
+      }
+
+      .preview-list {
+        max-height: calc(100vh - 92px);
+        overflow: auto
+      }
+
+      .preview-button {
+        width: 100%;
+        display: block;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        background: transparent;
+        color: var(--text);
+        padding: 5px 6px;
+        text-align: left;
+        cursor: pointer;
+        font: inherit
+      }
+
+      .preview-button:hover,
+      .preview-button.active {
+        background: var(--accent-soft)
+      }
+
+      .preview-button strong {
+        display: block;
+        font-size: 12px;
+        line-height: 1.25
+      }
+
+      .preview-button span {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 9px;
+        line-height: 1.25;
+        word-break: break-all
+      }
+
+      .section-card-grid {
+        padding: 0
+      }
+
+      .section-card-grid .section {
+        min-height: 170px
+      }
+
+      .mini-table th,
+      .mini-table td {
+        padding: 4px 5px;
+        font-size: 10px
+      }
+
+      .mini-table .num {
+        width: 24px
+      }
+
+      .mini-table .date {
+        width: 42px;
+        font-size: 8px;
+        text-align: right
+      }
+
+      .mini-table .mini-title {
+        width: 76px
+      }
+
+      .mini-title-file {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+      }
+
+      .mini-title-file strong {
+        display: inline;
+        margin-right: 4px;
+        font-size: 10px
+      }
+
+      .mini-title-file a,
+      .mini-title-file span {
+        color: var(--accent);
+        font-size: 9px;
+        word-break: normal
+      }
+
+      .mini-title-file small {
+        color: var(--muted);
+        font-size: 8px;
+        margin-left: 4px
+      }
+
+      .popup {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        display: none;
+        background: rgba(10, 16, 24, .48);
+        padding: 18px
+      }
+
+      .popup.active {
+        display: flex
+      }
+
+      .popup-box {
+        width: min(1280px, 100%);
+        height: calc(100vh - 36px);
+        margin: auto;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, .22)
+      }
+
+      .popup-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--line)
+      }
+
+      .popup-title {
+        margin: 0;
+        font-size: 14px
+      }
+
+      .popup-note {
+        margin: 1px 0 0;
+        color: var(--muted);
+        font-size: 10px
+      }
+
+      .popup-close {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: #fff;
+        padding: 4px 7px;
+        cursor: pointer
+      }
+
+      .popup-frame,
+      .popup-body {
+        width: 100%;
+        height: calc(100% - 51px);
+        border: 0;
+        overflow: auto
       }
 
       .library {
@@ -489,30 +675,40 @@
   <body>
     <header>
       <div class="wrap">
-        <h1>업무산출물</h1>
-        <p class="sub">HTML 화면은 새 탭 링크로 열고, Markdown 문서는 내장 뷰어에서 바로 확인합니다.</p>
-        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. Markdown</button></div>
+        <h1>📁 업무산출물</h1>
+        <p class="sub">HTML 화면과 Markdown 문서를 이 페이지 안에서 바로 확인합니다.</p>
+        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button></div>
       </div>
     </header>
     <main>
       <section id="html-panel" class="panel active">
-        <div class="box">
-          <div class="head">
-            <h2 class="section-title">HTML 산출물</h2>
-            <p class="note">기본은 표 보기입니다. 파일명을 클릭하면 새 탭에서 해당 HTML 화면을 확인합니다.</p><input id="html-search" class="search" type="search" placeholder="HTML 제목 또는 경로 검색">
-            <div class="view-toggle" aria-label="HTML 보기 방식">
-              <button class="view-button active" type="button" data-list="html" data-view="table">표로 보기</button>
-              <button class="view-button" type="button" data-list="html" data-view="card">카드형으로 보기</button>
+        <div class="md-layout">
+          <section class="library">
+            <div class="head">
+              <h2 class="section-title">📄 HTML 산출물</h2>
+              <p class="note">HTML 파일은 오른쪽 패널에서 바로 확인합니다.</p><input id="html-search" class="search" type="search" placeholder="HTML 제목 또는 경로 검색">
+              <div class="view-toggle" aria-label="HTML 보기 방식">
+                <button class="view-button active" type="button" data-list="html" data-view="table">표로 보기</button>
+                <button class="view-button" type="button" data-list="html" data-view="card">카드형으로 보기</button>
+              </div>
             </div>
-          </div>
-          <div id="html-sections" class="sections"></div>
+            <div id="html-sections"></div>
+          </section>
+          <article class="viewer">
+            <div class="head">
+              <h2 id="preview-title" class="section-title">화면을 선택하세요</h2>
+              <p id="preview-path" class="note">왼쪽 목록에서 HTML 산출물을 클릭하면 이 영역에 표시됩니다.</p>
+              <div class="viewer-actions"><button id="html-expand" type="button">오른쪽만 보기</button></div>
+            </div>
+            <iframe id="preview-frame" class="preview-frame" title="HTML 산출물 미리보기"></iframe>
+          </article>
         </div>
       </section>
       <section id="markdown-panel" class="panel">
         <div class="md-layout">
           <section class="library">
             <div class="head">
-              <h2 class="section-title">Markdown 산출물</h2>
+              <h2 class="section-title">📝 Markdown 산출물</h2>
               <p class="note">MD 파일은 본문을 이 페이지에 내장해 로컬에서도 바로 열리도록 했습니다.</p><input id="md-search" class="search" type="search" placeholder="Markdown 제목 또는 경로 검색">
               <div class="view-toggle" aria-label="Markdown 보기 방식">
                 <button class="view-button active" type="button" data-list="md" data-view="table">표로 보기</button>
@@ -525,13 +721,26 @@
             <div class="head">
               <h2 id="viewer-title" class="section-title">문서를 선택하세요</h2>
               <p id="viewer-path" class="note">왼쪽 목록에서 Markdown 문서를 클릭하면 이 영역에 표시됩니다.</p>
-              <div class="viewer-actions"><a id="raw-link" href="#" target="_blank" rel="noopener" hidden>원문 열기</a><button id="copy-link" type="button" hidden>경로 복사</button></div>
+              <div class="viewer-actions"><button id="md-expand" type="button">오른쪽만 보기</button><a id="raw-link" href="#" target="_blank" rel="noopener" hidden>원문 열기</a><button id="copy-link" type="button" hidden>경로 복사</button></div>
             </div>
             <div id="viewer-body" class="placeholder">Markdown 탭의 문서 목록에서 항목을 선택하세요.</div>
           </article>
         </div>
       </section>
     </main>
+    <div id="doc-popup" class="popup" aria-hidden="true">
+      <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+        <div class="popup-head">
+          <div>
+            <h2 id="popup-title" class="popup-title">문서 보기</h2>
+            <p id="popup-path" class="popup-note"></p>
+          </div>
+          <button id="popup-close" class="popup-close" type="button">닫기</button>
+        </div>
+        <iframe id="popup-frame" class="popup-frame" title="HTML 팝업 보기" hidden></iframe>
+        <div id="popup-body" class="popup-body markdown" hidden></div>
+      </div>
+    </div>
     <script>
       const DATA = {
         "htmlDocs": [{
@@ -1109,11 +1318,24 @@
         mdSections = document.getElementById('md-sections'),
         htmlSearch = document.getElementById('html-search'),
         mdSearch = document.getElementById('md-search'),
+        htmlLayout = document.querySelector('#html-panel .md-layout'),
+        mdLayout = document.querySelector('#markdown-panel .md-layout'),
         titleEl = document.getElementById('viewer-title'),
         pathEl = document.getElementById('viewer-path'),
         bodyEl = document.getElementById('viewer-body'),
         rawLink = document.getElementById('raw-link'),
-        copyLink = document.getElementById('copy-link');
+        copyLink = document.getElementById('copy-link'),
+        htmlExpand = document.getElementById('html-expand'),
+        mdExpand = document.getElementById('md-expand'),
+        previewTitle = document.getElementById('preview-title'),
+        previewPath = document.getElementById('preview-path'),
+        previewFrame = document.getElementById('preview-frame'),
+        popup = document.getElementById('doc-popup'),
+        popupTitle = document.getElementById('popup-title'),
+        popupPath = document.getElementById('popup-path'),
+        popupClose = document.getElementById('popup-close'),
+        popupFrame = document.getElementById('popup-frame'),
+        popupBody = document.getElementById('popup-body');
       let htmlView = 'table';
       let mdView = 'table';
 
@@ -1134,6 +1356,73 @@
         }, {})
       }
 
+      function sectionKeys(grouped) {
+        const keys = Object.keys(grouped);
+        const move = ['업무 화면/도구', '디자인시스템'];
+        return keys.sort((a, b) => {
+          const ai = move.indexOf(a),
+            bi = move.indexOf(b);
+          if (ai > -1 || bi > -1) return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+          return 0
+        })
+      }
+
+      function cardGroups(grouped) {
+        return sectionKeys(grouped).flatMap(section => {
+          const items = grouped[section];
+          if (items.length <= 10) return [{
+            title: section,
+            items
+          }];
+          const chunks = [];
+          for (let i = 0; i < items.length; i += 10) {
+            chunks.push({
+              title: section + ' ' + (i + 1) + '-' + Math.min(i + 10, items.length),
+              items: items.slice(i, i + 10)
+            })
+          }
+          return chunks
+        })
+      }
+
+      function mdCardGroups(grouped) {
+        const groups = [],
+          used = new Set();
+
+        function addWhole(section) {
+          if (!grouped[section]) return;
+          groups.push({
+            title: section,
+            items: grouped[section]
+          });
+          used.add(section)
+        }
+
+        function addChunk(section, start, count) {
+          if (!grouped[section]) return;
+          const items = grouped[section].slice(start, start + count);
+          if (!items.length) return;
+          groups.push({
+            title: section + ' ' + (start + 1) + '-' + (start + items.length),
+            items
+          });
+          used.add(section)
+        }
+
+        addChunk('업무 화면/도구', 0, 10);
+        addWhole('랜딩페이지');
+        addWhole('도구/매뉴얼');
+        addChunk('업무 화면/도구', 10, 10);
+        if (grouped['디자인시스템']) {
+          for (let i = 0; i < grouped['디자인시스템'].length; i += 10) addChunk('디자인시스템', i, 10)
+        }
+        addWhole('분석자료');
+        sectionKeys(grouped).forEach(section => {
+          if (!used.has(section)) addWhole(section)
+        });
+        return groups
+      }
+
       function formatDate(v) {
         return String(v).replace(/^20(\d{2}-\d{2}-\d{2})$/, '$1')
       }
@@ -1144,6 +1433,18 @@
 
       function modifiedDate(d) {
         return formatDate(d.modifiedDate || d.date)
+      }
+
+      function displayPath(d) {
+        const path = String(d.path);
+        const section = String(d.section || '');
+        if (section && path.startsWith(section + '/')) return path.slice(section.length);
+        return path
+      }
+
+      function shortPath(d) {
+        const path = displayPath(d);
+        return path.length > 25 ? path.slice(0, 25) + '....' : path
       }
 
       function shortTitle(d) {
@@ -1229,35 +1530,57 @@
       }
 
       function renderTable(items) {
-        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>제목</th><th>파일명</th><th>만든날짜</th><th>수정날짜</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="title-text">' + esc(shortTitle(d)) + '</td><td class="title-file"><a href="' + encodeURI(d.path) + '" target="_blank" rel="noopener">' + esc(d.path) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderMdTable(items) {
-        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>제목</th><th>파일명</th><th>만든날짜</th><th>수정날짜</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file">' + esc(d.path) + '</td><td class="date">' + esc(createdDate(d)) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
-      function renderCards(items) {
-        return '<div class="card-grid">' +
-          items.map(d => '<a class="html-card" href="' + encodeURI(d.path) + '" target="_blank" rel="noopener"><strong>' + esc(shortTitle(d)) + '</strong><span>만든날짜 ' + esc(createdDate(d)) + ' · 수정날짜 ' + esc(modifiedDate(d)) + ' · ' + esc(d.path) + '</span></a>').join('') +
-          '</div>'
+      function renderHtmlMiniTable(items) {
+        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-popup="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><a href="' + encodeURI(d.path) + '" data-html-popup="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a><small>' + esc(modifiedDate(d)) + '</small></td></tr>').join('') +
+          '</tbody></table></div>'
+      }
+
+      function renderMdMiniTable(items) {
+        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-md-popup="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><button class="doc-table-button" type="button" data-md-popup="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '<small>' + esc(modifiedDate(d)) + '</small></button></td></tr>').join('') +
+          '</tbody></table></div>'
       }
 
       function renderHtmlList() {
         const term = htmlSearch.value.trim().toLowerCase(),
           filtered = DATA.htmlDocs.filter(d => !term || (d.section + ' ' + d.title + ' ' + d.path + ' ' + d.date).toLowerCase().includes(term)),
           grouped = group(filtered);
-        htmlSections.innerHTML = Object.keys(grouped).map(section => '<section class="section"><h3>' + esc(section) + ' <span class="count">' + grouped[section].length + '개</span></h3>' + (htmlView === 'table' ? renderTable(grouped[section]) : renderCards(grouped[section])) + '</section>').join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
+        htmlSections.className = htmlView === 'card' ? 'card-grid section-card-grid' : '';
+        htmlSections.innerHTML = (htmlView === 'table' ? sectionKeys(grouped).map(section => '<section class="section"><h3>' + esc(section) + ' <span class="count">' + grouped[section].length + '개</span></h3>' + renderTable(grouped[section]) + '</section>') : cardGroups(grouped).map(g => '<section class="section"><h3>' + esc(g.title) + ' <span class="count">' + g.items.length + '개</span></h3>' + renderHtmlMiniTable(g.items) + '</section>')).join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
       }
 
       function renderMdList() {
         const term = mdSearch.value.trim().toLowerCase(),
           filtered = DATA.mdDocs.filter(d => !term || (d.section + ' ' + d.title + ' ' + d.path + ' ' + d.date).toLowerCase().includes(term)),
           grouped = group(filtered);
-        mdSections.innerHTML = Object.keys(grouped).map(section => '<section class="section"><h3>' + esc(section) + ' <span class="count">' + grouped[section].length + '개</span></h3>' + (mdView === 'table' ? renderMdTable(grouped[section]) : '<ul class="doc-list">' + grouped[section].map(d => '<li><button class="doc-button" type="button" data-path="' + esc(d.path) + '"><strong>' + esc(shortTitle(d)) + '</strong><span>만든날짜 ' + esc(createdDate(d)) + ' · 수정날짜 ' + esc(modifiedDate(d)) + ' · ' + esc(d.path) + '</span></button></li>').join('') + '</ul>') + '</section>').join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
+        mdSections.className = mdView === 'card' ? 'card-grid section-card-grid' : '';
+        mdSections.innerHTML = (mdView === 'table' ? sectionKeys(grouped).map(section => '<section class="section"><h3>' + esc(section) + ' <span class="count">' + grouped[section].length + '개</span></h3>' + renderMdTable(grouped[section]) + '</section>') : mdCardGroups(grouped).map(g => '<section class="section"><h3>' + esc(g.title) + ' <span class="count">' + g.items.length + '개</span></h3>' + renderMdMiniTable(g.items) + '</section>')).join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
+      }
+
+      function showPanel(panelId) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.panel === panelId));
+        document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === panelId))
+      }
+
+      function openHtmlPreview(path) {
+        const doc = DATA.htmlDocs.find(d => d.path === path);
+        if (!doc) return;
+        document.querySelectorAll('[data-html-preview]').forEach(b => b.classList.toggle('active', b.dataset.htmlPreview === path));
+        previewTitle.textContent = shortTitle(doc);
+        previewPath.textContent = '만든날짜 ' + createdDate(doc) + ' · 수정날짜 ' + modifiedDate(doc) + ' · ' + doc.path;
+        previewFrame.src = encodeURI(doc.path)
       }
 
       function openDoc(p) {
@@ -1272,14 +1595,45 @@
         bodyEl.className = 'markdown';
         bodyEl.innerHTML = renderMarkdown(doc.content)
       }
-      document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.panel).classList.add('active')
-      }));
+
+      function openPopup(type, path) {
+        const doc = type === 'html' ? DATA.htmlDocs.find(d => d.path === path) : DATA.mdDocs.find(d => d.path === path);
+        if (!doc) return;
+        popupTitle.textContent = shortTitle(doc);
+        popupPath.textContent = '수정날 ' + modifiedDate(doc) + ' · ' + doc.path;
+        popup.classList.add('active');
+        popup.setAttribute('aria-hidden', 'false');
+        if (type === 'html') {
+          popupFrame.hidden = false;
+          popupBody.hidden = true;
+          popupFrame.src = encodeURI(doc.path);
+          popupBody.innerHTML = ''
+        } else {
+          popupFrame.hidden = true;
+          popupBody.hidden = false;
+          popupFrame.removeAttribute('src');
+          popupBody.innerHTML = renderMarkdown(doc.content)
+        }
+      }
+
+      function closePopup() {
+        popup.classList.remove('active');
+        popup.setAttribute('aria-hidden', 'true');
+        popupFrame.removeAttribute('src');
+        popupBody.innerHTML = ''
+      }
+      document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => showPanel(tab.dataset.panel)));
       document.querySelectorAll('.view-button').forEach(button => button.addEventListener('click', () => {
         const list = button.dataset.list || 'html';
+        const layout = button.closest('.md-layout');
+        if (layout) {
+          layout.classList.toggle('card-mode', button.dataset.view === 'card');
+          if (button.dataset.view === 'card') {
+            layout.classList.remove('preview-only');
+            const expandButton = layout.querySelector('#html-expand, #md-expand');
+            if (expandButton) expandButton.textContent = '오른쪽만 보기'
+          }
+        }
         if (list === 'md') {
           mdView = button.dataset.view;
           document.querySelectorAll('.view-button[data-list="md"]').forEach(item => item.classList.toggle('active', item === button));
@@ -1291,11 +1645,44 @@
         renderHtmlList()
       }));
       mdSections.addEventListener('click', e => {
+        const popupButton = e.target.closest('[data-md-popup]');
+        if (popupButton) {
+          e.preventDefault();
+          openPopup('md', popupButton.dataset.mdPopup);
+          return
+        }
         const b = e.target.closest('[data-path]');
         if (b) openDoc(b.dataset.path)
       });
+      htmlSections.addEventListener('click', e => {
+        const popupLink = e.target.closest('[data-html-popup]');
+        if (popupLink) {
+          e.preventDefault();
+          openPopup('html', popupLink.dataset.htmlPopup);
+          return
+        }
+        const link = e.target.closest('[data-html-preview]');
+        if (!link) return;
+        e.preventDefault();
+        openHtmlPreview(link.dataset.htmlPreview)
+      });
       htmlSearch.addEventListener('input', renderHtmlList);
       mdSearch.addEventListener('input', renderMdList);
+      htmlExpand.addEventListener('click', () => {
+        htmlLayout.classList.toggle('preview-only');
+        htmlExpand.textContent = htmlLayout.classList.contains('preview-only') ? '목록 같이 보기' : '오른쪽만 보기'
+      });
+      mdExpand.addEventListener('click', () => {
+        mdLayout.classList.toggle('preview-only');
+        mdExpand.textContent = mdLayout.classList.contains('preview-only') ? '목록 같이 보기' : '오른쪽만 보기'
+      });
+      popupClose.addEventListener('click', closePopup);
+      popup.addEventListener('click', e => {
+        if (e.target === popup) closePopup()
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && popup.classList.contains('active')) closePopup()
+      });
       copyLink.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(pathEl.textContent.replace(/^만든날짜 [0-9-]+ · 수정날짜 [0-9-]+ · /, ''));
@@ -1308,6 +1695,7 @@
       });
       renderHtmlList();
       renderMdList();
+      if (DATA.htmlDocs[0]) openHtmlPreview(DATA.htmlDocs[0].path);
     </script>
   </body>
 </html>
