@@ -103,6 +103,68 @@
 
   window.Auth = { open, close };
 
+  /* ============ 2) 수강안내 헤더/페이지 메뉴 ============ */
+  const guidePages = [
+    { key: "registration", id: "registration", label: "등록안내", href: "./apply-registration.html", title: "등록 안내", desc: "수강 신청 절차와 접수 방법을 확인하세요." },
+    { key: "schedule", id: "schedule", label: "학사일정", href: "./apply.html", title: "학사일정", desc: "교육장소, 과정구분, 과목으로 강좌 일정을 찾고 신청할 수 있습니다." },
+    { key: "benefits", id: "benefits", label: "수강혜택", href: "./apply-benefits.html", title: "수강혜택", desc: "수강생에게 제공되는 할인, 자료, 사후관리 혜택을 확인하세요." },
+    { key: "refund", id: "refund", label: "수강료 환불", href: "./apply-refund.html", title: "수강료 환불", desc: "학습비 반환 기준과 환불 처리 방법을 안내합니다." },
+    { key: "certificates", id: "certificates", label: "증명서 출력", href: "./apply-certificates.html", title: "증명서 출력", desc: "수료증명서, 성적증명서 등 온라인 증명서 발급 절차를 확인하세요." }
+  ];
+  const fileName = decodeURIComponent(location.pathname.split("/").pop() || "index.html");
+  const currentGuide = guidePages.find((page) => page.href.replace("./", "") === fileName);
+  const inApplyArea = currentGuide || /^apply/.test(fileName) || fileName === "course-apply-detail.html";
+
+  function enhanceGuideHeader() {
+    const gnb = document.querySelector(".gnb");
+    if (!gnb || gnb.querySelector(".nav-dropdown--guide")) return;
+    const applyLink = Array.from(gnb.querySelectorAll("a")).find((link) => {
+      const text = link.textContent.trim();
+      return text === "수강신청" || text === "수강안내" || link.getAttribute("href") === "./apply.html";
+    });
+    if (!applyLink) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "nav-dropdown nav-dropdown--guide";
+    const parent = document.createElement("a");
+    parent.className = `nav-parent${inApplyArea ? " active" : ""}`;
+    parent.href = "./apply.html";
+    parent.textContent = "수강안내";
+    parent.setAttribute("aria-haspopup", "true");
+    const menu = document.createElement("div");
+    menu.className = "nav-dropdown-menu";
+    menu.setAttribute("role", "menu");
+    menu.innerHTML = guidePages.map((page) =>
+      `<a class="${currentGuide?.key === page.key ? "active" : ""}" href="${page.href}" role="menuitem">${page.label}</a>`
+    ).join("");
+    wrapper.append(parent, menu);
+    applyLink.replaceWith(wrapper);
+  }
+
+  function activateGuidePage() {
+    if (!document.querySelector(".apply-guide-page")) return;
+    const active = currentGuide || guidePages.find((page) => page.key === "schedule");
+
+    document.title = `${active.title} | A. TESOL`;
+    const title = document.querySelector(".page-title h1");
+    const desc = document.querySelector(".page-title p");
+    const breadcrumb = document.querySelector(".page-title .breadcrumb");
+    if (title) title.textContent = active.title;
+    if (desc) desc.textContent = active.desc;
+    if (breadcrumb) breadcrumb.textContent = `Home / 수강안내 / ${active.label}`;
+
+    document.querySelectorAll(".guide-anchor").forEach((section) => {
+      section.hidden = section.id !== active.id;
+    });
+    document.querySelectorAll("main.apply-guide-page > section.section").forEach((section) => {
+      const anchors = Array.from(section.querySelectorAll(".guide-anchor"));
+      section.hidden = anchors.length > 0 && anchors.every((anchor) => anchor.hidden);
+    });
+  }
+
+  enhanceGuideHeader();
+  activateGuidePage();
+
   /* ============ 2) 회사 정보 푸터 ============ */
   const footerContainer = document.querySelector(".site-footer .container");
   if (footerContainer) {

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>신청서 작성 | A. TESOL</title>
+</head>
+<body class="tesol-page">
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
+    <div class="container header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">A</span><span><b>A. TESOL</b><small>국제 영어교사 양성과정</small></span></a>
+      <nav class="gnb" aria-label="주요 메뉴">
+        <a href="./about.html">교육원소개</a>
+        <a href="./admission.html">입학안내</a>
+        <a href="./courses.html">과목소개</a>
+        <a class="active" href="./apply.html">수강신청</a>
+        <a href="./community.html">커뮤니티</a>
+        <a href="./contact.html">1:1문의</a>
+      </nav>
+      <div class="header-actions"><button class="mobile-menu" type="button">MENU</button><a class="btn btn--primary btn--sm" href="./apply.html">수강신청</a></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-title"><div class="container page-title-inner">
+      <div><span class="breadcrumb">Home / 수강신청 / 신청서 작성</span><h1>신청서 작성</h1><p>희망 과정과 기본 정보를 남겨주시면 담당자가 일정과 접수 절차를 안내합니다.</p></div>
+    </div></section>
+
+    <section class="section section--soft"><div class="container">
+      <div class="apply-page-layout">
+        <form class="apply-form-panel" id="applyForm">
+          <div class="section-head"><div><span class="label">APPLICATION</span><h2>수강 신청서</h2></div><span class="note">필수 항목 작성 후 제출해 주세요</span></div>
+
+          <div class="apply-step is-active" data-step="1">
+            <div class="apply-block">
+              <h3>지원 과정</h3>
+              <div class="field-grid two">
+                <div class="field-wrap"><label class="label" for="courseCenter">교육장소 <span class="required">*</span></label><select class="field" name="courseCenter" id="courseCenter" required></select></div>
+                <div class="field-wrap"><label class="label" for="courseCategory">과정구분 <span class="required">*</span></label><select class="field" name="courseCategory" id="courseCategory" required></select></div>
+                <div class="field-wrap" id="courseMiddleWrap"><label class="label" for="courseMiddle">중분류 <span class="required">*</span></label><select class="field" name="courseMiddle" id="courseMiddle"></select></div>
+                <div class="field-wrap"><label class="label" for="courseDetail">과목 <span class="required">*</span></label><select class="field" name="courseDetail" id="courseDetail" required></select></div>
+                <div class="field-wrap"><label class="label" for="applicationType">신청 유형 <span class="required">*</span></label><select class="field" name="applicationType" id="applicationType" required><option value="수업신청">수업신청</option><option value="상담신청">상담신청</option><option value="설명회">설명회</option></select></div>
+              </div>
+              <div class="selected-course-box" id="selectedCourseBox"></div>
+            </div>
+
+            <div class="apply-block">
+              <h3>기본 인적사항</h3>
+              <div class="field-grid">
+                <div class="field-wrap"><label class="label" for="name">성명 <span class="required">*</span></label><input class="field" name="name" id="name" placeholder="성명 입력" required></div>
+                <div class="field-wrap"><label class="label" for="phone">연락처 <span class="required">*</span></label><input class="field" name="phone" id="phone" maxlength="13" placeholder="010-1234-5678" required></div>
+                <div class="field-wrap"><label class="label" for="email">이메일 <span class="required">*</span></label><input class="field" name="email" id="email" type="email" placeholder="example@email.com" required></div>
+                <div class="field-wrap"><label class="label" for="birthDate">생년월일</label><input class="field" name="birthDate" id="birthDate" type="date"></div>
+              </div>
+            </div>
+
+            <div class="apply-block">
+              <h3>국적 구분</h3>
+              <div class="choice-grid">
+                <label class="choice-card"><input type="radio" name="nationality" value="내국인">내국인</label>
+                <label class="choice-card"><input type="radio" name="nationality" value="외국인">외국인</label>
+                <label class="choice-card"><input type="radio" name="nationality" value="재외국인">재외국인</label>
+              </div>
+            </div>
+
+            <div class="apply-block">
+              <h3>추가 정보</h3>
+              <div class="field-grid">
+                <div class="field-wrap full">
+                  <span class="label">직업</span>
+                  <div class="choice-grid">
+                    <label class="choice-card"><input type="checkbox" name="job" value="학생">학생</label>
+                    <label class="choice-card"><input type="checkbox" name="job" value="대학생">대학생</label>
+                    <label class="choice-card"><input type="checkbox" name="job" value="직장인">직장인</label>
+                    <label class="choice-card"><input type="checkbox" name="job" value="교사·강사">교사·강사</label>
+                    <label class="choice-card"><input type="checkbox" name="job" value="기타">기타</label>
+                  </div>
+                </div>
+                <div class="field-wrap full">
+                  <span class="label">신청을 알게 된 경로</span>
+                  <div class="choice-grid">
+                    <label class="choice-card"><input type="checkbox" name="channel" value="검색">검색</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="SNS">SNS</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="유튜브">유튜브</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="지인 추천">지인 추천</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="오프라인 안내">오프라인 안내</label>
+                    <label class="choice-card"><input type="checkbox" name="channel" value="기타">기타</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="apply-block">
+              <div class="field-wrap"><label class="label" for="introduction">신청 목적 <span class="required">*</span></label><textarea class="field" name="introduction" id="introduction" placeholder="교육 참여 목적과 학습 목표를 간단히 적어주세요."></textarea></div>
+              <div class="field-wrap" id="inquiryBox"><label class="label" for="inquiry">문의 내용</label><textarea class="field" name="inquiry" id="inquiry" placeholder="상담이 필요한 내용이 있으면 적어주세요."></textarea></div>
+              <label class="agree-row"><input type="checkbox" name="privacy"> 개인정보 수집 및 이용에 동의합니다. <span class="required">*</span></label>
+            </div>
+
+            <div class="apply-actions">
+              <a class="btn btn--neutral btn--lg" href="./apply.html">목록으로</a>
+              <button class="btn btn--neutral btn--lg" type="reset">초기화</button>
+              <button class="btn btn--primary btn--lg" type="submit">제출하기</button>
+            </div>
+          </div>
+
+          <div class="apply-step" data-step="2">
+            <div class="complete-box">
+              <div class="complete-mark">✓</div>
+              <h3>신청이 접수되었습니다</h3>
+              <p>담당자가 신청 내용을 확인한 뒤 연락드릴 예정입니다.</p>
+              <dl class="apply-summary" id="summary"></dl>
+              <div class="apply-actions">
+                <a class="btn btn--neutral btn--lg" href="./apply.html">강좌 목록</a>
+                <button class="btn btn--primary btn--lg" type="button" id="restartButton">새 신청서 작성</button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <aside class="apply-help panel">
+          <div class="section-head"><div><span class="label">GUIDE</span><h2>접수 안내</h2></div></div>
+          <table class="info-table apply-guide-table"><tbody>
+            <tr><th>처리 절차</th><td>신청 확인 → 상담 연락 → 반 배정 → 접수 완료</td></tr>
+            <tr><th>연락 기준</th><td>영업일 기준 1~2일 내 안내</td></tr>
+            <tr><th>문의 전화</th><td>02-6207-9090</td></tr>
+          </tbody></table>
+          <p>신청서 제출만으로 결제가 진행되지 않습니다. 수강료와 일정은 상담 후 확정됩니다.</p>
+        </aside>
+      </div>
+    </div></section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>A. TESOL</h2><p>02-6207-9090</p><p>국제 영어교사 양성과정</p></div>
+    <div><h3>과정</h3><a href="./admission.html">입학안내</a><a href="./courses.html">과목소개</a></div>
+    <div><h3>신청</h3><a href="./apply.html">수강신청</a><a href="./community.html">커뮤니티</a></div>
+    <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원소개</a></div>
+  </div><div class="copyright">© 2026 A. TESOL</div></div></footer>
+
+  <script src="./data.js"></script>
+  <script>
+    (function () {
+      const params = new URLSearchParams(location.search);
+      const form = document.getElementById("applyForm");
+      const courseCenter = document.getElementById("courseCenter");
+      const courseCategory = document.getElementById("courseCategory");
+      const courseMiddle = document.getElementById("courseMiddle");
+      const courseMiddleWrap = document.getElementById("courseMiddleWrap");
+      const courseDetail = document.getElementById("courseDetail");
+      const applicationType = document.getElementById("applicationType");
+      const selectedCourseBox = document.getElementById("selectedCourseBox");
+      const phone = document.getElementById("phone");
+      const summary = document.getElementById("summary");
+      const steps = Array.from(document.querySelectorAll(".apply-step"));
+      const COURSE_TYPES = ["TESOL", "AI강사과정", "통번역 과정", "AI자격과정"];
+      const staticCourses = [
+        { id: "aite-trans-edu", center: "온라인 교육센터", category: "AI자격과정", title: "AITe AI 번역전문가 교육급수", fee: "70,000원", target: "AI 번역 입문자", groupLabel: "" },
+        { id: "aite-trans-biz", center: "온라인 교육센터", category: "AI자격과정", title: "AITe AI 번역전문가 비즈니스급수", fee: "100,000원", target: "번역 실무자", groupLabel: "" },
+        { id: "aite-prompt", center: "온라인 교육센터", category: "AI자격과정", title: "AITe 프롬프트 전문가 과정", fee: "100,000원", target: "콘텐츠·기획 실무자", groupLabel: "" },
+        { id: "aite-ethics", center: "온라인 교육센터", category: "AI자격과정", title: "AI 윤리 공통 과정", fee: "별도 안내", target: "AITe 전체 응시자", groupLabel: "" },
+        { id: "itt-basic", center: "서울 교육센터", category: "통번역 과정", title: "ITT 통번역 실무 입문", fee: "상담 후 안내", target: "통번역 입문자", groupLabel: "" },
+        { id: "tesol-cert", center: "글로벌 교육센터", category: "TESOL", title: "TESOL 국제 영어교사 자격 과정", fee: "상담 후 안내", target: "예비·현직 영어강사", groupLabel: "" }
+      ];
+      const instructorCourses = ((window.SiteData && window.SiteData.COURSES) || [])
+        .filter((course) => course.groupKey)
+        .map((course) => ({
+          id: `apply-${course.id}`,
+          center: "온라인 교육센터",
+          category: "AI강사과정",
+          groupLabel: course.groupLabel || "",
+          title: course.title,
+          fee: course.fee,
+          target: course.target
+        }));
+      const courses = [...staticCourses, ...instructorCourses];
+
+      function uniq(arr) { return Array.from(new Set(arr.filter(Boolean))).sort(); }
+      function options(items, placeholder) { return `<option value="">${placeholder}</option>` + items.map((item) => `<option value="${item}">${item}</option>`).join(""); }
+      function field(name) { return form.elements[name]; }
+      function selectedValue(name) { return form.querySelector(`[name="${name}"]:checked`)?.value || ""; }
+      function selectedValues(name) { return Array.from(form.querySelectorAll(`[name="${name}"]:checked`)).map((item) => item.value); }
+      function setStep(step) { steps.forEach((item) => item.classList.toggle("is-active", Number(item.dataset.step) === step)); }
+      function isInstructor() { return courseCategory.value === "AI강사과정"; }
+      function matchingCourses() {
+        if (isInstructor() && !courseMiddle.value) return [];
+        return courses.filter((course) =>
+          (!courseCenter.value || course.center === courseCenter.value) &&
+          (!courseCategory.value || course.category === courseCategory.value) &&
+          (!isInstructor() || !courseMiddle.value || course.groupLabel === courseMiddle.value)
+        );
+      }
+      function selectedCourse() { return courses.find((course) => course.id === courseDetail.value) || null; }
+
+      function renderCenters() {
+        courseCenter.innerHTML = options(uniq(courses.map((course) => course.center)), "교육장소 선택");
+      }
+      function renderCategories() {
+        const values = COURSE_TYPES.filter((type) => courses.some((course) => course.category === type && (!courseCenter.value || course.center === courseCenter.value)));
+        courseCategory.innerHTML = options(values, "과정구분 선택");
+      }
+      function renderMiddles() {
+        courseMiddleWrap.classList.toggle("hidden", !isInstructor());
+        courseMiddle.required = isInstructor();
+        courseMiddle.innerHTML = isInstructor()
+          ? options(uniq(courses.filter((course) => course.category === "AI강사과정" && (!courseCenter.value || course.center === courseCenter.value)).map((course) => course.groupLabel)), "중분류 선택")
+          : '<option value="">중분류 없음</option>';
+      }
+      function renderDetails() {
+        const items = matchingCourses();
+        courseDetail.innerHTML = options(items.map((course) => course.id), "과목 선택");
+        Array.from(courseDetail.options).forEach((option) => {
+          const course = courses.find((item) => item.id === option.value);
+          if (course) option.textContent = course.title;
+        });
+        renderSelectedCourse();
+      }
+      function renderSelectedCourse() {
+        const course = selectedCourse();
+        selectedCourseBox.innerHTML = course ? `
+          <strong>${course.title}</strong>
+          <dl>
+            <div><dt>교육장소</dt><dd>${course.center}</dd></div>
+            <div><dt>과정구분</dt><dd>${course.category}${course.groupLabel ? ` / ${course.groupLabel}` : ""}</dd></div>
+            <div><dt>교육대상</dt><dd>${course.target}</dd></div>
+            <div><dt>수강료</dt><dd>${course.fee}</dd></div>
+          </dl>` : "";
+      }
+      function syncAfterCenter() {
+        const prevCategory = courseCategory.value;
+        renderCategories();
+        if (Array.from(courseCategory.options).some((option) => option.value === prevCategory)) courseCategory.value = prevCategory;
+        syncAfterCategory();
+      }
+      function syncAfterCategory() {
+        const prevMiddle = courseMiddle.value;
+        renderMiddles();
+        if (Array.from(courseMiddle.options).some((option) => option.value === prevMiddle)) courseMiddle.value = prevMiddle;
+        syncAfterMiddle();
+      }
+      function syncAfterMiddle() {
+        const prevDetail = courseDetail.value;
+        renderDetails();
+        if (Array.from(courseDetail.options).some((option) => option.value === prevDetail)) courseDetail.value = prevDetail;
+        renderSelectedCourse();
+      }
+      function applyCourse(course) {
+        if (!course) return;
+        courseCenter.value = course.center;
+        syncAfterCenter();
+        courseCategory.value = course.category;
+        syncAfterCategory();
+        if (course.groupLabel) {
+          courseMiddle.value = course.groupLabel;
+          syncAfterMiddle();
+        }
+        courseDetail.value = course.id;
+        renderSelectedCourse();
+      }
+      function validateForm() {
+        if (!courseCenter.value) return alert("교육장소를 선택해주세요.");
+        if (!courseCategory.value) return alert("과정구분을 선택해주세요.");
+        if (isInstructor() && !courseMiddle.value) return alert("중분류를 선택해주세요.");
+        if (!courseDetail.value) return alert("과목을 선택해주세요.");
+        if (!field("name").value.trim()) return alert("성명을 입력해주세요.");
+        if (!field("phone").value.trim()) return alert("연락처를 입력해주세요.");
+        if (!field("email").checkValidity()) return alert("올바른 이메일을 입력해주세요.");
+        if (!selectedValue("nationality")) return alert("국적 구분을 선택해주세요.");
+        if (!field("introduction").value.trim()) return alert("신청 목적을 입력해주세요.");
+        if (!field("privacy").checked) return alert("개인정보 수집 및 이용 동의가 필요합니다.");
+        return true;
+      }
+      function renderSummary() {
+        const course = selectedCourse();
+        const rows = [
+          ["신청 유형", applicationType.value],
+          ["성명", field("name").value],
+          ["지원 과정", course ? course.title : ""],
+          ["연락처", field("phone").value]
+        ];
+        summary.innerHTML = rows.map(([label, value]) => `<div class="summary-row"><dt>${label}</dt><dd>${value}</dd></div>`).join("");
+      }
+
+      courseCenter.addEventListener("change", syncAfterCenter);
+      courseCategory.addEventListener("change", syncAfterCategory);
+      courseMiddle.addEventListener("change", syncAfterMiddle);
+      courseDetail.addEventListener("change", renderSelectedCourse);
+      phone.addEventListener("input", () => {
+        const numbers = phone.value.replace(/\D/g, "").slice(0, 11);
+        if (numbers.length <= 3) phone.value = numbers;
+        else if (numbers.length <= 7) phone.value = `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+        else phone.value = `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
+      });
+      document.getElementById("restartButton").addEventListener("click", () => { form.reset(); initialize(); setStep(1); });
+      form.addEventListener("reset", () => window.setTimeout(() => { initialize(); setStep(1); }, 0));
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!validateForm()) return;
+        renderSummary();
+        setStep(2);
+      });
+
+      function initialize() {
+        renderCenters();
+        syncAfterCenter();
+        const id = params.get("id");
+        const courseParam = params.get("course");
+        const course = courses.find((item) => item.id === id) || courses.find((item) => item.title === courseParam);
+        applyCourse(course);
+      }
+      initialize();
+    })();
+  </script>
+  <script src="./site.js"></script>
+</body>
+</html>

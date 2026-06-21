@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./styles.css">
-  <title>수강 신청 | A. TESOL</title>
+  <title>학사일정 | A. TESOL</title>
 </head>
 <body class="tesol-page">
   <a class="skip-link" href="#main">본문으로 이동</a>
@@ -16,7 +16,7 @@
         <a href="./about.html">교육원소개</a>
         <a href="./admission.html">입학안내</a>
         <a href="./courses.html">과목소개</a>
-        <a class="active" href="./apply.html">수강신청</a>
+        <a class="active" href="./apply.html">수강안내</a>
         <a href="./community.html">커뮤니티</a>
         <a href="./contact.html">1:1문의</a>
       </nav>
@@ -24,29 +24,33 @@
     </div>
   </header>
 
-  <main id="main">
+  <main id="main" class="apply-guide-page">
     <section class="page-title"><div class="container page-title-inner">
-      <div><span class="breadcrumb">Home / 신청하기</span><h1>신청하기</h1><p>과목별 수강 가능한 강좌를 확인하고 신청하세요.</p></div>
+      <div><span class="breadcrumb">Home / 수강안내 / 학사일정</span><h1>학사일정</h1><p>교육장소, 과정구분, 과목으로 강좌 일정을 찾고 신청할 수 있습니다.</p></div>
     </div></section>
 
-    <section class="section section--soft cert-apply-section"><div class="container">
-      <div class="section-head"><div><span class="label">COURSE APPLICATION</span><h2>과목소개 강좌 조회</h2></div><span class="note">과목, 과정 구분, 교육장소로 강좌를 찾을 수 있습니다</span></div>
+    <section class="section section--soft cert-apply-section guide-anchor" id="schedule"><div class="container">
+      <div class="section-head"><div><span class="label">ACADEMIC SCHEDULE</span><h2>학사일정</h2></div><span class="note">교육장소, 과정구분, 과목으로 강좌 일정을 찾을 수 있습니다</span></div>
       <div class="apply-search-panel" aria-label="수강신청 강좌 검색">
         <div class="course-group-board" aria-label="수강신청 선택 영역">
           <section class="course-group-panel">
-            <div class="group-title"><span>01</span><strong>과목을 선택하세요.</strong></div>
-            <div class="group_list active" id="majorGroup" role="radiogroup" aria-label="과목 선택"></div>
+            <div class="group-title"><span>01</span><strong>교육장소를 선택하세요.</strong></div>
+            <div class="group_list active" id="centerGroup" role="radiogroup" aria-label="교육장소 선택"></div>
           </section>
           <section class="course-group-panel">
             <div class="group-title"><span>02</span><strong>과정 구분을 선택하세요.</strong></div>
             <div class="group_list" id="categoryGroup" role="radiogroup" aria-label="과정 구분 선택"></div>
           </section>
+          <section class="course-group-panel" id="middleGroupPanel" hidden>
+            <div class="group-title"><span>03</span><strong>중분류를 선택하세요.</strong></div>
+            <div class="group_list" id="middleGroup" role="radiogroup" aria-label="중분류 선택"></div>
+          </section>
           <section class="course-group-panel">
-            <div class="group-title"><span>03</span><strong>교육장소를 선택하세요.</strong></div>
-            <div class="group_list" id="centerGroup" role="radiogroup" aria-label="교육장소 선택"></div>
+            <div class="group-title"><span id="majorStepNo">03</span><strong>과목을 선택하세요.</strong></div>
+            <div class="group_list" id="majorGroup" role="radiogroup" aria-label="과목 선택"></div>
           </section>
         </div>
-        <p class="search-help">※ 조건을 선택하지 않아도 전체 강좌가 먼저 표시됩니다. 필요한 경우 과목, 과정 구분, 교육장소로 좁혀보세요.</p>
+        <p class="search-help">※ 조건을 선택하지 않아도 전체 강좌가 먼저 표시됩니다. AI강사과정은 중분류 선택 후 과목을 선택할 수 있습니다.</p>
         <form class="course-search-form" id="courseSearchForm">
           <div class="field-grid three search-extra-grid">
             <div class="field-wrap">
@@ -84,8 +88,8 @@
         </div>
         <div class="course-table-wrap">
           <table class="course-apply-table">
-            <caption>교육/강좌 목록 : 번호, 과목, 강좌명, 요일/시간, 정원, 대상, 강사명, 신청</caption>
-            <thead><tr><th>번호</th><th>과목</th><th>강좌명</th><th>요일/시간</th><th>정원</th><th>대상</th><th>강사명</th><th>상태</th><th>상세</th></tr></thead>
+            <caption>교육/강좌 목록 : 번호, 과정구분, 과목, 요일/시간, 정원, 대상, 강사명, 신청</caption>
+            <thead><tr><th>번호</th><th>과정구분</th><th>과목</th><th>요일/시간</th><th>정원</th><th>대상</th><th>강사명</th><th>상태</th><th>신청</th></tr></thead>
             <tbody id="courseResultBody"></tbody>
           </table>
         </div>
@@ -104,52 +108,58 @@
     (function () {
       const courses = [
         {
-          id: "aite-trans-edu", center: "온라인 교육센터", category: "자격 과정", major: "AI 번역",
+          id: "aite-trans-edu", center: "온라인 교육센터", category: "AI자격과정", major: "AITe AI 번역전문가 교육급수",
           title: "AITe AI 번역전문가 교육급수", day: "월·수", time: "19:00~21:00", quota: 30,
           target: "AI 번역 입문자", teacher: "김민정", status: "신규접수", fee: "70,000원",
           period: "2026.07.01 ~ 2026.07.24",
           description: "AI 번역 결과를 분석하고 후편집하는 기초 실무 역량을 평가 대비와 함께 정리합니다.",
-          topics: ["기계번역 오류 유형", "문맥 기반 후편집", "품질 검수 체크리스트"]
+          topics: ["기계번역 오류 유형", "문맥 기반 후편집", "품질 검수 체크리스트"],
+          detailHref: "./courses.html?tab=ai-translation"
         },
         {
-          id: "aite-trans-biz", center: "온라인 교육센터", category: "자격 과정", major: "AI 번역",
+          id: "aite-trans-biz", center: "온라인 교육센터", category: "AI자격과정", major: "AITe AI 번역전문가 비즈니스급수",
           title: "AITe AI 번역전문가 비즈니스급수", day: "토", time: "10:00~13:00", quota: 24,
           target: "번역 실무자", teacher: "박서윤", status: "신규접수", fee: "100,000원",
           period: "2026.07.06 ~ 2026.08.10",
           description: "비즈니스 문서와 실무 텍스트를 중심으로 AI 번역 검수, 수정, 승인 기준을 훈련합니다.",
-          topics: ["비즈니스 문서 후편집", "용어 일관성 검수", "번역 품질 평가"]
+          topics: ["비즈니스 문서 후편집", "용어 일관성 검수", "번역 품질 평가"],
+          detailHref: "./courses.html?tab=ai-translation"
         },
         {
-          id: "aite-prompt", center: "온라인 교육센터", category: "자격 과정", major: "AI 프롬프트",
+          id: "aite-prompt", center: "온라인 교육센터", category: "AI자격과정", major: "AITe 프롬프트 전문가 과정",
           title: "AITe 프롬프트 전문가 과정", day: "화·목", time: "19:30~21:30", quota: 28,
           target: "콘텐츠·기획 실무자", teacher: "이하늘", status: "신규접수", fee: "100,000원",
           period: "2026.07.09 ~ 2026.08.01",
           description: "목적별 프롬프트 설계와 결과 개선 과정을 평가 기준에 맞춰 실습합니다.",
-          topics: ["역할·조건 프롬프트", "결과물 개선 루프", "업무별 프롬프트 템플릿"]
+          topics: ["역할·조건 프롬프트", "결과물 개선 루프", "업무별 프롬프트 템플릿"],
+          detailHref: "./courses.html?tab=ai-prompt"
         },
         {
-          id: "aite-ethics", center: "온라인 교육센터", category: "자격 과정", major: "AI 윤리",
+          id: "aite-ethics", center: "온라인 교육센터", category: "AI자격과정", major: "AI 윤리 공통 과정",
           title: "AI 윤리 공통 과정", day: "금", time: "18:30~20:30", quota: 40,
           target: "AITe 전체 응시자", teacher: "정유진", status: "신규접수", fee: "별도 안내",
           period: "2026.07.12 ~ 2026.07.26",
           description: "AI 오용 방지, 데이터 윤리, 책임 기반 의사결정 등 공통 필수 교육 기준을 정리합니다.",
-          topics: ["저작권·개인정보", "편향성과 검증", "책임 있는 AI 활용"]
+          topics: ["저작권·개인정보", "편향성과 검증", "책임 있는 AI 활용"],
+          detailHref: "./courses.html?tab=ai-ethics"
         },
         {
-          id: "itt-basic", center: "서울 교육센터", category: "자격 과정", major: "ITT 통번역",
+          id: "itt-basic", center: "서울 교육센터", category: "통번역 과정", major: "ITT 통번역 실무 입문",
           title: "ITT 통번역 실무 입문", day: "월·목", time: "19:00~21:00", quota: 25,
           target: "통번역 입문자", teacher: "최지훈", status: "신규접수", fee: "상담 후 안내",
           period: "2026.07.03 ~ 2026.08.28",
           description: "통역 표현, 번역 실무, 자격 대비를 함께 다루는 ITT 입문 강좌입니다.",
-          topics: ["기초 통역 표현", "문장 단위 번역", "모의평가 피드백"]
+          topics: ["기초 통역 표현", "문장 단위 번역", "모의평가 피드백"],
+          detailHref: "./courses.html?tab=itt"
         },
         {
-          id: "tesol-cert", center: "글로벌 교육센터", category: "자격 과정", major: "TESOL",
+          id: "tesol-cert", center: "글로벌 교육센터", category: "TESOL", major: "TESOL 국제 영어교사 자격 과정",
           title: "TESOL 국제 영어교사 자격 과정", day: "토", time: "09:30~13:30", quota: 20,
           target: "예비·현직 영어강사", teacher: "한수민", status: "접수종료", fee: "상담 후 안내",
           period: "2026.06.01 ~ 2026.07.20",
           description: "영어 교수법, 수업 설계, 시연 피드백을 통해 영어교사 자격 포트폴리오를 완성합니다.",
-          topics: ["영어 교수법", "수업안 설계", "수업 시연 피드백"]
+          topics: ["영어 교수법", "수업안 설계", "수업 시연 피드백"],
+          detailHref: "./courses.html?tab=tesol"
         }
       ];
 
@@ -158,8 +168,9 @@
         .map((course, index) => ({
           id: `apply-${course.id}`,
           center: "온라인 교육센터",
-          category: "강사 과정",
-          major: course.groupLabel || course.category,
+          category: "AI강사과정",
+          major: course.title,
+          groupLabel: course.groupLabel || course.category,
           title: course.title,
           day: index % 3 === 0 ? "월·수·금" : index % 3 === 1 ? "화·목" : "토",
           time: index % 3 === 2 ? "10:00~14:00" : index % 2 === 0 ? "10:00~14:00" : "19:00~22:30",
@@ -170,11 +181,14 @@
           fee: course.fee,
           period: "상시 모집 (기수별 운영)",
           description: course.summary,
-          topics: (course.subjects || []).slice(0, 3).map((item) => item[0])
+          topics: (course.subjects || []).slice(0, 3).map((item) => item[0]),
+          detailHref: `./courses.html?tab=${encodeURIComponent(course.groupKey)}&sub=${encodeURIComponent(course.id)}`
         }));
       courses.push(...instructorCourses);
 
       const majorGroup = document.getElementById("majorGroup");
+      const middleGroup = document.getElementById("middleGroup");
+      const middleGroupPanel = document.getElementById("middleGroupPanel");
       const categoryGroup = document.getElementById("categoryGroup");
       const centerGroup = document.getElementById("centerGroup");
       const resultBody = document.getElementById("courseResultBody");
@@ -182,11 +196,14 @@
       const teacherKeyword = document.getElementById("teacherKeyword");
       const weekdayChecks = Array.from(document.querySelectorAll(".weekday-row input"));
       const ALL_VALUE = "전체";
-      const selected = { center: "", category: "", major: "" };
+      const selected = { center: "", category: "", middle: "", major: "" };
+      const COURSE_TYPES = ["TESOL", "AI강사과정", "통번역 과정", "AI자격과정"];
 
       function uniq(arr) { return Array.from(new Set(arr)).sort(); }
       function isAll(value) { return value === ALL_VALUE; }
       function matchesSelection(item, key) { return !selected[key] || isAll(selected[key]) || item[key] === selected[key]; }
+      function isInstructorSelected() { return selected.category === "AI강사과정"; }
+      function matchesMiddle(item) { return !isInstructorSelected() || !selected.middle || isAll(selected.middle) || item.groupLabel === selected.middle; }
       function withAll(values) { return values.length ? [ALL_VALUE, ...values] : []; }
       function renderGroup(group, values, key, emptyText) {
         group.innerHTML = values.length
@@ -194,22 +211,40 @@
           : `<div class="group-empty">${emptyText}</div>`;
       }
       function refreshGroups() {
-        renderGroup(majorGroup, withAll(uniq(courses.map((c) => c.major))), "major", "과목 정보가 없습니다.");
-        renderGroup(
-          categoryGroup,
-          withAll(uniq(courses.filter((c) => matchesSelection(c, "major")).map((c) => c.category))),
-          "category",
-          "과정 구분 정보가 없습니다."
-        );
+        document.getElementById("majorStepNo").textContent = isInstructorSelected() ? "04" : "03";
         renderGroup(
           centerGroup,
-          withAll(uniq(courses.filter((c) => matchesSelection(c, "major") && matchesSelection(c, "category")).map((c) => c.center))),
+          withAll(uniq(courses.map((c) => c.center))),
           "center",
           "교육장소 정보가 없습니다."
         );
-        majorGroup.classList.toggle("active", !selected.major);
-        categoryGroup.classList.toggle("active", Boolean(selected.major) && !selected.category);
-        centerGroup.classList.toggle("active", Boolean(selected.major && selected.category));
+        renderGroup(
+          categoryGroup,
+          withAll(COURSE_TYPES.filter((type) => courses.some((c) => c.category === type && matchesSelection(c, "center")))),
+          "category",
+          "과정 구분 정보가 없습니다."
+        );
+        middleGroupPanel.hidden = !isInstructorSelected();
+        renderGroup(
+          middleGroup,
+          isInstructorSelected()
+            ? withAll(uniq(courses.filter((c) => matchesSelection(c, "center") && matchesSelection(c, "category")).map((c) => c.groupLabel).filter(Boolean)))
+            : [],
+          "middle",
+          "중분류 정보가 없습니다."
+        );
+        renderGroup(
+          majorGroup,
+          isInstructorSelected() && !selected.middle
+            ? []
+            : withAll(uniq(courses.filter((c) => matchesSelection(c, "center") && matchesSelection(c, "category") && matchesMiddle(c)).map((c) => c.major))),
+          "major",
+          isInstructorSelected() ? "중분류를 먼저 선택하세요." : "과목 정보가 없습니다."
+        );
+        centerGroup.classList.toggle("active", !selected.center);
+        categoryGroup.classList.toggle("active", Boolean(selected.center) && !selected.category);
+        middleGroup.classList.toggle("active", Boolean(selected.center && selected.category) && isInstructorSelected() && !selected.middle);
+        majorGroup.classList.toggle("active", Boolean(selected.center && selected.category) && (!isInstructorSelected() || Boolean(selected.middle)) && !selected.major);
       }
       function resetResults(message) {
         resultBody.innerHTML = `<tr><td colspan="9" class="empty-cell">${message}</td></tr>`;
@@ -222,14 +257,17 @@
         resultBody.innerHTML = items.map((item, index) => `
           <tr>
             <td>${index + 1}</td>
-            <td>${item.major}</td>
-            <td class="course-title-cell">${item.title}</td>
+            <td>${item.category}</td>
+            <td class="course-title-cell">${item.groupLabel ? `<small class="course-group-label">${item.groupLabel}</small>` : ""}${item.title}</td>
             <td>${item.day} ${item.time}</td>
             <td>${item.quota}명</td>
             <td>${item.target}</td>
             <td>${item.teacher}</td>
             <td><span class="status-pill ${item.status === "접수종료" ? "done" : ""}">${item.status}</span></td>
-            <td><a class="btn btn--outline btn--sm" href="./course-apply-detail.html?id=${encodeURIComponent(item.id)}">상세보기</a></td>
+            <td><div class="table-action-stack">
+              <a class="btn btn--outline btn--sm" href="${item.detailHref || "./courses.html"}">상세보기</a>
+              <a class="btn btn--primary btn--sm" href="./apply-form.html?id=${encodeURIComponent(item.id)}">신청서 작성</a>
+            </div></td>
           </tr>`).join("");
       }
 
@@ -238,12 +276,17 @@
         if (!btn) return;
         const key = btn.dataset.key;
         selected[key] = btn.dataset.value;
-        if (key === "major") {
+        if (key === "center") {
           selected.category = "";
-          selected.center = "";
+          selected.middle = "";
+          selected.major = "";
         }
         if (key === "category") {
-          selected.center = "";
+          selected.middle = "";
+          selected.major = "";
+        }
+        if (key === "middle") {
+          selected.major = "";
         }
         refreshGroups();
         renderRows(getFilteredCourses());
@@ -257,6 +300,7 @@
           matchesSelection(item, "major") &&
           matchesSelection(item, "category") &&
           matchesSelection(item, "center") &&
+          matchesMiddle(item) &&
           (!titleQ || item.title.includes(titleQ)) &&
           (!teacherQ || item.teacher.includes(teacherQ)) &&
           (!days.length || days.some((day) => item.day.includes(day)))
@@ -270,6 +314,7 @@
       document.getElementById("resetSearch").addEventListener("click", () => {
         selected.center = "";
         selected.category = "";
+        selected.middle = "";
         selected.major = "";
         keyword.value = "";
         teacherKeyword.value = "";

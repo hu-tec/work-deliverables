@@ -29,7 +29,7 @@
 
   <main id="main">
     <section class="page-title"><div class="container page-title-inner">
-      <div><span class="breadcrumb">Home / 마이페이지</span><h1>마이페이지</h1><p>신청 내역, 수강 현황, 자격시험 접수 상태를 확인합니다.</p></div>
+      <div><span class="breadcrumb">Home / 마이페이지</span><h1>마이페이지</h1><p>시험 신청 내역, 자격시험 접수 상태, 증명서 발급 상태를 확인합니다.</p></div>
     </div></section>
 
     <section class="section section--soft"><div class="container">
@@ -41,7 +41,7 @@
           <nav class="mypage-menu" aria-label="마이페이지 메뉴">
             <a class="active" href="#dashboard">대시보드</a>
             <a href="#applications">신청 내역</a>
-            <a href="#courses">수강 현황</a>
+            <a href="#courses">응시 현황</a>
             <a href="#certificates">자격·증명서</a>
             <a href="#inquiries">1:1 문의 내역</a>
           </nav>
@@ -50,29 +50,29 @@
         <div class="mypage-main">
           <div class="stat-grid" id="dashboard">
             <div class="stat-card"><span>진행 중 신청</span><strong>2</strong></div>
-            <div class="stat-card"><span>수강 중 과정</span><strong>1</strong></div>
+            <div class="stat-card"><span>접수 완료 시험</span><strong>1</strong></div>
             <div class="stat-card"><span>발급 가능 증명서</span><strong>3</strong></div>
           </div>
 
           <section class="mypage-panel" id="applications">
             <h3>신청 내역</h3>
             <div style="overflow-x:auto"><table class="board">
-              <thead><tr><th>신청일</th><th>구분</th><th>과정</th><th>상태</th></tr></thead>
+              <thead><tr><th>신청일</th><th>구분</th><th>시험</th><th>상태</th></tr></thead>
               <tbody>
-                <tr><td>2026.05.29</td><td>수업신청</td><td class="subject">AI 강사 양성과정</td><td><span class="status-pill wait">상담 대기</span></td></tr>
-                <tr><td>2026.05.21</td><td>자격시험</td><td class="subject">AITe 인증 시험</td><td><span class="status-pill">접수 확인</span></td></tr>
+                <tr><td>2026.05.29</td><td>시험접수</td><td class="subject">AI 번역 시험</td><td><span class="status-pill wait">결제 대기</span></td></tr>
+                <tr><td>2026.05.21</td><td>자격시험</td><td class="subject">AI 프롬프트 시험</td><td><span class="status-pill">접수 확인</span></td></tr>
               </tbody>
             </table></div>
             <div class="mypage-actions"><a class="btn btn--outline btn--sm" href="./apply.html">추가 신청</a><a class="btn btn--outline btn--sm" href="./contact.html">문의하기</a></div>
           </section>
 
           <section class="mypage-panel" id="courses">
-            <h3>수강 현황</h3>
+            <h3>응시 현황</h3>
             <div style="overflow-x:auto"><table class="board">
-              <thead><tr><th>과정</th><th>기간</th><th>진도</th><th>상태</th></tr></thead>
+              <thead><tr><th>시험</th><th>시험일</th><th>급수</th><th>상태</th></tr></thead>
               <tbody>
-                <tr><td class="subject">TESOL 영어교육 과정</td><td>2026.05.04 ~ 2026.06.26</td><td>62%</td><td><span class="status-pill">수강 중</span></td></tr>
-                <tr><td class="subject">AI 윤리 전문가 과정</td><td>2026.04.01 ~ 2026.04.29</td><td>100%</td><td><span class="status-pill done">수료</span></td></tr>
+                <tr><td class="subject">AI 번역 시험</td><td>2025.11.15</td><td>전문 1급</td><td><span class="status-pill">접수 완료</span></td></tr>
+                <tr><td class="subject">AI 윤리시험</td><td>2025.11.15</td><td>공통 필수</td><td><span class="status-pill done">통과</span></td></tr>
               </tbody>
             </table></div>
           </section>
@@ -80,11 +80,11 @@
           <section class="mypage-panel" id="certificates">
             <h3>자격·증명서</h3>
             <div style="overflow-x:auto"><table class="board">
-              <thead><tr><th>문서</th><th>대상 과정</th><th>발급 상태</th><th>작업</th></tr></thead>
+              <thead><tr><th>문서</th><th>대상 시험</th><th>발급 상태</th><th>작업</th></tr></thead>
               <tbody>
-                <tr><td>수료증</td><td class="subject">AI 윤리 전문가 과정</td><td><span class="status-pill done">발급 가능</span></td><td><a class="text-link" href="#">다운로드</a></td></tr>
-                <tr><td>응시 확인서</td><td class="subject">AITe 인증 시험</td><td><span class="status-pill">접수 완료</span></td><td><a class="text-link" href="#">확인</a></td></tr>
-                <tr><td>납부 확인서</td><td class="subject">TESOL 영어교육 과정</td><td><span class="status-pill done">발급 가능</span></td><td><a class="text-link" href="#">다운로드</a></td></tr>
+                <tr><td>자격 인증서</td><td class="subject">AI 번역 시험</td><td><span class="status-pill done">발급 가능</span></td><td><a class="text-link" href="#">다운로드</a></td></tr>
+                <tr><td>응시 확인서</td><td class="subject">AI 프롬프트 시험</td><td><span class="status-pill">접수 완료</span></td><td><a class="text-link" href="#">확인</a></td></tr>
+                <tr><td>납부 확인서</td><td class="subject">AI 윤리시험</td><td><span class="status-pill done">발급 가능</span></td><td><a class="text-link" href="#">다운로드</a></td></tr>
               </tbody>
             </table></div>
           </section>
@@ -117,14 +117,14 @@
                 <button class="inquiry-q" type="button" aria-expanded="false">
                   <span class="inquiry-date">2026.04.09</span>
                   <span class="cat-badge">과정</span>
-                  <span class="inquiry-title">AI 강사 과정 수료 후 자격 평가 일정 문의</span>
+                  <span class="inquiry-title">AI 윤리시험 공통 필수 응시 문의</span>
                   <span class="status-pill wait">답변대기</span>
                   <span class="arrow">▾</span>
                 </button>
                 <div class="inquiry-a">
                   <section class="qna-block">
                     <h4>문의 내용</h4>
-                    <p>AI 강사 양성과정 수료 후 자격 평가를 바로 볼 수 있나요?</p>
+                    <p>AI 번역 시험 접수 시 AI 윤리시험도 함께 응시해야 하나요?</p>
                     <p>평가 일정과 준비물이 궁금합니다.</p>
                   </section>
                   <section class="qna-block qna-answer">

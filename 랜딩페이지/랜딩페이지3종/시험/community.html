@@ -29,7 +29,7 @@
 
   <main id="main">
     <section class="page-title"><div class="container page-title-inner">
-      <div><span class="breadcrumb">Home / 커뮤니티</span><h1>커뮤니티</h1><p>공지사항, 자주 묻는 질문, 수강후기, 자료실을 하나의 탭 구조로 운영합니다.</p></div>
+      <div><span class="breadcrumb">Home / 커뮤니티</span><h1>커뮤니티</h1><p>공지사항, 자주 묻는 질문, 응시후기, 자료실을 하나의 탭 구조로 운영합니다.</p></div>
     </div></section>
 
     <section class="section section--soft"><div class="container">
@@ -37,7 +37,7 @@
         <a href="#notice" class="active" data-tab="notice">공지사항</a>
         <a href="#faq" data-tab="faq">자주 묻는 질문</a>
         <a href="#qna" data-tab="qna">Q&amp;A</a>
-        <a href="#reviews" data-tab="reviews">수강후기</a>
+        <a href="#reviews" data-tab="reviews">응시후기</a>
         <a href="#data" data-tab="data">자료실</a>
       </nav>
 
@@ -85,8 +85,8 @@
       </div>
 
       <div class="tab-panel" id="tab-reviews">
-        <div class="section-head"><div><span class="label">REVIEWS</span><h2>수강후기</h2></div><span class="note">수료생이 직접 남긴 후기</span></div>
-        <nav class="subtabs" id="reviewSubtabs" aria-label="수강후기 분류"></nav>
+        <div class="section-head"><div><span class="label">REVIEWS</span><h2>응시후기</h2></div><span class="note">응시자가 직접 남긴 후기</span></div>
+        <nav class="subtabs" id="reviewSubtabs" aria-label="응시후기 분류"></nav>
         <div class="review-grid" id="reviewGrid"></div>
       </div>
 
@@ -171,12 +171,12 @@
       filterNotice("전체");
 
       const commonFaqs = [
-        { category: "공통", q: "온라인 수강이 가능한가요?", a: "과정별로 온라인·오프라인·혼합 운영이 다르므로 일정표에서 확인할 수 있습니다." },
-        { category: "공통", q: "자격시험만 응시할 수 있나요?", a: "일부 자격시험은 과정 수강 없이 회차별 응시가 가능합니다." },
-        { category: "공통", q: "증명서는 언제 발급되나요?", a: "수료 조건 충족 후 마이페이지 또는 행정실을 통해 발급합니다." },
-        { category: "공통", q: "수강료 분할 납부가 되나요?", a: "과정에 따라 분할 납부가 가능하며 상담 시 안내드립니다." },
-        { category: "공통", q: "수료 후 결과물은 무엇인가요?", a: "교안·콘텐츠·시연 영상 등 포트폴리오로 활용할 결과물을 완성합니다." },
-        { category: "시험", q: "과정 수강 없이 응시할 수 있나요?", a: "일부 급수는 과정 수강 없이 회차별로 응시할 수 있습니다." },
+        { category: "공통", q: "온라인 응시가 가능한가요?", a: "시험별로 온라인(U-BT) 또는 지필시험 운영이 다르므로 일정표에서 확인할 수 있습니다." },
+        { category: "공통", q: "자격시험만 응시할 수 있나요?", a: "네. 시험 종목과 급수를 선택해 회차별로 응시할 수 있습니다." },
+        { category: "공통", q: "증명서는 언제 발급되나요?", a: "합격 기준 충족 후 마이페이지 또는 행정실을 통해 발급합니다." },
+        { category: "공통", q: "응시료는 어떻게 납부하나요?", a: "시험 접수 후 결제 절차에 따라 카드 또는 계좌이체로 납부합니다." },
+        { category: "공통", q: "AI 윤리시험은 필수인가요?", a: "네. 모든 시험 응시자의 공통 필수 과목이며 최종 자격 인증을 위해 반드시 통과해야 합니다." },
+        { category: "시험", q: "시험만 바로 응시할 수 있나요?", a: "네. 시험 종목과 급수를 선택해 회차별로 응시할 수 있습니다." },
         { category: "시험", q: "응시 확인서는 어떻게 받나요?", a: "접수 완료 후 마이페이지에서 발급됩니다." },
         { category: "시험", q: "재응시가 가능한가요?", a: "다음 회차에 다시 접수해 응시할 수 있습니다." }
       ];
@@ -225,7 +225,7 @@
       const qnas = [
         ["exam-ticket", "시험", "AITe 시험 응시 확인서 출력 위치가 궁금합니다.", "김*연", "2026.04.22", "답변 완료"],
         ["group-apply", "접수", "단체 접수 시 명단 양식이 따로 있나요?", "박*훈", "2026.04.16", "답변 완료"],
-        ["course-eval", "과정", "AI 강사 과정 수료 후 자격 평가 일정 문의", "이*진", "2026.04.09", "답변대기"]
+        ["ethics-required", "시험", "AI 윤리시험 공통 필수 응시 문의", "이*진", "2026.04.09", "답변대기"]
       ];
       document.getElementById("qnaBody").innerHTML = qnas.map(([id, category, title, writer, date, status], i) => `
         <tr data-cat="${escapeHtml(category)}">
@@ -285,10 +285,10 @@
       filterReviews("전체");
 
       const files = [
-        ["과정", "과정 안내서", "전체 교육과정 개요와 비교표", "PDF"],
+        ["시험", "시험 안내서", "전체 자격시험 개요와 비교표", "PDF"],
         ["시험", "시험 요강", "급수별 평가 기준과 준비 항목", "PDF"],
         ["서식", "신청서 양식", "오프라인 접수·단체 등록 서류", "DOCX"],
-        ["과정", "AI 강사과정 커리큘럼", "주차별 상세 커리큘럼", "PDF"]
+        ["시험", "AI 윤리시험 안내", "공통 필수 시험 평가 기준", "PDF"]
       ];
       document.getElementById("dataList").innerHTML = files.map(([category, name, desc, ext]) => `
         <div class="data-row" data-cat="${escapeHtml(category)}"><span class="file-ico">${ext}</span>

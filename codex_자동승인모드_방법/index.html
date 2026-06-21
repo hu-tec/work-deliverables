@@ -179,6 +179,40 @@
       background: #fff;
     }
 
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    .table th {
+      background: #f8fafc;
+    }
+
+    .steps {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .steps li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
     .small {
       margin-top: 10px;
       color: var(--muted);
@@ -229,6 +263,30 @@
     </section>
 
     <section>
+      <h2>어떤 상황에서 쓰는가</h2>
+      <table class="table">
+        <thead><tr><th>상황</th><th>추천 실행</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>현재 폴더를 작업 루트로 사용</td>
+            <td><code>codex -s workspace-write</code></td>
+            <td>현재 프로젝트 폴더 안에서는 파일 수정이 가능하고, 폴더 밖 쓰기는 제한합니다.</td>
+          </tr>
+          <tr>
+            <td>승인 질문을 최소화</td>
+            <td><code>codex -s workspace-write -a never</code></td>
+            <td>정해진 샌드박스 안에서 가능한 작업은 승인 질문 없이 진행합니다.</td>
+          </tr>
+          <tr>
+            <td>특정 폴더를 지정해서 실행</td>
+            <td><code>codex -C /path/to/my-project -s workspace-write</code></td>
+            <td>현재 터미널 위치와 별개로 지정한 폴더를 작업 루트로 사용합니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
       <h2>자동 승인에 적합한 명령</h2>
       <p>
         <span class="pill ok">npm run test</span>
@@ -254,9 +312,42 @@
     </section>
 
     <section>
-      <h2>원문 전체 보기</h2>
-      <iframe src="codex_자동승인_현재폴더_제한_설정.md" title="Codex auto approval markdown"></iframe>
-      <p class="small">브라우저가 Markdown을 다운로드로 처리하는 경우 위의 "원문 Markdown 열기" 링크로 확인하세요.</p>
+      <h2>실전 설정 순서</h2>
+      <ol class="steps">
+        <li>
+          <h3>1. 프로젝트 폴더로 이동</h3>
+          <p>Codex가 수정해도 되는 폴더로 먼저 이동합니다.</p>
+          <pre class="command">cd /path/to/my-project
+pwd</pre>
+        </li>
+        <li>
+          <h3>2. 현재 폴더 제한 모드로 실행</h3>
+          <p>처음에는 승인 질문을 남긴 상태로 실행해도 됩니다.</p>
+          <pre class="command">codex -s workspace-write</pre>
+        </li>
+        <li>
+          <h3>3. 승인 질문을 줄이고 싶을 때만 <code>-a never</code> 추가</h3>
+          <p>작업 폴더가 맞고 Git 커밋이나 백업이 되어 있다면 아래처럼 실행합니다.</p>
+          <pre class="command">codex -s workspace-write -a never</pre>
+        </li>
+        <li>
+          <h3>4. 자동 승인 prefix는 좁게 등록</h3>
+          <p><code>npm</code>, <code>git</code>, <code>python</code> 전체처럼 넓은 단위가 아니라 반복 실행할 명령만 정확히 허용합니다.</p>
+          <pre class="command">["npm", "run", "test"]
+["npm", "run", "lint"]
+["npm", "run", "build"]</pre>
+        </li>
+        <li>
+          <h3>5. 삭제와 되돌리기는 항상 수동 확인</h3>
+          <p><code>rm</code>, <code>git reset</code>, <code>git clean</code>, <code>sudo</code>는 현재 폴더 안에서도 위험하므로 자동 승인하지 않습니다.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>한 줄 결론</h2>
+      <div class="notice">대표 추천값은 <code>codex -s workspace-write -a never</code>입니다. 다만 이 명령은 현재 폴더 안의 파일 변경을 허용하므로, 중요한 작업 전에는 Git 커밋 또는 백업을 먼저 해두는 방식으로 운영합니다.</div>
+      <p class="small">더 자세한 원문은 상단의 "원문 Markdown 열기"에서 확인합니다.</p>
     </section>
   </main>
 </body>

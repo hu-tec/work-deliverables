@@ -87,6 +87,7 @@
       <div class="tab-panel" id="tab-reviews">
         <div class="section-head"><div><span class="label">REVIEWS</span><h2>수강후기</h2></div><span class="note">수료생이 직접 남긴 후기</span></div>
         <nav class="subtabs" id="reviewSubtabs" aria-label="수강후기 분류"></nav>
+        <div class="subtab-more-row" id="reviewMoreRow" hidden><button class="btn btn--outline btn--sm" type="button" id="reviewMoreButton" aria-expanded="false">칩 더보기</button></div>
         <div class="review-grid" id="reviewGrid"></div>
       </div>
 
@@ -265,8 +266,21 @@
       const reviewCats = ["전체", ...COURSES.filter((course) => course.reviews && course.reviews.length).map((course) => course.title)];
       const reviewCountOf = (cat) => cat === "전체" ? reviews.length : reviews.filter((item) => item.category === cat).length;
       const reviewSubtabs = document.getElementById("reviewSubtabs");
+      const reviewMoreRow = document.getElementById("reviewMoreRow");
+      const reviewMoreButton = document.getElementById("reviewMoreButton");
+      const REVIEW_CHIP_LIMIT = 8;
+      let reviewChipsExpanded = false;
       reviewSubtabs.innerHTML = reviewCats.map((cat, i) =>
         `<button type="button" class="${i === 0 ? "active" : ""}" data-cat="${escapeHtml(cat)}" aria-pressed="${i === 0}">${escapeHtml(cat)}<span class="cnt">${reviewCountOf(cat)}</span></button>`).join("");
+      function updateReviewChipVisibility() {
+        const buttons = Array.from(reviewSubtabs.querySelectorAll("button"));
+        buttons.forEach((button, index) => {
+          button.hidden = !reviewChipsExpanded && index >= REVIEW_CHIP_LIMIT;
+        });
+        reviewMoreRow.hidden = buttons.length <= REVIEW_CHIP_LIMIT;
+        reviewMoreButton.textContent = reviewChipsExpanded ? "칩 접기" : "칩 더보기";
+        reviewMoreButton.setAttribute("aria-expanded", reviewChipsExpanded ? "true" : "false");
+      }
       function filterReviews(cat) {
         document.querySelectorAll("#reviewGrid .review-card").forEach((card) => {
           card.style.display = cat === "전체" || card.dataset.cat === cat ? "" : "none";
@@ -277,6 +291,11 @@
         b.classList.add("active"); b.setAttribute("aria-pressed", "true");
         filterReviews(b.dataset.cat);
       }));
+      reviewMoreButton.addEventListener("click", () => {
+        reviewChipsExpanded = !reviewChipsExpanded;
+        updateReviewChipVisibility();
+      });
+      updateReviewChipVisibility();
       filterReviews("전체");
 
       const files = [

@@ -74,7 +74,7 @@ function renderBoardPage() {
       <div class="tab-panel" id="tab-qna">
         <div class="section-head"><div><span class="section-label">Q&amp;A</span><h2>Q&amp;A</h2></div><span class="note">개별 문의와 답변을 확인할 수 있습니다</span></div>
         <nav class="subtabs" id="qnaSubtabs" aria-label="Q&A 분류"></nav>
-        <div class="board-bar"><div class="board-count">전체 <strong id="qnaTotal">0</strong>건</div><a class="btn btn--outline btn--sm" href="./support.html">문의하기</a></div>
+        <div class="board-bar"><div class="board-count">전체 <strong id="qnaTotal">0</strong>건</div><a class="btn btn--outline btn--sm" href="./contact.html">문의하기</a></div>
         <div class="board-scroll"><table class="board qna-board"><thead><tr><th class="col-no">번호</th><th class="col-cat">분류</th><th>제목</th><th class="col-writer">작성자</th><th class="col-date">등록일</th><th class="col-status">상태</th></tr></thead><tbody id="qnaBody"></tbody></table></div>
       </div>
       <div class="tab-panel" id="tab-data">
@@ -84,23 +84,103 @@ function renderBoardPage() {
     </div></section>`;
 }
 
+function renderContactPage() {
+  return `
+    <section class="section section--soft"><div class="container">
+      <div class="grid two contact-grid">
+        <form class="panel contact-form" onsubmit="alert('문의가 접수되었습니다.');return false;">
+          <div class="section-head"><div><span class="section-label">CONTACT</span><h2>문의하기</h2></div></div>
+          <div class="field-grid">
+            <div class="field-wrap"><label for="name">이름</label><input class="field" id="name" required></div>
+            <div class="field-wrap"><label for="phone">연락처</label><input class="field" id="phone" required></div>
+            <div class="field-wrap full"><label for="email">이메일</label><input class="field" id="email" type="email"></div>
+            <div class="field-wrap full"><label for="topic">문의 구분</label><input class="field" id="topic" placeholder="예: 시험 접수, 자격증 발급, 단체 문의"></div>
+            <div class="field-wrap full"><label for="msg">문의 내용</label><textarea class="field" id="msg" required></textarea></div>
+          </div>
+          <div class="form-actions"><button class="btn btn--primary btn--lg" type="submit">문의 보내기</button><button class="btn btn--outline btn--lg" type="reset">초기화</button></div>
+        </form>
+        <aside class="panel contact-info">
+          <div class="section-head"><div><span class="section-label">INFO</span><h2>안내</h2></div></div>
+          <table class="info-table"><tbody>
+            <tr><th>전화</th><td>02-6207-9090</td></tr>
+            <tr><th>운영시간</th><td>월요일 - 금요일 : 09:00 - 18:00</td></tr>
+            <tr><th>휴무</th><td>주말 / 공휴일 휴일</td></tr>
+            <tr><th>이메일</th><td>hutechc01@gmail.com</td></tr>
+            <tr><th>주소</th><td>서울 서초구 양재천로 19길 26, 6층(양재동)</td></tr>
+          </tbody></table>
+          <p>단체 응시, 기관 협력, 자격 검정 운영 문의도 본 양식으로 남겨주세요.</p>
+        </aside>
+      </div>
+    </div></section>`;
+}
+
+function mainContentHtml() {
+  if (pageId === "board" || pageId === "community") return renderBoardPage();
+  if (pageId === "contact") return renderContactPage();
+  return page.sections.map(sectionHtml).join("");
+}
+
 function sectionHtml(section, index) {
   const soft = index % 2 === 0 ? " section--soft" : "";
+  const anchor = section.label === "인공지능 번역 대결" ? ' id="history-ai"'
+    : section.label === "외국어 경연대회" ? ' id="history-contest"'
+    : section.label === "국제통역사절단" ? ' id="history-delegation"'
+    : "";
+  if (pageId === "association" && section.label === "IITA 협회 소개") {
+    return `<section class="section association-intro-section"><div class="container association-intro"><div class="association-intro-copy"><span class="section-label">${esc(section.label)}</span><h2>${lineTitle(section.title)}</h2>${section.copy ? `<p>${esc(section.copy)}</p>` : ""}</div><figure class="association-intro-media"><img src="${esc(section.image)}" alt="${esc(section.imageAlt || section.title)}"></figure></div></section>`;
+  }
+  if (pageId === "association" && section.label === "협회장 인사말") {
+    return `<section class="section association-message-section"><div class="container"><div class="association-title-center"><h2>${esc(section.title)}</h2></div><div class="association-message"><figure><img src="${esc(section.image)}" alt="${esc(section.imageAlt || section.title)}"></figure><div class="association-message-copy"><p>${esc(section.copy)}</p>${(section.items || []).map((item, itemIndex) => itemIndex === section.items.length - 1 ? `<p class="association-signature">${esc(item)}</p>` : `<p>${esc(item)}</p>`).join("")}</div></div></div></section>`;
+  }
+  if (pageId === "association" && section.label === "IITA 협회 미션과 비전") {
+    return `<section class="section association-mission-section"><div class="container"><div class="association-title-center"><span class="section-label">${esc(section.label)}</span><h2>${lineTitle(section.title)}</h2>${section.copy ? `<p>${esc(section.copy)}</p>` : ""}</div><figure class="association-mission-image"><img src="${esc(section.image)}" alt="${esc(section.imageAlt || section.title)}"></figure><div class="association-mission-grid">${(section.items || []).map((item) => `<div class="association-mission-item"><span class="check">✓</span><strong>${esc(item)}</strong></div>`).join("")}</div></div></section>`;
+  }
   if (section.type === "features") {
-    return `<section class="section${soft}"><div class="container split"><div class="media-frame ${section.label && section.label.includes("언어") ? "language" : ""}"></div><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2>${section.copy ? `<p>${esc(section.copy)}</p>` : ""}<ul class="feature-list">${(section.items || []).map((item) => `<li><span class="check">✓</span><span>${esc(item)}</span></li>`).join("")}</ul></div></div></section>`;
+    const media = section.image
+      ? `<img src="${esc(section.image)}" alt="${esc(section.imageAlt || section.title)}">`
+      : "";
+    return `<section${anchor} class="section${soft}"><div class="container split"><div class="media-frame ${section.label && section.label.includes("언어") ? "language" : ""}">${media}</div><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2>${section.copy ? `<p>${esc(section.copy)}</p>` : ""}<ul class="feature-list">${(section.items || []).map((item) => `<li><span class="check">✓</span><span>${esc(item)}</span></li>`).join("")}</ul></div></div></section>`;
+  }
+  if (section.type === "profiles") {
+    return `<section class="section${soft}"><div class="container"><div class="section-head"><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2></div></div><div class="profile-grid">${section.cards.map((card) => `<article class="profile-card"><img src="${esc(card[3])}" alt="${esc(card[0])}"><div class="profile-body"><span class="status-pill">${esc(card[2])}</span><h3>${esc(card[0])}</h3><p>${esc(card[1])}</p></div></article>`).join("")}</div></div></section>`;
+  }
+  if (section.type === "gallery") {
+    return `<section class="section${soft}"><div class="container"><div class="section-head"><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2></div>${section.copy ? `<p>${esc(section.copy)}</p>` : ""}</div><div class="gallery-grid">${section.images.map((image) => `<figure><img src="${esc(image.src)}" alt="${esc(image.alt || section.title)}"></figure>`).join("")}</div></div></section>`;
   }
   if (section.type === "table") {
     return `<section class="section${soft}"><div class="container"><div class="section-head"><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2></div></div><div class="table-scroll"><table class="schedule-table"><thead><tr>${section.headers.map((head) => `<th>${esc(head)}</th>`).join("")}</tr></thead><tbody>${section.rows.map((row) => `<tr>${row.map((cell) => `<td>${esc(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div></section>`;
   }
+  if (section.type === "image") {
+    return `<section class="section${soft}"><div class="container"><div class="section-head"><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2></div>${section.copy ? `<p>${esc(section.copy)}</p>` : ""}</div><figure class="image-section"><img src="${esc(section.src)}" alt="${esc(section.alt || section.title)}"></figure></div></section>`;
+  }
+  if (section.label === "협회 핵심 포인트") {
+    return `<section class="section association-cert-section"><div class="container"><div class="association-title-center compact"><h2>${esc(section.title)}</h2></div><div class="cert-grid">${section.cards.map((card) => `<article class="cert-card"><img src="${esc(card[3])}" alt="${esc(card[0])}"><h3>${esc(card[0])}</h3><p>${esc(card[1])}</p></article>`).join("")}</div></div></section>`;
+  }
+  if (section.label === "IITA 주요 시험") {
+    const themes = ["blue", "green", "dark", "teal"];
+    return `<section class="section association-exam-section"><div class="container"><div class="association-section-head"><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2></div>${section.note ? `<p>${esc(section.note)}</p>` : ""}</div><div class="exam-card-list">${section.cards.map((card, cardIndex) => `<article class="exam-card theme-${themes[cardIndex % themes.length]}"><div class="exam-image"><img src="${esc(card[3])}" alt="${esc(card[0])}"></div><div class="exam-content"><p class="exam-subtitle">${esc(card[0].split("\n")[0])}</p><h3>${esc(card[0].split("\n").slice(1).join("\n") || card[0])}<span>${esc(card[2])}</span></h3><ul>${esc(card[1]).split("\n").map((item) => `<li>${item}</li>`).join("")}</ul></div></article>`).join("")}</div></div></section>`;
+  }
+  if (section.label === "연혁 소개") {
+    return `<section class="section${soft}"><div class="container"><div class="section-head"><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2></div></div><div class="timeline-container">${section.cards.map((card) => `<div class="timeline-item"><div class="timeline-year">${esc(card[0])}</div><div class="timeline-date"></div><div class="timeline-content">${esc(card[1]).replaceAll("\n", "<br>")}</div></div>`).join("")}</div></div></section>`;
+  }
+  if (section.label === "주요 인증") {
+    const order = ["first", "second", "third"];
+    return `<section class="section${soft}"><div class="container"><div class="section-head"><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2></div></div><div class="highlight-container">${section.cards.map((card, cardIndex) => `<div class="highlight-circle ${order[cardIndex] || ""}"><div class="highlight-year">${esc(card[0])}</div><div class="highlight-text">${esc(card[1]).replaceAll("\n", "<br>")}</div></div>`).join("")}</div></div></section>`;
+  }
   return `<section class="section${soft}"><div class="container"><div class="section-head"><div><span class="section-label">${esc(section.label)}</span><h2>${esc(section.title)}</h2></div>${section.note ? `<p>${esc(section.note)}</p>` : ""}</div><div class="grid ${section.cards.length > 3 ? "four" : "three"}">${section.cards.map((card, cardIndex) => {
     const href = linked[["translation", "itt", "prompt", "ethics"][cardIndex]];
     const action = href && pageId === "intro" ? `<div class="tag-row"><a class="filter-chip active" href="${href}">바로가기</a></div>` : "";
-    return `<article class="card"><div class="card-kicker"><span class="card-index">${String(cardIndex + 1).padStart(2, "0")}</span><span class="status-pill">${esc(card[2] || section.label)}</span></div><h3>${esc(card[0])}</h3><p>${esc(card[1])}</p>${action}</article>`;
+    const image = card[3] ? `<img class="card-image" src="${esc(card[3])}" alt="${esc(card[0])}">` : "";
+    return `<article class="card">${image}<div class="card-kicker"><span class="card-index">${String(cardIndex + 1).padStart(2, "0")}</span><span class="status-pill">${esc(card[2] || section.label)}</span></div><h3>${esc(card[0])}</h3><p>${esc(card[1])}</p>${action}</article>`;
   }).join("")}</div></div></section>`;
 }
 
+function lineTitle(text) {
+  return esc(text).replace("을 소개합니다.", "을<br>소개합니다.").replace("자격증 시험이", "자격증<br>시험이");
+}
+
 function bindBoardPage() {
-  if (pageId !== "board") return;
+  if (pageId !== "board" && pageId !== "community") return;
   const tabs = document.querySelectorAll("#commTabs a");
   function activate(name) {
     tabs.forEach((tab) => {
@@ -194,22 +274,44 @@ function bindFilter(subtabsId, totalId, selector, categories) {
   filter("전체");
 }
 
+function historyTabsHtml() {
+  if (pageId !== "history") return "";
+  return `
+    <section class="history-tabs-wrap">
+      <div class="container">
+        <nav class="iwcode_tab-container" aria-label="협회 연혁 섹션 이동">
+          <a class="iwcode_tab-btn active" href="#history-ai">인공지능 번역 대결</a>
+          <a class="iwcode_tab-btn" href="#history-contest">외국어 경진대회</a>
+          <a class="iwcode_tab-btn" href="#history-delegation">국제통역사절단</a>
+        </nav>
+      </div>
+    </section>`;
+}
+
+function bindHistoryTabs() {
+  if (pageId !== "history") return;
+  const tabs = document.querySelectorAll(".iwcode_tab-btn");
+  tabs.forEach((tab) => tab.addEventListener("click", () => {
+    tabs.forEach((item) => item.classList.remove("active"));
+    tab.classList.add("active");
+  }));
+}
+
 document.getElementById("app").innerHTML = `
   <a class="skip-link" href="#main">본문으로 이동</a>
   <header class="site-header">
-    <div class="header-top"><div class="container header-top-inner"><a href="#">로그인</a><span class="sep">·</span><a href="#">회원가입</a></div></div>
     <div class="container header-inner">
       <a class="brand" href="./association.html"><img src="./assets/logo.png" alt="IITA 협회"><span>IITA 협회<small>국제통번역협회</small></span></a>
       <nav class="gnb" aria-label="주요 메뉴">${navHtml()}</nav>
-      <div class="header-actions"><button class="mobile-menu" type="button" aria-expanded="false">MENU</button><a class="btn btn--primary btn--sm" href="./association.html">협회 소개</a></div>
+      <div class="header-actions"><button class="mobile-menu" type="button" aria-expanded="false">MENU</button></div>
     </div>
   </header>
   <main id="main">
-    <section class="hero"><div class="container hero-inner"><div><span class="eyebrow">${esc(page.eyebrow)}</span><h1>${esc(page.title)}</h1><p class="hero-copy">${esc(page.copy)}</p><div class="hero-actions"><a class="btn btn--primary btn--lg" href="./association.html">협회 소개</a><a class="btn btn--outline btn--lg" href="#detail">상세 보기</a></div></div><div class="hero-panel"><strong>${esc(page.stat[0])}</strong><span>${esc(page.stat[1])}</span></div></div></section>
+    <section class="hero"><div class="container hero-inner"><h1>${esc(page.title)}</h1></div></section>
     <div id="detail"></div>
-    ${pageId === "board" ? renderBoardPage() : page.sections.map(sectionHtml).join("")}
+    ${historyTabsHtml()}
+    ${mainContentHtml()}
   </main>
-  <section class="cta"><div class="container cta-inner"><div><h2>${esc(page.cta)}</h2></div><a class="btn btn--primary btn--lg" href="./association.html">협회 소개</a></div></section>
   <footer class="site-footer"><div class="container"><div class="footer-grid"><div><img src="./assets/logo.png" alt="AITe자격시험"><p>AITe자격시험</p></div><div><h2>Phone Call</h2><p>02-6207-9090</p><p>월요일 - 금요일 : 09:00 - 18:00</p><p>주말 / 공휴일 휴일</p></div><div><h2>Company Info</h2><p>상호명 : 주식회사 아이티티</p><p>대표이사 : 김태경</p><p>주소 : 서울 서초구 양재천로 19길 26,6층(양재동)</p><p>사업자번호 : 101-86-40065</p><p>문의 : hutechc01@gmail.com</p></div></div><div class="copyright">© 휴텍씨. ALL RIGHTS RESERVED.</div></div></footer>
 `;
 
@@ -219,3 +321,4 @@ document.querySelector(".mobile-menu").addEventListener("click", (event) => {
 });
 
 bindBoardPage();
+bindHistoryTabs();

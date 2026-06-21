@@ -29,17 +29,17 @@
 
   <main id="main">
     <section class="page-title"><div class="container page-title-inner">
-      <div><span class="breadcrumb">Home / 시험 소개</span><h1>시험·교육과정 소개</h1><p>AI 강사 양성부터 TESOL·자격시험·통번역까지, 분야별 과정과 시험을 안내합니다.</p></div>
+      <div><span class="breadcrumb">Home / 시험 소개</span><h1>AITe 자격시험 소개</h1><p>AI 번역, AI 프롬프트, ITT 통번역, AI 윤리시험까지 실무형 자격시험을 안내합니다.</p></div>
     </div></section>
     <section class="section section--soft"><div class="container">
-      <div class="section-head"><div><span class="label">COURSES</span><h2>전체 과정</h2></div><span class="note">카드를 누르면 상세로 이동합니다</span></div>
+      <div class="section-head"><div><span class="label">EXAMS</span><h2>전체 시험</h2></div><span class="note">카드를 누르면 상세로 이동합니다</span></div>
       <div class="course-grid" id="courseGrid"></div>
     </div></section>
   </main>
 
   <section class="cta"><div class="container cta-inner">
-    <div><h2>나에게 맞는 과정인지 상담받아보세요</h2><p>학습 목표와 일정에 맞춰 과정과 시험을 안내합니다.</p></div>
-    <a class="btn btn--primary btn--lg" href="./contact.html">과정 상담하기</a>
+    <div><h2>나에게 맞는 시험인지 상담받아보세요</h2><p>목표 직무와 급수에 맞춰 시험 종목과 접수 절차를 안내합니다.</p></div>
+    <a class="btn btn--primary btn--lg" href="./contact.html">시험 상담하기</a>
   </div></section>
   <footer class="site-footer"><div class="container"><div class="footer-grid">
     <div><h2>Times Education</h2><p>02-6207-9090</p></div>
@@ -54,9 +54,8 @@
       const { COURSES, escapeHtml } = window.SiteData;
       document.getElementById("courseGrid").innerHTML = COURSES.map((c) => `
         <a class="course-card" href="./course-detail.html?id=${encodeURIComponent(c.id)}">
-          <div class="thumb"><img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.title)}"><span class="status-tag">${escapeHtml(c.status)}</span></div>
           <div class="body">
-            <span class="cat">${escapeHtml(c.category)}</span>
+            <div class="course-meta"><span class="cat">${escapeHtml(c.category)}</span><span class="status-tag">${escapeHtml(c.status)}</span></div>
             <h3>${escapeHtml(c.title)}</h3>
             <p class="desc">${escapeHtml(c.summary)}</p>
             <div class="tags">${(c.tags || []).map((t) => `<span class="chip">${escapeHtml(t)}</span>`).join("")}</div>

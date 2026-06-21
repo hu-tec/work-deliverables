@@ -2,7 +2,9 @@ window.AITE_SITE = {
   nav: [
     { label: "협회 소개", href: "./association.html", pages: ["association"] },
     { label: "협회 구성", href: "./organization.html", pages: ["organization"] },
-    { label: "협회 연혁", href: "./history.html", pages: ["history"] }
+    { label: "협회 연혁", href: "./history.html", pages: ["history"] },
+    { label: "커뮤니티", href: "./community.html", pages: ["community", "board"] },
+    { label: "1:1문의", href: "./contact.html", pages: ["contact", "support"] }
   ],
   pages: {
     intro: {
@@ -105,29 +107,84 @@ window.AITE_SITE = {
       cta: "AI 윤리 시험으로 당신의 책임있는 AI활용 역량을 공식 인증하세요"
     },
     board: { title: "자주묻는 질문", eyebrow: "게시판", copy: "자주묻는 질문", stat: ["FAQ", "게시판"], sections: [{ type: "cards", label: "게시판", title: "자주묻는 질문", cards: [["자주묻는 질문", "원본 게시판 영역입니다."]] }], cta: "궁금한 내용은 고객지원으로 문의해 주세요" },
+    community: { title: "커뮤니티", eyebrow: "커뮤니티", copy: "공지사항, 자주 묻는 질문, Q&A, 자료실을 하나의 탭 구조로 운영합니다.", stat: ["4개", "게시판"], sections: [], cta: "찾는 자료가 없다면 문의를 남겨주세요" },
+    contact: { title: "1:1 문의", eyebrow: "1:1문의", copy: "시험·자격·협회 운영에 대해 문의를 남겨주시면 담당자가 안내해드립니다.", stat: ["02", "6207-9090"], sections: [], cta: "문의가 접수되면 담당자가 확인 후 회신합니다" },
     support: { title: "고객지원", eyebrow: "고객지원", copy: "Phone Call\n02-6207-9090\n월요일 - 금요일 : 09:00 - 18:00\n주말 / 공휴일 휴일", stat: ["02", "6207-9090"], sections: [{ type: "features", label: "CONTACT", title: "고객지원", items: ["Phone Call", "02-6207-9090", "월요일 - 금요일 : 09:00 - 18:00", "주말 / 공휴일 휴일"] }], cta: "문의 : hutechc01@gmail.com" },
     association: {
       title: "IITA 소개",
       eyebrow: "협회 소개",
       copy: "IITA 협회 소개\nIITA 국제통번역협회을 소개합니다.",
-      stat: ["1999년", "설립"],
+      stat: ["25년", "통번역 전문기관"],
       sections: [
-        { type: "features", label: "IITA", title: "IITA 국제통번역협회을 소개합니다.", copy: "IITA (International Interpretation & Translation Association of Korea) 1999년 설립된 비영리 통번역 전문기관으로, 대한민국 통번역 자격시험의 기준을 만들고 실행하는 공식적인 시험기관입니다.협회는 단순한 교육기관이 아닌, 시험 출제부터 평가, 자격증 발급까지 전 과정을 직접 운영하는 공인된 자격시험 주관기관으로, 국가와 사회가 신뢰할 수 있는 언어 전문가 양성에 앞장서고 있습니다.", items: ["협회 핵심 포인트", "IITA 주요 시험주요 인증 및 시험 제도", "A시대 당신의 역량을 공식 인증합니다. 25년 전통 + AI 미래 자격, 지금 바로 도전하세요"] },
-        { type: "features", label: "협회장 인사말", title: "협회장 인사말", copy: "오늘날 글로벌화의 중심에 서 있으며앞으로 더 많은 글로벌화가 진행되기 마련입니다.\n\n세상이 글로벌화 되면 될수록 중요해지는 것은 언어능력입니다. 따라서 그 국민의 일반적인 글로벌한 언어능력이야말로 글로벌화를 지속가능하게 하는 밑거름이라 할 수 있습니다.국제통역번역협회는 이러한 언어능력의 중요성을 모든 국민에게 알리고 지식기반을 넓혀 갈 수 있도록 하기 위해 언어분야 전문가들이 모여 결성한 비영리 사단법인 입니다.", items: ["올바른 직업윤리를 바탕으로 자격을 갖춘 통역사와 번역사가 맡은 바 임무를 수행함으로써 통번역문화를 바로 세우는 일입니다.", "통역사와 번역사로 일하는 분들에 대한 권익보호 노력입니다.", "공신력 있는 시험시행입니다. ITT시험을 시스템화 하여 세계에 내놓아도 손색이 없는 시험으로 발전시켜 나갈 것입니다.", "사단법인 국제통역번역협회 회장 김동익"] },
-        { type: "features", label: "MISSION", title: "IITA 협회 미션과 비전 단순한 자격증 시험이 아닙니다.", copy: "우리는 단지 자격을 부여하는 거이 아니라, 국가 경쟁력과 언어 윤리를 함께 세웁니다.", items: ["공신력 있는 자격 시험 제공", "AI와 인간의 공존을 위한 언어 윤리 강화", "미래형 언어 직무 창출과 일자리 확장", "통번역사 권익 보호와 산업 표준 정립"] }
+        { type: "features", label: "IITA 협회 소개", title: "IITA 국제통번역협회을 소개합니다.", copy: "IITA (International Interpretation & Translation Association of Korea)는 1999년 설립된 비영리 통번역 전문기관으로, 대한민국 통번역 자격시험의 기준을 만들고 실행하는 공식적인 시험기관입니다.\n\n협회는 단순한 교육기관이 아닌, 시험 출제부터 평가, 자격증 발급까지 전 과정을 직접 운영하는 공인된 자격시험 주관기관으로, 국가와 사회가 신뢰할 수 있는 언어 전문가 양성에 앞장서고 있습니다.", image: "./assets/association-intro.jpg", imageAlt: "IITA 협회 소개 이미지", items: ["자격시험 주관 기관: 대한민국 문화체육관광부 산하, 법무부·과기부 인증", "언어 전문기관 신뢰성: UNESCO FIT 회원, 대학·기업·공공기관 신뢰"] },
+        { type: "cards", label: "협회 핵심 포인트", title: "협회 핵심 포인트", cards: [
+          ["전통", "1999년 출범, 25년 역사", "IITA", "./assets/icon-tradition.png"],
+          ["공신력", "30만 명 응시, 법무부·과기부 인증", "인증", "./assets/icon-authority.png"],
+          ["글로벌", "109개 언어 확대, UNESCO FIT 협력", "확장", "./assets/icon-global.png"],
+          ["미래 비전", "AI + 윤리 + 통번역 통합 자격 인증", "AI", "./assets/icon-future.png"],
+          ["자격시험 주관 기관", "대한민국 문화체육관광부 산하, 법무부·과기부 인증", "주관 기관", "./assets/icon-certificate.png"],
+          ["언어 전문기관 신뢰성", "UNESCO FIT 회원, 대학·기업·공공기관 신뢰", "전문기관", "./assets/icon-certificate.png"]
+        ] },
+        { type: "cards", label: "IITA 주요 시험", title: "주요 인증 및 시험 제도", note: "AI시대 당신의 역량을 공식 인증합니다. 25년 전통 + AI 미래 자격, 지금 바로 도전하세요.", cards: [
+          ["AI Translation Test\nAI 번역 시험", "번역 해석력과 편집 능력 평가\nAI 번역 도구의 실무 활용성 검증\n콘텐츠 감수 및 품질 확인 능력 평가", "실무역량 중심", "./assets/exam-translation.jpg"],
+          ["Prompt Engineering\n프롬프트 시험", "명령어 설계 및 적용 능력 평가\n생성형 AI의 응답 품질 컨트롤\n다양한 활용 시나리오 기반 문제", "생성형 AI 활용", "./assets/exam-prompt.jpg"],
+          ["AI Ethics Test\nAI 윤리 시험", "편향, 프라이버시 등 윤리 개념 평가\n관련 법제도 및 사례 기반 문제\n공공·기업의 AI 책임 이해", "사회적 책임 중심", "./assets/exam-ethics.jpg"],
+          ["ITT Certificate\nITT 통번역사", "법무부 공증 가능 공식 자격\n실무형 언어 전문가 양성\n공인 시험 출제 및 운영", "법무부 인증", "./assets/exam-itt.jpg"]
+        ] },
+        { type: "features", label: "협회장 인사말", title: "협회장 인사말", copy: "오늘날은 글로벌화의 중심에 서 있으며 앞으로 더 많은 글로벌화가 진행되기 마련입니다.\n\n세상이 글로벌화 되면 될수록 중요해지는 것은 언어능력입니다. 따라서 그 국민의 일반적인 글로벌한 언어능력이야말로 글로벌화를 지속가능하게 하는 밑거름이라 할 수 있습니다.\n\n국제통역번역협회는 이러한 언어능력의 중요성을 모든 국민에게 알리고 지식기반을 넓혀 갈 수 있도록 하기 위해 언어분야 전문가들이 모여 결성한 비영리 사단법인 입니다.", image: "./assets/chair-message.png", imageAlt: "협회장 인사말 이미지", items: ["첫째, 올바른 직업윤리를 바탕으로 자격을 갖춘 통역사와 번역사가 맡은 바 임무를 수행함으로써 통번역문화를 바로 세우는 일입니다.", "둘째, 통역사와 번역사로 일하는 분들에 대한 권익보호 노력입니다. 아직도 직업적 안정성이 불투명하고 통번역에 대한 인식저하로 열악한 환경에서 보호를 받지 못하는 통번역사가 많습니다. 협회는 통역사와 번역사의 권익향상에 매진할 것입니다.", "셋째, 공신력 있는 시험시행입니다. ITT시험을 시스템화 하여 세계에 내놓아도 손색이 없는 시험으로 발전시켜 나갈 것입니다.", "이 모든 노력은 비단 IITA만의 노력으로 이룰 수는 없습니다. 통번역과 관련 있는 모든 지식인 및 전문가그룹의 도움이 필요하고 동참이 필요합니다.", "많은 전문가 여러분의 지원과 동참을 바랍니다.", "사단법인 국제통역번역협회 회장 김동익"] },
+        { type: "features", label: "IITA 협회 미션과 비전", title: "단순한 자격증 시험이 아닙니다.", copy: "우리는 단지 자격을 부여하는 것이 아니라, 국가 경쟁력과 언어 윤리를 함께 세웁니다.", image: "./assets/mission.jpg", imageAlt: "IITA 미션과 비전 이미지", items: ["공신력 있는 자격 시험 제공", "AI와 인간의 공존을 위한 언어 윤리 강화", "미래형 언어 직무 창출과 일자리 확장", "통번역사 권익 보호와 산업 표준 정립"] }
       ],
       cta: "제휴 목록 함께 제휴하고 있는"
     },
-    organization: { title: "협회 구성", eyebrow: "협회 구성", copy: "임원소개\n협회 조직도", stat: ["IITA", "조직"], sections: [{ type: "features", label: "ORGANIZATION", title: "임원소개", items: ["협회 조직도"] }], cta: "IITA 협회 소개" },
+    organization: {
+      title: "협회 구성",
+      eyebrow: "협회 구성",
+      copy: "임원소개\n협회 조직도",
+      stat: ["5명", "주요 임원"],
+      sections: [
+        { type: "profiles", label: "임원소개", title: "임원소개", cards: [
+          ["유명우\nYoo Myeong-u", "(現) ICS 이사장\n(前) 성균관대학교 언론정보대학원 겸임교수\n(前) 정무부 장관\n(前) 중앙일보 사장\n(前) 조선일보 편집국장", "국제 통역 번역 협회 이사장", "./assets/profile-yoo.png"],
+          ["박미진\nPark Mi-Jin", "(現) (주)휴먼씨 - 메타 트랜스 대표이사\n(現) ICS 국제협회 이사장\n(現) (주)타임즈 미디어 대표이사\n(現) (사)국제통번역사협회 협회 사무총장\n(現) (사)한국 번역 학회 사업이사\n(現) 한국 번역 연구원 사무총장\n(前) UN 산하 UN IAEWP 교육위원", "국제 통역 번역 협회 사무총장", "./assets/profile-park.png"],
+          ["이정우\nLee Jeong-Woo", "(現) KNN방송 감사\n(現) 하나금융그룹 고문\n(前) 코리아헤럴드 대표이사 발행인\n(前) 내외경제신문 대표이사 발행인\n(前) 키즈헤럴드 발행인 회장\n(前) 현대투자신탁 대표이사", "국제 통역 번역 협회 이사", "./assets/profile-lee.png"],
+          ["김동익\nKim Dong-Ik", "(現) Korea Economic Intelligence New York Wall St.회장\n(前) (세계은행)국제 금융공사 수석고문\n(前) 국제방송교류재단 이사장\n(前) 서울외국어대학원대학교 총장\n(前) 국제경어학협회 회장\n(前) 주미 한국정부 경제특별 선발위원장", "국제 통역 번역 협회 이사", "./assets/profile-kim.jpg"],
+          ["윤태희\nYoon Tae-Hee", "(現) 국제통역 번역협회 고문\n(現) 한국 번역 학회 정립회장\n(現) 한국 번역연구원 원장\n(前) 한국 번역학회 창립 고문\n(前) 호남대학교 영어영문학과 명예교수\n(前) 한국 추리작가협회 부회장\n(前) 한국 번역가 협회 부회장", "국제 통역 번역 협회 고문 이사", "./assets/profile-yoon.png"]
+        ] },
+        { type: "image", label: "협회 조직도", title: "협회 조직도", copy: "원본 협회 구성 페이지의 조직도 이미지를 반영했습니다.", src: "./assets/organization-chart.png", alt: "국제통역번역협회 조직도" }
+      ],
+      cta: "IITA 협회 소개"
+    },
     history: {
       title: "협회 연혁",
       eyebrow: "협회 연혁",
-      copy: "연혁 소개 IITA가 걸어온 길",
-      stat: ["HISTORY", "연혁"],
+      copy: "연혁 소개\nIITA가 걸어온 길",
+      stat: ["1999", "출범"],
       sections: [
-        { type: "features", label: "인공지능 번역 대결", title: "인간 vs 인공지능 인공지능 번역 대결", copy: "AI비즈니스 산업 속에서 인간과의 공존을 추구하는 미래형 일자리 선도를 위해 인공지능과 인간번역대결을 통해 휴먼과 인공지능의 결합이라는 방향성을 제시했습니다.", items: ["뉴스 보도"] },
-        { type: "features", label: "외국어 경연대회", title: "글로벌 인재 육성 외국어 경연 대회", copy: "국내 청소년들의글로벌 소통 능력을 향상시키고다문화 및 국제관계의 이해의 폭을 넓히고 이해관계를 이해시킴으로써글로벌 인재로 육성 하기위한 다양한 프로그램을 진행하고 있습니다.\n\n미래의 주역인 청소년들이 국제적 사회적으로 이슈가 되고 있는다양한 문제들에 대한 중요성을 자연스럽게 깨닫게 하여우리 사회의 허브 역할을 할 수 있는 계기를 제공하고자 합니다.이를 실천하기위한 방안으로 외국어 말하기와 글쓰기를 통해 청소년의 글로벌 역량을 제고할 수 있는 글로벌 리더십 외국어 경연 대회를 개최했습니다.", items: ["1999년부터 진행한 통역 대회 및 번역 시험"] },
-        { type: "features", label: "국제통역사절단", title: "국제 통역 사절단", copy: "다양한 글로벌 문화 교류 및 행사 개최를 통해서 국력을 높이고, 인재를 등용하는 세계로 향하는 도약의 발판을 마련하며,\n서로 다른 문화와 가치가 조화를 이루는 장을 열어국가와 국가, 사람과 사람이 깊이 연결되는 지속 가능한 협력 구조를 만들어갑니다", items: ["글로벌 문화 교류"] }
+        { type: "cards", label: "연혁 소개", title: "IITA가 걸어온 길", cards: [
+          ["1999~2009", "문화체육관광부 산하 (사)국제통역번역협회 출범\n통번역사정단 신설대회 및 외국어경단대회\n국제대회번역활동 (한일월드컵, 부산국제영화제, 부천애니메이션 페스티벌, 평창 동계올림픽 등)", "출범"],
+          ["2009~2016", "UNESCO 산하 국제번역연맹(FIT) 회원 국제적인 학술활동\n미국 Concordia ITT 공식시험센터 Open\n대한민국 법무부 ITT 자격증 인정\n국내외 교육기관 협력을 통한 MOU체결 (한국통합협회, 연세대학교, 통번역사, 중앙일보)\nITT통번역 15개국 시행협약체결", "확장"],
+          ["2016~현재까지", "인공지능 번역 vs 인간 번역사 대결\nITT통번역 중앙일보 2018\n소비자만족브랜드대상 1위\n법무부 AI인공지능 번역에디터 시험 인증\n식업진료통증 중국현지 고사장 개설\n대학생을 위한 취업특강", "현재"]
+        ] },
+        { type: "cards", label: "주요 인증", title: "주요 연도", cards: [
+          ["2013", "법무부 ITT 통번역자격증\n번역공증 자격증 인정", "법무부"],
+          ["2017", "인간 대 인공지능\n번역 대결 행사 주최", "AI 번역"],
+          ["2020", "과학기술정보통신부\nAITe 통번역 자격증 인증", "과기부"]
+        ] },
+        { type: "features", label: "인공지능 번역 대결", title: "인간 vs 인공지능 인공지능 번역 대결", copy: "AI비즈니스 산업 속에서 인간과의 공존을 추구하는 미래형 일자리 선도를 위해 인공지능과 인간번역대결을 통해 휴먼과 인공지능의 결합이라는 방향성을 제시했습니다.", image: "./assets/history-ai-video.png", imageAlt: "인공지능 번역 대결 영상 썸네일", items: ["뉴스 보도"] },
+        { type: "gallery", label: "뉴스 보도", title: "뉴스 보도", images: [
+          { src: "./assets/history-news-1.jpg", alt: "인공지능 번역 대결 뉴스 보도 1" },
+          { src: "./assets/history-news-2.png", alt: "인공지능 번역 대결 뉴스 보도 2" },
+          { src: "./assets/history-news-3.png", alt: "인공지능 번역 대결 뉴스 보도 3" }
+        ] },
+        { type: "features", label: "외국어 경연대회", title: "글로벌 인재 육성 외국어 경연 대회", copy: "국내 청소년들의글로벌 소통 능력을 향상시키고다문화 및 국제관계의 이해의 폭을 넓히고 이해관계를 이해시킴으로써글로벌 인재로 육성 하기위한 다양한 프로그램을 진행하고 있습니다.\n\n미래의 주역인 청소년들이 국제적 사회적으로 이슈가 되고 있는다양한 문제들에 대한 중요성을 자연스럽게 깨닫게 하여우리 사회의 허브 역할을 할 수 있는 계기를 제공하고자 합니다.이를 실천하기위한 방안으로 외국어 말하기와 글쓰기를 통해 청소년의 글로벌 역량을 제고할 수 있는 글로벌 리더십 외국어 경연 대회를 개최했습니다.", image: "./assets/contest-main.jpg", imageAlt: "외국어 경연대회", items: ["1999년부터 진행한 통역 대회 및 번역 시험"] },
+        { type: "gallery", label: "1999년부터 진행한 통역 대회 및 번역 시험", title: "대회 기록", images: [
+          { src: "./assets/contest-1.jpg", alt: "외국어 경연대회 기록 1" },
+          { src: "./assets/contest-2.jpg", alt: "외국어 경연대회 기록 2" },
+          { src: "./assets/contest-3.jpg", alt: "외국어 경연대회 기록 3" },
+          { src: "./assets/contest-4.jpg", alt: "외국어 경연대회 기록 4" },
+          { src: "./assets/contest-5.jpg", alt: "외국어 경연대회 기록 5" },
+          { src: "./assets/contest-6.jpg", alt: "외국어 경연대회 기록 6" }
+        ] },
+        { type: "features", label: "국제통역사절단", title: "국제 통역 사절단", copy: "다양한 글로벌 문화 교류 및 행사 개최를 통해서 국력을 높이고, 인재를 등용하는 세계로 향하는 도약의 발판을 마련하며,\n서로 다른 문화와 가치가 조화를 이루는 장을 열어국가와 국가, 사람과 사람이 깊이 연결되는 지속 가능한 협력 구조를 만들어갑니다", image: "./assets/delegation-main.jpg", imageAlt: "국제통역사절단", items: ["글로벌 문화 교류"] }
       ],
       cta: "IITA가 걸어온 길"
     }

@@ -132,7 +132,7 @@
         </div>
       </section>
 
-      <div class="read-actions"><a class="btn btn--neutral btn--lg" href="./apply.html">목록으로</a><a class="btn btn--primary btn--lg" href="./apply.html">수강신청</a></div>
+      <div class="read-actions"><a class="btn btn--neutral btn--lg" href="./apply.html">목록으로</a><a class="btn btn--primary btn--lg" id="applyFormLink" href="./apply-form.html">수강신청</a></div>
     </div></section>
   </main>
 
@@ -142,6 +142,12 @@
     <div><h3>신청</h3><a href="./apply.html">수강신청</a><a href="./community.html">커뮤니티</a></div>
     <div><h3>지원</h3><a href="./contact.html">1:1문의</a><a href="./about.html">교육원소개</a></div>
   </div><div class="copyright">© 2026 A. TESOL</div></div></footer>
+  <script>
+    (function () {
+      const id = new URLSearchParams(location.search).get("id");
+      if (id) document.getElementById("applyFormLink").href = `./apply-form.html?id=${encodeURIComponent(id)}`;
+    })();
+  </script>
   <script src="./site.js"></script>
 </body>
 </html>

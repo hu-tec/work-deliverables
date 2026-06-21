@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   <link rel="stylesheet" href="./styles.css">
   <title>TESOL 교육 과정 | A. TESOL</title>
 </head>
@@ -42,20 +43,26 @@
     </section>
 
     <div class="container">
-      <nav class="course-subnav course-layout-subnav" aria-label="과목 소개 메뉴">
-        <a class="active" href="#tab-common" data-tab="common">공통</a>
-        <a href="#tab-tesol" data-tab="tesol">TESOL</a>
-        <a href="#tab-ai-translation" data-tab="ai-translation">AI 번역</a>
-        <a href="#tab-ai-prompt" data-tab="ai-prompt">AI 프롬프트</a>
-        <a href="#tab-ai-ethics" data-tab="ai-ethics">AI 윤리</a>
-        <a href="#tab-itt" data-tab="itt">ITT 통번역</a>
-        <a href="#tab-school-education" data-tab="school-education">학교·교육 강사과정</a>
-        <a href="#tab-customized" data-tab="customized">대상별 맞춤 강사과정</a>
-        <a href="#tab-content-class" data-tab="content-class">콘텐츠·수업 제작 강사과정</a>
-        <a href="#tab-industry-specialist" data-tab="industry-specialist">산업 전문 강사과정</a>
-        <a href="#tab-expert-global" data-tab="expert-global">전문가·글로벌 강사과정</a>
+      <nav class="course-subnav course-layout-subnav swiper" data-course-nav-swiper aria-label="과목 소개 메뉴">
+        <div class="swiper-wrapper">
+          <a class="active swiper-slide" href="#tab-common" data-tab="common">공통</a>
+          <a class="swiper-slide" href="#tab-tesol" data-tab="tesol">TESOL</a>
+          <a class="swiper-slide" href="#tab-ai-translation" data-tab="ai-translation">AI 번역</a>
+          <a class="swiper-slide" href="#tab-ai-prompt" data-tab="ai-prompt">AI 프롬프트</a>
+          <a class="swiper-slide" href="#tab-ai-ethics" data-tab="ai-ethics">AI 윤리</a>
+          <a class="swiper-slide" href="#tab-itt" data-tab="itt">ITT 통번역</a>
+          <a class="swiper-slide" href="#tab-school-education" data-tab="school-education">학교·교육 강사과정</a>
+          <a class="swiper-slide" href="#tab-customized" data-tab="customized">대상별 맞춤 강사과정</a>
+          <a class="swiper-slide" href="#tab-content-class" data-tab="content-class">콘텐츠·수업 제작 강사과정</a>
+          <a class="swiper-slide" href="#tab-industry-specialist" data-tab="industry-specialist">산업 전문 강사과정</a>
+          <a class="swiper-slide" href="#tab-expert-global" data-tab="expert-global">전문가·글로벌 강사과정</a>
+        </div>
+        <div class="course-swiper-controls">
+          <button class="course-swiper-btn" type="button" data-course-swiper-prev aria-label="이전 과목">‹</button>
+          <button class="course-swiper-btn" type="button" data-course-swiper-next aria-label="다음 과목">›</button>
+        </div>
       </nav>
-      <nav class="course-subnav course-child-subnav" id="courseChildSubnav" aria-label="하위 과정 메뉴" hidden></nav>
+      <nav class="course-subnav course-child-subnav swiper" id="courseChildSubnav" aria-label="하위 과정 메뉴" hidden></nav>
       <div class="detail-layout course-detail-layout" id="subjects">
         <div class="detail-main course-origin-panels">
           <article class="course-origin-panel active" id="tab-common" role="tabpanel" data-panel="common">
@@ -149,6 +156,7 @@
     <a class="btn btn--primary btn--lg" href="./apply.html">수강 신청하기</a>
   </div></section>
   <footer class="site-footer"><div class="container"></div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="./data.js"></script>
   <script>
     (function () {
@@ -157,6 +165,8 @@
       const panels = Array.from(document.querySelectorAll('.course-origin-panel'));
       const summary = document.getElementById('courseApplySummary');
       const childSubnav = document.getElementById('courseChildSubnav');
+      const detailLayout = document.getElementById('subjects');
+      let childSubnavSwiper = null;
       const meta = {
         common: { title: '공통과정 및 AI 강사 양성과정', fee: '980,000원부터', duration: '5주 (총 48시간)', target: 'AI 강사과정을 시작하는 수강생', cert: '수료증 및 과정별 연계' },
         tesol: { title: 'TESOL 교육 과정', fee: '상세 문의', duration: '8주 완성 (120시간)', target: '예비·현직 영어강사', cert: '국제 TESOL 자격증' },
@@ -171,6 +181,22 @@
         'expert-global': { title: '전문가·글로벌 강사과정', fee: '980,000원부터', duration: '5주 (총 48시간)', target: '전문직·글로벌·직무교육 강사', cert: '수료증 및 전문분야 포트폴리오' }
       };
 
+      function renderCourseOverview(course, group) {
+        return `
+          <section class="read-block course-overview-block">
+            <h2 class="read-title">과정 개요</h2>
+            <table class="read-info-table"><tbody>
+              <tr><th>강좌명</th><td colspan="3">${escapeHtml(course.title)}</td></tr>
+              <tr><th>과목</th><td>${escapeHtml(group.label)}</td><th>과정 구분</th><td>AI강사과정 / 분야별 전문과정</td></tr>
+              <tr><th>모집기간</th><td>${escapeHtml(course.schedule || "상시 모집 (기수별 운영)")}</td><th>교육기간</th><td>${escapeHtml(course.duration)}</td></tr>
+              <tr><th>교육장소</th><td>온라인 교육센터 및 지정 강의실</td><th>요일/시간</th><td>월·수·금 10:00~14:00 / 야간반 별도</td></tr>
+              <tr><th>교육대상</th><td>${escapeHtml(course.target)}</td><th>수강료</th><td>${escapeHtml(course.fee)}</td></tr>
+              <tr><th>접수방식</th><td>선착접수</td><th>접수상태</th><td><span class="status-pill">신규접수</span></td></tr>
+            </tbody></table>
+            <div class="read-description"><p>${escapeHtml(course.summary)}</p></div>
+          </section>`;
+      }
+
       function renderInstructorPanels() {
         if (!INSTRUCTOR_GROUPS || !COURSES || !escapeHtml) return;
 
@@ -178,28 +204,9 @@
           const panel = document.querySelector(`[data-autogen-panel="${group.key}"]`);
           if (!panel) return;
           const courses = COURSES.filter((course) => course.groupKey === group.key);
-          const first = courses[0];
           const groupId = `sub-${group.key}`;
-          const groupDetailId = {
-            "school-education": "school-education-instructor",
-            customized: "customized-instructor",
-            "content-class": "content-class-instructor",
-            "industry-specialist": "industry-specialist-instructor",
-            "expert-global": "expert-global-instructor"
-          }[group.key];
 
           panel.innerHTML = `
-            <div class="origin-hero-copy">
-              <span class="course-badge">${escapeHtml(group.label)}</span>
-              <h3>${escapeHtml(group.title)}</h3>
-              <p>${escapeHtml(group.summary)}</p>
-            </div>
-            <div class="tesol-info-strip">
-              <div><span>과정구분</span><strong>${escapeHtml(group.label)} 분야별 선택</strong></div>
-              <div><span>교육기간</span><strong>5주 (총 48시간)</strong></div>
-              <div><span>운영방식</span><strong>상시 모집 (기수별 운영)</strong></div>
-              <div><span>하위과정</span><strong>${courses.length}개 과정</strong></div>
-            </div>
             <div class="subcourse-panels" id="${groupId}">
               ${courses.map((course, index) => `
                 <article class="subcourse-panel ${index === 0 ? "active" : ""}" data-subcourse-panel="${escapeHtml(course.id)}" ${index === 0 ? "" : "hidden"}>
@@ -209,12 +216,7 @@
                     <p>${escapeHtml(course.summary)}</p>
                     <div class="hero-actions"><a class="btn btn--primary" href="./apply.html">수강신청</a><a class="btn btn--outline" href="./contact.html">상담 문의</a></div>
                   </div>
-                  <div class="tesol-info-strip">
-                    <div><span>교육기간</span><strong>${escapeHtml(course.duration)}</strong></div>
-                    <div><span>모집기간</span><strong>상시 모집</strong></div>
-                    <div><span>교육대상</span><strong>${escapeHtml(course.target)}</strong></div>
-                    <div><span>수강료</span><strong>${escapeHtml(course.fee)}</strong></div>
-                  </div>
+                  ${renderCourseOverview(course, group)}
                   <section class="d-block">
                     <h4 class="b-title">과정소개</h4>
                     <div class="intro-grid">
@@ -284,22 +286,49 @@
         });
       }
 
-      function renderChildSubnav(target) {
+      function renderChildSubnav(target, selectedSubcourseId) {
         if (!childSubnav || !escapeHtml) return;
         const courses = getGroupCourses(target);
         if (!courses.length) {
           childSubnav.hidden = true;
           childSubnav.innerHTML = "";
+          detailLayout?.classList.remove("has-child-subnav");
+          if (childSubnavSwiper) {
+            childSubnavSwiper.destroy(true, true);
+            childSubnavSwiper = null;
+          }
           return;
         }
         childSubnav.hidden = false;
-        childSubnav.innerHTML = courses.map((course, index) =>
-          `<button class="${index === 0 ? "active" : ""}" type="button" data-subcourse="${escapeHtml(course.id)}">${escapeHtml(course.title)}</button>`
-        ).join("");
+        detailLayout?.classList.add("has-child-subnav");
+        childSubnav.innerHTML = `
+          <div class="swiper-wrapper">
+            ${courses.map((course, index) =>
+              `<button class="swiper-slide ${index === 0 ? "active" : ""}" type="button" data-subcourse="${escapeHtml(course.id)}">${escapeHtml(course.title)}</button>`
+            ).join("")}
+          </div>
+          <div class="course-swiper-controls">
+            <button class="course-swiper-btn" type="button" data-child-swiper-prev aria-label="이전 하위 과정">‹</button>
+            <button class="course-swiper-btn" type="button" data-child-swiper-next aria-label="다음 하위 과정">›</button>
+          </div>`;
         childSubnav.querySelectorAll("button[data-subcourse]").forEach((button) => {
           button.addEventListener("click", () => activateSubcourse(target, button.dataset.subcourse));
         });
-        activateSubcourse(target, courses[0].id);
+        if (childSubnavSwiper) childSubnavSwiper.destroy(true, true);
+        if (window.Swiper) {
+          childSubnavSwiper = new window.Swiper(childSubnav, {
+            slidesPerView: "auto",
+            spaceBetween: 6,
+            freeMode: true,
+            watchOverflow: true,
+            navigation: {
+              prevEl: childSubnav.querySelector("[data-child-swiper-prev]"),
+              nextEl: childSubnav.querySelector("[data-child-swiper-next]")
+            }
+          });
+        }
+        const initialSubcourse = courses.some((course) => course.id === selectedSubcourseId) ? selectedSubcourseId : courses[0].id;
+        activateSubcourse(target, initialSubcourse);
       }
 
       function renderSummary(target) {
@@ -320,7 +349,7 @@
           </div>`;
       }
 
-      function activateCourse(target) {
+      function activateCourse(target, selectedSubcourseId) {
         navLinks.forEach((item) => item.classList.toggle('active', item.dataset.tab === target));
         panels.forEach((panel) => {
           const on = panel.dataset.panel === target;
@@ -328,7 +357,7 @@
           panel.hidden = !on;
         });
         renderSummary(target);
-        renderChildSubnav(target);
+        renderChildSubnav(target, selectedSubcourseId);
       }
 
       navLinks.forEach((link) => {
@@ -339,8 +368,27 @@
           document.getElementById('subjects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
-      const initialTab = navLinks.find((link) => link.getAttribute('href') === location.hash)?.dataset.tab || 'common';
-      activateCourse(initialTab);
+      if (window.Swiper) {
+        new window.Swiper("[data-course-nav-swiper]", {
+          slidesPerView: "auto",
+          spaceBetween: 6,
+          freeMode: true,
+          watchOverflow: true,
+          navigation: {
+            prevEl: "[data-course-swiper-prev]",
+            nextEl: "[data-course-swiper-next]"
+          }
+        });
+      }
+      const params = new URLSearchParams(location.search);
+      const queryTab = params.get("tab");
+      const querySubcourse = params.get("sub");
+      const hashTab = navLinks.find((link) => link.getAttribute('href') === location.hash)?.dataset.tab;
+      const initialTab = navLinks.some((link) => link.dataset.tab === queryTab) ? queryTab : (hashTab || 'common');
+      activateCourse(initialTab, querySubcourse);
+      if (queryTab || querySubcourse) {
+        setTimeout(() => document.getElementById('subjects')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+      }
     })();
   </script>
   <script src="./site.js"></script>

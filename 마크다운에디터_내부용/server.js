@@ -2,6 +2,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const os = require("os");
 
 const ROOT_DIR = __dirname;
 const PUBLIC_DIR = path.join(ROOT_DIR, "public");
@@ -10,8 +11,8 @@ const UPLOAD_DIR = path.join(ROOT_DIR, "uploads");
 const ATTACHMENT_DIR = path.join(UPLOAD_DIR, "attachments");
 const DB_PATH = path.join(DATA_DIR, "app-db.json");
 const PORT = Number(process.env.PORT || 3000);
-const HOST = process.env.HOST || "0.0.0.0";
-const LAN_IP = process.env.LAN_IP || "<ipconfig IPv4>";
+const HOST = process.env.HOST || "127.0.0.1";
+const LAN_IP = process.env.LAN_IP || getLanIp() || "<ipconfig IPv4>";
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -676,4 +677,21 @@ function safeFileName(value) {
 
 function createId() {
   return crypto.randomBytes(8).toString("hex");
+}
+
+function getLanIp() {
+  let interfaces = {};
+  try {
+    interfaces = os.networkInterfaces();
+  } catch (error) {
+    return "";
+  }
+  for (const entries of Object.values(interfaces)) {
+    for (const item of entries || []) {
+      if (item.family === "IPv4" && !item.internal) {
+        return item.address;
+      }
+    }
+  }
+  return "";
 }

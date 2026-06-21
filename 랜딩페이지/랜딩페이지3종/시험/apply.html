@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./styles.css">
-  <title>수강 신청 | Times Education</title>
+  <title>시험 접수 | Times Education</title>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 이동</a>
@@ -29,7 +29,7 @@
 
   <main id="main">
     <section class="page-title"><div class="container page-title-inner">
-      <div><span class="breadcrumb">Home / 신청하기</span><h1>수강 신청</h1><p>희망 과정과 기본 정보를 남겨주시면 담당자가 일정과 접수 절차를 안내합니다.</p></div>
+      <div><span class="breadcrumb">Home / 신청하기</span><h1>시험 접수</h1><p>희망 시험과 기본 정보를 남겨주시면 담당자가 일정과 접수 절차를 안내합니다.</p></div>
     </div></section>
 
     <section class="section section--soft"><div class="container">
@@ -41,9 +41,9 @@
             <div class="apply-block">
               <h3>지원 구분</h3>
               <div class="field-grid three">
-                <div class="field-wrap"><label class="label" for="courseGroup">과정 <span class="required">*</span></label><select class="field" name="courseGroup" id="courseGroup" required><option value="">과정 선택</option><option value="일반과정">일반과정</option><option value="AI 과정">AI 과정</option></select></div>
-                <div class="field-wrap"><label class="label" for="courseDetail">세부 과정 <span class="required">*</span></label><select class="field" name="courseDetail" id="courseDetail" required><option value="">세부 과정 선택</option></select></div>
-                <div class="field-wrap"><label class="label" for="applicationType">신청 유형 <span class="required">*</span></label><select class="field" name="applicationType" id="applicationType" required><option value="상담신청">상담신청</option><option value="레벨테스트">레벨테스트</option><option value="수업신청">수업신청</option><option value="설명회">설명회</option><option value="테스트 TIP">테스트 TIP</option></select></div>
+                <div class="field-wrap"><label class="label" for="courseGroup">시험 구분 <span class="required">*</span></label><select class="field" name="courseGroup" id="courseGroup" required><option value="">시험 구분 선택</option><option value="AITe 자격시험">AITe 자격시험</option><option value="공통 필수 시험">공통 필수 시험</option></select></div>
+                <div class="field-wrap"><label class="label" for="courseDetail">세부 시험 <span class="required">*</span></label><select class="field" name="courseDetail" id="courseDetail" required><option value="">세부 시험 선택</option></select></div>
+                <div class="field-wrap"><label class="label" for="applicationType">신청 유형 <span class="required">*</span></label><select class="field" name="applicationType" id="applicationType" required><option value="시험접수">시험접수</option><option value="상담신청">상담신청</option><option value="설명회">설명회</option><option value="테스트 TIP">테스트 TIP</option></select></div>
               </div>
             </div>
 
@@ -98,7 +98,7 @@
             </div>
 
             <div class="apply-block">
-              <div class="field-wrap"><label class="label" for="introduction">자기소개 및 신청 목적 <span class="required">*</span></label><textarea class="field" name="introduction" id="introduction" placeholder="교육 참여 목적과 학습 목표를 간단히 적어주세요."></textarea></div>
+              <div class="field-wrap"><label class="label" for="introduction">신청 목적 <span class="required">*</span></label><textarea class="field" name="introduction" id="introduction" placeholder="응시 목적과 희망 급수를 간단히 적어주세요."></textarea></div>
               <label class="agree-row"><input type="checkbox" name="privacy"> 개인정보 수집 및 이용에 동의합니다. <span class="required">*</span></label>
             </div>
 
@@ -122,11 +122,11 @@
         <aside class="apply-help panel">
           <div class="section-head"><div><span class="label">GUIDE</span><h2>접수 안내</h2></div></div>
           <table class="info-table apply-guide-table"><tbody>
-            <tr><th>처리 절차</th><td>신청 확인 → 상담 연락 → 반 배정 → 접수 완료</td></tr>
+            <tr><th>처리 절차</th><td>신청 확인 → 시험·급수 확인 → 결제 안내 → 접수 완료</td></tr>
             <tr><th>연락 기준</th><td>영업일 기준 1~2일 내 안내</td></tr>
             <tr><th>문의 전화</th><td>02-6207-9090</td></tr>
           </tbody></table>
-          <p>신청서 제출만으로 결제가 진행되지 않습니다. 수강료와 일정은 상담 후 확정됩니다.</p>
+          <p>신청서 제출만으로 결제가 진행되지 않습니다. 응시료와 일정은 시험·급수 확인 후 안내됩니다.</p>
         </aside>
       </div>
     </div></section>
@@ -151,8 +151,8 @@
       const summary = document.getElementById("summary");
       const steps = Array.from(document.querySelectorAll(".apply-step"));
       const courseDetails = {
-        "일반과정": ["TESOL 영어교육 과정", "영어 방과후 교사", "ITT 통번역 과정"],
-        "AI 과정": ["AI 강사 양성과정", "AITe 인증 시험", "AI 프롬프트", "AI 윤리"]
+        "AITe 자격시험": ["AI 번역 시험", "AI 프롬프트 시험", "ITT 자격 시험"],
+        "공통 필수 시험": ["AI 윤리시험"]
       };
       const aliases = { "설명회신청": "설명회", "테스트 TIP 신청": "테스트 TIP", "1:1문의": "상담신청" };
 
@@ -161,12 +161,12 @@
       function selectedValues(name) { return Array.from(form.querySelectorAll(`[name="${name}"]:checked`)).map((item) => item.value); }
       function courseValue() { return [field("courseGroup").value, field("courseDetail").value].filter(Boolean).join(" / "); }
       function setStep(step) { steps.forEach((item) => item.classList.toggle("is-active", Number(item.dataset.step) === step)); }
-      function normalizeType(type) { return aliases[type] || type || "수업신청"; }
+      function normalizeType(type) { return aliases[type] || type || "시험접수"; }
 
       function fillCourseDetails() {
         const details = courseDetails[courseGroup.value] || [];
         const previous = courseDetail.value;
-        courseDetail.innerHTML = '<option value="">세부 과정 선택</option>' + details.map((item) => `<option value="${item}">${item}</option>`).join("");
+        courseDetail.innerHTML = '<option value="">세부 시험 선택</option>' + details.map((item) => `<option value="${item}">${item}</option>`).join("");
         if (details.includes(previous)) courseDetail.value = previous;
       }
 
@@ -176,8 +176,8 @@
       }
 
       function validateStep1() {
-        if (!field("courseGroup").value) return alert("과정을 선택해주세요.");
-        if (!field("courseDetail").value) return alert("세부 과정을 선택해주세요.");
+        if (!field("courseGroup").value) return alert("시험 구분을 선택해주세요.");
+        if (!field("courseDetail").value) return alert("세부 시험을 선택해주세요.");
         if (!field("name").value.trim()) return alert("성명을 입력해주세요.");
         if (!field("phone").value.trim()) return alert("연락처를 입력해주세요.");
         if (!field("email").checkValidity()) return alert("올바른 이메일을 입력해주세요.");
@@ -213,11 +213,11 @@
         else if (numbers.length <= 7) phone.value = `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
         else phone.value = `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
       });
-      document.getElementById("restartButton").addEventListener("click", () => { form.reset(); fillCourseDetails(); setApplicationType("수업신청"); setStep(1); });
+      document.getElementById("restartButton").addEventListener("click", () => { form.reset(); fillCourseDetails(); setApplicationType("시험접수"); setStep(1); });
       form.addEventListener("reset", () => {
         window.setTimeout(() => {
           fillCourseDetails();
-          setApplicationType("수업신청");
+          setApplicationType("시험접수");
           setStep(1);
         }, 0);
       });
@@ -228,7 +228,7 @@
         setStep(3);
       });
 
-      setApplicationType(params.get("type") || "수업신청");
+      setApplicationType(params.get("type") || "시험접수");
       if (params.get("courseGroup")) courseGroup.value = params.get("courseGroup");
       fillCourseDetails();
       if (params.get("courseDetail")) courseDetail.value = params.get("courseDetail");

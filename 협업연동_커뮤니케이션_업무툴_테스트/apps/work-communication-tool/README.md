@@ -4,6 +4,18 @@
 
 ## 실행
 
+### Windows에서 바로 실행
+
+상위 폴더의 `바로실행.bat` 파일을 더블클릭합니다.
+
+브라우저에서 아래 주소를 엽니다.
+
+```text
+http://localhost:4173
+```
+
+### 터미널에서 실행
+
 ```bash
 npm start
 ```
@@ -21,6 +33,12 @@ SQLite DB는 앱 실행 시 자동 생성됩니다.
 ```text
 apps/work-communication-tool/data/work_communication.db
 ```
+
+## 실행 조건
+
+- Node.js 24 이상
+- 별도 npm 패키지 설치 없음
+- SQLite DB는 Node.js 내장 `node:sqlite`를 사용합니다.
 
 ## 구현 범위
 
