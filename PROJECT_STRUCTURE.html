@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>신봄 업무산출물 — 폴더 구조 분석</title>
+  <style>
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --primary: #4f46e5;
+      --primary-light: #eef2ff;
+      --accent: #0ea5e9;
+      --accent-light: #e0f2fe;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --text-faint: #94a3b8;
+      --code-bg: #f1f5f9;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -1px rgba(0,0,0,.04);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    /* ── Layout ── */
+    .sidebar {
+      position: fixed; left: 0; top: 0; bottom: 0;
+      width: 240px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 100;
+    }
+
+    .sidebar-title {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      color: var(--text-faint); text-transform: uppercase;
+      padding: 0 20px 12px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 6px 20px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      border-left: 3px solid transparent;
+      transition: all .15s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      color: var(--primary);
+      background: var(--primary-light);
+      border-left-color: var(--primary);
+    }
+
+    .main {
+      margin-left: 240px;
+      padding: 40px 48px;
+      max-width: 1040px;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-header h1 {
+      font-size: 26px; font-weight: 800; color: var(--text);
+      margin-bottom: 8px;
+    }
+    .meta-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+    .meta-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      font-size: 12px; color: var(--text-muted);
+    }
+    .meta-badge a { color: var(--primary); text-decoration: none; }
+
+    /* ── Section ── */
+    section { margin-bottom: 56px; }
+    section h2 {
+      font-size: 18px; font-weight: 700;
+      color: var(--text); margin-bottom: 16px;
+      padding-bottom: 8px; border-bottom: 2px solid var(--primary-light);
+      display: flex; align-items: center; gap: 8px;
+    }
+    section h2 .num {
+      background: var(--primary); color: #fff;
+      border-radius: 6px; padding: 2px 8px;
+      font-size: 12px; font-weight: 700;
+    }
+
+    /* ── Overview tree ── */
+    .tree-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: var(--shadow);
+    }
+    .tree-row {
+      display: flex; align-items: flex-start;
+      gap: 0; padding: 5px 0;
+      font-size: 13px;
+    }
+    .tree-row .icon { margin-right: 8px; font-size: 14px; flex-shrink: 0; }
+    .tree-row .name { font-weight: 600; color: var(--text); flex-shrink: 0; }
+    .tree-row .desc { color: var(--text-muted); margin-left: 12px; font-size: 12px; }
+    .tree-row.sub { padding-left: 24px; }
+    .tree-row.sub .name { font-weight: 400; color: var(--text-muted); }
+
+    /* ── Folder card ── */
+    .folder-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    .folder-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .folder-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .folder-title { font-size: 15px; font-weight: 700; color: var(--text); }
+    .folder-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .tags { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+    .tag {
+      font-size: 11px; font-weight: 600; border-radius: 4px;
+      padding: 2px 8px; letter-spacing: .02em;
+    }
+    .tag-html  { background: var(--warning-light); color: #92400e; }
+    .tag-md    { background: var(--accent-light);  color: #075985; }
+    .tag-node  { background: var(--success-light); color: #065f46; }
+    .tag-next  { background: #f3e8ff; color: #6b21a8; }
+    .tag-docx  { background: #fce7f3; color: #9d174d; }
+    .tag-git   { background: var(--code-bg); color: #374151; }
+    .tag-zip   { background: #fff7ed; color: #9a3412; }
+
+    .folder-body { padding: 16px 20px; }
+
+    /* ── File tree inside card ── */
+    .ftree { font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; }
+    .ftree-row {
+      display: flex; align-items: baseline; gap: 0;
+      padding: 2px 0; white-space: pre;
+    }
+    .ftree-prefix { color: var(--text-faint); flex-shrink: 0; }
+    .ftree-name { color: var(--text); font-weight: 500; flex-shrink: 0; }
+    .ftree-name.is-dir { color: var(--primary); }
+    .ftree-name.is-file { color: #374151; }
+    .ftree-name.is-special { color: var(--success); }
+    .ftree-comment { color: var(--text-faint); font-size: 11px; margin-left: 10px; font-family: 'Apple SD Gothic Neo', sans-serif; font-weight: 400; white-space: nowrap; }
+
+    /* ── Table ── */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      background: var(--code-bg); text-align: left;
+      padding: 8px 12px; font-weight: 600; color: var(--text-muted);
+      font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg); }
+    td code {
+      background: var(--code-bg); border-radius: 4px;
+      padding: 1px 6px; font-size: 12px; color: var(--primary);
+      font-family: 'Consolas', monospace;
+    }
+
+    /* ── Stack summary ── */
+    .stack-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .stack-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+    .stack-item .stack-label {
+      font-size: 11px; font-weight: 700; color: var(--text-faint);
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px;
+    }
+    .stack-item .stack-value {
+      font-size: 13px; font-weight: 600; color: var(--text);
+    }
+
+    /* ── Tips ── */
+    .tips-list { display: flex; flex-direction: column; gap: 10px; }
+    .tip {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 16px;
+      box-shadow: var(--shadow);
+    }
+    .tip-emoji { font-size: 20px; flex-shrink: 0; }
+    .tip-content .tip-purpose { font-size: 13px; font-weight: 600; color: var(--text); }
+    .tip-content .tip-path { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-family: 'Consolas', monospace; }
+
+    /* ── scrollbar ── */
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar Nav -->
+<nav class="sidebar">
+  <div class="sidebar-title">목차</div>
+  <a href="#overview">전체 구조 개요</a>
+  <a href="#root-files">루트 공통 파일</a>
+  <a href="#s1">1. ITT 홈페이지 분석안</a>
+  <a href="#s2">2. UI템플릿 생성기</a>
+  <a href="#s3">3. codex 매뉴얼</a>
+  <a href="#s4">4. codex 문서작성방안</a>
+  <a href="#s5">5. codex 자동승인모드</a>
+  <a href="#s6">6. downloads</a>
+  <a href="#s7">7. hutechC Rules-Layout</a>
+  <a href="#s8">8. 거래처아웃콜</a>
+  <a href="#s9">9. 내부 관리망분석</a>
+  <a href="#s10">10. 디자인시스템</a>
+  <a href="#s11">11. 랜딩페이지</a>
+  <a href="#s12">12. 마크다운에디터</a>
+  <a href="#s13">13. 스킬 체크리스트</a>
+  <a href="#s14">14. 업무 추적 웹프로그램</a>
+  <a href="#s15">15. 타임즈 테솔 분석</a>
+  <a href="#s16">16. 테솔 ITT FAQ</a>
+  <a href="#s17">17. 협업 커뮤니케이션 툴</a>
+  <a href="#s18">18. 휴텍씨 시험 평가 사이트</a>
+  <a href="#stack">기술 스택 요약</a>
+  <a href="#tips">폴더별 활용 팁</a>
+</nav>
+
+<!-- Main Content -->
+<main class="main">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>신봄 업무산출물 — 폴더 구조 분석</h1>
+    <p style="color:var(--text-muted); font-size:13px;">나중에 작업할 때 참고하기 좋게 정리한 전체 구조 문서</p>
+    <div class="meta-row">
+      <span class="meta-badge">📅 2026-06-21</span>
+      <span class="meta-badge">🔗 <a href="https://github.com/hu-tec/work-deliverables" target="_blank">github.com/hu-tec/work-deliverables</a></span>
+      <span class="meta-badge">📁 18개 주요 폴더</span>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <section id="overview">
+    <h2>전체 구조 개요</h2>
+    <div class="tree-card">
+      <div class="tree-row"><span class="icon">📂</span><span class="name">신봄_업무산출물(0605)/</span></div>
+      <div class="tree-row sub"><span class="icon">📄</span><span class="name">[루트 파일들]</span><span class="desc">← 인덱스 · 가이드 · 인수인계서</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">ITT_홈페이지 분석안/</span><span class="desc">← ITT 시험 홈페이지 분석</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">UI템플릿_생성기/</span><span class="desc">← HTML/CSS/JS UI 템플릿 생성 도구</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">codex_매뉴얼/</span><span class="desc">← Codex 사용 매뉴얼</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">codex_문서작성방안/</span><span class="desc">← Codex 문서 구조 방법론</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">codex_자동승인모드_방법/</span><span class="desc">← Codex 자동승인 설정 가이드</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">downloads/</span><span class="desc">← 카테고리별 산출물 ZIP 패키지</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">hutechC Rules-Layout/</span><span class="desc">← HutechC 레이아웃 규칙 데모</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">거래처아웃콜/</span><span class="desc">← 거래처 아웃콜 BO 개선안</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">내부 관리망분석/</span><span class="desc">← 내부 업무 플랫폼 분석</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">디자인시스템/</span><span class="desc">← 관리자/사용자 통합 디자인 시스템 ★</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">랜딩페이지/</span><span class="desc">← 협회·교육·시험 3종 랜딩페이지 ★</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">마크다운에디터_내부용/</span><span class="desc">← 내부용 마크다운 에디터 웹앱</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">보유 스킬 및 상세 체크리스트_고도화/</span><span class="desc">← 스킬 체크리스트 고도화</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">업무_추적_댓글_웹프로그램/</span><span class="desc">← 업무 추적·댓글 웹 애플리케이션</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">타임즈_테솔_분석자료/</span><span class="desc">← 타임즈·테솔 사이트 분석</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">테솔_ITT_FAQ분석/</span><span class="desc">← TESOL / ITT FAQ 분석</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">협업연동_커뮤니케이션_업무툴_테스트/</span><span class="desc">← 협업 커뮤니케이션 도구 테스트</span></div>
+      <div class="tree-row sub"><span class="icon">📁</span><span class="name">휴텍씨_시험_평가_사이트/</span><span class="desc">← 시험 평가 플랫폼 전체 ★ 가장 큰 폴더</span></div>
+    </div>
+  </section>
+
+  <!-- Root files -->
+  <section id="root-files">
+    <h2>루트 공통 파일</h2>
+    <div class="folder-card">
+      <div class="folder-body">
+        <table>
+          <thead><tr><th>파일</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td><code>index.html</code></td><td>전체 산출물 목록 인덱스 페이지</td></tr>
+            <tr><td><code>analyze.html</code></td><td>분석용 HTML</td></tr>
+            <tr><td><code>sites.md</code></td><td>사이트 목록 정리</td></tr>
+            <tr><td><code>PUSH_WORKFLOW.md</code></td><td>Git push 워크플로우 가이드</td></tr>
+            <tr><td><code>다른페이지_제작_자료전달_가이드.md</code></td><td>페이지 제작 시 자료 전달 방법</td></tr>
+            <tr><td><code>휴텍씨 업무 인수인계서.md / .html</code></td><td>업무 인수인계 문서 (두 포맷)</td></tr>
+            <tr><td><code>.github/workflows/static.yml</code></td><td>GitHub Pages 자동 배포 워크플로우</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <h2><span class="num">1</span> ITT_홈페이지 분석안</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#fff7ed;">📊</div>
+        <div>
+          <div class="folder-title">ITT_홈페이지 분석안</div>
+          <div class="folder-subtitle">ITT 시험 홈페이지 및 아이엠(IAM) 분석 산출물</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-html">HTML</span>
+          <span class="tag tag-md">MD</span>
+          <span class="tag tag-docx">DOCX</span>
+        </div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">html_sample/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">association-home.html</span><span class="ftree-comment">협회 메인 샘플</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">exam-home.html</span><span class="ftree-comment">시험 홈 샘플</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">exam-detail-ai.html</span><span class="ftree-comment">AI 시험 상세 샘플</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-file">styles.css</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">itt-ai-시험홈페이지-신규분석자료.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">mandara.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">시험홈피,아이엠분석.docx</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-file">인공지능 언어전문가 및 기술전문가 관리운영규정_20260521.docx</span></div>
+        </div>
+        <p style="margin-top:12px; font-size:12px; color:var(--text-muted);">HTML 프로토타입 + 분석 MD + 원본 DOCX 3종 세트 구조</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <h2><span class="num">2</span> UI템플릿_생성기</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#f0fdf4;">🎨</div>
+        <div>
+          <div class="folder-title">UI템플릿_생성기</div>
+          <div class="folder-subtitle">프롬프트 기반 UI 템플릿 자동 생성 도구</div>
+        </div>
+        <div class="tags"><span class="tag tag-html">HTML</span><span class="tag tag-md">MD</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">index.html</span><span class="ftree-comment">메인 생성기 UI</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">css/</span><span class="ftree-comment">style.css</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">js/</span><span class="ftree-comment">main.js</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-file">PROMPT.md</span><span class="ftree-comment">생성에 사용된 프롬프트 문서</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <h2><span class="num">3</span> codex_매뉴얼</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#eff6ff;">📖</div>
+        <div>
+          <div class="folder-title">codex_매뉴얼</div>
+          <div class="folder-subtitle">Windows + WSL 환경에서 Codex 사용하는 방법</div>
+        </div>
+        <div class="tags"><span class="tag tag-html">HTML</span><span class="tag tag-md">MD</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">index.html</span><span class="ftree-comment">렌더링된 매뉴얼 뷰어</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-file">windows_wsl_codex_manual.md</span><span class="ftree-comment">설치·설정 절차 문서</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <h2><span class="num">4</span> codex_문서작성방안</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#faf5ff;">📝</div>
+        <div>
+          <div class="folder-title">codex_문서작성방안</div>
+          <div class="folder-subtitle">Codex가 문서를 작성할 때의 구조·규칙·컨텍스트 방법론. 멀티패키지 프로젝트 구조 템플릿.</div>
+        </div>
+        <div class="tags"><span class="tag tag-md">MD</span><span class="tag tag-html">HTML</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">index.md / index.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">agent.md / context.md / error.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">handoff.md / prompt.md / rules.md / skills.md / todo.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">docs/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">decision.md / design.md / glossary.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">packages/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-dir">api/</span><span class="ftree-comment">API 패키지 문서 (design, index, rules)</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-dir">ui/</span><span class="ftree-comment">UI 패키지 문서 (design, index, rules)</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">sites/brand-a/</span><span class="ftree-comment">브랜드-A 사이트 문서 세트 (6개 MD)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <h2><span class="num">5</span> codex_자동승인모드_방법</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#f0fdf4;">⚡</div>
+        <div>
+          <div class="folder-title">codex_자동승인모드_방법</div>
+          <div class="folder-subtitle">Codex를 현재 폴더로 제한하여 자동 승인 모드로 운영하는 방법</div>
+        </div>
+        <div class="tags"><span class="tag tag-md">MD</span><span class="tag tag-html">HTML</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">codex_자동승인_현재폴더_제한_설정.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-file">index.html</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="s6">
+    <h2><span class="num">6</span> downloads</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#fff7ed;">📦</div>
+        <div>
+          <div class="folder-title">downloads</div>
+          <div class="folder-subtitle">전체 산출물을 카테고리별로 묶은 ZIP 다운로드 패키지</div>
+        </div>
+        <div class="tags"><span class="tag tag-zip">ZIP</span><span class="tag tag-md">MD</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">00_그룹별_다운로드_목록.md</span><span class="ftree-comment">패키지 목록 설명</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">개발_운영_매뉴얼.zip</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">관리자_BO_업무화면.zip</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">교육_시험_콘텐츠_자료.zip</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">기획_전략_자료.zip</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">내부_업무도구_자동화.zip</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">디자인시스템_재사용_UI.zip</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">보관_원본_자료.zip</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">분석.zip</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-file">사용자_랜딩_신청_화면.zip</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="s7">
+    <h2><span class="num">7</span> hutechC Rules-Layout</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#eff6ff;">📐</div>
+        <div>
+          <div class="folder-title">hutechC Rules-Layout · 용도별 축</div>
+          <div class="folder-subtitle">HutechC 레이아웃 규칙 시연 페이지</div>
+        </div>
+        <div class="tags"><span class="tag tag-html">HTML</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-file">rules-layout-demo.html</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section id="s8">
+    <h2><span class="num">8</span> 거래처아웃콜</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#fef2f2;">📞</div>
+        <div>
+          <div class="folder-title">거래처아웃콜</div>
+          <div class="folder-subtitle">거래처 아웃콜 BO 화면 개선 프로토타입</div>
+        </div>
+        <div class="tags"><span class="tag tag-html">HTML</span><span class="tag tag-md">MD</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">index.html</span><span class="ftree-comment">개선된 아웃콜 화면</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">BO_거래처아웃콜_index_개선_프롬프트.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">HutechC 사내 Studio.html</span><span class="ftree-comment">사내 Studio 스냅샷</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">HutechC 사내 Studio_files/</span><span class="ftree-comment">JS/CSS 에셋</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section id="s9">
+    <h2><span class="num">9</span> 내부 관리망분석</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#f0fdfa;">🔍</div>
+        <div>
+          <div class="folder-title">내부 관리망분석</div>
+          <div class="folder-subtitle">내부 업무 플랫폼(HutechC Studio, 타임즈 인트라넷, 업무 스튜디오) 분석</div>
+        </div>
+        <div class="tags"><span class="tag tag-md">MD</span><span class="tag tag-html">HTML</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">사이드바_개선안/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">01-사이드바-메뉴-단순화-가이드.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">02-디자인-개선안(border-radius).md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-file">before-after.html</span><span class="ftree-comment">비포/애프터 시각 비교</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">업무플랫폼 분석/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-file">01-hutechc-internal-studio-analysis.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-file">02-timesmedia-intranet-analysis.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-file">03-work-studio-analysis.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    └── </span><span class="ftree-name is-file">04-integrated-platform-strategy.md</span><span class="ftree-comment">통합 전략 방향</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section id="s10">
+    <h2><span class="num">10</span> 디자인시스템</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#faf5ff;">🎨</div>
+        <div>
+          <div class="folder-title">디자인시스템</div>
+          <div class="folder-subtitle">관리자(BO) · 사용자 화면 통합 디자인 시스템 — 별도 git 저장소 포함, 가장 복잡한 폴더</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-html">HTML</span>
+          <span class="tag tag-md">MD</span>
+          <span class="tag tag-git">git</span>
+        </div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">index.html / common.js / layout.css</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">dense-drawer.css / dense-drawer.js</span><span class="ftree-comment">밀도강화 드로어 컴포넌트</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">bo-index-sample.html / sidebar_depth_sample.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">docs/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-dir">DB_정리/</span><span class="ftree-comment">DB 구조 문서 01~05 + 검증</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-dir">시험사이트_분석/</span><span class="ftree-comment">Figma 사이트맵 2024·2025</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-dir">재사용_디자인_프롬프트/</span><span class="ftree-comment">관리자·사용자 재사용 UI 프롬프트</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">docs_rendered/</span><span class="ftree-comment">MD → HTML 렌더링 결과 (15개 파일)</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">design-system.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">reusable-bo-admin-layout.html / reusable-bo-table-layout.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">reusable-user-design-system.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-file">figma-2024-sitemap.html / figma-2025-sitemap.html ...</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">form/</span><span class="ftree-comment">신청서 · 증명서 재발급 신청 폼</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">resource/DB_v2_HTML/</span><span class="ftree-comment">관리자 패널 HTML 10개 화면</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">DB페이지_v2(이거사용).html</span><span class="ftree-comment">★ 핵심 파일</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-file">결제관리 / 관리자패널_전체회원 / 시험관리 / 통계 ...</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">table_design/</span><span class="ftree-comment">테이블 디자인 CSS/JS + 샘플</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">notation_tools/</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section id="s11">
+    <h2><span class="num">11</span> 랜딩페이지</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#fff7ed;">🌐</div>
+        <div>
+          <div class="folder-title">랜딩페이지</div>
+          <div class="folder-subtitle">협회·교육·시험 3종 랜딩페이지 — 각각 독립 git 저장소</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-html">HTML</span>
+          <span class="tag tag-git">git ×4</span>
+        </div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">docs/</span><span class="ftree-comment">site-layout-analysis.md / redesign-guideline.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">기초_레이아웃/</span><span class="ftree-comment">[git] 공통 레이아웃 기반</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">index.html / styles.css / data.js / site.js</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">about / apply / courses / cert-intro / community ...</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-dir">times-assets/</span><span class="ftree-comment">파트너 기관 로고 이미지 16종</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">랜딩페이지3종/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-dir">교육/</span><span class="ftree-comment">[git] 교육 특화 (apply-benefits, apply-refund 등 추가)</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-dir">시험/</span><span class="ftree-comment">[git] 시험 특화</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    └── </span><span class="ftree-name is-dir">협회/</span><span class="ftree-comment">[git] 협회 특화 (ai-ethics, aite-prompt, association 등)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section id="s12">
+    <h2><span class="num">12</span> 마크다운에디터_내부용</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#f0fdf4;">✏️</div>
+        <div>
+          <div class="folder-title">마크다운에디터_내부용</div>
+          <div class="folder-subtitle">팀 내부용 마크다운 에디터 — Node.js 백엔드 + 브라우저 프런트엔드</div>
+        </div>
+        <div class="tags"><span class="tag tag-node">Node.js</span><span class="tag tag-html">HTML</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-special">server.js</span><span class="ftree-comment">Express 서버 (인증·파일 관리 API)</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">package.json</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-special">바로실행.bat</span><span class="ftree-comment">윈도우 원클릭 실행 스크립트</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">markdown-to-word.html</span><span class="ftree-comment">MD → Word 변환 도구</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">public/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">index.html</span><span class="ftree-comment">에디터 메인 화면</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">login.html / signup.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-file">app.js / auth.js / styles.css</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">data/</span><span class="ftree-comment">app-db.json (사용자·문서 데이터)</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">uploads/attachments/</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section id="s13">
+    <h2><span class="num">13</span> 보유 스킬 및 상세 체크리스트_고도화</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#fffbeb;">✅</div>
+        <div>
+          <div class="folder-title">보유 스킬 및 상세 체크리스트_고도화</div>
+          <div class="folder-subtitle">보유 스킬 체크리스트 v2 고도화 산출물</div>
+        </div>
+        <div class="tags"><span class="tag tag-html">HTML</span><span class="tag tag-md">MD</span><span class="tag tag-docx">DOCX</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">interview.html / interview_ui.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">skill-checklist-restructure_ver_2.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">스킬체크리스트_ver2.docx</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">origin/</span><span class="ftree-comment">skill-checklist-restructure.md (v1 원본)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 -->
+  <section id="s14">
+    <h2><span class="num">14</span> 업무_추적_댓글_웹프로그램</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#f0fdf4;">💬</div>
+        <div>
+          <div class="folder-title">업무_추적_댓글_웹프로그램</div>
+          <div class="folder-subtitle">업무 항목별 댓글·추적 기능을 가진 내부 웹 프로그램 (SQLite)</div>
+        </div>
+        <div class="tags"><span class="tag tag-node">Node.js</span><span class="tag tag-html">HTML</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">src/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-special">server.js</span><span class="ftree-comment">Express + SQLite</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">package.json</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">public/</span><span class="ftree-comment">index.html / app.js / styles.css</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">data/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-special">tracker.db</span><span class="ftree-comment">SQLite 데이터베이스</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">docs/</span><span class="ftree-comment">convention.md / 01-plan / 02-design</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">test/</span><span class="ftree-comment">server.test.js</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 -->
+  <section id="s15">
+    <h2><span class="num">15</span> 타임즈_테솔_분석자료</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#eff6ff;">📋</div>
+        <div>
+          <div class="folder-title">타임즈_테솔_분석자료</div>
+          <div class="folder-subtitle">Times TESOL 사이트 분석 및 통합 방향</div>
+        </div>
+        <div class="tags"><span class="tag tag-md">MD</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">site-analysis-imweb.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">site-analysis-tesol-v3.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">site-analysis-timestesol-com.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-file">integration-direction.md</span><span class="ftree-comment">통합 방향 제안</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 -->
+  <section id="s16">
+    <h2><span class="num">16</span> 테솔_ITT_FAQ분석</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#fef9c3;">❓</div>
+        <div>
+          <div class="folder-title">테솔_ITT_FAQ분석</div>
+          <div class="folder-subtitle">TESOL / ITT 서비스별 예상 FAQ 분석</div>
+        </div>
+        <div class="tags"><span class="tag tag-md">MD</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">times-tesol-faq.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">times-translation-faq.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">itt-faq.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-file">itt-ai-expected-faq.md</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 -->
+  <section id="s17">
+    <h2><span class="num">17</span> 협업연동_커뮤니케이션_업무툴_테스트</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#f0fdf4;">🤝</div>
+        <div>
+          <div class="folder-title">협업연동_커뮤니케이션_업무툴_테스트</div>
+          <div class="folder-subtitle">협업·커뮤니케이션 업무 도구 프로토타입 테스트</div>
+        </div>
+        <div class="tags"><span class="tag tag-html">HTML</span><span class="tag tag-node">Node.js</span></div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">index.html / index2.html / index_detail_panel.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-special">바로실행.bat</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-file">현업연동_커뮤니케이션_업무툴_구현프롬프트.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">apps/work-communication-tool/</span><span class="ftree-comment">Node.js 앱 (public / src / data)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18 -->
+  <section id="s18">
+    <h2><span class="num">18</span> 휴텍씨_시험_평가_사이트</h2>
+    <div class="folder-card">
+      <div class="folder-header">
+        <div class="folder-icon" style="background:#faf5ff;">🏛️</div>
+        <div>
+          <div class="folder-title">휴텍씨_시험_평가_사이트</div>
+          <div class="folder-subtitle">가장 규모가 큰 폴더 — 시험 평가 플랫폼 전 버전 및 분석 자료 포함</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-next">Next.js</span>
+          <span class="tag tag-git">git ×다수</span>
+          <span class="tag tag-md">MD</span>
+        </div>
+      </div>
+      <div class="folder-body">
+        <div class="ftree">
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">hutechc_app-main/</span><span class="ftree-comment">휴텍씨 기존 홈페이지 클론 (Next.js 14, TypeScript, Tailwind)</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-dir">app/ / components/ / lib/ / docs/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">hutechc_design_resource/</span><span class="ftree-comment">[git] 시험 플랫폼 이미지 리소스</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-dir">2024/</span><span class="ftree-comment">결제 / 관리자 / 로그인 / 마이페이지 / 채점 / 출제 ...</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-dir">2025/</span><span class="ftree-comment">공통_에디터 / 관리자 / 응시생 / 전문가 / 채점 / 출제 ...</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-dir">바이브/</span><span class="ftree-comment">AI분석 / 검증 / 시험관리 / 시험페이지 ...</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">hutechc_test_for_pdf/</span><span class="ftree-comment">PDF 출력 테스트 Next.js (3버전)</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-dir">2024/</span><span class="ftree-comment">[git]</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-dir">2025/</span><span class="ftree-comment">[git] ★ 최신 버전</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-dir">vibecoding/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">├── </span><span class="ftree-name is-dir">시험_홈페이지_분석/</span><span class="ftree-comment">분석 MD 9종 + HTML 2종 + DOCX 8종</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">2024_figma_사이트맵_기능정의.md</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   ├── </span><span class="ftree-name is-file">시험플랫폼_레이아웃_통합도.html</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">│   └── </span><span class="ftree-name is-dir">ai_docs/ / figma_pdf/ / word_docx/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">└── </span><span class="ftree-name is-dir">예전작업/</span><span class="ftree-comment">이전 생성 버전 아카이브</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-dir">시험_사이트_1차생성/</span><span class="ftree-comment">[git] Next.js 1차</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-dir">시험_사이트_2차생성/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-dir">시험_사이트_3차생성/</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    ├── </span><span class="ftree-name is-dir">시험_사이트_4차생성/</span><span class="ftree-comment">HTML 단독 버전</span></div>
+          <div class="ftree-row"><span class="ftree-prefix">    └── </span><span class="ftree-name is-dir">시험홈페이지_통합_구현/</span><span class="ftree-comment">[git] Next.js 통합 최종본</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section id="stack">
+    <h2>기술 스택 요약</h2>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="stack-label">정적 웹</div>
+        <div class="stack-value">HTML + CSS + Vanilla JS</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">프레임워크</div>
+        <div class="stack-value">Next.js 14 (TypeScript + Tailwind CSS)</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">백엔드 도구</div>
+        <div class="stack-value">Node.js + Express</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">데이터 저장</div>
+        <div class="stack-value">SQLite · JSON</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">배포</div>
+        <div class="stack-value">GitHub Pages (static.yml)</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">문서 형식</div>
+        <div class="stack-value">Markdown · Word (DOCX) · HTML 렌더링</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">AI 도구</div>
+        <div class="stack-value">Codex · Claude Code · Vibe Coding</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tips -->
+  <section id="tips">
+    <h2>폴더별 활용 팁</h2>
+    <div class="tips-list">
+      <div class="tip">
+        <div class="tip-emoji">🖥️</div>
+        <div class="tip-content">
+          <div class="tip-purpose">관리자·사용자 화면 신규 제작할 때</div>
+          <div class="tip-path">디자인시스템/docs_rendered/ → 원하는 컴포넌트 HTML 참고</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-emoji">🌐</div>
+        <div class="tip-content">
+          <div class="tip-purpose">새 랜딩페이지 작업 시 기반으로 사용</div>
+          <div class="tip-path">랜딩페이지/기초_레이아웃/ → index.html + styles.css 복사</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-emoji">🏛️</div>
+        <div class="tip-content">
+          <div class="tip-purpose">최신 시험 플랫폼 Next.js 개발</div>
+          <div class="tip-path">휴텍씨_시험_평가_사이트/hutechc_test_for_pdf/2025/</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-emoji">📝</div>
+        <div class="tip-content">
+          <div class="tip-purpose">Codex에 새 작업 지시할 때 문서 구조 참고</div>
+          <div class="tip-path">codex_문서작성방안/ → agent.md / rules.md / context.md</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-emoji">📦</div>
+        <div class="tip-content">
+          <div class="tip-purpose">전체 산출물 ZIP 다운로드 목록</div>
+          <div class="tip-path">downloads/00_그룹별_다운로드_목록.md</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-emoji">✏️</div>
+        <div class="tip-content">
+          <div class="tip-purpose">마크다운 에디터 로컬 서버 기동</div>
+          <div class="tip-path">마크다운에디터_내부용/바로실행.bat — 더블클릭으로 실행</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-emoji">💬</div>
+        <div class="tip-content">
+          <div class="tip-purpose">업무 추적 시스템 (SQLite DB 포함)</div>
+          <div class="tip-path">업무_추적_댓글_웹프로그램/src/server.js</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:60px;"></div>
+</main>
+
+<script>
+  // Sidebar active link highlight on scroll
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const links = document.querySelectorAll('.sidebar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
