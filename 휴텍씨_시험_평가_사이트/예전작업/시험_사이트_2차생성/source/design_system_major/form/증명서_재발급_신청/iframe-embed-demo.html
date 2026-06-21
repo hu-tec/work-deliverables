@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>iframe 신청서 삽입 데모</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #f4f5f7;
+        color: #111827;
+        font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      }
+
+      .page {
+        width: min(100%, 1040px);
+        margin: 0 auto;
+        padding: 32px 16px 56px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 26px;
+        line-height: 1.3;
+      }
+
+      p {
+        margin: 0;
+        color: #4b5563;
+        line-height: 1.6;
+      }
+
+      .panel {
+        margin: 24px 0 18px;
+        padding: 18px;
+        border: 1px solid rgb(0 0 0 / 0.1);
+        border-radius: 12px;
+        background: #ffffff;
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        color: #374151;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      select,
+      input {
+        width: 100%;
+        height: 40px;
+        border: 1px solid rgb(0 0 0 / 0.14);
+        border-radius: 7px;
+        padding: 0 11px;
+        font: inherit;
+        font-size: 14px;
+      }
+
+      .url-box {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #f3f4f6;
+        color: #374151;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+        overflow-wrap: anywhere;
+      }
+
+      iframe {
+        width: 100%;
+        min-height: 760px;
+        border: 0;
+        border-radius: 12px;
+        background: #ffffff;
+      }
+
+      .log {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #111827;
+        color: #d1d5db;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+      }
+
+      @media (max-width: 760px) {
+        .controls {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <h1>iframe 신청서 삽입 데모</h1>
+      <p>
+        부모 페이지는 iframe 주소만 바꿉니다. 신청서 내부는 주소에 포함된
+        `form`, `theme`, `api` 값을 읽어서 신청서 종류, 색상, 제출 API를 결정합니다.
+      </p>
+
+      <section class="panel">
+        <div class="controls">
+          <label>
+            신청서 종류
+            <select id="formType">
+              <option value="reissue">교육 수강/수료 확인서 및 제휴 증명서 재발급 신청</option>
+              <option value="course">인터넷접수(교육 과정 신청)</option>
+            </select>
+          </label>
+
+          <label>
+            색상
+            <select id="theme">
+              <option value="default">기본 레드</option>
+              <option value="neutral">뉴트럴</option>
+              <option value="green">그린</option>
+              <option value="blue">블루</option>
+              <option value="teal">틸</option>
+              <option value="amber">앰버</option>
+              <option value="mono">모노</option>
+            </select>
+          </label>
+
+          <label>
+            API 주소
+            <input
+              id="api"
+              value="https://bmidcy9z17.execute-api.ap-northeast-2.amazonaws.com/api/tesol_expert_applications"
+            />
+          </label>
+        </div>
+
+        <div class="url-box" id="urlBox"></div>
+      </section>
+
+      <iframe id="applyFrame" title="신청서"></iframe>
+      <div class="log" id="log">iframe 이벤트 대기 중...</div>
+    </main>
+
+    <script>
+      const frame = document.querySelector("#applyFrame");
+      const formType = document.querySelector("#formType");
+      const theme = document.querySelector("#theme");
+      const api = document.querySelector("#api");
+      const urlBox = document.querySelector("#urlBox");
+      const log = document.querySelector("#log");
+
+      function buildUrl() {
+        const url = new URL("apply-form-example.html", window.location.href);
+        url.searchParams.set("form", formType.value);
+        url.searchParams.set("theme", theme.value);
+        url.searchParams.set("api", api.value);
+        return url.toString();
+      }
+
+      function refreshFrame() {
+        const url = buildUrl();
+        urlBox.textContent = url;
+        frame.src = url;
+      }
+
+      [formType, api].forEach((control) => {
+        control.addEventListener("change", refreshFrame);
+      });
+
+      theme.addEventListener("change", () => {
+        urlBox.textContent = buildUrl();
+        frame.contentWindow?.postMessage(
+          {
+            type: "apply-form:set-theme",
+            theme: theme.value
+          },
+          "*"
+        );
+      });
+
+      window.addEventListener("message", (event) => {
+        const data = event.data;
+        if (!data || typeof data !== "object") return;
+
+        if (data.type === "apply-form:height") {
+          frame.style.height = `${Math.max(data.height, 720)}px`;
+        }
+
+        if (data.type === "apply-form:submitted") {
+          const payload = data.payload;
+          log.textContent = JSON.stringify(
+            {
+              event: data.type,
+              form: data.form,
+              request_type: payload.request_type,
+              name: payload.applicant?.name,
+              course: payload.course,
+              payment: payload.payment
+            },
+            null,
+            2
+          );
+        }
+      });
+
+      refreshFrame();
+    </script>
+  </body>
+</html>

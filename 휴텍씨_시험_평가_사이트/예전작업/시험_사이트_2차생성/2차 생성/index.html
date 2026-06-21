@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITP 통합 시험 플랫폼</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav" aria-label="주요 메뉴">
+      <a class="brand" href="./public.html" aria-label="공개 홈페이지로 이동">
+        <span class="brand-mark">A</span>
+        <span><strong>AITP</strong><small>시험 운영 플랫폼</small></span>
+      </a>
+      <div class="role-switcher" aria-label="권한별 홈 이동">
+        <button type="button" data-role="examinee">수험생</button>
+        <button type="button" data-role="author">출제자</button>
+        <button type="button" data-role="grader">채점자</button>
+        <button type="button" data-role="admin">관리자</button>
+      </div>
+      <nav class="menu-list" id="roleMenu" aria-label="역할별 화면 목록"></nav>
+      <div class="side-footer">
+        <span class="status-dot"></span>
+        <span>DB_정리 기반 더미데이터 연결</span>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="top-bar">
+        <div>
+          <p class="eyebrow">2024 운영 플로우 + 2025 개편 UI + vibecoding 관리</p>
+          <h1 id="pageTitle">AITP 통합 시험 플랫폼</h1>
+        </div>
+        <div class="top-actions">
+          <label class="search-box">
+            <span>검색</span>
+            <input id="globalSearch" type="search" placeholder="회원, 시험, 상태 검색">
+          </label>
+          <button class="btn ghost" type="button" data-open-dialog="logout">로그아웃</button>
+          <a class="btn primary" href="./login.html">로그인</a>
+        </div>
+      </header>
+
+      <main id="app" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog id="confirmDialog" class="confirm-dialog">
+    <form method="dialog">
+      <h2 id="dialogTitle">확인</h2>
+      <p id="dialogMessage">처리하시겠습니까?</p>
+      <div class="dialog-actions">
+        <button class="btn ghost" value="cancel">취소</button>
+        <button class="btn primary" value="confirm">확인</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>

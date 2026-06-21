@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codex 문서 작성 방안 인덱스</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --surface-strong: #eef2f7;
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #d7dde7;
+      --accent: #2457c5;
+      --accent-soft: #e8eefc;
+      --root: #0f766e;
+      --local: #9a3412;
+      --doc: #4f46e5;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #172033;
+      color: #fff;
+      padding: 40px 24px 34px;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .lead {
+      color: #cbd5e1;
+      max-width: 820px;
+      font-size: 16px;
+    }
+
+    main {
+      padding: 28px 0 48px;
+    }
+
+    section {
+      margin: 0 0 24px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .summary {
+      border: 1px solid rgba(255, 255, 255, .24);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .summary strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 22px;
+    }
+
+    .summary span {
+      color: #dbeafe;
+      font-size: 13px;
+    }
+
+    .notice {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .note {
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .note p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 650;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge.root {
+      background: #ccfbf1;
+      color: var(--root);
+    }
+
+    .badge.local {
+      background: #ffedd5;
+      color: var(--local);
+    }
+
+    .badge.docs {
+      background: #e0e7ff;
+      color: var(--doc);
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .arrow {
+      color: var(--muted);
+    }
+
+    .tree {
+      margin: 0;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: #0f172a;
+      color: #dbeafe;
+      overflow: auto;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .download-panel {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 16px;
+      border: 1px solid #c7d7fe;
+      border-radius: var(--radius);
+      background: #eef3ff;
+    }
+
+    .download-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--accent);
+    }
+
+    .download-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px 14px;
+      margin-top: 14px;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .download-list a {
+      display: inline-block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 860px) {
+      .summary-grid,
+      .notice {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 18px;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .download-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .download-actions {
+        justify-content: flex-start;
+      }
+
+      .download-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Codex 문서 작성 방안</h1>
+      <p class="lead">AI 에이전트가 어떤 문서를 언제 읽어야 하는지, 각 파일이 어떤 역할을 하는지 빠르게 확인하는 인덱스 페이지입니다.</p>
+      <div class="summary-grid">
+        <div class="summary"><strong>25</strong><span>Markdown 문서</span></div>
+        <div class="summary"><strong>3</strong><span>문서 계층: Root, Docs, Local</span></div>
+        <div class="summary"><strong>SSOT</strong><span>전역 규칙은 루트에서 관리</span></div>
+        <div class="summary"><strong>Local</strong><span>하위 폴더는 차이점만 관리</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>Markdown 한 번에 다운로드</h2>
+      <div class="download-panel">
+        <div>
+          <h3>전체 Markdown 묶음</h3>
+          <p class="small">버튼을 누르면 이 폴더의 Markdown 문서 25개 다운로드가 한 번에 시작됩니다. 브라우저 설정에 따라 여러 파일 다운로드 허용 확인이 뜰 수 있습니다.</p>
+        </div>
+        <div class="download-actions">
+          <button class="button" type="button" id="downloadAllMd">MD 전체 다운로드</button>
+          <a class="button secondary" href="README.md" download>README만 다운로드</a>
+        </div>
+      </div>
+      <ul class="download-list" id="mdDownloadList"></ul>
+    </section>
+
+    <section>
+      <h2>핵심 사용 방식</h2>
+      <div class="notice">
+        <div class="note">
+          <h3>전역 문서</h3>
+          <p><code>agent.md</code>, <code>rules.md</code>, <code>prompt.md</code>는 모든 작업에 적용되는 기본 역할과 규칙입니다.</p>
+        </div>
+        <div class="note">
+          <h3>로컬 문서</h3>
+          <p><code>sites/</code>, <code>packages/</code> 아래 문서는 해당 폴더의 차이점, 상태, 설계만 기록합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>권장 읽기 순서</h2>
+      <div class="flow">
+        <span class="step">1. rules.md</span>
+        <span class="arrow">→</span>
+        <span class="step">2. agent.md</span>
+        <span class="arrow">→</span>
+        <span class="step">3. docs/design.md</span>
+        <span class="arrow">→</span>
+        <span class="step">4. local/index.md</span>
+        <span class="arrow">→</span>
+        <span class="step">5. local/rules.md</span>
+        <span class="arrow">→</span>
+        <span class="step">6. local/context.md</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>루트 문서 역할</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>파일</th>
+            <th>역할</th>
+            <th>언제 읽나</th>
+            <th>관리 원칙</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="README.md">README.md</a></td>
+            <td>전체 구조와 핵심 원칙을 설명하는 시작 문서</td>
+            <td>처음 구조를 파악할 때</td>
+            <td>전체 개요만 간결하게 유지</td>
+          </tr>
+          <tr>
+            <td><a href="index.md">index.md</a></td>
+            <td>작업 유형별로 어떤 문서를 읽을지 안내하는 문서 라우터</td>
+            <td>작업 시작 시</td>
+            <td>짧고 명확한 읽기 순서 유지</td>
+          </tr>
+          <tr>
+            <td><a href="agent.md">agent.md</a></td>
+            <td>에이전트의 역할, 책임, 금지사항, 의사결정 원칙 정의</td>
+            <td>항상</td>
+            <td>정체성과 행동 원칙만 유지</td>
+          </tr>
+          <tr>
+            <td><a href="prompt.md">prompt.md</a></td>
+            <td>작업 실행 절차, 질문 기준, 보고 형식 정의</td>
+            <td>작업 수행 방식이 필요할 때</td>
+            <td>실행 절차 중심으로 관리</td>
+          </tr>
+          <tr>
+            <td><a href="rules.md">rules.md</a></td>
+            <td>전역 규칙의 단일 진실 공급원</td>
+            <td>항상</td>
+            <td>보안, 데이터, Git 안전 규칙은 로컬에서 덮어쓰지 않음</td>
+          </tr>
+          <tr>
+            <td><a href="skills.md">skills.md</a></td>
+            <td>상황별 도구와 스킬 선택 기준 정의</td>
+            <td>작업 방식이나 도구 선택이 필요할 때</td>
+            <td>도구 목록보다 선택 기준을 우선</td>
+          </tr>
+          <tr>
+            <td><a href="context.md">context.md</a></td>
+            <td>워크스페이스의 현재 목표, 제약, 알려진 이슈 정리</td>
+            <td>현재 상태 파악 시</td>
+            <td>오래된 정보는 제거하고 최신 상태만 유지</td>
+          </tr>
+          <tr>
+            <td><a href="todo.md">todo.md</a></td>
+            <td>전체 작업 큐와 완료 기준 관리</td>
+            <td>진행 상황 확인 시</td>
+            <td>실행 가능한 체크리스트로 유지</td>
+          </tr>
+          <tr>
+            <td><a href="error.md">error.md</a></td>
+            <td>반복 오류, 원인, 해결책, 재발 방지 기록</td>
+            <td>오류 해결 또는 재발 방지 시</td>
+            <td>재발 가능한 오류만 기록</td>
+          </tr>
+          <tr>
+            <td><a href="handoff.md">handoff.md</a></td>
+            <td>세션 인계, 변경 파일, 다음 작업, 열린 질문 기록</td>
+            <td>세션 재개 또는 인계 시</td>
+            <td>다음 작업자가 바로 이어서 볼 수 있게 작성</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>설계 문서 역할</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>파일</th>
+            <th>역할</th>
+            <th>핵심 내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="docs/design.md">docs/design.md</a> <span class="badge docs">Docs</span></td>
+            <td>전체 아키텍처와 상속 우선순위 설명</td>
+            <td>Plan A + Plan B 융합 구조, 충돌 해결 기준</td>
+          </tr>
+          <tr>
+            <td><a href="docs/decision.md">docs/decision.md</a> <span class="badge docs">ADR</span></td>
+            <td>중요한 설계 결정 기록</td>
+            <td>결정 배경, 선택지, 채택 이유, 결과</td>
+          </tr>
+          <tr>
+            <td><a href="docs/glossary.md">docs/glossary.md</a> <span class="badge docs">용어</span></td>
+            <td>공통 용어 사전</td>
+            <td>Root, Local, SSOT, Override, Context, Handoff</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>로컬 문서 역할</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>위치</th>
+            <th>역할</th>
+            <th>사용 방식</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="sites/brand-a/index.md">sites/brand-a/index.md</a> <span class="badge local">Local</span></td>
+            <td>Brand A 폴더의 로컬 문서 라우터</td>
+            <td>이 폴더에서 작업할 때 먼저 읽음</td>
+          </tr>
+          <tr>
+            <td><a href="sites/brand-a/rules.md">sites/brand-a/rules.md</a> <span class="badge local">Local</span></td>
+            <td>브랜드별 허용 오버라이드와 추가 규칙</td>
+            <td>전역 규칙을 복사하지 않고 차이점만 기록</td>
+          </tr>
+          <tr>
+            <td><a href="sites/brand-a/context.md">sites/brand-a/context.md</a> <span class="badge local">Local</span></td>
+            <td>Brand A의 현재 목표, 상태, 제약</td>
+            <td>현재 작업 맥락 확인</td>
+          </tr>
+          <tr>
+            <td><a href="sites/brand-a/design.md">sites/brand-a/design.md</a> <span class="badge local">Local</span></td>
+            <td>Brand A의 UI와 콘텐츠 설계 기준</td>
+            <td>브랜드별 화면 또는 카피 작업 시 확인</td>
+          </tr>
+          <tr>
+            <td><a href="sites/brand-a/todo.md">sites/brand-a/todo.md</a> <span class="badge local">Local</span></td>
+            <td>Brand A의 작업 목록</td>
+            <td>폴더 단위 진행 상황 관리</td>
+          </tr>
+          <tr>
+            <td><a href="sites/brand-a/error.md">sites/brand-a/error.md</a> <span class="badge local">Local</span></td>
+            <td>Brand A에서 반복되는 오류 기록</td>
+            <td>동일한 실수 방지</td>
+          </tr>
+          <tr>
+            <td><a href="packages/ui/index.md">packages/ui/index.md</a> <span class="badge local">Local</span></td>
+            <td>UI 패키지 문서 라우터</td>
+            <td>공통 컴포넌트 작업 시 확인</td>
+          </tr>
+          <tr>
+            <td><a href="packages/api/index.md">packages/api/index.md</a> <span class="badge local">Local</span></td>
+            <td>API 패키지 문서 라우터</td>
+            <td>API, 인증, 데이터 변경 작업 시 확인</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>상속 구조</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>계층</th>
+            <th>문서</th>
+            <th>담당 역할</th>
+            <th>오버라이드 가능 여부</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge root">Root</span></td>
+            <td><code>rules.md</code></td>
+            <td>보안, 데이터, 파일 수정, Git 안전 규칙</td>
+            <td>불가 또는 제한적</td>
+          </tr>
+          <tr>
+            <td><span class="badge root">Root</span></td>
+            <td><code>agent.md</code>, <code>prompt.md</code></td>
+            <td>에이전트 역할과 작업 절차</td>
+            <td>일반적으로 불가</td>
+          </tr>
+          <tr>
+            <td><span class="badge docs">Docs</span></td>
+            <td><code>docs/design.md</code></td>
+            <td>전체 설계 원칙과 충돌 해결 기준</td>
+            <td>의사결정 기록 후 변경</td>
+          </tr>
+          <tr>
+            <td><span class="badge local">Local</span></td>
+            <td><code>sites/*/rules.md</code>, <code>packages/*/rules.md</code></td>
+            <td>도메인별 차이점과 허용된 오버라이드</td>
+            <td>브랜드 톤, UI 밀도, 네이밍 등 가능</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>폴더 구조</h2>
+      <pre class="tree">codex문서작성방안/
+├─ index.html
+├─ README.md
+├─ index.md
+├─ agent.md
+├─ prompt.md
+├─ rules.md
+├─ skills.md
+├─ context.md
+├─ todo.md
+├─ error.md
+├─ handoff.md
+├─ docs/
+│  ├─ design.md
+│  ├─ decision.md
+│  └─ glossary.md
+├─ sites/
+│  └─ brand-a/
+│     ├─ index.md
+│     ├─ rules.md
+│     ├─ context.md
+│     ├─ design.md
+│     ├─ todo.md
+│     └─ error.md
+└─ packages/
+   ├─ ui/
+   │  ├─ index.md
+   │  ├─ rules.md
+   │  └─ design.md
+   └─ api/
+      ├─ index.md
+      ├─ rules.md
+      └─ design.md</pre>
+      <p class="small">이 HTML 파일은 문서 역할 안내용입니다. 실제 규칙의 기준은 각 Markdown 파일입니다.</p>
+    </section>
+  </main>
+  <script>
+    const markdownFiles = [
+      "README.md",
+      "index.md",
+      "agent.md",
+      "prompt.md",
+      "rules.md",
+      "skills.md",
+      "context.md",
+      "todo.md",
+      "error.md",
+      "handoff.md",
+      "docs/design.md",
+      "docs/decision.md",
+      "docs/glossary.md",
+      "sites/brand-a/index.md",
+      "sites/brand-a/rules.md",
+      "sites/brand-a/context.md",
+      "sites/brand-a/design.md",
+      "sites/brand-a/todo.md",
+      "sites/brand-a/error.md",
+      "packages/ui/index.md",
+      "packages/ui/rules.md",
+      "packages/ui/design.md",
+      "packages/api/index.md",
+      "packages/api/rules.md",
+      "packages/api/design.md"
+    ];
+
+    const list = document.getElementById("mdDownloadList");
+    markdownFiles.forEach((path) => {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = path;
+      link.download = path.split("/").join("__");
+      link.textContent = path;
+      item.appendChild(link);
+      list.appendChild(item);
+    });
+
+    document.getElementById("downloadAllMd").addEventListener("click", () => {
+      markdownFiles.forEach((path, index) => {
+        window.setTimeout(() => {
+          const link = document.createElement("a");
+          link.href = path;
+          link.download = path.split("/").join("__");
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        }, index * 120);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>휴텍씨 디자인 시스템</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>휴텍씨 디자인 시스템</h1>
+<p>기준 파일: <code>index.html</code>, <code>layout.css</code>, <code>common.js</code></p>
+<p>이 문서는 현재 <code>index.html</code>에 구현된 디자인 시스템 화면을 기준으로, 이후 시험/번역/서비스 홈페이지를 만들 때 반복 적용할 공통 규칙을 정리한 문서입니다.</p>
+<h2>1. 시스템 원칙</h2>
+<h3>1.1 공통 틀 우선</h3>
+<p>홈페이지와 업무 화면은 개별 페이지를 바로 만들기보다 다음 공통 틀을 먼저 고정합니다.</p>
+<ul>
+<li>Header: 로고, 주요 메뉴, 사용자/알림 영역</li>
+<li>Sidebar 또는 Rail: 업무별 보조 탐색</li>
+<li>Content: 검색, 필터, 목록, 상세, 작성 영역</li>
+<li>Footer: 약관, 개인정보, SNS, 저작권</li>
+</ul>
+<p>개별 홈페이지는 이 틀 위에 서비스 소개, 기능, 실적, 전문가 신청, 견적 의뢰, FAQ, 회사 소개를 조합합니다.</p>
+<h3>1.2 공통과 개별 분리</h3>
+<p>공통 UI와 업무 콘텐츠를 분리합니다.</p>
+<ul>
+<li>공통 UI: 버튼, 입력, 탭, 칩, 상태 pill, 테이블, 토스트, 모달, 페이지네이션</li>
+<li>개별 콘텐츠: 시험 종목, 번역 분야, 고전 번역 설명, 마케팅 문구, 신청서 항목</li>
+</ul>
+<p>개별 홈페이지를 만들 때는 색상/문구/이미지/섹션 순서를 바꾸더라도 공통 UI class와 토큰은 유지합니다.</p>
+<h3>1.3 홈페이지 목차 원칙</h3>
+<p>첫 화면은 회사 소개보다 서비스 소개를 먼저 보여줍니다.</p>
+<p>권장 순서:</p>
+<ol>
+<li>서비스 소개 / Hero</li>
+<li>기능, 분야, 현황, 기술 설명</li>
+<li>실적</li>
+<li>전문가 신청</li>
+<li>견적 의뢰</li>
+<li>FAQ, 상담, 신청 흐름</li>
+<li>회사 소개</li>
+</ol>
+<p>고전 번역처럼 독립 브랜드 성격이 강한 홈페이지는 기존 번역 사이트 틀을 재사용하되, 별도 색상 구조와 현황/기술 설명을 강화합니다.</p>
+<h2>2. 디자인 토큰</h2>
+<h3>2.1 색상</h3>
+<table><tbody><tr><th>역할</th><th>토큰</th><th>값</th><th>사용처</th></tr><tr><td>기본 텍스트</td><td><code>--ds-color-text-primary</code></td><td><code>#222222</code></td><td>제목, 본문 핵심 텍스트</td></tr><tr><td>보조 텍스트</td><td><code>--ds-color-text-secondary</code></td><td><code>#666666</code></td><td>설명, 보조 정보</td></tr><tr><td>약한 텍스트</td><td><code>--ds-color-text-muted</code></td><td><code>#808080</code></td><td>caption, placeholder 보조</td></tr><tr><td>비활성 텍스트</td><td><code>--ds-color-text-disabled</code></td><td><code>#999999</code></td><td>disabled 상태</td></tr><tr><td>반전 텍스트</td><td><code>--ds-color-text-inverse</code></td><td><code>#ffffff</code></td><td>컬러 배경 위 텍스트</td></tr><tr><td>브랜드</td><td><code>--ds-color-brand-primary</code></td><td><code>#0088ff</code></td><td>주요 버튼, 선택 상태 배경</td></tr><tr><td>브랜드 강조</td><td><code>--ds-color-brand-primary-strong</code></td><td><code>#006dcc</code></td><td>연한 배경 위 텍스트, 링크, 칩 라벨</td></tr><tr><td>보조 브랜드</td><td><code>--ds-color-brand-secondary</code></td><td><code>#822afd</code></td><td>전문가 신청 CTA</td></tr><tr><td>성공</td><td><code>--ds-color-accent-success</code></td><td><code>#51b117</code></td><td>성공 상태 면/아이콘</td></tr><tr><td>성공 강조</td><td><code>--ds-color-accent-success-strong</code></td><td><code>#2f7d0c</code></td><td>성공 텍스트</td></tr><tr><td>경고</td><td><code>--ds-color-accent-warning</code></td><td><code>#f7b22c</code></td><td>경고 상태 면/아이콘</td></tr><tr><td>경고 강조</td><td><code>--ds-color-accent-warning-strong</code></td><td><code>#8a5a00</code></td><td>경고 텍스트</td></tr><tr><td>오류</td><td><code>--ds-color-accent-danger</code></td><td><code>#dc3d3d</code></td><td>삭제, 오류 버튼</td></tr><tr><td>오류 강조</td><td><code>--ds-color-accent-danger-strong</code></td><td><code>#b42323</code></td><td>오류 텍스트</td></tr><tr><td>페이지 배경</td><td><code>--ds-color-bg-page</code></td><td><code>#f8f9fc</code></td><td>본문 배경</td></tr><tr><td>기본 배경</td><td><code>--ds-color-bg-base</code></td><td><code>#ffffff</code></td><td>카드, 입력, 패널</td></tr><tr><td>선택 배경</td><td><code>--ds-color-bg-selected</code></td><td><code>#d7e7fc</code></td><td>선택 영역 배경</td></tr><tr><td>정보 연한 배경</td><td><code>--ds-color-bg-info-soft</code></td><td><code>#e7f2ff</code></td><td>상태 pill, filter tag</td></tr><tr><td>기본 선</td><td><code>--ds-color-border-default</code></td><td><code>#e3e5ed</code></td><td>카드/입력/테이블 경계</td></tr></tbody></table>
+<h3>2.2 간격, 곡률, 높이</h3>
+<table><tbody><tr><th>분류</th><th>값</th><th>사용처</th></tr><tr><td>Spacing</td><td><code>2, 4, 6, 8, 10, 12, 16, 20, 24, 30px</code></td><td>내부 여백, gap</td></tr><tr><td>Radius</td><td>기본 <code>0px</code>, 예외 <code>20px</code></td><td>기본 요소는 0, 스위치와 칩만 pill radius 유지</td></tr><tr><td>Height</td><td><code>24, 32, 40, 60px</code></td><td>소형 버튼, 기본 입력/버튼, 사이드 메뉴, GNB/Footer</td></tr></tbody></table>
+<h3>2.3 폰트 크기</h3>
+<p>관리자 시스템은 정보 밀도가 높으므로 작은 글자 기준을 사용합니다.</p>
+<table><tbody><tr><th>영역</th><th>기준</th></tr><tr><td>제목</td><td><code>12~13px</code></td></tr><tr><td>표 제목</td><td><code>11~12px</code></td></tr><tr><td>내용</td><td><code>8~10px</code></td></tr></tbody></table>
+<p>사용자 디자인 시스템은 관리자 기준보다 약 <code>+2px</code> 크게 잡습니다.</p>
+<table><tbody><tr><th>영역</th><th>기준</th></tr><tr><td>제목</td><td><code>14~15px</code></td></tr><tr><td>표 제목</td><td><code>13~14px</code></td></tr><tr><td>내용</td><td><code>10~12px</code></td></tr></tbody></table>
+<p>권장 토큰:</p>
+<pre><code>--ds-admin-title-font-size: 13px;
+--ds-admin-table-title-font-size: 12px;
+--ds-admin-body-font-size: 10px;
+--ds-user-title-font-size: 15px;
+--ds-user-table-title-font-size: 14px;
+--ds-user-body-font-size: 12px;</code></pre>
+<h2>3. 접근성 기준</h2>
+<h3>3.1 명도 대비</h3>
+<p>버튼, 칩, 상태 pill, badge, tag를 만들 때는 텍스트와 배경 또는 주요 경계의 명도 대비를 최소 <code>3:1</code> 이상으로 유지합니다.</p>
+<p>현재 시스템에서 지켜야 할 조합:</p>
+<ul>
+<li>연한 파란 배경 위 텍스트: <code>--ds-color-brand-primary-strong</code> 사용</li>
+<li>컬러 버튼 위 텍스트: <code>--ds-color-text-inverse</code> 사용</li>
+<li>비활성 pill: <code>#f2f2f2</code> 배경 위 <code>#555555</code> 사용</li>
+<li>성공/경고/오류 텍스트: 일반 accent 색을 그대로 쓰지 말고 <code>*-strong</code> 토큰 사용</li>
+</ul>
+<p>주의:</p>
+<ul>
+<li><code>#0088ff</code> 텍스트를 <code>#d7e7fc</code> 위에 올리는 조합은 약하므로 피합니다.</li>
+<li><code>#51b117</code>, <code>#f7b22c</code>를 흰 배경 위 작은 텍스트로 쓰지 않습니다. 아이콘/면 색상으로 쓰거나 strong 토큰을 함께 씁니다.</li>
+<li>색상만으로 상태를 전달하지 말고 텍스트, 아이콘, <code>aria-pressed</code>, <code>aria-selected</code>, <code>role=&quot;switch&quot;</code> 같은 상태 정보도 함께 제공합니다.</li>
+</ul>
+<h3>3.2 키보드와 포커스</h3>
+<ul>
+<li>버튼, 링크, 입력, 탭은 <code>:focus-visible</code> 스타일을 유지합니다.</li>
+<li>탭은 <code>role=&quot;tablist&quot;</code>, <code>role=&quot;tab&quot;</code>, <code>aria-selected</code>를 사용합니다.</li>
+<li>토글은 <code>role=&quot;switch&quot;</code> 또는 <code>aria-pressed</code>를 사용합니다.</li>
+<li>토스트 영역은 <code>aria-live=&quot;polite&quot;</code>와 <code>aria-atomic=&quot;true&quot;</code>를 사용합니다.</li>
+<li>모달은 <code>role=&quot;dialog&quot;</code>, <code>aria-modal=&quot;true&quot;</code>, 제목 연결 <code>aria-labelledby</code>를 사용합니다.</li>
+</ul>
+<h2>4. 컴포넌트 규칙</h2>
+<h3>4.1 Button</h3>
+<p>기본 class는 <code>btn</code>입니다. 변형은 <code>btn--primary</code>, <code>btn--outline</code>, <code>btn--neutral</code>, <code>btn--secondary</code>, <code>btn--danger</code>를 사용합니다.</p>
+<p>크기:</p>
+<ul>
+<li><code>btn--sm</code>: 24px</li>
+<li><code>btn--md</code>: 32px</li>
+<li><code>btn--lg</code>: 40px</li>
+</ul>
+<p>기존 호환을 위해 <code>small</code>, <code>large</code>, <code>outline</code>, <code>neutral</code>, <code>secondary</code>, <code>danger</code> 별칭도 유지하지만 새 페이지에서는 <code>btn--*</code> 형식을 우선 사용합니다.</p>
+<h3>4.2 Link</h3>
+<p>본문 이동이나 테이블 내 강조 값은 버튼 대신 <code>text-link</code>를 사용합니다.</p>
+<ul>
+<li>기본 링크: <code>text-link</code></li>
+<li>보조 링크: <code>text-link muted-link</code></li>
+<li>위험 링크: <code>text-link danger-link</code></li>
+</ul>
+<h3>4.3 Tab</h3>
+<p>탭은 역할에 따라 class를 선택합니다.</p>
+<ul>
+<li><code>tabs--underline</code>: 페이지 상단 주요 구분</li>
+<li><code>tabs--box</code>: 상세 정보 패널</li>
+<li><code>tabs--pill</code>: 상태/카테고리 필터</li>
+<li><code>tabs--segmented</code>: 목록/캘린더/요약 같은 보기 전환</li>
+</ul>
+<p>선택 상태는 <code>.active</code>와 <code>aria-selected=&quot;true&quot;</code>를 함께 맞춥니다.</p>
+<h3>4.4 Chip, Tag, Status Pill</h3>
+<p>필터와 상태 표시는 다음 class를 사용합니다.</p>
+<ul>
+<li>필터 칩: <code>filter-chip</code></li>
+<li>활성 필터 태그: <code>filter-tag</code></li>
+<li>규칙 필터 칩: <code>chip-button</code></li>
+<li>상태 표시: <code>state-pill</code></li>
+<li>비활성/검토중 상태: <code>state-pill off</code></li>
+<li>규칙 라벨: <code>rule-tag</code></li>
+</ul>
+<p>접근성 규칙:</p>
+<ul>
+<li>활성 칩은 <code>aria-pressed=&quot;true&quot;</code>를 사용합니다.</li>
+<li>연한 배경 위 텍스트는 strong 토큰을 사용합니다.</li>
+<li>상태는 색상만으로 구분하지 않고 &quot;완료&quot;, &quot;검토중&quot;, &quot;고정&quot;, &quot;준고정&quot;처럼 텍스트를 같이 표시합니다.</li>
+</ul>
+<h3>4.5 Form</h3>
+<p>입력 기본 class는 <code>field</code>입니다.</p>
+<ul>
+<li>기본 높이: 32px</li>
+<li>라벨: <code>label</code></li>
+<li>상세 입력: <code>textarea.field</code></li>
+<li>도움말/오류 문구가 필요한 경우 <code>field-help</code>, <code>field-error</code> 패턴을 사용합니다.</li>
+</ul>
+<h3>4.6 Table</h3>
+<p>시험 목록은 <code>exam-table</code>을 사용합니다.</p>
+<ul>
+<li>테이블은 <code>table-scroll</code> 안에 넣어 가로 스크롤을 허용합니다.</li>
+<li>헤더는 12px 보조 텍스트, 본문은 14px 기준입니다.</li>
+<li>목록 폭이 넓으면 모바일에서 억지로 줄이지 않고 가로 스크롤을 허용합니다.</li>
+</ul>
+<h3>4.7 Feedback</h3>
+<p>토스트:</p>
+<ul>
+<li>기본 class: <code>toast</code></li>
+<li>상태 class: <code>success</code>, <code>warning</code>, <code>danger</code>, <code>info</code></li>
+<li>고정 viewport: <code>toast-viewport</code></li>
+</ul>
+<p>모달:</p>
+<ul>
+<li>배경: <code>modal-backdrop</code></li>
+<li>fixed 모달: <code>modal-backdrop is-fixed</code></li>
+<li>본문: <code>modal</code></li>
+<li>액션: <code>modal-actions</code></li>
+</ul>
+<h2>5. 레이아웃 패턴</h2>
+<h3>5.1 기본 페이지</h3>
+<ul>
+<li><code>shell</code>: 전체 문서 구조</li>
+<li><code>nav</code>: 디자인 시스템 문서 목차</li>
+<li><code>main</code>: 본문</li>
+<li><code>section</code>: 문서 또는 화면 단위</li>
+<li><code>panel</code>: 경계가 있는 기본 패널</li>
+<li><code>grid two</code>, <code>grid three</code>, <code>grid four</code>: 반응형 그리드</li>
+</ul>
+<h3>5.2 서비스 홈페이지</h3>
+<p>홈페이지는 과한 장식보다 실제 사용자가 바로 이해할 수 있는 정보 구조를 우선합니다.</p>
+<p>권장:</p>
+<ul>
+<li>Hero는 서비스명/서비스 소개를 첫 신호로 보여줍니다.</li>
+<li>CTA는 &quot;전문가 신청&quot;, &quot;견적 의뢰&quot;, &quot;상담하기&quot;처럼 실제 행동 문구로 씁니다.</li>
+<li>카드가 필요한 경우 반복 항목에만 사용합니다.</li>
+<li>검색/필터가 있는 화면은 인라인 칩과 활성 태그를 함께 제공합니다.</li>
+</ul>
+<p>지양:</p>
+<ul>
+<li>회사 소개를 첫 화면의 핵심으로 두는 구성</li>
+<li>상태가 색상만으로 구분되는 칩/배지</li>
+<li>좁은 입력칸과 한 화면 과밀 배치</li>
+<li>동일 역할의 버튼 class를 페이지마다 새로 만드는 방식</li>
+</ul>
+<h2>6. 새 홈페이지 제작 체크리스트</h2>
+<ul>
+<li>공통 <code>layout.css</code> 토큰을 먼저 연결했는가?</li>
+<li>Header, Content, Footer 구조가 유지되는가?</li>
+<li>서비스 소개가 회사 소개보다 먼저 나오는가?</li>
+<li>실적, 전문가 신청, 견적 의뢰가 빠지지 않았는가?</li>
+<li>버튼은 <code>btn btn--variant btn--size</code> 조합을 쓰는가?</li>
+<li>칩/상태/badge/tag의 대비가 최소 <code>3:1</code> 이상인가?</li>
+<li>선택 상태에 <code>aria-pressed</code> 또는 <code>aria-selected</code>가 있는가?</li>
+<li>키보드 포커스가 보이는가?</li>
+<li>모바일에서 테이블/필터/헤더가 깨지지 않는가?</li>
+<li>색상 직접 입력보다 토큰 사용을 우선했는가?</li>
+</ul>
+</body>
+</html>

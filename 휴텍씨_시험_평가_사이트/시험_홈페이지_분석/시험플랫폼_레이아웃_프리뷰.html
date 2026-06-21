@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>시험 플랫폼 레이아웃 프리뷰</title>
+  <style>
+    :root {
+      --bg: #f3f5f8;
+      --surface: #ffffff;
+      --line: #d9dee7;
+      --line-strong: #b9c2d1;
+      --text: #1d2430;
+      --muted: #647184;
+      --blue: #1f6feb;
+      --teal: #0f9b9b;
+      --green: #248a3d;
+      --red: #c93636;
+      --amber: #b36b00;
+      --nav: #172033;
+      --soft-blue: #eaf2ff;
+      --soft-teal: #e8f7f6;
+      --soft-green: #ecf7ee;
+      --soft-amber: #fff4df;
+      --soft-red: #fff0f0;
+      --shadow: 0 10px 25px rgba(23, 32, 51, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, "Noto Sans KR", sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+      gap: 20px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .intro-main,
+    .intro-side,
+    .stage,
+    .mock {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .intro-main {
+      padding: 26px 28px;
+    }
+
+    .intro h1 {
+      margin: 0 0 12px;
+      font-size: 30px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .intro-side {
+      padding: 20px;
+    }
+
+    .legend {
+      display: grid;
+      gap: 10px;
+    }
+
+    .legend-row {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fbfcfe;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .tag.base { background: var(--blue); }
+    .tag.ux { background: var(--teal); }
+    .tag.pro { background: #6f5bd5; }
+
+    .legend-row strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .legend-row span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stages {
+      display: grid;
+      gap: 24px;
+    }
+
+    .switcher {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0 0 20px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .switch-btn {
+      min-height: 58px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      color: var(--muted);
+      text-align: left;
+      padding: 10px 12px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .switch-btn strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .switch-btn span {
+      display: block;
+      font-size: 12px;
+    }
+
+    .switch-btn.active {
+      border-color: var(--blue);
+      background: var(--soft-blue);
+      box-shadow: inset 0 0 0 1px rgba(31, 111, 235, 0.18);
+    }
+
+    .switch-btn[data-target="ux"].active {
+      border-color: var(--teal);
+      background: var(--soft-teal);
+      box-shadow: inset 0 0 0 1px rgba(15, 155, 155, 0.18);
+    }
+
+    .switch-btn[data-target="pro"].active {
+      border-color: #6f5bd5;
+      background: #f2f0ff;
+      box-shadow: inset 0 0 0 1px rgba(111, 91, 213, 0.18);
+    }
+
+    .stage {
+      overflow: hidden;
+      display: none;
+      animation: fadeIn 180ms ease-out;
+    }
+
+    .stage.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .stage-header {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff, #f7f9fc);
+    }
+
+    .stage-title {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .stage-title h2 {
+      margin: 0;
+      font-size: 21px;
+      letter-spacing: 0;
+    }
+
+    .stage-title p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stage-note {
+      max-width: 460px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .stage-body {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr) 300px;
+      gap: 16px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #f7f9fc;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .panel-body {
+      padding: 14px;
+    }
+
+    .side-menu {
+      display: grid;
+      gap: 8px;
+    }
+
+    .menu-item {
+      padding: 9px 10px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      background: #ffffff;
+    }
+
+    .menu-item.active {
+      border-color: #bcd4ff;
+      background: var(--soft-blue);
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .menu-group {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .topbar {
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 18px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--nav);
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .nav strong {
+      color: var(--blue);
+    }
+
+    .account {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .mock {
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+
+    .mock-content {
+      background: #f5f7fb;
+      min-height: 420px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .status-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 13px;
+      min-height: 88px;
+    }
+
+    .status-card b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .status-card .num {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .status-card span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .filters {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+    }
+
+    .filter-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 9px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #ffffff;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .chip.on {
+      border-color: #8cc9ff;
+      background: var(--soft-blue);
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 920px;
+    }
+
+    th,
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #edf0f5;
+      text-align: left;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #f5f7fb;
+      color: #526074;
+      font-weight: 700;
+    }
+
+    td {
+      color: #2f3947;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge.blue { background: var(--soft-blue); color: var(--blue); }
+    .badge.green { background: var(--soft-green); color: var(--green); }
+    .badge.red { background: var(--soft-red); color: var(--red); }
+    .badge.amber { background: var(--soft-amber); color: var(--amber); }
+    .badge.teal { background: var(--soft-teal); color: var(--teal); }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 5px;
+      border: 1px solid var(--line-strong);
+      background: #ffffff;
+      color: #2f3947;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .btn.primary {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #ffffff;
+    }
+
+    .btn.teal {
+      border-color: var(--teal);
+      background: var(--teal);
+      color: #ffffff;
+    }
+
+    .btn.danger {
+      border-color: #e2b6b6;
+      background: var(--soft-red);
+      color: var(--red);
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .flow-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      min-height: 126px;
+    }
+
+    .flow-card strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .flow-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) 310px;
+      gap: 12px;
+      min-height: 450px;
+    }
+
+    .tool-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .tool-item {
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: #2f3947;
+    }
+
+    .tool-item.active {
+      border-color: #80cfcf;
+      background: var(--soft-teal);
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .input,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #ffffff;
+      color: #2f3947;
+      padding: 10px;
+      font: inherit;
+    }
+
+    .textarea {
+      min-height: 130px;
+      resize: none;
+    }
+
+    .result-box {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .result-title {
+      padding: 10px 12px;
+      background: #f7f9fc;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .result-body {
+      padding: 12px;
+      color: var(--muted);
+      min-height: 82px;
+      font-size: 13px;
+    }
+
+    .dense-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .dense-grid {
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .advanced-filters {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #ffffff;
+      padding: 12px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .filter-title {
+      font-weight: 800;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 7px;
+    }
+
+    .check {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .box {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1px solid var(--line-strong);
+      background: #ffffff;
+    }
+
+    .box.on {
+      border-color: var(--blue);
+      background: var(--blue);
+      box-shadow: inset 0 0 0 3px #ffffff;
+    }
+
+    .wide-table table {
+      min-width: 1600px;
+    }
+
+    .section-caption {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: -4px;
+    }
+
+    @media (max-width: 1100px) {
+      .intro,
+      .three-col,
+      .two-col,
+      .workspace,
+      .dense-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards,
+      .workflow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stage-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stage-note {
+        text-align: left;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 14px;
+      }
+
+      .intro h1 {
+        font-size: 24px;
+      }
+
+      .cards,
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+
+      .switcher {
+        grid-template-columns: 1fr;
+        position: static;
+      }
+
+      .nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="intro">
+      <div class="intro-main">
+        <h1>시험 플랫폼 레이아웃 프리뷰</h1>
+        <p>
+          지금까지 해석한 자료를 기준으로, 2024는 기본 시험 플랫폼, 2025는 기반 UX/UI 참고 화면,
+          vibecoding은 관리자 고도화 기능으로 배치한 정적 미리보기입니다. 실제 서비스가 아니라 PDF 시안의
+          성격을 화면 구조로 확인하기 위한 레이아웃입니다.
+        </p>
+      </div>
+      <aside class="intro-side">
+        <div class="legend">
+          <div class="legend-row">
+            <span class="tag base">2024</span>
+            <div>
+              <strong>기초 토대</strong>
+              <span>회원, 시험, 접수, 응시, 출제, 채점, 결과, 결제, 문의의 기본 구조</span>
+            </div>
+          </div>
+          <div class="legend-row">
+            <span class="tag ux">2025</span>
+            <div>
+              <strong>기반 UX/UI</strong>
+              <span>창작작업실 참고 화면, 메타 번역, 양식관리, 템플릿, 결제 흐름의 사용자 경험</span>
+            </div>
+          </div>
+          <div class="legend-row">
+            <span class="tag pro">고도화</span>
+            <div>
+              <strong>vibecoding</strong>
+              <span>관리자 대량 조회, 파일 업로드, 엑셀 처리, 고급 필터와 통합 테이블</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="switcher" role="tablist" aria-label="레이아웃 버전 선택">
+      <button class="switch-btn active" type="button" data-target="base" role="tab" aria-selected="true">
+        <strong>2024 기초 토대</strong>
+        <span>시험 플랫폼 기본 운영 화면</span>
+      </button>
+      <button class="switch-btn" type="button" data-target="ux" role="tab" aria-selected="false">
+        <strong>2025 기반 UX/UI</strong>
+        <span>작업형 UX/UI 참고와 양식 기반 화면</span>
+      </button>
+      <button class="switch-btn" type="button" data-target="pro" role="tab" aria-selected="false">
+        <strong>vibecoding 고도화</strong>
+        <span>관리자 대량 처리와 고급 조회</span>
+      </button>
+    </div>
+
+    <div class="stages">
+      <section class="stage active" data-view="base">
+        <header class="stage-header">
+          <div class="stage-title">
+            <span class="tag base">2024</span>
+            <div>
+              <h2>기초 토대: 시험 플랫폼 운영 화면</h2>
+              <p>시험 접수부터 응시, 출제, 채점, 결과, 결제, 문의까지 이어지는 기본 관리자/사용자 구조</p>
+            </div>
+          </div>
+          <div class="stage-note">PDF의 관리자 홈, 메뉴 구조, 회원/시험/문제/결제 관리 화면을 단순화한 형태입니다.</div>
+        </header>
+        <div class="stage-body">
+          <div class="mock">
+            <div class="topbar">
+              <div class="brand"><span class="brand-mark"></span> AITP 시험 플랫폼</div>
+              <nav class="nav">
+                <strong>관리자 홈</strong>
+                <span>회원관리</span>
+                <span>시험관리</span>
+                <span>문제관리</span>
+                <span>채점관리</span>
+                <span>결제관리</span>
+                <span>1:1 문의</span>
+              </nav>
+              <div class="account"><strong>관리자</strong><span>로그아웃</span></div>
+            </div>
+            <div class="mock-content stage-body">
+              <div class="three-col">
+                <aside class="panel">
+                  <div class="panel-head">역할별 메뉴</div>
+                  <div class="panel-body">
+                    <div class="side-menu">
+                      <div class="menu-item active">관리자 홈</div>
+                      <div class="menu-item">회원관리</div>
+                      <div class="menu-item">시험관리</div>
+                      <div class="menu-item">문제관리</div>
+                      <div class="menu-item">채점관리</div>
+                      <div class="menu-item">결제관리</div>
+                      <div class="menu-group">사용자 화면</div>
+                      <div class="menu-item">수험생 홈</div>
+                      <div class="menu-item">출제자 홈</div>
+                      <div class="menu-item">채점자 홈</div>
+                    </div>
+                  </div>
+                </aside>
+
+                <section>
+                  <div class="cards">
+                    <div class="status-card">
+                      <b>시험 접수</b>
+                      <div class="num">128</div>
+                      <span>오늘 접수 및 변경</span>
+                    </div>
+                    <div class="status-card">
+                      <b>채점 대기</b>
+                      <div class="num">36</div>
+                      <span>채점자 배정 필요</span>
+                    </div>
+                    <div class="status-card">
+                      <b>문의 미답변</b>
+                      <div class="num">14</div>
+                      <span>1:1 문의 처리 필요</span>
+                    </div>
+                    <div class="status-card">
+                      <b>결제 미승인</b>
+                      <div class="num">9</div>
+                      <span>확인 후 승인 처리</span>
+                    </div>
+                  </div>
+
+                  <div class="filters">
+                    <div class="filter-line">
+                      <span class="chip on">전체</span>
+                      <span class="chip">접수완료</span>
+                      <span class="chip">결제대기</span>
+                      <span class="chip">응시가능</span>
+                      <span class="chip">채점중</span>
+                      <span class="chip">합격</span>
+                      <span class="chip">불합격</span>
+                    </div>
+                    <div class="filter-line">
+                      <span class="chip">시험명</span>
+                      <span class="chip">등급</span>
+                      <span class="chip">언어</span>
+                      <span class="chip">접수일</span>
+                      <span class="chip">결제상태</span>
+                      <span class="chip">문의상태</span>
+                    </div>
+                  </div>
+
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>수험번호</th>
+                          <th>이름</th>
+                          <th>시험명</th>
+                          <th>접수상태</th>
+                          <th>결제</th>
+                          <th>응시</th>
+                          <th>채점</th>
+                          <th>결과</th>
+                          <th>다음 행동</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>AITP-240101</td>
+                          <td>홍길동</td>
+                          <td>AI 번역 전문가</td>
+                          <td><span class="badge green">접수완료</span></td>
+                          <td><span class="badge green">결제완료</span></td>
+                          <td><span class="badge blue">응시가능</span></td>
+                          <td><span class="badge amber">대기</span></td>
+                          <td><span class="badge amber">미발표</span></td>
+                          <td><span class="btn primary">시험시작</span></td>
+                        </tr>
+                        <tr>
+                          <td>AITP-240102</td>
+                          <td>김민지</td>
+                          <td>프롬프트 활용</td>
+                          <td><span class="badge green">접수완료</span></td>
+                          <td><span class="badge amber">결제대기</span></td>
+                          <td><span class="badge amber">대기</span></td>
+                          <td><span class="badge amber">대기</span></td>
+                          <td><span class="badge amber">미발표</span></td>
+                          <td><span class="btn primary">결제하기</span></td>
+                        </tr>
+                        <tr>
+                          <td>AITP-240103</td>
+                          <td>박서준</td>
+                          <td>단답형 평가</td>
+                          <td><span class="badge green">접수완료</span></td>
+                          <td><span class="badge green">결제완료</span></td>
+                          <td><span class="badge green">응시완료</span></td>
+                          <td><span class="badge green">완료</span></td>
+                          <td><span class="badge blue">합격</span></td>
+                          <td><span class="btn primary">자격증신청</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <aside class="panel">
+                  <div class="panel-head">오늘 처리할 일</div>
+                  <div class="panel-body">
+                    <div class="side-menu">
+                      <div class="menu-item active">시험 일정 등록 3건</div>
+                      <div class="menu-item">문제 검수 요청 12건</div>
+                      <div class="menu-item">채점 결과 확인 21건</div>
+                      <div class="menu-item">환불 승인 대기 4건</div>
+                      <div class="menu-item">문의 답변 대기 14건</div>
+                    </div>
+                    <div class="button-row">
+                      <span class="btn primary">새 시험 등록</span>
+                      <span class="btn">문의 관리</span>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+
+          <div class="workflow">
+            <div class="flow-card">
+              <strong>수험생 흐름</strong>
+              <p>시험접수 → 결제 → 시험응시 → 결과확인 → 자격증신청으로 이어지는 기본 흐름입니다.</p>
+            </div>
+            <div class="flow-card">
+              <strong>출제/채점 흐름</strong>
+              <p>출제자가 문제를 만들고, 채점자가 답안을 평가하며, 관리자가 결과를 확정합니다.</p>
+            </div>
+            <div class="flow-card">
+              <strong>관리자 흐름</strong>
+              <p>회원, 시험, 문제, 결제, 문의, 통계를 관리하는 시험 플랫폼의 운영 본부입니다.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage" data-view="ux">
+        <header class="stage-header">
+          <div class="stage-title">
+            <span class="tag ux">2025</span>
+            <div>
+              <h2>기반 UX/UI: 작업형 참고 화면과 양식 기반 화면</h2>
+              <p>2024의 시험 플랫폼 위에 참고할 작업형 UX/UI, 번역, 양식, 템플릿, 장바구니/결제 경험</p>
+            </div>
+          </div>
+          <div class="stage-note">PDF의 창작작업실은 확정 구현 화면이 아니라 참고 UX/UI로 보고, 메타번역·양식관리·템플릿 화면과 함께 단순화했습니다.</div>
+        </header>
+        <div class="stage-body">
+          <div class="mock">
+            <div class="topbar">
+              <div class="brand"><span class="brand-mark"></span> AITP UX 참고 화면</div>
+              <nav class="nav">
+                <strong>작업형 참고</strong>
+                <span>메타-T 번역</span>
+                <span>요금제</span>
+                <span>고객센터</span>
+                <span>회사소개</span>
+              </nav>
+              <div class="account"><strong>사용자</strong><span>장바구니 2</span></div>
+            </div>
+            <div class="mock-content stage-body">
+              <div class="workspace">
+                <aside class="panel">
+                  <div class="panel-head">작업 유형</div>
+                  <div class="panel-body">
+                    <div class="tool-list">
+                      <div class="tool-item active"><span>문서</span><span>선택</span></div>
+                      <div class="tool-item"><span>Youtube</span><span></span></div>
+                      <div class="tool-item"><span>리서치&분석</span><span></span></div>
+                      <div class="tool-item"><span>프로그래밍</span><span></span></div>
+                      <div class="tool-item"><span>이미지·디자인</span><span></span></div>
+                      <div class="tool-item"><span>음성</span><span></span></div>
+                    </div>
+                    <div class="menu-group">카테고리</div>
+                    <div class="field">
+                      <label>대분류</label>
+                      <div class="input">법률 문서</div>
+                    </div>
+                    <div class="field">
+                      <label>중분류</label>
+                      <div class="input">계약서 검토</div>
+                    </div>
+                    <div class="field">
+                      <label>AI 선택</label>
+                      <div class="filter-line">
+                        <span class="chip on">ChatGPT</span>
+                        <span class="chip">Gemini</span>
+                        <span class="chip">wrtn.</span>
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+
+                <section class="panel">
+                  <div class="panel-head">
+                    <span>입력 양식</span>
+                    <span class="badge teal">관리자 양식 반영</span>
+                  </div>
+                  <div class="panel-body">
+                    <div class="field">
+                      <label>작업 제목</label>
+                      <div class="input">계약서 위험 조항 분석</div>
+                    </div>
+                    <div class="field">
+                      <label>파일 업로드</label>
+                      <div class="input">contract_review.pdf · 2.4MB · 업로드 완료</div>
+                    </div>
+                    <div class="field">
+                      <label>요청 내용</label>
+                      <textarea class="textarea" readonly>계약서에서 불리한 조항, 누락된 조항, 수정 권장 문구를 정리해 주세요.</textarea>
+                    </div>
+                    <div class="field">
+                      <label>옵션</label>
+                      <div class="filter-line">
+                        <span class="chip on">전문가 검수</span>
+                        <span class="chip">긴급 작업</span>
+                        <span class="chip on">결과 비교</span>
+                      </div>
+                    </div>
+                    <div class="button-row">
+                      <span class="btn">임시저장</span>
+                      <span class="btn">장바구니</span>
+                      <span class="btn teal">적용</span>
+                    </div>
+                  </div>
+                </section>
+
+                <aside class="panel">
+                  <div class="panel-head">결과/편집 패널</div>
+                  <div class="panel-body">
+                    <div class="result-box">
+                      <div class="result-title">AI 결과</div>
+                      <div class="result-body">위험 조항 4건, 보완 필요 조항 3건이 감지되었습니다. 전문가 검수 요청 시 상세 의견이 추가됩니다.</div>
+                    </div>
+                    <div class="result-box">
+                      <div class="result-title">최종 편집본</div>
+                      <div class="result-body">사용자가 직접 수정하는 영역입니다. 저장 후 결제 또는 검수 요청으로 이어집니다.</div>
+                    </div>
+                    <div class="result-box">
+                      <div class="result-title">예상 금액</div>
+                      <div class="result-body">기본 작업 15,000원 + 전문가 검수 30,000원</div>
+                    </div>
+                    <div class="button-row">
+                      <span class="btn primary">결제 이동</span>
+                      <span class="btn">견적 요청</span>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="panel">
+              <div class="panel-head">관리자 양식관리</div>
+              <div class="panel-body">
+                <p class="section-caption">관리자가 만든 양식과 템플릿이 사용자 작업실의 입력 구조를 결정합니다.</p>
+                <div class="button-row">
+                  <span class="btn primary">양식 등록</span>
+                  <span class="btn">미리보기</span>
+                  <span class="btn">게시 설정</span>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">2025 해석 포인트</div>
+              <div class="panel-body">
+                <p class="section-caption">2025는 2024를 대체하는 자료가 아니라, 시험 플랫폼 위에 작업실과 편집 경험을 추가하는 UX/UI 확장으로 보는 것이 자연스럽습니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage" data-view="pro">
+        <header class="stage-header">
+          <div class="stage-title">
+            <span class="tag pro">고도화</span>
+            <div>
+              <h2>vibecoding: 관리자 대량 처리와 고급 조회</h2>
+              <p>파일 업로드, 엑셀 생성, 고급 필터, 넓은 통합 테이블을 가진 운영자용 기능</p>
+            </div>
+          </div>
+          <div class="stage-note">PDF의 `기본화면_파일업로드.jpg`와 긴 가로 테이블을 참고한 고밀도 관리자 화면입니다.</div>
+        </header>
+        <div class="stage-body">
+          <div class="mock">
+            <div class="topbar">
+              <div class="brand"><span class="brand-mark"></span> 관리자 통합 조회</div>
+              <nav class="nav">
+                <strong>회원관리</strong>
+                <span>활동관리</span>
+                <span>결제관리</span>
+                <span>1:1 문의</span>
+                <span>통계</span>
+                <span>파일관리</span>
+              </nav>
+              <div class="account"><strong>관리자</strong><span>로그아웃</span></div>
+            </div>
+            <div class="mock-content stage-body">
+              <div class="dense-toolbar">
+                <div class="filter-line">
+                  <span class="chip on">저장된 필터: 결제 미완료</span>
+                  <span class="chip">미응시자</span>
+                  <span class="chip">합격 후 자격증 미신청</span>
+                  <span class="chip">문의 미답변</span>
+                </div>
+                <div class="button-row" style="margin-top:0;">
+                  <span class="btn">엑셀파일생성</span>
+                  <span class="btn">파일올리기</span>
+                  <span class="btn primary">파일다운로드</span>
+                </div>
+              </div>
+
+              <div class="dense-grid">
+                <aside class="advanced-filters">
+                  <div class="filter-title">상세 필터</div>
+                  <div class="check-grid">
+                    <label class="check"><span class="box on"></span> 정식회원</label>
+                    <label class="check"><span class="box"></span> 일반회원</label>
+                    <label class="check"><span class="box on"></span> 전문가</label>
+                    <label class="check"><span class="box"></span> 프리미엄</label>
+                    <label class="check"><span class="box on"></span> 문자 수신</label>
+                    <label class="check"><span class="box on"></span> 이메일 수신</label>
+                    <label class="check"><span class="box"></span> 카카오톡 수신</label>
+                  </div>
+                  <div class="filter-title">시험 상태</div>
+                  <div class="check-grid">
+                    <label class="check"><span class="box on"></span> 접수완료</label>
+                    <label class="check"><span class="box on"></span> 미응시</label>
+                    <label class="check"><span class="box"></span> 채점중</label>
+                    <label class="check"><span class="box"></span> 합격</label>
+                    <label class="check"><span class="box"></span> 불합격</label>
+                  </div>
+                  <div class="button-row">
+                    <span class="btn primary">검색</span>
+                    <span class="btn">초기화</span>
+                  </div>
+                </aside>
+
+                <section>
+                  <div class="table-wrap wide-table">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>선택</th>
+                          <th>회원번호</th>
+                          <th>이름</th>
+                          <th>회원유형</th>
+                          <th>이메일</th>
+                          <th>휴대폰</th>
+                          <th>가입경로</th>
+                          <th>최근로그인</th>
+                          <th>시험명</th>
+                          <th>접수구분</th>
+                          <th>시험일</th>
+                          <th>결제상태</th>
+                          <th>응시상태</th>
+                          <th>결과</th>
+                          <th>점수</th>
+                          <th>문의상태</th>
+                          <th>피드백</th>
+                          <th>작업</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><span class="box on"></span></td>
+                          <td>UI240110002</td>
+                          <td>홍길동</td>
+                          <td><span class="badge blue">프리미엄</span></td>
+                          <td>abc***@gmail.com</td>
+                          <td>010-****-5678</td>
+                          <td>네이버</td>
+                          <td>24.10.10</td>
+                          <td>번역 전문가</td>
+                          <td>정시</td>
+                          <td>24.01.10</td>
+                          <td><span class="badge green">완료</span></td>
+                          <td><span class="badge red">미응시</span></td>
+                          <td><span class="badge amber">대기</span></td>
+                          <td>-</td>
+                          <td><span class="badge amber">답변대기</span></td>
+                          <td>검토 필요</td>
+                          <td><span class="btn">상세</span></td>
+                        </tr>
+                        <tr>
+                          <td><span class="box"></span></td>
+                          <td>UI240110003</td>
+                          <td>김민지</td>
+                          <td><span class="badge teal">전문가</span></td>
+                          <td>kim***@mail.com</td>
+                          <td>010-****-9012</td>
+                          <td>카카오</td>
+                          <td>24.10.09</td>
+                          <td>프롬프트 평가</td>
+                          <td>추가접수</td>
+                          <td>24.01.12</td>
+                          <td><span class="badge amber">대기</span></td>
+                          <td><span class="badge amber">대기</span></td>
+                          <td><span class="badge amber">미발표</span></td>
+                          <td>-</td>
+                          <td><span class="badge green">완료</span></td>
+                          <td>-</td>
+                          <td><span class="btn">상세</span></td>
+                        </tr>
+                        <tr>
+                          <td><span class="box on"></span></td>
+                          <td>UI240110004</td>
+                          <td>박서준</td>
+                          <td><span class="badge green">정회원</span></td>
+                          <td>park***@mail.com</td>
+                          <td>010-****-2222</td>
+                          <td>구글</td>
+                          <td>24.10.08</td>
+                          <td>단답형 평가</td>
+                          <td>정시</td>
+                          <td>24.01.14</td>
+                          <td><span class="badge green">완료</span></td>
+                          <td><span class="badge green">응시완료</span></td>
+                          <td><span class="badge blue">합격</span></td>
+                          <td>86</td>
+                          <td><span class="badge green">없음</span></td>
+                          <td>자격증 안내 필요</td>
+                          <td><span class="btn">문자</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="button-row">
+                    <span class="btn danger">선택삭제</span>
+                    <span class="btn">메일보내기</span>
+                    <span class="btn">SMS전송</span>
+                    <span class="btn">업로드 검증 결과</span>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+
+          <div class="workflow">
+            <div class="flow-card">
+              <strong>고급 필터</strong>
+              <p>회원유형, 시험상태, 결제상태, 문의상태처럼 운영자가 자주 묻는 조건을 저장해 빠르게 조회합니다.</p>
+            </div>
+            <div class="flow-card">
+              <strong>대량 처리</strong>
+              <p>선택한 대상에게 문자/메일을 보내거나 엑셀 파일을 만들고, 외부 파일로 데이터를 갱신합니다.</p>
+            </div>
+            <div class="flow-card">
+              <strong>안전장치</strong>
+              <p>개인정보 마스킹, 다운로드 로그, 업로드 전 검증, 삭제 확인 같은 보호 장치가 필요합니다.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const buttons = document.querySelectorAll(".switch-btn");
+    const stages = document.querySelectorAll(".stage[data-view]");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.target;
+
+        buttons.forEach((item) => {
+          const selected = item === button;
+          item.classList.toggle("active", selected);
+          item.setAttribute("aria-selected", selected ? "true" : "false");
+        });
+
+        stages.forEach((stage) => {
+          stage.classList.toggle("active", stage.dataset.view === target);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

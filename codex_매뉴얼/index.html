@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codex 매뉴얼</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #fff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #d7dde7;
+      --accent: #2457c5;
+      --soft: #eef3ff;
+      --dark: #172033;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      line-height: 1.65;
+    }
+
+    header {
+      background: var(--dark);
+      color: #fff;
+      padding: 38px 24px 32px;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    p { margin: 0; }
+
+    .lead {
+      max-width: 860px;
+      color: #cbd5e1;
+      font-size: 16px;
+    }
+
+    main { padding: 28px 0 48px; }
+
+    section {
+      margin: 0 0 22px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--accent);
+    }
+
+    .note {
+      padding: 14px 16px;
+      border: 1px solid #c7d7fe;
+      border-radius: var(--radius);
+      background: var(--soft);
+      color: #334155;
+      font-size: 14px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    li + li { margin-top: 6px; }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+    }
+
+    iframe {
+      width: 100%;
+      min-height: 72vh;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .small {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      section { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Codex 매뉴얼</h1>
+      <p class="lead">Windows 사용자가 WSL에 접속해 Codex CLI를 설치하고 실행하는 과정을 한 화면에서 확인하는 HTML 인덱스입니다.</p>
+      <div class="actions">
+        <a class="button" href="windows_wsl_codex_manual.md">원문 Markdown 열기</a>
+        <a class="button secondary" href="windows_wsl_codex_manual.md" download>Markdown 다운로드</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>한눈에 보는 진행 순서</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>1. WSL 준비</h3>
+          <p>PowerShell 관리자 권한에서 <code>wsl --install</code>을 실행하고 Ubuntu 계정을 만듭니다.</p>
+        </div>
+        <div class="card">
+          <h3>2. 기본 도구 설치</h3>
+          <p>Ubuntu에서 기본 Linux 명령어, Node.js, npm 설치 상태를 확인합니다.</p>
+        </div>
+        <div class="card">
+          <h3>3. Codex 설치</h3>
+          <p>Codex CLI를 설치하고 로그인 또는 API 키 방식으로 인증합니다.</p>
+        </div>
+        <div class="card">
+          <h3>4. 작업 폴더 실행</h3>
+          <p>프로젝트 폴더로 이동한 뒤 <code>codex</code>를 실행해 작업을 시작합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>공식 기준 메모</h2>
+      <div class="note">
+        Codex 공식 매뉴얼 기준으로 CLI는 <code>--cd/-C</code>, <code>--sandbox/-s</code>, <code>--ask-for-approval/-a</code> 같은 실행 옵션을 제공합니다. 로컬 작업에는 보통 <code>workspace-write</code>와 승인 정책을 조합해 현재 작업 폴더 중심으로 권한을 제한합니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>원문 전체 보기</h2>
+      <iframe src="windows_wsl_codex_manual.md" title="Windows WSL Codex manual markdown"></iframe>
+      <p class="small">브라우저가 Markdown을 다운로드로 처리하는 경우 위의 "원문 Markdown 열기" 링크로 확인하세요.</p>
+    </section>
+  </main>
+</body>
+</html>

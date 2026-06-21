@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AITP 시험 통합 플랫폼 4차</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="icon-rail" aria-label="주요 메뉴">
+        <button class="rail-logo" data-view="public" title="홈">A</button>
+        <button data-view="dashboard" title="대시보드">⌂</button>
+        <button data-view="auth" title="인증/계정">◎</button>
+        <button data-view="examinee" title="수험생">受</button>
+        <button data-view="author" title="출제자">出</button>
+        <button data-view="grader" title="채점자">採</button>
+        <button data-view="adminOps" title="관리자 운영">管</button>
+        <button data-view="bulk" title="DB 대량관리">▦</button>
+        <button data-view="memberDetail" title="회원 상세">MB</button>
+        <button data-view="mypage" title="마이페이지">MY</button>
+        <button data-view="certificateAdmin" title="자격증 상세">CT</button>
+        <button data-view="categoryAdmin" title="카테고리 관리">CA</button>
+        <button data-view="exam" title="시험운영">▣</button>
+        <button data-view="expert" title="전문가 프로필">専</button>
+        <button data-view="workspace" title="창작작업실">✎</button>
+        <button data-view="translation" title="메타-T 번역">文</button>
+        <button data-view="forms" title="양식/템플릿">□</button>
+        <button data-view="dataObjects" title="데이터 객체">DB</button>
+        <button data-view="components" title="공통 컴포넌트">UI</button>
+        <button data-view="uploadClassification" title="파일 업로드 분류">UP</button>
+        <button data-view="routePolicy" title="라우트/정책">RT</button>
+        <button data-view="completionAudit" title="완료 체크리스트">CK</button>
+        <button data-view="checkout" title="장바구니/결제">₩</button>
+      </aside>
+
+      <header class="topbar">
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="globalSearch" type="search" placeholder="회원, 시험, 양식, 작업 검색">
+        </div>
+        <div class="top-actions">
+          <select id="roleSelect" aria-label="역할 선택">
+            <option value="examinee">수험생</option>
+            <option value="author">출제자</option>
+            <option value="grader">채점자</option>
+            <option value="admin" selected>관리자</option>
+          </select>
+          <button id="openFlowBtn" class="ghost btn btn--outline btn--md">플로우 점검</button>
+          <button id="openToastBtn" class="ghost btn btn--outline btn--md">알림</button>
+          <button class="primary small btn btn--primary btn--sm" data-view="bulk">저장</button>
+        </div>
+      </header>
+
+      <main>
+        <nav class="breadcrumb">홈 <span>›</span> <strong id="currentCrumb">관리자 대시보드</strong></nav>
+        <section class="role-menu-strip" aria-label="역할별 메뉴">
+          <div>
+            <strong id="roleMenuTitle">관리자 메뉴</strong>
+            <span id="roleMenuHint">선택 역할에 맞춰 목차 메뉴를 표시합니다.</span>
+          </div>
+          <div class="role-menu-chips" id="roleMenuChips"></div>
+        </section>
+
+        <section class="view active" id="view-public">
+          <div class="hero compact">
+            <div>
+              <p class="eyebrow">AITP 통합 시험 플랫폼</p>
+              <h1>접수, 응시, 출제, 채점, 결제, AI 작업을 한 화면 흐름으로 연결</h1>
+              <p>4차 구현은 2024 전체 시험 운영 플로우와 2025 figma_pdf 신규 기능, DB 대량관리 화면을 통합한 기준으로 구성했습니다.</p>
+            </div>
+            <div class="hero-actions">
+              <button class="primary" data-view="exam">시험 접수</button>
+              <button class="ghost" data-view="auth">로그인/회원가입</button>
+              <button class="ghost" data-view="workspace">창작작업실</button>
+              <button class="ghost" data-view="bulk">관리자 DB</button>
+            </div>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>수험생</h3>
+              <p>시험 접수, 결제, 응시, 결과 확인, 자격증 신청.</p>
+            </article>
+            <article class="panel">
+              <h3>출제자</h3>
+              <p>번역형, 프롬프트형, 단답형 문제 작성과 제출.</p>
+            </article>
+            <article class="panel">
+              <h3>채점자</h3>
+              <p>개별 답안 채점, 평가서, 코멘트, 채점완료.</p>
+            </article>
+            <article class="panel">
+              <h3>관리자</h3>
+              <p>회원, 시험, 결제, 정산, 자격증, 양식, 통계 관리.</p>
+            </article>
+          </div>
+          <div class="grid-four account-grid">
+            <article class="panel">
+              <h3>인증/계정</h3>
+              <p>로그인, 로그아웃, 회원가입, 간편가입, 이용약관.</p>
+            </article>
+            <article class="panel">
+              <h3>본인 확인</h3>
+              <p>본인인증, 휴대폰 인증, 아이디 찾기, 아이디 확인.</p>
+            </article>
+            <article class="panel">
+              <h3>비밀번호</h3>
+              <p>비밀번호 찾기, 재설정, 설정 완료 상태.</p>
+            </article>
+            <article class="panel">
+              <h3>회원탈퇴</h3>
+              <p>탈퇴 전 환불 확인, 보존 정보 안내, 탈퇴 완료.</p>
+            </article>
+          </div>
+          <div class="grid-four account-grid">
+            <article class="panel">
+              <h3>자격/교육/서비스</h3>
+              <p>AITP 자격, 교육센터, AI 번역, 통독문서, 전시/행사 서비스를 한 진입 구조로 안내합니다.</p>
+              <div class="chip-line"><span class="chip fixed">자격시험</span><span class="chip fixed">교육센터</span><span class="chip fixed">AI 번역</span></div>
+            </article>
+            <article class="panel">
+              <h3>실적/현황</h3>
+              <p>시험 접수 18건, 신규 회원 45건, 채점 대기 12건, 문의 19건을 운영 지표로 보여줍니다.</p>
+            </article>
+            <article class="panel">
+              <h3>전문가 신청</h3>
+              <p>학력, 저서/역서, 해외거주, 경력 증빙을 제출하고 승인 상태를 확인합니다.</p>
+              <button class="ghost small btn btn--outline btn--sm" data-view="expert">전문가 신청</button>
+            </article>
+            <article class="panel">
+              <h3>견적 의뢰/FAQ</h3>
+              <p>번역, 편집, 검수, 긴급 작업 견적 요청과 상담/신청 흐름을 제공합니다.</p>
+              <button class="ghost small btn btn--outline btn--sm" data-view="checkout">견적 의뢰</button>
+            </article>
+          </div>
+          <div class="grid-four account-grid">
+            <article class="panel">
+              <h3>상담/신청 흐름</h3>
+              <p>문의 접수, 견적 확인, 결제, 작업 진행, 결과 검수, 재요청 흐름을 제공합니다.</p>
+            </article>
+            <article class="panel">
+              <h3>회사 소개</h3>
+              <p>휴텍씨의 시험 운영, 번역 서비스, 교육/전시 운영 이력을 공통 footer와 함께 제공합니다.</p>
+            </article>
+            <article class="panel">
+              <h3>SNS/공지</h3>
+              <p>공지사항, 운영 알림, 이메일/SMS 안내, 서비스 업데이트를 사용자에게 제공합니다.</p>
+            </article>
+            <article class="panel">
+              <h3>모바일 CTA</h3>
+              <p>좁은 화면에서도 시험 접수, 로그인, 장바구니, 문의 버튼이 상단과 역할 메뉴에 유지됩니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-auth">
+          <div class="page-head">
+            <div>
+              <h1>인증 및 계정</h1>
+              <p>공개 홈페이지에서 로그인 후 역할별 홈으로 이동하는 계정 흐름입니다.</p>
+            </div>
+            <button class="primary" id="authSaveBtn">계정 상태 저장</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>로그인/권한 이동</h3>
+              <div class="field-stack">
+                <label>아이디<input value="aitp_admin@example.com"></label>
+                <label>비밀번호<input type="password" value="password"></label>
+                <label>권한 홈<select><option>관리자 대시보드</option><option>수험생 홈</option><option>출제자 홈</option><option>채점자 홈</option></select></label>
+              </div>
+              <div class="chip-line"><span class="chip fixed">로그인</span><span class="chip fixed">로그아웃</span><span class="chip fixed">권한별 홈 이동</span></div>
+            </article>
+            <article class="panel">
+              <h3>회원가입/본인인증</h3>
+              <ul class="tight-list">
+                <li>일반 회원가입, 간편가입, 기업회원 가입</li>
+                <li>본인인증, 휴대폰 인증, 인증 실패 재시도</li>
+                <li>이용약관, 개인정보, 마케팅 수신 동의</li>
+              </ul>
+              <div class="chip-line"><span class="chip fixed">네이버</span><span class="chip fixed">카카오</span><span class="chip fixed">구글</span><span class="chip fixed">애플</span></div>
+            </article>
+            <article class="panel">
+              <h3>아이디/비밀번호</h3>
+              <ul class="tight-list">
+                <li>아이디 찾기: 이름, 휴대폰, 이메일 확인</li>
+                <li>비밀번호 찾기: 인증번호, 재설정, 완료</li>
+                <li>잠금 계정 해제와 관리자 임시 비밀번호 발급</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>회원탈퇴</h3>
+              <ul class="tight-list">
+                <li>환불 가능 결제, 구독, 미처리 문의 확인</li>
+                <li>보존 정보와 즉시 삭제 정보 구분</li>
+                <li>탈퇴 완료 후 재가입 제한 정책 표시</li>
+              </ul>
+              <span class="status red">환불 확인 필요</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-dashboard">
+          <div class="page-head">
+            <div>
+              <h1>관리자 대시보드</h1>
+              <p>4단 그리드 기준으로 운영 지표를 좁은 간격으로 배치합니다.</p>
+            </div>
+            <button class="primary" data-view="bulk">DB 대량관리 열기</button>
+          </div>
+          <div class="grid-four metric-grid">
+            <article class="metric"><span>신규 회원</span><strong>45</strong><em>AI 번역 7 · 시험 12</em></article>
+            <article class="metric"><span>시험 접수</span><strong>18</strong><em>접수중 9 · 응시예정 6</em></article>
+            <article class="metric"><span>결제/환불</span><strong>23</strong><em>미결제 4 · 환불 2</em></article>
+            <article class="metric"><span>처리 대기</span><strong>31</strong><em>채점 12 · 문의 19</em></article>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>회원/전문가 승인</h3>
+              <ul class="tight-list">
+                <li>전문가 승인, 반려, 보류, 재심사</li>
+                <li>프로필 학력/경력/저서/해외거주 증빙</li>
+                <li>변경 이력과 관리자 메모</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>시험 운영</h3>
+              <ul class="tight-list">
+                <li>시험 등록, 일정, 접수기간, 응시료</li>
+                <li>번역형/프롬프트형/단답형 문제 연결</li>
+                <li>결과 공개와 자격증 발급</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>결제/정산</h3>
+              <ul class="tight-list">
+                <li>신용카드, 페이, 포인트, 구독</li>
+                <li>환불 가능 조건과 정산 상태</li>
+                <li>전문가 견적 요청</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>양식/AI</h3>
+              <ul class="tight-list">
+                <li>양식, 템플릿, 추천 서식</li>
+                <li>ChatGPT, Gemini, wrtn., 기타 AI</li>
+                <li>작업 요청과 번역/편집 패널</li>
+              </ul>
+            </article>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>빈 상태</h3>
+              <p>데이터 없음, 결과 없음, 파일 없음 상태를 각 화면에 표시합니다.</p>
+              <button class="ghost small" id="emptyStateBtn">빈 상태 보기</button>
+            </article>
+            <article class="panel">
+              <h3>오류 상태</h3>
+              <p>저장 실패, 업로드 실패, 결제 실패, AI 처리 실패를 안내합니다.</p>
+              <button class="ghost small" id="errorStateBtn">오류 상태 보기</button>
+            </article>
+            <article class="panel">
+              <h3>권한 없음</h3>
+              <p>역할에 맞지 않는 관리자/정산/시스템 메뉴는 숨김 처리합니다.</p>
+              <button class="ghost small" id="permissionBtn">권한 점검</button>
+            </article>
+            <article class="panel">
+              <h3>감사 로그</h3>
+              <p>회원 상태, 결제 상태, 시험 상태 변경 이력을 남깁니다.</p>
+              <button class="ghost small" id="auditBtn">로그 기록</button>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-examinee">
+          <div class="page-head">
+            <div>
+              <h1>수험생 홈</h1>
+              <p>시험 접수부터 결제, 응시, 결과, 자격증, 마이페이지, 1:1 문의까지 연결합니다.</p>
+            </div>
+            <button class="primary" data-view="checkout">결제 화면</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>시험 접수</h3>
+              <ul class="tight-list">
+                <li>접수 목록, 접수 상세, 신청 팝업</li>
+                <li>접수 정보 변경, 변경 확인, 접수 취소</li>
+                <li>환불 가능 여부와 접수 마감 상태</li>
+              </ul>
+              <div class="chip-line"><span class="chip fixed">번역형</span><span class="chip fixed">음성/영상 번역</span><span class="chip fixed">웹툰 번역</span></div>
+            </article>
+            <article class="panel">
+              <h3>시험 응시</h3>
+              <ul class="tight-list">
+                <li>응시 가능한 시험 목록, 시작 전 안내</li>
+                <li>남은 시간, 전체화면, 다음 차시 이동</li>
+                <li>답안 임시저장, 자동저장, 제출 확인</li>
+              </ul>
+              <span class="status purple">자동저장 00:20</span>
+            </article>
+            <article class="panel">
+              <h3>결과/자격증</h3>
+              <ul class="tight-list">
+                <li>합격, 불합격, 채점중 상태</li>
+                <li>점수, 평가 코멘트, 결과 공개일</li>
+                <li>자격증 신청, 입금대기, 제작중, 배송중, 발급완료</li>
+              </ul>
+              <div class="chip-line"><span class="chip fixed">합격</span><span class="chip fixed">채점중</span><span class="chip fixed">재발급</span></div>
+            </article>
+            <article class="panel">
+              <h3>마이페이지/문의</h3>
+              <ul class="tight-list">
+                <li>기본정보, 접수 내역, 결제 내역</li>
+                <li>1:1 문의 작성, 답변 확인, 오류 신고</li>
+                <li>AI 작업실 구매 내역과 장바구니</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-author">
+          <div class="page-head">
+            <div>
+              <h1>출제자 업무</h1>
+              <p>번역형, 프롬프트형, 단답형 문제를 작성하고 관리자 검수로 넘깁니다.</p>
+            </div>
+            <button class="primary" id="submitQuestionBtn">최종 제출</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>업무 목록</h3>
+              <ul class="tight-list">
+                <li>배정 시험명, 회차, 등급, 언어쌍</li>
+                <li>대/중/소분류, 난이도, 배점</li>
+                <li>마감일, 임시저장, 제출 상태</li>
+              </ul>
+              <div class="chip-line"><span class="chip fixed">한→영</span><span class="chip fixed">영→한</span><span class="chip fixed">한→중</span></div>
+            </article>
+            <article class="panel">
+              <h3>번역형 문제</h3>
+              <div class="field-stack">
+                <label>지문<textarea>원문 지문과 번역 조건을 입력합니다.</textarea></label>
+                <label>평가기준<input value="정확성 40, 표현 30, 용어 30"></label>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>프롬프트형 문제</h3>
+              <ul class="tight-list">
+                <li>프롬프트 단계, 입력 유형, 보기</li>
+                <li>평가 요소, 답변 예시, 금지 조건</li>
+                <li>미리보기와 채점 기준 연결</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>단답형/반려 재제출</h3>
+              <ul class="tight-list">
+                <li>정답, 해설, 첨부파일</li>
+                <li>반려 사유 확인, 수정 이력</li>
+                <li>재제출 후 관리자 검수 대기</li>
+              </ul>
+              <span class="status orange">반려 수정 2건</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-grader">
+          <div class="page-head">
+            <div>
+              <h1>채점자 업무</h1>
+              <p>배정 답안을 확인하고 점수, 코멘트, 평가서를 저장합니다.</p>
+            </div>
+            <button class="primary" id="completeGradeBtn">채점완료</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>채점 대상 시험</h3>
+              <ul class="tight-list">
+                <li>AITP 번역 전문2급 4회차</li>
+                <li>배정 24건, 미채점 7건, 보류 1건</li>
+                <li>마감 D-2, 블라인드 채점 적용</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>답안 채점</h3>
+              <div class="field-stack">
+                <label>점수<input value="86"></label>
+                <label>코멘트<textarea>용어 일관성은 좋지만 일부 문장 연결이 어색합니다.</textarea></label>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>평가서</h3>
+              <ul class="tight-list">
+                <li>항목별 점수, 총평, 보완 의견</li>
+                <li>임시저장, 제출 전 확인 팝업</li>
+                <li>완료 후 수정 가능 정책 표시</li>
+              </ul>
+              <span class="status green">임시저장됨</span>
+            </article>
+            <article class="panel">
+              <h3>채점 내역</h3>
+              <ul class="tight-list">
+                <li>번역형, 프롬프트형, 단답형 필터</li>
+                <li>완료/보류/반려 상태</li>
+                <li>관리자 재검토 요청 확인</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-adminOps">
+          <div class="page-head">
+            <div>
+              <h1>관리자 운영 메뉴</h1>
+              <p>관리자 목차에 있는 회원, 그룹, 시험, 문제, 채점, 결제, 자격증, 코드, 문의, 통계를 한 화면에 배치했습니다.</p>
+            </div>
+            <button class="primary" data-view="bulk">대량관리</button>
+          </div>
+          <div class="admin-menu-grid">
+            <article class="panel"><h3>회원/그룹/관리자</h3><p>회원 상세, 그룹관리, 관리자 계정, 권한, 활동, 결제, 문의, 자격증 탭.</p><div class="chip-line"><span class="chip fixed">회원관리</span><span class="chip fixed">그룹관리</span><span class="chip fixed">관리자 관리</span></div></article>
+            <article class="panel"><h3>전문가 승인</h3><p>승인, 반려, 보류, 재심사, 관리자 메모, 프로필 변경 이력.</p><div class="chip-line"><span class="chip fixed">승인</span><span class="chip fixed">반려</span><span class="chip fixed">보류</span><span class="chip fixed">재심사</span></div></article>
+            <article class="panel"><h3>시험/일정</h3><p>시험 신규 등록, 시험 일정 관리, 시험 결과 관리, 접수기간, 응시료, 환불 규칙, 결과 공개일.</p></article>
+            <article class="panel"><h3>문제관리/출제 검수</h3><p>문제관리, 문제은행, 출제 검수, 반려 사유, 승인, 미리보기, 첨부파일.</p></article>
+            <article class="panel"><h3>채점 배정</h3><p>채점자 배정, 평가서 상태, 재검토 요청, 완료 후 수정 정책.</p></article>
+            <article class="panel"><h3>결제/정산/환불</h3><p>결제완료, 미결제, 환불, 구독중, 포인트, 전문가 견적 요청.</p><div class="chip-line"><span class="chip fixed">신용카드</span><span class="chip fixed">페이</span><span class="chip fixed">포인트</span><span class="chip fixed">구독</span></div></article>
+            <article class="panel"><h3>자격증</h3><p>신청, 입금대기, 제작중, 배송중, 발급완료, 재발급, 파일 관리.</p></article>
+            <article class="panel"><h3>코드/카테고리</h3><p>대분류, 중분류, 소분류, 코드값, 노출 순서, 사용 여부.</p></article>
+            <article class="panel"><h3>문의/알림</h3><p>1:1 문의, 오류신고, 이메일, SMS, 알림 발송, 발송 대기.</p></article>
+            <article class="panel"><h3>통계/감사 로그</h3><p>회원, 시험, 결제, 채점, AI 작업 지표와 변경 이력.</p></article>
+            <article class="panel"><h3>파일 업로드</h3><p>업로드 성공/실패, 실패 사유, 처리결과 테이블, 엑셀 다운로드.</p></article>
+            <article class="panel"><h3>상태 화면</h3><p>데이터 없음, 권한 없음, 저장 실패, 업로드 실패, 결제 실패.</p></article>
+            <article class="panel"><h3>확인 팝업</h3><p>삭제, 저장, 반려, 승인, 제출 확인 팝업과 처리 후 토스트를 공통 동작으로 사용합니다.</p></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-bulk">
+          <div class="page-head">
+            <div>
+              <h1>회원관리</h1>
+              <p>DB페이지_v2.html의 탭, 필터, 컬럼, 샘플 데이터를 반영했습니다.</p>
+            </div>
+            <button class="primary small" id="saveBulkBtn">저장</button>
+          </div>
+
+          <div class="tab-strip tabs--box" id="bulkTabs" role="tablist" aria-label="DB 대량관리 탭">
+            <button class="active" data-tab="전체" role="tab" aria-selected="true">전체</button>
+            <button data-tab="회원관리" role="tab" aria-selected="false">회원관리</button>
+            <button data-tab="활동관리" role="tab" aria-selected="false">활동관리</button>
+            <button data-tab="결제관리" role="tab" aria-selected="false">결제관리</button>
+            <button data-tab="1:1 문의 관리" role="tab" aria-selected="false">1:1 문의 관리</button>
+            <button data-tab="통계" role="tab" aria-selected="false">통계</button>
+          </div>
+
+          <div class="site-chips" id="siteChips">
+            <span>홈페이지</span>
+            <button class="active filter-chip" data-site="전체" aria-pressed="true">전체 <b>45</b></button>
+            <button class="filter-chip" data-site="AI 번역" aria-pressed="false">AI 번역 <b>7</b></button>
+            <button class="filter-chip" data-site="통독" aria-pressed="false">통독문서 <b>10</b></button>
+            <button class="filter-chip" data-site="교육" aria-pressed="false">교육센터 <b>10</b></button>
+            <button class="filter-chip" data-site="전시" aria-pressed="false">전시/행사 <b>6</b></button>
+            <button class="filter-chip" data-site="시험" aria-pressed="false">시험사이트 <b>12</b></button>
+          </div>
+
+          <section class="filter-panel">
+            <div class="filter-title">
+              <button id="toggleFilters">⌃ 선택된 검색조건 <span id="activeFilterCount">0</span></button>
+              <div>
+                <button class="ghost small" id="resetFilters">초기화</button>
+                <button class="primary small" id="applyFilters">검색</button>
+              </div>
+            </div>
+            <div class="filter-grid" id="filterGrid"></div>
+          </section>
+
+          <section class="table-panel">
+            <div class="table-toolbar">
+              <strong>전체정보 <span id="rowCount">15</span>건</strong>
+              <div class="toolbar-actions">
+                <button class="ghost small" id="colorBtn">색상표 생성</button>
+                <button class="ghost small" id="uploadBtn">파일올리기 ▼</button>
+                <button class="ghost small" id="exportSelectedBtn">선택정보내기</button>
+                <button class="ghost small" id="mailBtn">이메일보내기</button>
+                <button class="ghost small" id="smsBtn">SMS전송</button>
+                <button class="ghost small" id="excelBtn">엑셀다운로드</button>
+              </div>
+            </div>
+            <div class="upload-state" id="uploadState" hidden>
+              <strong>업로드 처리 결과</strong>
+              <span>성공 12건 · 실패 2건 · 실패 사유: 중복 관리번호, 필수 연락처 누락</span>
+            </div>
+            <div class="wide-table-wrap">
+              <table class="wide-table">
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>관리번호</th>
+                    <th>사이트</th>
+                    <th>회원/구독</th>
+                    <th>이름</th>
+                    <th>이메일/휴대폰</th>
+                    <th>주소</th>
+                    <th>그룹/사업자</th>
+                    <th>가입/채널</th>
+                    <th>기기</th>
+                    <th>로그인/체류</th>
+                    <th>전문가</th>
+                    <th>알림</th>
+                    <th>서비스</th>
+                    <th>변환</th>
+                    <th>언어쌍</th>
+                    <th>매칭</th>
+                    <th>시험</th>
+                    <th>등급</th>
+                    <th>결제</th>
+                    <th>분류</th>
+                    <th>금액</th>
+                    <th>문의</th>
+                  </tr>
+                </thead>
+                <tbody id="memberRows"></tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <button disabled>«</button><button disabled>‹</button><button class="active">1</button><button>2</button><button>3</button><button>›</button><button>»</button>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-exam">
+          <div class="page-head">
+            <div>
+              <h1>시험 운영 플로우</h1>
+              <p>수험생, 출제자, 채점자, 관리자 흐름을 한 화면에 연결했습니다.</p>
+            </div>
+            <button class="primary" id="startExamBtn">시험 시작</button>
+          </div>
+          <div class="flow-board">
+            <article class="flow-card">
+              <h3>수험생</h3>
+              <ol>
+                <li>시험 접수 목록</li>
+                <li>신청 팝업/접수 변경/취소</li>
+                <li>결제</li>
+                <li>시험 응시/자동저장/제출</li>
+                <li>결과 확인/자격증 신청</li>
+              </ol>
+              <button class="ghost small" data-modal="examinee">상세 보기</button>
+            </article>
+            <article class="flow-card">
+              <h3>출제자</h3>
+              <ol>
+                <li>출제 업무 선택</li>
+                <li>번역형/프롬프트형/단답형 작성</li>
+                <li>미리보기</li>
+                <li>임시저장/제출</li>
+                <li>반려 수정/재제출</li>
+              </ol>
+              <button class="ghost small" data-modal="author">상세 보기</button>
+            </article>
+            <article class="flow-card">
+              <h3>채점자</h3>
+              <ol>
+                <li>채점 대상 선택</li>
+                <li>답안/평가기준 확인</li>
+                <li>점수/코멘트 입력</li>
+                <li>평가서 팝업</li>
+                <li>채점완료</li>
+              </ol>
+              <button class="ghost small" data-modal="grader">상세 보기</button>
+            </article>
+            <article class="flow-card">
+              <h3>관리자</h3>
+              <ol>
+                <li>회원/전문가 승인</li>
+                <li>시험/문제/채점 관리</li>
+                <li>결제/정산/환불</li>
+                <li>자격증/문의/통계</li>
+                <li>양식/템플릿/DB 대량관리</li>
+              </ol>
+              <button class="ghost small" data-modal="admin">상세 보기</button>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-expert">
+          <div class="page-head">
+            <div>
+              <h1>전문가 프로필 관리</h1>
+              <p>2025 신규 전문가 등록 항목을 관리자 승인 프로세스와 연결합니다.</p>
+            </div>
+            <button class="primary" id="approveExpertBtn">승인 처리</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>학력</h3>
+              <div class="field-stack">
+                <label>학교<input value="한국대학교"></label>
+                <label>학과<input value="번역학과"></label>
+                <label>상태<select><option>졸업</option><option>휴학</option><option>재학</option></select></label>
+                <label>첨부파일<input value="degree.pdf"></label>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>저서/역서</h3>
+              <ul class="tight-list">
+                <li>저서명, 출판사, 출판일</li>
+                <li>ISBN, 역할, 첨부 증빙</li>
+                <li>관리자 검수 상태</li>
+              </ul>
+              <span class="status green">검수 완료</span>
+            </article>
+            <article class="panel">
+              <h3>해외거주 경험</h3>
+              <ul class="tight-list">
+                <li>국가, 사유, 출국일, 입국일</li>
+                <li>체류 증빙 파일</li>
+                <li>언어쌍 추천 반영</li>
+              </ul>
+              <div class="chip-line"><span class="chip fixed">영→한</span><span class="chip fixed">한→영</span></div>
+            </article>
+            <article class="panel">
+              <h3>경력</h3>
+              <ul class="tight-list">
+                <li>회사, 부서, 직위, 재직 상태</li>
+                <li>입사년도, 퇴사년도, 첨부파일</li>
+                <li>등급 산정과 평점 표시</li>
+              </ul>
+              <span class="status purple">Lv.A · 4.7</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-workspace">
+          <div class="page-head">
+            <div>
+              <h1>창작작업실</h1>
+              <p>figma_pdf/2025의 작업 유형, 카테고리, AI, 파일/텍스트 입력, 추천 서식을 반영했습니다.</p>
+            </div>
+            <button class="primary" id="applyWorkBtn">적용</button>
+          </div>
+          <div class="workspace-grid">
+            <section class="panel">
+              <h3>작업 유형</h3>
+              <div class="chip-grid" id="workTypeChips"></div>
+              <h3>작업 방식</h3>
+              <div class="option-stack">
+                <label><input type="radio" name="workMode" checked> 보유한 양식에 텍스트 입력</label>
+                <label><input type="radio" name="workMode"> 나만의 양식 만들기</label>
+                <label><input type="radio" name="workMode"> 양식 생성 후 내용 작성</label>
+                <label><input type="radio" name="workMode"> 내용 작성 후 검수 받기</label>
+              </div>
+            </section>
+            <section class="panel">
+              <h3>설정</h3>
+              <div class="form-grid compact-form">
+                <label>대분류<select><option>법률</option><option>교육</option><option>시험</option></select></label>
+                <label>중분류<select><option>국내 법률</option><option>온라인</option></select></label>
+                <label>소분류<select><option>고소장</option><option>초급</option></select></label>
+                <label>에디터<select><option>사용</option><option>미사용</option></select></label>
+              </div>
+              <div class="chip-line">
+                <span class="chip fixed">법률</span><span class="chip fixed">국내 법률</span><span class="chip fixed">고소장</span><span class="chip fixed">문서에디터</span>
+              </div>
+              <div class="option-stack two">
+                <label><input type="checkbox" checked> ChatGPT</label>
+                <label><input type="checkbox"> Gemini</label>
+                <label><input type="checkbox"> wrtn.</label>
+                <label><input type="checkbox"> 기타 AI</label>
+                <label><input type="checkbox" checked> 검수 요청</label>
+                <label><input type="checkbox"> 고급전문가</label>
+                <label><input type="checkbox"> 긴급</label>
+                <label><input type="checkbox" checked> 추천 서식</label>
+              </div>
+            </section>
+            <section class="panel double">
+              <h3>파일/텍스트 입력</h3>
+              <textarea id="workInput">계약서 초안을 검토하고 핵심 위험 조항을 정리해줘.</textarea>
+              <div class="recommend-row">
+                <button class="ghost small">AI 추천 관련 서식</button>
+                <button class="ghost small" id="tempSaveBtn">임시저장</button>
+                <button class="ghost small" data-view="checkout">장바구니</button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-translation">
+          <div class="page-head">
+            <div>
+              <h1>메타-T 번역 / 번역편집</h1>
+              <p>원문, AI 번역기, 비교 번역기, 에디터를 4영역으로 배치했습니다.</p>
+            </div>
+            <button class="primary" id="saveTranslationBtn">저장</button>
+          </div>
+          <div class="tab-strip compact-tabs tabs--underline" role="tablist" aria-label="메타-T 번역 유형">
+            <button class="active" role="tab" aria-selected="true">동시통역</button><button role="tab" aria-selected="false">문서번역</button><button role="tab" aria-selected="false">YouTube</button><button role="tab" aria-selected="false">기타</button><button role="tab" aria-selected="false">웹툰번역</button>
+          </div>
+          <div class="meta-filter-row">
+            <div><strong>목적</strong><span class="chip fixed">아나운서</span><span class="chip fixed">관광가이드</span><span class="chip fixed">큐레이터</span><span class="chip fixed">안내</span></div>
+            <div><strong>언어</strong><span class="chip fixed">영어</span><span class="chip fixed">중국어</span><span class="chip fixed">일어</span><span class="chip fixed">아랍어</span><span class="chip fixed">베트남어</span></div>
+            <div><strong>변환</strong><span class="chip fixed">STT</span><span class="chip fixed">TTS</span><span class="chip fixed">TTT</span><span class="chip fixed">STS</span></div>
+            <div><strong>카테고리</strong><span class="chip fixed">법률</span><span class="chip fixed">국내 법률</span><span class="chip fixed">고소장</span></div>
+          </div>
+          <div class="translation-grid">
+            <article class="panel">
+              <h3>원문 텍스트</h3>
+              <div class="form-grid compact-form">
+                <label>출발어<select><option>영어</option><option>중국어</option><option>일어</option></select></label>
+                <label>도착어<select><option>한국어</option><option>영어</option><option>중국어</option></select></label>
+              </div>
+              <textarea>Welcome to the AITP certification exam. Please read all instructions before starting.</textarea>
+              <button class="ghost small">음성 내보내기</button>
+            </article>
+            <article class="panel">
+              <h3>AI 번역기</h3>
+              <select><option>ChatGPT · 영어 → 한국어</option><option>Gemini · 영어 → 한국어</option></select>
+              <div class="chip-line"><span class="chip fixed">AI 설정</span><span class="chip fixed">검수 요청</span><span class="chip fixed">긴급</span></div>
+              <p class="result-box">AITP 자격시험에 오신 것을 환영합니다. 시작하기 전에 모든 안내를 읽어주세요.</p>
+            </article>
+            <article class="panel">
+              <h3>비교 번역기</h3>
+              <select><option>DeepL 비교 결과</option><option>Gemini 비교 결과</option></select>
+              <div class="chip-line"><span class="chip fixed">v2.1</span><span class="chip fixed">처리 12초</span><span class="chip fixed">용어 비교</span></div>
+              <p class="result-box muted">AITP 인증 시험에 오신 것을 환영합니다. 시작 전 모든 지시사항을 확인하십시오.</p>
+            </article>
+            <article class="panel">
+              <h3>에디터</h3>
+              <textarea>AITP 자격시험에 오신 것을 환영합니다. 시험을 시작하기 전에 모든 안내사항을 확인해 주세요.</textarea>
+              <div class="chip-line"><span class="chip fixed">맞춤법 후보</span><span class="chip fixed">메모</span><span class="chip fixed">수정 강조</span><span class="chip fixed">서식/링크/인용</span></div>
+              <div class="recommend-row"><button class="ghost small">추천 단어</button><button class="primary small" data-view="checkout">결제</button></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-forms">
+          <div class="page-head">
+            <div>
+              <h1>양식관리 / 템플릿</h1>
+              <p>관리자가 만든 양식이 창작작업실과 메타-T 번역 입력 구조로 연결됩니다.</p>
+            </div>
+            <button class="primary" id="newFormBtn">신규 양식</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel form-card">
+              <h3>프롬프트 첫화면</h3>
+              <p>작업 유형, 카테고리, AI 엔진, 검수 옵션을 사용자 첫 화면에 노출.</p>
+              <span class="status blue">게시중</span>
+            </article>
+            <article class="panel form-card">
+              <h3>고소장 작성 양식</h3>
+              <p>법률 > 국내 법률 > 고소장. 필드 12개, 추천 서식 4개.</p>
+              <span class="status green">미리보기 가능</span>
+            </article>
+            <article class="panel form-card">
+              <h3>메타-T 문서번역</h3>
+              <p>언어쌍, 번역기, 비교 번역기, 에디터 연결.</p>
+              <span class="status purple">AI 연결</span>
+            </article>
+            <article class="panel form-card">
+              <h3>템플릿 양식 관리자</h3>
+              <p>템플릿명, 가격, 추천 노출, 버전 관리.</p>
+              <span class="status orange">상품 연결</span>
+            </article>
+          </div>
+          <div class="panel">
+            <h3>양식 필드 편집</h3>
+            <div class="form-grid">
+              <label>양식명<input value="프롬프트 출제 설정"></label>
+              <label>카테고리<input value="시험 > 프롬프트 > 전문2급"></label>
+              <label>AI 엔진<select><option>ChatGPT, Gemini</option></select></label>
+              <label>게시상태<select><option>게시</option><option>비게시</option></select></label>
+              <label>검수옵션<select><option>검수 요청 사용</option></select></label>
+              <label>긴급옵션<select><option>사용</option></select></label>
+              <label>가격연결<input value="전문가 견적"></label>
+              <label>버전<input value="v1.2"></label>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-dataObjects">
+          <div class="page-head">
+            <div>
+              <h1>데이터 객체 / 통합DB 항목</h1>
+              <p>기준 문서 17장의 객체를 운영 화면과 DB 대량관리 화면에 연결합니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="syncDataBtn">객체 동기화</button>
+          </div>
+          <div class="grid-four object-grid">
+            <article class="panel"><h3>사용자/권한</h3><p>사용자, 전문가 프로필, 권한/역할, 알림/로그.</p><div class="chip-line"><span class="chip fixed rule-tag">사용자</span><span class="chip fixed rule-tag">권한/역할</span><span class="chip fixed rule-tag">알림/로그</span></div></article>
+            <article class="panel"><h3>시험 운영</h3><p>시험, 시험 일정, 접수, 문제, 답안, 채점, 평가서.</p><div class="chip-line"><span class="chip fixed rule-tag">시험</span><span class="chip fixed rule-tag">문제</span><span class="chip fixed rule-tag">답안</span><span class="chip fixed rule-tag">채점</span></div></article>
+            <article class="panel"><h3>결제/증명</h3><p>결제, 환불, 정산, 자격증, 장바구니 항목.</p><div class="chip-line"><span class="chip fixed rule-tag">결제</span><span class="chip fixed rule-tag">환불</span><span class="chip fixed rule-tag">정산</span><span class="chip fixed rule-tag">자격증</span></div></article>
+            <article class="panel"><h3>AI 작업</h3><p>카테고리, 코드/분류, 양식, 템플릿, AI 엔진, 작업 요청, 번역 결과.</p><div class="chip-line"><span class="chip fixed rule-tag">AI 엔진</span><span class="chip fixed rule-tag">작업 요청</span><span class="chip fixed rule-tag">번역 결과</span></div></article>
+          </div>
+          <section class="table-panel spaced-panel">
+            <div class="table-toolbar"><strong>객체별 화면 연결</strong><button class="ghost small btn btn--outline btn--sm" id="dataAuditBtn">누락 점검</button></div>
+            <div class="wide-table-wrap table-scroll">
+              <table class="wide-table compact-object-table">
+                <thead>
+                  <tr><th>객체</th><th>주요 필드</th><th>연결 화면</th><th>상태</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>전문가 프로필</td><td>학력, 저서/역서, 해외거주, 경력</td><td>전문가 프로필 관리, 관리자 운영</td><td><span class="state-pill">고정</span></td></tr>
+                  <tr><td>파일 업로드 결과</td><td>파일명, 성공/실패, 실패 사유, 처리 건수</td><td>DB 대량관리, 파일 업로드 분류</td><td><span class="state-pill">고정</span></td></tr>
+                  <tr><td>번역 결과</td><td>원문, AI 번역, 비교 번역, 편집본, 버전</td><td>메타-T 번역 / 번역편집</td><td><span class="state-pill off">준고정</span></td></tr>
+                  <tr><td>장바구니 항목</td><td>첨부 파일명, 언어쌍, 변환 유형, 가격</td><td>장바구니 / 결제</td><td><span class="state-pill">고정</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-components">
+          <div class="page-head">
+            <div>
+              <h1>공통 컴포넌트 적용 현황</h1>
+              <p>design_system_major의 버튼, 입력, 탭, 칩, 상태 pill, 테이블, 토스트, 모달 규칙을 화면 단위로 추적합니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="componentCheckBtn">컴포넌트 점검</button>
+          </div>
+          <div class="component-matrix">
+            <article class="panel"><h3>Shell / Navigation</h3><p>AppShell, AdminShell, RoleSwitcher, SearchHeader, Rail.</p><span class="state-pill">적용</span></article>
+            <article class="panel"><h3>Filter / Table</h3><p>FilterPanel, LargeCheckboxGroup, DataTable, WideDataTable, Pagination.</p><span class="state-pill">적용</span></article>
+            <article class="panel"><h3>Feedback</h3><p>StatusBadge, ConfirmDialog, EmptyState, FileUploadDropzone, ProcessingResultTable.</p><span class="state-pill off">보강중</span></article>
+            <article class="panel"><h3>Exam</h3><p>QuestionEditor, ExamTimer, AnswerEditor, ScoringRubric, CertificateApplicationForm.</p><span class="state-pill off">보강중</span></article>
+            <article class="panel"><h3>Template / AI</h3><p>TemplateCard, TemplateManagerTable, PromptEditor, AIModelSelector.</p><span class="state-pill">적용</span></article>
+            <article class="panel"><h3>Workspace</h3><p>WorkspaceCategoryTabs, TranslationWorkbench, CartSummary, PaymentSummary.</p><span class="state-pill">적용</span></article>
+            <article class="panel"><h3>Accessibility</h3><p>aria-selected, aria-pressed, aria-live, aria-modal, focus-visible.</p><span class="state-pill">적용</span></article>
+            <article class="panel"><h3>Tokens</h3><p>색상, 간격, 높이, radius는 DS 토큰 alias로 매핑.</p><span class="state-pill">적용</span></article>
+          </div>
+          <section class="panel spaced-panel">
+            <h3>공통 컴포넌트 전체 목록</h3>
+            <div class="component-chip-list">
+              <span class="chip fixed">AppShell</span><span class="chip fixed">AdminShell</span><span class="chip fixed">RoleSwitcher</span><span class="chip fixed">RoleHome</span><span class="chip fixed">SearchHeader</span><span class="chip fixed">FilterPanel</span><span class="chip fixed">LargeCheckboxGroup</span><span class="chip fixed">DataTable</span><span class="chip fixed">WideDataTable</span><span class="chip fixed">StatusBadge</span><span class="chip fixed">ConfirmDialog</span><span class="chip fixed">EmptyState</span><span class="chip fixed">Pagination</span><span class="chip fixed">FileUploadDropzone</span><span class="chip fixed">UploadedFileList</span><span class="chip fixed">ProcessingResultTable</span><span class="chip fixed">ExcelActionBar</span><span class="chip fixed">PromptEditor</span><span class="chip fixed">QuestionEditor</span><span class="chip fixed">ExamTimer</span><span class="chip fixed">AnswerEditor</span><span class="chip fixed">ScoringRubric</span><span class="chip fixed">TemplateCard</span><span class="chip fixed">TemplateManagerTable</span><span class="chip fixed">WorkspaceCategoryTabs</span><span class="chip fixed">AIModelSelector</span><span class="chip fixed">AdminDashboardSummary</span><span class="chip fixed">PaymentSummary</span><span class="chip fixed">CertificateApplicationForm</span><span class="chip fixed">CartSummary</span><span class="chip fixed">TranslationWorkbench</span>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-uploadClassification">
+          <div class="page-head">
+            <div>
+              <h1>파일 업로드 / 분류 검토</h1>
+              <p>권장 라우트의 upload-classification 흐름을 정적 화면으로 구현했습니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="uploadReviewBtn">검토 완료</button>
+          </div>
+          <div class="workspace-grid">
+            <article class="panel">
+              <h3>업로드 영역</h3>
+              <div class="dropzone" role="button" tabindex="0">
+                <strong>파일올리기</strong>
+                <span>CSV, XLSX, PDF, DOCX, 음성/영상 파일</span>
+              </div>
+              <div class="chip-line"><span class="chip fixed rule-tag">회원 DB</span><span class="chip fixed rule-tag">문제은행</span><span class="chip fixed rule-tag">교육자료</span></div>
+            </article>
+            <article class="panel">
+              <h3>자동 분류</h3>
+              <ul class="tight-list">
+                <li>분류체계, 시험운영, 교육자료, 문제은행</li>
+                <li>서비스기획, 통합DB 항목사전</li>
+                <li>중복 관리번호와 필수 필드 누락 탐지</li>
+              </ul>
+            </article>
+            <article class="panel double">
+              <h3>처리 결과</h3>
+              <div class="processing-list">
+                <div><span class="state-pill">성공</span><strong>member_2026.xlsx</strong><em>12건 반영</em></div>
+                <div><span class="state-pill off">검토중</span><strong>question_bank.csv</strong><em>언어쌍 2건 확인 필요</em></div>
+                <div><span class="state-pill danger">실패</span><strong>payment_old.csv</strong><em>필수 결제상태 누락</em></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-routePolicy">
+          <div class="page-head">
+            <div>
+              <h1>라우트 / 정책 / 2025 관리자 개편</h1>
+              <p>기준 문서 19장, 20장, 21장과 2025 관리자 개편 목차를 실제 화면 목록으로 보존합니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="routeAuditBtn">라우트 점검</button>
+          </div>
+
+          <div class="tab-strip tabs--segmented" role="tablist" aria-label="라우트 정책 구분">
+            <button class="active" role="tab" aria-selected="true">권장 라우트</button>
+            <button role="tab" aria-selected="false">정책/상태 전이</button>
+            <button role="tab" aria-selected="false">2025 관리자 개편</button>
+          </div>
+
+          <div class="route-map-grid">
+            <article class="panel">
+              <h3>인증 라우트</h3>
+              <div class="route-list">
+                <span>auth/login</span><span>auth/signup</span><span>auth/find-id</span><span>auth/reset-password</span><span>auth/withdrawal</span>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>수험생 라우트</h3>
+              <div class="route-list">
+                <span>examinee/exams</span><span>examinee/exams/[id]/apply</span><span>examinee/exams/[id]/take</span><span>examinee/results</span><span>examinee/certificates</span><span>examinee/mypage</span>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>출제자 라우트</h3>
+              <div class="route-list">
+                <span>author/dashboard</span><span>author/questions</span><span>author/questions/new</span><span>author/questions/[id]</span><span>author/history</span>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>채점자 라우트</h3>
+              <div class="route-list">
+                <span>grader/dashboard</span><span>grader/assignments</span><span>grader/assignments/[id]</span><span>grader/history</span>
+              </div>
+            </article>
+            <article class="panel double">
+              <h3>관리자 라우트</h3>
+              <div class="route-list columns">
+                <span>admin/dashboard</span><span>admin/members</span><span>admin/members/[id]</span><span>admin/groups</span><span>admin/admins</span><span>admin/experts</span><span>admin/exams</span><span>admin/exams/new</span><span>admin/questions</span><span>admin/grading</span><span>admin/payments</span><span>admin/settlements</span><span>admin/certificates/[id]</span><span>admin/categories</span><span>admin/codes</span><span>admin/inquiries</span><span>admin/statistics</span><span>admin/forms</span><span>admin/forms/new</span><span>admin/forms/[id]</span><span>admin/forms/prompts</span><span>admin/templates</span><span>admin/templates/[id]</span><span>admin/bulk-management</span>
+              </div>
+            </article>
+            <article class="panel double">
+              <h3>작업실/업로드 라우트</h3>
+              <div class="route-list columns">
+                <span>workspace</span><span>workspace/create</span><span>workspace/meta-translation</span><span>workspace/editor</span><span>workspace/files</span><span>workspace/cart</span><span>workspace/checkout</span><span>upload-classification/upload</span><span>upload-classification/review</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="grid-four account-grid">
+            <article class="panel">
+              <h3>권한 정책</h3>
+              <p>역할별 메뉴/버튼 숨김, 읽기/수정 범위, 관리자 전용 정산/시스템 메뉴 보호.</p>
+              <div class="chip-line"><span class="state-pill">읽기</span><span class="state-pill off">수정 제한</span><span class="state-pill danger">접근 차단</span></div>
+            </article>
+            <article class="panel">
+              <h3>전문가 승인 전이</h3>
+              <p>신청, 보류, 승인, 반려, 재심사, 관리자 메모와 변경 이력 저장.</p>
+              <div class="chip-line"><span class="chip fixed">신청</span><span class="chip fixed">보류</span><span class="chip fixed">승인</span><span class="chip fixed">반려</span><span class="chip fixed">재심사</span></div>
+            </article>
+            <article class="panel">
+              <h3>시험 등록 정책</h3>
+              <p>시험명, 회차, 등급, 일정, 접수기간, 응시료, 환불 규칙, 결과 공개일 필드.</p>
+            </article>
+            <article class="panel">
+              <h3>결제/정산/환불 전이</h3>
+              <p>결제완료, 미결제, 환불, 구독중, 포인트 사용, 전문가 견적 요청.</p>
+              <div class="chip-line"><span class="chip fixed">결제완료</span><span class="chip fixed">미결제</span><span class="chip fixed">환불</span><span class="chip fixed">구독중</span></div>
+            </article>
+          </div>
+
+          <section class="table-panel spaced-panel">
+            <div class="table-toolbar"><strong>2025 관리자 개편 상세</strong><button class="ghost small btn btn--outline btn--sm" id="admin2025Btn">개편 항목 확인</button></div>
+            <div class="wide-table-wrap table-scroll">
+              <table class="wide-table compact-object-table">
+                <thead>
+                  <tr><th>개편 항목</th><th>화면 반영</th><th>상태</th><th>연결 메뉴</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>어드민 대시보드</td><td>운영 지표 4단 카드, 상태/오류/권한/감사 로그</td><td><span class="state-pill">고정</span></td><td>대시보드</td></tr>
+                  <tr><td>관리자 관리</td><td>관리자 계정, 권한, 그룹, 회원 상세 탭</td><td><span class="state-pill">고정</span></td><td>관리자 운영</td></tr>
+                  <tr><td>관리자 시험관리 신규</td><td>시험 신규 등록, 일정, 결과, 환불 규칙, 결과 공개일</td><td><span class="state-pill">고정</span></td><td>시험 운영</td></tr>
+                  <tr><td>관리자 자격증관리 상세</td><td>신청, 입금대기, 제작중, 배송중, 발급완료, 재발급</td><td><span class="state-pill">고정</span></td><td>자격증 상세</td></tr>
+                  <tr><td>관리자 카테고리 관리</td><td>대분류, 중분류, 소분류, 코드값, 노출 순서, 사용 여부</td><td><span class="state-pill">고정</span></td><td>카테고리 관리</td></tr>
+                  <tr><td>양식관리 목록/신규/상세</td><td>양식 카드, 신규 양식, 필드 편집, 게시/비게시</td><td><span class="state-pill">고정</span></td><td>양식/템플릿</td></tr>
+                  <tr><td>양식관리 프롬프트 첫화면</td><td>작업 유형, 카테고리, AI 엔진, 검수 옵션</td><td><span class="state-pill">고정</span></td><td>양식/템플릿</td></tr>
+                  <tr><td>템플릿 양식 관리자</td><td>템플릿명, 가격, 추천 노출, 버전 관리</td><td><span class="state-pill">고정</span></td><td>양식/템플릿</td></tr>
+                  <tr><td>회원관리 상세 전체</td><td>기본정보, 활동, 결제, 문의, 자격증, 승인 항목 패널</td><td><span class="state-pill">고정</span></td><td>회원 상세</td></tr>
+                  <tr><td>마이페이지 1920 참고</td><td>마이페이지, 접수 내역, 결제 내역, AI 작업 구매 내역</td><td><span class="state-pill">고정</span></td><td>마이페이지</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-memberDetail">
+          <div class="page-head">
+            <div>
+              <h1>회원관리 상세 전체</h1>
+              <p>회원 상세의 기본정보, 활동, 결제, 문의, 자격증, 승인 항목을 탭 없이 한 화면에서 확인합니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="saveMemberDetailBtn">회원 상세 저장</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel">
+              <h3>기본정보</h3>
+              <div class="field-stack">
+                <label>관리번호<input value="UI24980029"></label>
+                <label>회원유형<select><option>정식회원</option><option>일반회원</option><option>기업회원</option><option>전문가</option></select></label>
+                <label>이름/성별<input value="오승우 / F"></label>
+                <label>연락처<input value="user29@kakao.com · 010-6155-7303"></label>
+              </div>
+            </article>
+            <article class="panel">
+              <h3>활동</h3>
+              <ul class="tight-list">
+                <li>최근 로그인: 24.01.14 수 / 104m 24s</li>
+                <li>접근 기기: Mobile</li>
+                <li>가입 채널: 카카오</li>
+                <li>마케팅 동의: 문자 동의</li>
+              </ul>
+              <div class="chip-line"><span class="chip fixed">Mobile</span><span class="chip fixed">카카오</span><span class="chip fixed">문자 동의</span></div>
+            </article>
+            <article class="panel">
+              <h3>결제/환불</h3>
+              <ul class="tight-list">
+                <li>결제 상태: 환불</li>
+                <li>결제 분류: 시험응시료</li>
+                <li>구독: 베이직</li>
+                <li>환불 관련 탈퇴 확인 필요</li>
+              </ul>
+              <div class="chip-line"><span class="state-pill danger">환불</span><span class="chip fixed">시험응시료</span><span class="chip fixed">베이직</span></div>
+            </article>
+            <article class="panel">
+              <h3>문의/자격증/승인</h3>
+              <ul class="tight-list">
+                <li>문의 수: 0건</li>
+                <li>자격증: 신청 전</li>
+                <li>승인 항목: 정식회원 유지</li>
+                <li>관리자 메모와 감사 로그 연결</li>
+              </ul>
+              <button class="ghost small btn btn--outline btn--sm" id="memberAuditBtn">감사 로그</button>
+            </article>
+          </div>
+          <section class="table-panel spaced-panel">
+            <div class="table-toolbar"><strong>회원 상세 이력</strong><button class="ghost small btn btn--outline btn--sm" id="memberHistoryBtn">이력 추가</button></div>
+            <div class="wide-table-wrap table-scroll">
+              <table class="wide-table compact-object-table">
+                <thead><tr><th>일시</th><th>구분</th><th>변경 전</th><th>변경 후</th><th>처리자</th></tr></thead>
+                <tbody>
+                  <tr><td>2026-05-29 15:42</td><td>결제</td><td>결제완료</td><td><span class="state-pill danger">환불</span></td><td>admin01</td></tr>
+                  <tr><td>2026-05-29 15:40</td><td>권한</td><td>일반회원</td><td><span class="state-pill">정식회원</span></td><td>admin01</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-mypage">
+          <div class="page-head">
+            <div>
+              <h1>마이페이지 1920 참고</h1>
+              <p>수험생의 접수, 결제, 결과, 자격증, AI 작업 구매 내역을 1920px 밀도 기준으로 배치합니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="saveMypageBtn">마이페이지 저장</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel"><h3>접수 내역</h3><p>AITP 번역 전문2급 4회차 접수완료. 접수 변경/취소 가능 기간을 표시합니다.</p><div class="chip-line"><span class="state-pill">접수완료</span><span class="chip fixed">변경 가능</span></div></article>
+            <article class="panel"><h3>결제 내역</h3><p>시험응시료, 포인트 사용, 환불 가능 조건, 영수증 다운로드.</p><div class="chip-line"><span class="chip fixed">신용카드</span><span class="chip fixed">포인트</span><span class="state-pill off">환불 조건</span></div></article>
+            <article class="panel"><h3>결과/자격증</h3><p>합격/불합격, 점수, 채점중 상태, 자격증 신청 및 재발급.</p><div class="chip-line"><span class="chip fixed">채점중</span><span class="chip fixed">자격증 신청</span><span class="chip fixed">재발급</span></div></article>
+            <article class="panel"><h3>AI 작업 구매</h3><p>창작작업실, 메타-T 번역, 장바구니, 결제 완료 작업을 연결합니다.</p><div class="chip-line"><span class="chip fixed">메타-T</span><span class="chip fixed">문서번역</span><span class="chip fixed">에디터</span></div></article>
+          </div>
+          <section class="panel spaced-panel">
+            <h3>1:1 문의 / 알림</h3>
+            <div class="form-grid">
+              <label>문의 유형<select><option>시험문의</option><option>서비스문의</option><option>오류신고</option></select></label>
+              <label>상태<select><option>답변대기</option><option>답변완료</option></select></label>
+              <label>알림 수신<select><option>문자/메일 동의</option><option>미동의</option></select></label>
+              <label>최근 알림<input value="응시 안내 발송 완료"></label>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-certificateAdmin">
+          <div class="page-head">
+            <div>
+              <h1>관리자 자격증관리 상세</h1>
+              <p>자격증 신청부터 입금대기, 제작중, 배송중, 발급완료, 재발급까지 상태 전이를 관리합니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="saveCertificateBtn">자격증 저장</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel"><h3>신청 정보</h3><p>신청자, 시험명, 회차, 등급, 발급번호, 수령 주소를 관리합니다.</p><div class="chip-line"><span class="chip fixed">전문2급</span><span class="chip fixed">4회차</span></div></article>
+            <article class="panel"><h3>발급 상태</h3><p>입금대기, 제작중, 배송중, 발급완료, 재발급 상태를 변경합니다.</p><div class="chip-line"><span class="state-pill off">입금대기</span><span class="chip fixed">제작중</span><span class="chip fixed">배송중</span><span class="state-pill">발급완료</span></div></article>
+            <article class="panel"><h3>파일 관리</h3><p>증명서 PDF, 발급 원본, 재발급 신청서, 배송 라벨 파일을 저장합니다.</p><button class="ghost small btn btn--outline btn--sm" id="certificateFileBtn">파일 확인</button></article>
+            <article class="panel"><h3>재발급</h3><p>분실, 훼손, 개인정보 변경 사유와 재발급 비용/결제 상태를 관리합니다.</p><span class="state-pill danger">결제 필요</span></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-categoryAdmin">
+          <div class="page-head">
+            <div>
+              <h1>관리자 카테고리 / 코드 관리</h1>
+              <p>대분류, 중분류, 소분류, 코드값, 노출 순서, 사용 여부를 고정값 Chip과 테이블로 관리합니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="saveCategoryBtn">카테고리 저장</button>
+          </div>
+          <div class="grid-four">
+            <article class="panel"><h3>대분류</h3><div class="chip-line"><span class="chip fixed">교육</span><span class="chip fixed">비즈니스</span><span class="chip fixed">시험</span><span class="chip fixed">법률</span></div></article>
+            <article class="panel"><h3>중분류</h3><div class="chip-line"><span class="chip fixed">온라인</span><span class="chip fixed">오프라인</span><span class="chip fixed">국내 법률</span><span class="chip fixed">프롬프트</span></div></article>
+            <article class="panel"><h3>소분류</h3><div class="chip-line"><span class="chip fixed">초급</span><span class="chip fixed">중급</span><span class="chip fixed">고급</span><span class="chip fixed">고소장</span></div></article>
+            <article class="panel"><h3>사용 여부</h3><div class="chip-line"><span class="state-pill">사용</span><span class="state-pill off">검토중</span><span class="state-pill danger">중지</span></div></article>
+          </div>
+          <section class="table-panel spaced-panel">
+            <div class="table-toolbar"><strong>코드값 상세</strong><button class="ghost small btn btn--outline btn--sm" id="addCategoryBtn">코드 추가</button></div>
+            <div class="wide-table-wrap table-scroll">
+              <table class="wide-table compact-object-table">
+                <thead><tr><th>코드</th><th>대분류</th><th>중분류</th><th>소분류</th><th>노출 순서</th><th>상태</th></tr></thead>
+                <tbody>
+                  <tr><td>CAT-EDU-ON-BEG</td><td><span class="chip fixed">교육</span></td><td><span class="chip fixed">온라인</span></td><td><span class="chip fixed">초급</span></td><td>1</td><td><span class="state-pill">사용</span></td></tr>
+                  <tr><td>CAT-LAW-KR-COMP</td><td><span class="chip fixed">법률</span></td><td><span class="chip fixed">국내 법률</span></td><td><span class="chip fixed">고소장</span></td><td>2</td><td><span class="state-pill">사용</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-completionAudit">
+          <div class="page-head">
+            <div>
+              <h1>완료 체크리스트 / 반복 검증</h1>
+              <p>기준 문서 23장의 완료 항목을 현재 정적 산출물의 화면 증거와 연결합니다.</p>
+            </div>
+            <button class="primary btn btn--primary btn--md" id="runChecklistBtn">체크리스트 점검</button>
+          </div>
+          <div class="grid-four">
+            <article class="metric"><span>구현 파일</span><strong>3</strong><em>index.html · app.js · styles.css</em></article>
+            <article class="metric"><span>주요 화면</span><strong>22</strong><em>역할/관리자/AI/DB/정책/상세</em></article>
+            <article class="metric"><span>DB 샘플</span><strong>15</strong><em>DB페이지_v2 첫 페이지 반영</em></article>
+            <article class="metric"><span>검증 반복</span><strong>3+</strong><em>문법 · view · id · 키워드</em></article>
+          </div>
+          <section class="table-panel spaced-panel">
+            <div class="table-toolbar">
+              <strong>완료 체크리스트 증거</strong>
+              <div class="toolbar-actions">
+                <button class="ghost small btn btn--outline btn--sm" id="syntaxCheckBtn">문법 확인</button>
+                <button class="ghost small btn btn--outline btn--sm" id="viewCheckBtn">뷰 확인</button>
+                <button class="ghost small btn btn--outline btn--sm" id="chipCheckBtn">칩 확인</button>
+              </div>
+            </div>
+            <div class="wide-table-wrap table-scroll">
+              <table class="wide-table checklist-table">
+                <thead>
+                  <tr><th>체크 항목</th><th>화면 증거</th><th>검증 방법</th><th>상태</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>통합 문서 기준 구현 파일</td><td>index.html, app.js, styles.css</td><td>정적 파일 구조 유지</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>4단 그리드 CSS 토큰</td><td>grid-four, metric-grid, route-map-grid</td><td>repeat(4, minmax(0, 1fr))</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>관리자 고밀도 레이아웃</td><td>Rail, topbar, table-panel, wide-table</td><td>DB페이지_v2/DS 토큰 대조</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>DB 필터/컬럼/15행</td><td>회원관리, siteChips, filterGrid, memberRows</td><td>샘플 데이터 렌더링</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>역할별 메뉴 전환</td><td>roleSelect, roleMenuChips</td><td>역할 변경/칩 라우팅</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>수험생 플로우</td><td>수험생 홈, 마이페이지, 자격증 상세</td><td>접수/응시/결과/자격증 항목</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>출제자 플로우</td><td>출제자 업무</td><td>번역형/프롬프트형/단답형/반려</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>채점자 플로우</td><td>채점자 업무</td><td>점수/코멘트/평가서/완료</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>관리자 운영 기능</td><td>관리자 운영, 회원 상세, 카테고리, 자격증</td><td>개편 상세 표와 개별 화면</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>양식/템플릿</td><td>양식관리 / 템플릿</td><td>목록/신규/상세/프롬프트 첫화면</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>창작작업실</td><td>창작작업실</td><td>작업 유형/방식/AI/추천 서식</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>메타-T/번역편집</td><td>메타-T 번역 / 번역편집</td><td>4영역, 언어, 변환, 에디터 도구</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>장바구니/결제</td><td>장바구니 / 결제</td><td>전체 선택/삭제/포인트/구독/견적</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>파일 업로드/실패/결과</td><td>파일 업로드 / 분류 검토</td><td>성공/검토중/실패 처리 결과</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>엑셀/SMS/이메일 액션</td><td>회원관리 toolbar</td><td>toast 동작 연결</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>빈/오류/권한 상태</td><td>대시보드 상태 카드</td><td>버튼/토스트/상태 pill</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>DB 고정값 Chip</td><td>변환, 언어쌍, 카테고리, 결제수단</td><td>chip fixed 클래스 확인</td><td><span class="state-pill">완료</span></td></tr>
+                  <tr><td>design_system_major 참조</td><td>DS 토큰, btn/filter-chip/state-pill</td><td>--ds-color-* 토큰과 aria 속성</td><td><span class="state-pill">완료</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-checkout">
+          <div class="page-head">
+            <div>
+              <h1>장바구니 / 결제</h1>
+              <p>AI 작업, 번역, 에디팅, 검수 옵션을 결제 전 확인합니다.</p>
+            </div>
+            <button class="primary" id="payBtn">결제하기</button>
+          </div>
+          <div class="checkout-grid">
+            <section class="panel double">
+              <h3>장바구니</h3>
+              <div class="recommend-row">
+                <button class="ghost small btn btn--outline btn--sm" id="selectAllCartBtn">전체 선택</button>
+                <button class="ghost small btn btn--outline btn--sm" id="deleteCartBtn">선택 삭제</button>
+              </div>
+              <div class="cart-item">
+                <input type="checkbox" checked>
+                <div>
+                  <strong>메타-T 문서번역 · 계약서.pdf</strong>
+                  <p><span class="chip fixed">영→한</span> <span class="chip fixed">ChatGPT</span> <span class="chip fixed">DeepL 비교</span> <span class="chip fixed">에디터 사용</span> 12,400자</p>
+                </div>
+                <b>68,000원</b>
+              </div>
+              <div class="cart-item">
+                <input type="checkbox" checked>
+                <div>
+                  <strong>고소장 작성 양식 검수</strong>
+                  <p><span class="chip fixed">법률</span> <span class="chip fixed">국내 법률</span> <span class="chip fixed">고급전문가</span> 긴급 제외</p>
+                </div>
+                <b>120,000원</b>
+              </div>
+            </section>
+            <section class="panel">
+              <h3>결제 요약</h3>
+              <dl class="summary-list">
+                <dt>선택 작업</dt><dd>2건</dd>
+                <dt>작업 금액</dt><dd>188,000원</dd>
+                <dt>포인트 사용</dt><dd>-8,000원</dd>
+                <dt>총 결제</dt><dd><strong>180,000원</strong></dd>
+              </dl>
+              <div class="option-stack">
+                <label><input type="radio" name="pay" checked> 신용카드/페이</label>
+                <label><input type="radio" name="pay"> 포인트 결제</label>
+                <label><input type="radio" name="pay"> 구독 신청</label>
+                <label><input type="radio" name="pay"> 전문가 견적 요청</label>
+              </div>
+              <div class="chip-line"><span class="state-pill">결제 가능</span><span class="state-pill danger">실패 상태 표시</span></div>
+            </section>
+          </div>
+        </section>
+      </main>
+      <footer class="app-footer">
+        <a class="text-link muted-link" href="#view-public">이용약관</a>
+        <a class="text-link muted-link" href="#view-public">개인정보처리방침</a>
+        <a class="text-link muted-link" href="#view-public">회사 소개</a>
+        <a class="text-link muted-link" href="#view-public">SNS</a>
+        <span>AITP 통합 시험 플랫폼 4차</span>
+        <span>© HutechC</span>
+      </footer>
+    </div>
+
+    <dialog id="detailDialog" aria-modal="true" aria-labelledby="dialogTitle">
+      <form method="dialog">
+        <h2 id="dialogTitle">상세</h2>
+        <div id="dialogBody"></div>
+        <menu>
+          <button class="ghost">닫기</button>
+          <button class="primary">확인</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" hidden aria-live="polite" aria-atomic="true">처리되었습니다.</div>
+    <script src="app.js"></script>
+  </body>
+</html>

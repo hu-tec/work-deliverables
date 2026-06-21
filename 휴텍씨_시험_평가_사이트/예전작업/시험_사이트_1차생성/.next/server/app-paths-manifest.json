@@ -1,0 +1,9 @@
+{
+  "/page": "app/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(workspace)/workspace/page": "app/(workspace)/workspace/page.js",
+  "/candidate/page": "app/candidate/page.js",
+  "/(admin)/admin/dashboard/page": "app/(admin)/admin/dashboard/page.js",
+  "/author/page": "app/author/page.js",
+  "/grader/page": "app/grader/page.js"
+}

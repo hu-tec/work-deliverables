@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>휴텍씨 업무 인수인계서</title>
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --panel: #fff;
+        --text: #17202a;
+        --muted: #5f6875;
+        --line: #dfe3e8;
+        --accent: #0f6b63;
+        --accent-soft: #e8f3f1;
+        --ink: #17202a;
+        --warn: #fff7df;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, "Noto Sans KR", sans-serif;
+        line-height: 1.55;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: var(--ink);
+        color: #fff;
+        border-bottom: 1px solid #0b1118;
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 16px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.25;
+      }
+
+      .subtitle {
+        margin: 3px 0 0;
+        color: #d7dde3;
+        font-size: 13px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .actions a,
+      .toc a,
+      .link-button {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: #fff;
+        color: var(--accent);
+        padding: 6px 9px;
+        text-decoration: none;
+        font-size: 13px;
+        line-height: 1.2;
+      }
+
+      .actions a {
+        border-color: rgba(255, 255, 255, .3);
+        background: rgba(255, 255, 255, .08);
+        color: #fff;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 230px minmax(0, 1fr);
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .toc {
+        position: sticky;
+        top: 70px;
+        align-self: start;
+        display: grid;
+        gap: 5px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+      }
+
+      .toc strong {
+        font-size: 13px;
+      }
+
+      .toc a {
+        display: block;
+        color: var(--text);
+        padding: 6px 7px;
+      }
+
+      .content {
+        display: grid;
+        gap: 10px;
+      }
+
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+      }
+
+      h2 {
+        margin: 0 0 9px;
+        font-size: 19px;
+        line-height: 1.25;
+      }
+
+      p {
+        margin: 6px 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 8px 0;
+        background: #fff;
+      }
+
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+        font-size: 14px;
+      }
+
+      th {
+        background: #f2f4f6;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      ul,
+      ol {
+        margin: 6px 0 0;
+        padding-left: 1.2em;
+      }
+
+      li {
+        margin: 3px 0;
+      }
+
+      .note {
+        border-left: 4px solid var(--accent);
+        background: var(--accent-soft);
+        padding: 9px 10px;
+        margin: 8px 0;
+      }
+
+      .warning {
+        border-left-color: #c88719;
+        background: var(--warn);
+      }
+
+      code {
+        background: #f1f3f5;
+        border-radius: 4px;
+        padding: 2px 4px;
+        font-family: Consolas, Monaco, monospace;
+        font-size: .92em;
+      }
+
+      .checklist {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .checklist li {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 8px;
+        background: #fafbfc;
+      }
+
+      @media (max-width: 900px) {
+        .header-inner,
+        main {
+          display: block;
+        }
+
+        .actions {
+          margin-top: 8px;
+        }
+
+        .toc {
+          position: static;
+          margin-bottom: 10px;
+        }
+
+        .content {
+          gap: 8px;
+        }
+
+        section {
+          padding: 10px;
+        }
+
+        .checklist {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <div>
+          <h1>휴텍씨 업무 인수인계서</h1>
+          <p class="subtitle">다음 작업자가 전체 자료 구조, 주요 링크, 실행 기준을 빠르게 확인하기 위한 문서입니다.</p>
+        </div>
+        <nav class="actions" aria-label="빠른 이동">
+          <a href="index.html">업무산출물</a>
+          <a href="analyze.html">분석자료</a>
+          <a href="sites.md">사이트 목록</a>
+          <a href="휴텍씨 업무 인수인계서.md">Markdown 원본</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <aside class="toc">
+        <strong>목차</strong>
+        <a href="#core">핵심 자료</a>
+        <a href="#homepage">홈페이지 구성</a>
+        <a href="#design">디자인시스템</a>
+        <a href="#outcall">거래처 아웃콜</a>
+        <a href="#bo">내부 관리망</a>
+        <a href="#codex">Codex 자료</a>
+        <a href="#exam">시험 평가 사이트</a>
+        <a href="#itt">ITT 분석안</a>
+        <a href="#tools">내부 테스트 프로그램</a>
+        <a href="#checklist">체크리스트</a>
+      </aside>
+      <div class="content">
+        <section id="core">
+          <h2>1. 먼저 봐야 할 핵심 자료</h2>
+          <table>
+            <thead><tr><th>구분</th><th>위치 / 링크</th><th>용도</th></tr></thead>
+            <tbody>
+              <tr><td>전체 산출물 인덱스</td><td><a href="index.html">index.html</a></td><td>HTML, Markdown 산출물을 한 화면에서 확인</td></tr>
+              <tr><td>분석자료 전용 화면</td><td><a href="analyze.html">analyze.html</a></td><td>사이트 분석, FAQ, 내부 플랫폼 분석 확인</td></tr>
+              <tr><td>사이트 링크 모음</td><td><a href="sites.md">sites.md</a></td><td>외부 서비스와 BO 접속 URL 확인</td></tr>
+              <tr><td>다른 페이지 제작 가이드</td><td><a href="다른페이지_제작_자료전달_가이드.md">다른페이지_제작_자료전달_가이드.md</a></td><td>새 화면 제작 시 자료 전달 방식 확인</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="homepage">
+          <h2>2. 홈페이지 구성 방향</h2>
+          <p>휴텍씨 홈페이지는 <strong>교육, 시험, 협회</strong> 3개 랜딩페이지 구조를 기준으로 구성합니다.</p>
+          <table>
+            <thead><tr><th>영역</th><th>기준 자료 / 사이트</th><th>설명</th></tr></thead>
+            <tbody>
+              <tr><td>시험</td><td><a href="https://timestesol.com/">타임즈 테솔</a><br><a href="https://aite-test.imweb.me">AITE</a><br><a href="https://itt.or.kr/web/itt/intro.php">ITT</a></td><td>기존 ITT 소개를 기반으로 그리너스, AITE 자료를 통합해 미래사업 메시지를 강조</td></tr>
+              <tr><td>교육</td><td><a href="https://hutec.github.io/TESOL-v3/courses/tesol">TESOL-v3 과정</a><br><a href="https://hu-tec.github.io/ai-teacher">AI Teacher</a></td><td>교육 페이지 안에 강사 영역을 하위 탭으로 추가</td></tr>
+              <tr><td>협회</td><td><a href="https://itt.or.kr/web/itt/intro.php">ITT 협회 소개</a></td><td>협회 소개, 자격관리, 연혁, 윤리 기준 성격의 콘텐츠 구성</td></tr>
+            </tbody>
+          </table>
+          <div class="note">관련 분석 자료는 <a href="타임즈_테솔_분석자료/">타임즈_테솔_분석자료</a>, <a href="테솔_ITT_FAQ분석/">테솔_ITT_FAQ분석</a>, <a href="랜딩페이지/">랜딩페이지</a>, <a href="ITT_홈페이지 분석안/">ITT_홈페이지 분석안</a>을 확인합니다.</div>
+        </section>
+
+        <section id="design">
+          <h2>3. 디자인시스템</h2>
+          <table>
+            <thead><tr><th>파일 / 폴더</th><th>용도</th></tr></thead>
+            <tbody>
+              <tr><td><a href="디자인시스템/index.html">디자인시스템/index.html</a></td><td>디자인시스템 메인 인덱스</td></tr>
+              <tr><td><a href="디자인시스템/bo-index-sample.html">bo-index-sample.html</a></td><td>BO 화면의 기본 구조 샘플</td></tr>
+              <tr><td><a href="디자인시스템/docs_rendered/design-system.html">design-system.html</a></td><td>렌더링된 디자인시스템 문서</td></tr>
+              <tr><td><a href="디자인시스템/docs/재사용_디자인_프롬프트/">재사용 디자인 프롬프트</a></td><td>관리자/사용자 화면 제작 기준 문서</td></tr>
+            </tbody>
+          </table>
+          <ul>
+            <li>3-4단 그리드 구조를 우선합니다.</li>
+            <li>여백이 많지 않은 고밀도 구조가 적합합니다.</li>
+            <li>BO 테이블은 2줄 셀과 우측 상세 패널 구조를 우선합니다.</li>
+          </ul>
+        </section>
+
+        <section id="outcall">
+          <h2>4. 거래처 아웃콜</h2>
+          <table>
+            <thead><tr><th>위치</th><th>설명</th></tr></thead>
+            <tbody>
+              <tr><td><a href="거래처아웃콜/">거래처아웃콜</a></td><td>HutechC 사내 Studio에 디자인시스템을 적용하기 위한 테스트 자료</td></tr>
+              <tr><td><a href="거래처아웃콜/index.html">거래처아웃콜/index.html</a></td><td>거래처 아웃콜 화면</td></tr>
+              <tr><td><a href="거래처아웃콜/BO_거래처아웃콜_index_개선_프롬프트.md">개선 프롬프트</a></td><td>BO 거래처 아웃콜 개선 기준</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="bo">
+          <h2>5. 내부 관리망 분석</h2>
+          <table>
+            <thead><tr><th>시스템</th><th>URL</th><th>설명</th></tr></thead>
+            <tbody>
+              <tr><td>휴텍씨 사내 Studio</td><td><a href="http://54.116.15.136:81">http://54.116.15.136:81</a></td><td>사내 업무 관리</td></tr>
+              <tr><td>타임스미디어 인트라넷</td><td><a href="https://gw.timestesol.com/">https://gw.timestesol.com/</a></td><td>타임스미디어 내부망</td></tr>
+              <tr><td>Work Studio</td><td><a href="http://54.116.15.136/">http://54.116.15.136/</a></td><td>업무 스튜디오</td></tr>
+            </tbody>
+          </table>
+          <p>통합안은 <a href="내부 관리망분석/업무플랫폼 분석/04-integrated-platform-strategy.md">04-integrated-platform-strategy.md</a>를 기준으로 확인합니다.</p>
+        </section>
+
+        <section id="codex">
+          <h2>6. Codex 관련 자료</h2>
+          <table>
+            <thead><tr><th>구분</th><th>위치</th><th>설명</th></tr></thead>
+            <tbody>
+              <tr><td>Codex 매뉴얼</td><td><a href="codex_매뉴얼/">codex_매뉴얼</a></td><td>대표님 공유용 Codex 사용 매뉴얼</td></tr>
+              <tr><td>자동승인모드</td><td><a href="codex_자동승인모드_방법/">codex_자동승인모드_방법</a></td><td>Codex 자동승인 설정 방법</td></tr>
+              <tr><td>문서작성방안</td><td><a href="codex_문서작성방안/">codex_문서작성방안</a></td><td>AI 도구에 전달할 문서 작성 방식</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="exam">
+          <h2>7. 휴텍씨 시험 평가 사이트</h2>
+          <table>
+            <thead><tr><th>위치</th><th>설명</th></tr></thead>
+            <tbody>
+              <tr><td><a href="휴텍씨_시험_평가_사이트/">휴텍씨_시험_평가_사이트</a></td><td>시험 평가 사이트 관련 전체 자료</td></tr>
+              <tr><td><a href="휴텍씨_시험_평가_사이트/hutechc_app-main(휴텍씨_기존홈페이지_클론)/">hutechc_app-main</a></td><td>이전 담당자가 Vercel에 올렸던 시험 평가 서비스 클론</td></tr>
+              <tr><td><a href="휴텍씨_시험_평가_사이트/시험_홈페이지_분석/">시험_홈페이지_분석</a></td><td>Figma PDF와 AI 분석 자료</td></tr>
+            </tbody>
+          </table>
+          <div class="note warning">수험자, 응시생, 채점자, 관리자 권한별로 UI와 기능이 분리되어야 합니다.</div>
+          <ul>
+            <li>2024 자료: 전체 유저 플로우 확인</li>
+            <li>2025 자료: UI/UX 개선 방향 확인</li>
+            <li>vibecoding 자료: 기능 고도화 방향 확인</li>
+          </ul>
+        </section>
+
+        <section id="itt">
+          <h2>8. ITT 홈페이지 분석안</h2>
+          <table>
+            <thead><tr><th>자료</th><th>위치</th></tr></thead>
+            <tbody>
+              <tr><td>분석안 폴더</td><td><a href="ITT_홈페이지 분석안/">ITT_홈페이지 분석안</a></td></tr>
+              <tr><td>신규 분석자료</td><td><a href="ITT_홈페이지 분석안/itt-ai-시험홈페이지-신규분석자료.md">itt-ai-시험홈페이지-신규분석자료.md</a></td></tr>
+              <tr><td>HTML 샘플</td><td><a href="ITT_홈페이지 분석안/html_sample/">html_sample</a></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="tools">
+          <h2>9. 내부 테스트 프로그램</h2>
+          <table>
+            <thead><tr><th>프로그램</th><th>위치</th><th>실행</th></tr></thead>
+            <tbody>
+              <tr><td>마크다운 에디터</td><td><a href="마크다운에디터_내부용/">마크다운에디터_내부용</a></td><td><code>npm start</code> 또는 README 확인</td></tr>
+              <tr><td>업무 추적 댓글 웹 프로그램</td><td><a href="업무_추적_댓글_웹프로그램/">업무_추적_댓글_웹프로그램</a></td><td><code>npm run start</code> 또는 package.json 확인</td></tr>
+              <tr><td>협업연동 커뮤니케이션 업무툴 테스트</td><td><a href="협업연동_커뮤니케이션_업무툴_테스트/">협업연동_커뮤니케이션_업무툴_테스트</a></td><td><code>npm run start</code> 또는 package.json 확인</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="checklist">
+          <h2>10. 다음 작업자 체크리스트</h2>
+          <ul class="checklist">
+            <li>index.html에서 전체 산출물 위치 확인</li>
+            <li>분석 자료는 analyze.html에서 별도 확인</li>
+            <li>새 페이지 제작 전 자료전달 가이드 확인</li>
+            <li>BO 화면은 관리자 기준 문서 우선 적용</li>
+            <li>사용자 랜딩페이지는 랜딩페이지3종 구조 확인</li>
+            <li>시험 평가 사이트는 권한별 UI 분리 기준 확인</li>
+            <li>외부 접속 URL은 sites.md에서 확인</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codex 자동 승인 모드 방법</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #fff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #d7dde7;
+      --accent: #2457c5;
+      --warning: #9a3412;
+      --soft: #fff7ed;
+      --ok: #0f766e;
+      --dark: #172033;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      line-height: 1.65;
+    }
+
+    header {
+      background: var(--dark);
+      color: #fff;
+      padding: 38px 24px 32px;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    p { margin: 0; }
+
+    .lead {
+      max-width: 880px;
+      color: #cbd5e1;
+      font-size: 16px;
+    }
+
+    main { padding: 28px 0 48px; }
+
+    section {
+      margin: 0 0 22px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .command {
+      margin: 12px 0 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: var(--radius);
+      background: #0f172a;
+      color: #dbeafe;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--accent);
+    }
+
+    .notice {
+      padding: 14px 16px;
+      border: 1px solid #fed7aa;
+      border-radius: var(--radius);
+      background: var(--soft);
+      color: #7c2d12;
+      font-size: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      margin: 4px 6px 4px 0;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .pill.ok {
+      background: #ccfbf1;
+      color: var(--ok);
+    }
+
+    .pill.no {
+      background: #ffedd5;
+      color: var(--warning);
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+    }
+
+    iframe {
+      width: 100%;
+      min-height: 72vh;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .small {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      section { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Codex 자동 승인 모드 방법</h1>
+      <p class="lead">승인 질문을 줄이면서 파일 쓰기 범위는 현재 프로젝트 폴더로 제한하는 실행 방식을 한 화면에서 확인합니다.</p>
+      <div class="actions">
+        <a class="button" href="codex_자동승인_현재폴더_제한_설정.md">원문 Markdown 열기</a>
+        <a class="button secondary" href="codex_자동승인_현재폴더_제한_설정.md" download>Markdown 다운로드</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>추천 실행값</h2>
+      <p>현재 폴더 안에서만 쓰기 가능하게 두고 승인 질문을 최소화하려면 프로젝트 루트에서 실행합니다.</p>
+      <pre class="command">codex -s workspace-write -a never</pre>
+    </section>
+
+    <section>
+      <h2>권한 의미</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><code>workspace-write</code></h3>
+          <p>작업 폴더 안의 파일 수정과 일반 로컬 명령 실행을 허용합니다. 폴더 밖 쓰기는 제한됩니다.</p>
+        </div>
+        <div class="card">
+          <h3><code>never</code></h3>
+          <p>승인 프롬프트를 띄우지 않고 정해진 샌드박스 안에서 가능한 작업만 진행합니다.</p>
+        </div>
+        <div class="card">
+          <h3>주의점</h3>
+          <p>현재 폴더 안의 파일 변경이나 삭제는 가능하므로 Git 커밋 또는 백업 후 사용하는 편이 안전합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>자동 승인에 적합한 명령</h2>
+      <p>
+        <span class="pill ok">npm run test</span>
+        <span class="pill ok">npm run lint</span>
+        <span class="pill ok">npm run build</span>
+        <span class="pill ok">pytest</span>
+        <span class="pill ok">cargo test</span>
+      </p>
+      <p class="small">공식 Codex 매뉴얼에서도 샌드박스와 승인 정책은 별도 제어로 설명됩니다. 자동 승인은 전체 권한 해제가 아니라, 작업 경계 안에서 멈춤을 줄이는 설정으로 다루는 것이 안전합니다.</p>
+    </section>
+
+    <section>
+      <h2>자동 승인에서 제외할 명령</h2>
+      <p>
+        <span class="pill no">rm</span>
+        <span class="pill no">git reset</span>
+        <span class="pill no">git clean</span>
+        <span class="pill no">sudo</span>
+        <span class="pill no">chmod</span>
+        <span class="pill no">npm install</span>
+      </p>
+      <div class="notice">삭제, 되돌리기, 권한 변경, 설치, 배포, 네트워크 작업은 반복 작업이라도 수동 확인을 남기는 편이 안전합니다.</div>
+    </section>
+
+    <section>
+      <h2>원문 전체 보기</h2>
+      <iframe src="codex_자동승인_현재폴더_제한_설정.md" title="Codex auto approval markdown"></iframe>
+      <p class="small">브라우저가 Markdown을 다운로드로 처리하는 경우 위의 "원문 Markdown 열기" 링크로 확인하세요.</p>
+    </section>
+  </main>
+</body>
+</html>

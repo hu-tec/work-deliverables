@@ -1,0 +1,1483 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>교육 수강/수료 확인서 및 제휴 증명서 재발급 신청</title>
+    <style>
+      :root {
+        --page-bg: #ffffff;
+        --line: #e9c8ce;
+        --line-strong: #9d1024;
+        --head-bg: #f8e8eb;
+        --soft-bg: #fff7f8;
+        --field-bg: #f8fbff;
+        --text: #222222;
+        --muted: #777777;
+        --primary: #9d1024;
+        --primary-hover: #7f0d1d;
+        --dark: #565656;
+        --dark-hover: #3f3f3f;
+        --focus: rgb(157 16 36 / 0.18);
+        --font: Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+          "Segoe UI", sans-serif;
+      }
+
+      body[data-theme="neutral"] {
+        --line: #d5dbe4;
+        --line-strong: #374151;
+        --head-bg: #f1f3f6;
+        --soft-bg: #f8fafc;
+        --primary: #374151;
+        --primary-hover: #1f2937;
+        --focus: rgb(55 65 81 / 0.18);
+      }
+
+      body[data-theme="green"] {
+        --line: #bfddcf;
+        --line-strong: #188252;
+        --head-bg: #e7f4ee;
+        --soft-bg: #f4fbf7;
+        --primary: #188252;
+        --primary-hover: #11653f;
+        --focus: rgb(24 130 82 / 0.18);
+      }
+
+      body[data-theme="blue"] {
+        --line: #c4d7ef;
+        --line-strong: #2563a9;
+        --head-bg: #e8f1fb;
+        --soft-bg: #f4f8fd;
+        --primary: #2563a9;
+        --primary-hover: #1d4f87;
+        --focus: rgb(37 99 169 / 0.18);
+      }
+
+      body[data-theme="teal"] {
+        --line: #b7dde0;
+        --line-strong: #147d86;
+        --head-bg: #e7f5f6;
+        --soft-bg: #f2fbfb;
+        --primary: #147d86;
+        --primary-hover: #0f646b;
+        --focus: rgb(20 125 134 / 0.18);
+      }
+
+      body[data-theme="amber"] {
+        --line: #ead6a5;
+        --line-strong: #9a6a16;
+        --head-bg: #fbf1d9;
+        --soft-bg: #fffaf0;
+        --primary: #9a6a16;
+        --primary-hover: #7d5510;
+        --focus: rgb(154 106 22 / 0.2);
+      }
+
+      body[data-theme="mono"] {
+        --line: #d6d6d6;
+        --line-strong: #111111;
+        --head-bg: #eeeeee;
+        --soft-bg: #f8f8f8;
+        --primary: #111111;
+        --primary-hover: #000000;
+        --focus: rgb(0 0 0 / 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--page-bg);
+        color: var(--text);
+        font-family: var(--font);
+        font-size: 13px;
+      }
+
+      .page {
+        width: min(100%, 900px);
+        margin: 0 auto;
+        padding: 0 0 22px;
+      }
+
+      .form-title {
+        margin: 0 0 12px;
+        padding: 0 0 8px;
+        border-bottom: 2px solid var(--line-strong);
+        font-size: 16px;
+        line-height: 1.35;
+        font-weight: 800;
+      }
+
+      .application-form[hidden],
+      [hidden] {
+        display: none !important;
+      }
+
+      .form-title::before,
+      .section-title::before,
+      .notice-title::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 6px;
+        background: var(--primary);
+        vertical-align: 1px;
+      }
+
+      .notice {
+        margin-bottom: 12px;
+        border: 1px solid var(--line);
+        background: var(--soft-bg);
+      }
+
+      .notice-title {
+        margin: 0;
+        padding: 9px 12px 3px;
+        font-weight: 800;
+      }
+
+      .notice p {
+        margin: 0;
+        padding: 0 12px 10px 26px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .section {
+        margin-top: 12px;
+      }
+
+      .section-title {
+        margin: 0;
+        padding: 0 0 6px;
+        border-bottom: 1px solid var(--line-strong);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .form-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      .form-table th,
+      .form-table td {
+        border: 1px solid var(--line);
+        padding: 7px 8px;
+        vertical-align: middle;
+      }
+
+      .form-table th {
+        width: 82px;
+        background: var(--head-bg);
+        color: #4b2b30;
+        font-size: 12px;
+        text-align: left;
+        font-weight: 800;
+      }
+
+      .required {
+        margin-left: 3px;
+        color: var(--primary);
+      }
+
+      input,
+      select,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-width: 0;
+        border: 1px solid #cfd8e3;
+        border-radius: 3px;
+        background: var(--field-bg);
+        color: var(--text);
+        outline: none;
+      }
+
+      input,
+      select {
+        height: 24px;
+        padding: 0 7px;
+      }
+
+      textarea {
+        min-height: 54px;
+        padding: 7px;
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--focus);
+      }
+
+      .inline-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px 10px;
+      }
+
+      .phone-field {
+        display: grid;
+        grid-template-columns: 70px 1fr 1fr;
+        gap: 5px;
+        align-items: center;
+      }
+
+      .address-field {
+        display: grid;
+        grid-template-columns: 82px 100px 1fr;
+        gap: 6px;
+      }
+
+      .button-small {
+        height: 24px;
+        border: 0;
+        border-radius: 3px;
+        background: var(--primary);
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .button-small:hover {
+        background: var(--primary-hover);
+      }
+
+      .choice-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .choice {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .choice input {
+        width: 13px;
+        height: 13px;
+        margin: 0;
+        padding: 0;
+        accent-color: var(--primary);
+      }
+
+      .course-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .help-text {
+        color: var(--muted);
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .certificate-wrap {
+        border: 1px solid var(--line-strong);
+        border-top: 0;
+      }
+
+      .certificate-row {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        border-top: 1px solid var(--line);
+      }
+
+      .certificate-row:first-child {
+        border-top: 0;
+      }
+
+      .row-head {
+        display: flex;
+        align-items: center;
+        padding: 9px 8px;
+        background: var(--head-bg);
+        color: #4b2b30;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .row-body {
+        padding: 8px;
+      }
+
+      .certificate-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
+      }
+
+      .certificate-card {
+        display: grid;
+        min-height: 68px;
+        grid-template-columns: 18px 1fr;
+        gap: 5px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: #ffffff;
+        padding: 9px;
+        cursor: pointer;
+      }
+
+      .certificate-card input {
+        width: 13px;
+        height: 13px;
+        margin: 2px 0 0;
+        padding: 0;
+        accent-color: var(--primary);
+      }
+
+      .certificate-card:has(input:checked) {
+        border-color: var(--primary);
+        background: var(--soft-bg);
+      }
+
+      .certificate-name {
+        display: block;
+        font-weight: 800;
+      }
+
+      .certificate-desc {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.35;
+      }
+
+      .certificate-fee {
+        display: block;
+        margin-top: 7px;
+        border-top: 1px dashed var(--line);
+        padding-top: 5px;
+        color: #5b3036;
+        font-size: 11px;
+        font-weight: 800;
+        text-align: right;
+      }
+
+      .payment-box {
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: var(--soft-bg);
+        padding: 10px 12px 13px;
+      }
+
+      .payment-title {
+        margin: 0 0 9px;
+        color: #4b2b30;
+        font-weight: 800;
+      }
+
+      .payment-title::before {
+        content: "";
+        display: inline-block;
+        width: 15px;
+        height: 3px;
+        margin-right: 6px;
+        border-top: 2px solid var(--primary);
+        border-bottom: 2px solid var(--primary);
+        vertical-align: 3px;
+      }
+
+      .payment-methods {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .course-tabs {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .course-tab {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 36px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: #ffffff;
+        padding: 0 10px;
+        color: #4b2b30;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .course-tab input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .course-tab span {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .course-tab:has(input:checked) {
+        border-color: var(--primary);
+        background: var(--soft-bg);
+        box-shadow: inset 0 -2px 0 var(--primary);
+      }
+
+      .category-list {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .category-item {
+        display: flex;
+        align-items: center;
+        min-height: 30px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: #ffffff;
+        padding: 0 9px;
+        gap: 6px;
+        cursor: pointer;
+      }
+
+      .category-item input {
+        width: 13px;
+        height: 13px;
+        margin: 0;
+        padding: 0;
+        accent-color: var(--primary);
+      }
+
+      .form-note {
+        margin: 6px 0 8px;
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .privacy-consent {
+        display: flex;
+        align-items: flex-start;
+        gap: 7px;
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: var(--soft-bg);
+        padding: 9px 10px;
+        color: #4b2b30;
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.45;
+        cursor: pointer;
+      }
+
+      .privacy-consent input {
+        width: 13px;
+        height: 13px;
+        flex: 0 0 13px;
+        margin: 2px 0 0;
+        padding: 0;
+        accent-color: var(--primary);
+      }
+
+      .method {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        height: 28px;
+        border: 1px solid #d8dde6;
+        border-radius: 3px;
+        background: #ffffff;
+        cursor: pointer;
+      }
+
+      .method input {
+        width: 13px;
+        height: 13px;
+        margin: 0;
+        padding: 0;
+        accent-color: var(--primary);
+      }
+
+      .total-bar {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        margin-top: 10px;
+        color: #4b2b30;
+        font-weight: 800;
+      }
+
+      .total-price {
+        color: var(--primary);
+        font-size: 18px;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 13px;
+      }
+
+      .button {
+        width: 150px;
+        height: 32px;
+        border: 0;
+        border-radius: 3px;
+        color: #ffffff;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .button.primary {
+        background: var(--primary);
+      }
+
+      .button.primary:hover {
+        background: var(--primary-hover);
+      }
+
+      .button.secondary {
+        background: var(--dark);
+      }
+
+      .button.secondary:hover {
+        background: var(--dark-hover);
+      }
+
+      .complete {
+        display: none;
+        margin-top: 14px;
+        border: 1px solid var(--line);
+        background: var(--soft-bg);
+        padding: 16px;
+        text-align: center;
+      }
+
+      .complete.is-active {
+        display: block;
+      }
+
+      .complete h2 {
+        margin: 0 0 7px;
+        color: var(--primary);
+        font-size: 17px;
+      }
+
+      .complete p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .summary {
+        width: min(100%, 520px);
+        margin: 14px auto 0;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .summary th,
+      .summary td {
+        border: 1px solid var(--line);
+        padding: 7px 9px;
+      }
+
+      .summary th {
+        width: 110px;
+        background: var(--head-bg);
+      }
+
+      @media (max-width: 680px) {
+        body {
+          font-size: 12px;
+        }
+
+        .page {
+          padding: 0 8px 18px;
+        }
+
+        .form-table,
+        .form-table tbody,
+        .form-table tr,
+        .form-table th,
+        .form-table td {
+          display: block;
+          width: 100%;
+        }
+
+        .form-table th {
+          border-bottom: 0;
+        }
+
+        .inline-grid,
+        .phone-field,
+        .address-field,
+        .course-row,
+        .certificate-row,
+        .certificate-grid,
+        .course-tabs,
+        .category-list,
+        .payment-methods {
+          grid-template-columns: 1fr;
+        }
+
+        .row-head {
+          min-height: 32px;
+        }
+
+        .help-text {
+          white-space: normal;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <h1 class="form-title">교육 수강/수료 확인서 및 제휴 증명서 재발급 신청</h1>
+
+      <form class="application-form" id="reissueForm" data-form-title="교육 수강/수료 확인서 및 제휴 증명서 재발급 신청" novalidate>
+        <div class="notice" role="note">
+          <p class="notice-title">확인서 및 제휴 기관 관련 증명서 재발급</p>
+          <p>
+            졸업 후 유학원·스토어 제출용 및 연계 기관에 제출할 교육 이수,
+            국내 대학, 주요 연관사 및 타임스미디어 자료를 확인서 발급 신청
+            메뉴입니다. 필요한 증명서 종류를 선택해 주세요.
+          </p>
+        </div>
+
+        <section class="section">
+          <h2 class="section-title">1. 신청자 기본 정보 입력</h2>
+          <table class="form-table">
+            <tbody>
+              <tr>
+                <th scope="row">회원아이디<span class="required">*</span></th>
+                <td>
+                  <input name="memberId" autocomplete="username" required />
+                </td>
+                <th scope="row">비밀번호 확인<span class="required">*</span></th>
+                <td>
+                  <input name="password" type="password" autocomplete="current-password" required />
+                </td>
+                <th scope="row">내/외국인<span class="required">*</span></th>
+                <td>
+                  <div class="choice-line">
+                    <label class="choice"><input type="radio" name="residentType" value="내국인" checked />내국인</label>
+                    <label class="choice"><input type="radio" name="residentType" value="외국인" />외국인</label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">이름<span class="required">*</span></th>
+                <td>
+                  <input name="name" autocomplete="name" required />
+                </td>
+                <th scope="row">휴대전화<span class="required">*</span></th>
+                <td>
+                  <div class="phone-field">
+                    <select name="phonePrefix" aria-label="휴대전화 앞자리">
+                      <option>010</option>
+                      <option>011</option>
+                      <option>016</option>
+                      <option>017</option>
+                      <option>018</option>
+                      <option>019</option>
+                    </select>
+                    <input name="phoneMiddle" inputmode="numeric" maxlength="4" aria-label="휴대전화 중간자리" required />
+                    <input name="phoneLast" inputmode="numeric" maxlength="4" aria-label="휴대전화 끝자리" required />
+                  </div>
+                </td>
+                <th scope="row">국적<span class="required">*</span></th>
+                <td>
+                  <select name="nationality" required>
+                    <option value="대한민국">대한민국</option>
+                    <option value="미국">미국</option>
+                    <option value="중국">중국</option>
+                    <option value="일본">일본</option>
+                    <option value="기타">기타</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">이메일<span class="required">*</span></th>
+                <td colspan="2">
+                  <input name="email" type="email" placeholder="example@email.com" required />
+                </td>
+                <th scope="row">발급 언어</th>
+                <td colspan="2">
+                  <div class="choice-line">
+                    <label class="choice"><input type="radio" name="language" value="국문" checked />국문</label>
+                    <label class="choice"><input type="radio" name="language" value="영문" />영문</label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">배송지 주소</th>
+                <td colspan="5">
+                  <div class="address-field">
+                    <input name="zipCode" placeholder="우편번호" />
+                    <button class="button-small" type="button">우편번호검색</button>
+                    <input name="addressBase" placeholder="기본 주소" />
+                  </div>
+                  <input name="addressDetail" placeholder="상세 주소(나머지 주소) 입력" style="margin-top: 6px" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">2. 발급 대상 교육 과정 선택</h2>
+          <table class="form-table">
+            <tbody>
+              <tr>
+                <th scope="row">수강 완료 과정명<span class="required">*</span></th>
+                <td>
+                  <div class="course-row">
+                    <select name="courseName" required>
+                      <option value="">과정 선택</option>
+                      <option>비즈니스영어(입문) 과정</option>
+                      <option>AI 면접 실무 비즈니스 과정</option>
+                      <option>AI 연계 데이터 생성 과정</option>
+                      <option>AI+Human 하이브리드 번역 테스트</option>
+                      <option>프롬프트 엔지니어링 과정</option>
+                      <option>ITT 번역교육 과정</option>
+                    </select>
+                    <span class="help-text">* 신청한 등록 정보에 따라 기관 정보로 발급됩니다.</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">3. 확인서 및 증명서 선택 (중복 선택 가능)</h2>
+          <div class="certificate-wrap">
+            <div class="certificate-row">
+              <div class="row-head">확인서 종류<span class="required">*</span></div>
+              <div class="row-body">
+                <div class="certificate-grid">
+                  <label class="certificate-card">
+                    <input type="checkbox" name="certificates" value="수강 확인서" data-fee="3000" checked />
+                    <span>
+                      <span class="certificate-name">수강 확인서</span>
+                      <span class="certificate-desc">교육 이수 증명용 확인서</span>
+                      <span class="certificate-fee">발급비: 3,000원</span>
+                    </span>
+                  </label>
+                  <label class="certificate-card">
+                    <input type="checkbox" name="certificates" value="수료 확인서" data-fee="5000" checked />
+                    <span>
+                      <span class="certificate-name">수료 확인서</span>
+                      <span class="certificate-desc">성실 교육 수료 증명 확인서</span>
+                      <span class="certificate-fee">발급비: 5,000원</span>
+                    </span>
+                  </label>
+                  <label class="certificate-card">
+                    <input type="checkbox" name="certificates" value="수강료 확인서" data-fee="2000" />
+                    <span>
+                      <span class="certificate-name">수강료 확인서</span>
+                      <span class="certificate-desc">지출 증빙용 납부 영수 사실</span>
+                      <span class="certificate-fee">발급비: 2,000원</span>
+                    </span>
+                  </label>
+                  <label class="certificate-card">
+                    <input type="checkbox" name="certificates" value="해외 자격증 확인서" data-fee="20000" />
+                    <span>
+                      <span class="certificate-name">해외 자격증 확인서</span>
+                      <span class="certificate-desc">미국, 캐나다 연계 기관 인증</span>
+                      <span class="certificate-fee">발급비: 20,000원</span>
+                    </span>
+                  </label>
+                  <label class="certificate-card">
+                    <input type="checkbox" name="certificates" value="국내 대학 확인서" data-fee="10000" />
+                    <span>
+                      <span class="certificate-name">국내 대학 확인서</span>
+                      <span class="certificate-desc">국내 협정 및 연계 대학 제출용</span>
+                      <span class="certificate-fee">발급비: 10,000원</span>
+                    </span>
+                  </label>
+                  <label class="certificate-card">
+                    <input type="checkbox" name="certificates" value="연관사 확인서" data-fee="20000" />
+                    <span>
+                      <span class="certificate-name">연관사 확인서</span>
+                      <span class="certificate-desc">프리미어, 크레마하우스 등 제휴기관</span>
+                      <span class="certificate-fee">발급비: 20,000원</span>
+                    </span>
+                  </label>
+                  <label class="certificate-card">
+                    <input type="checkbox" name="certificates" value="타임스미디어 확인서" data-fee="20000" />
+                    <span>
+                      <span class="certificate-name">타임스미디어 확인서</span>
+                      <span class="certificate-desc">타임스미디어 제휴 기관 제출용</span>
+                      <span class="certificate-fee">발급비: 20,000원</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="certificate-row">
+              <div class="row-head">수령 방법<span class="required">*</span></div>
+              <div class="row-body">
+                <div class="choice-line">
+                  <label class="choice"><input type="radio" name="deliveryMethod" value="온라인 발급" checked />온라인 발급 정보 PDF 및 즉시 출력</label>
+                  <label class="choice"><input type="radio" name="deliveryMethod" value="우편 발송" />오프라인 실물 우편 발송(배송비 별도 청구)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">4. 결제 방법 선택</h2>
+          <div class="payment-box">
+            <p class="payment-title">수수료 결제 수단</p>
+            <div class="payment-methods">
+              <label class="method"><input type="radio" name="paymentMethod" value="신용카드" checked />신용카드</label>
+              <label class="method"><input type="radio" name="paymentMethod" value="무통장입금" />무통장입금</label>
+              <label class="method"><input type="radio" name="paymentMethod" value="실시간 계좌이체" />실시간 계좌이체</label>
+              <label class="method"><input type="radio" name="paymentMethod" value="가상계좌" />가상계좌</label>
+            </div>
+            <div class="total-bar" aria-live="polite">
+              <span>총 결제 금액</span>
+              <strong class="total-price" id="totalFee">0원</strong>
+            </div>
+          </div>
+        </section>
+
+        <label class="privacy-consent">
+          <input type="checkbox" name="privacyConsent" />
+          <span>개인정보 수집 및 이용에 동의합니다.<span class="required">*</span></span>
+        </label>
+
+        <div class="actions">
+          <button class="button primary" type="submit">결제를 신청하기</button>
+          <button class="button secondary" type="reset">취소</button>
+        </div>
+      </form>
+
+      <form class="application-form" id="courseForm" data-form-title="인터넷접수(교육 과정 신청)" hidden novalidate>
+        <section class="section">
+          <h2 class="section-title">개인정보 입력</h2>
+          <table class="form-table">
+            <tbody>
+              <tr>
+                <th scope="row">회원아이디<span class="required">*</span></th>
+                <td>
+                  <input name="memberId" autocomplete="username" required />
+                </td>
+                <th scope="row">비밀번호<span class="required">*</span></th>
+                <td>
+                  <input name="password" type="password" autocomplete="current-password" required />
+                </td>
+                <th scope="row">이름<span class="required">*</span></th>
+                <td>
+                  <input name="name" autocomplete="name" required />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">영문이름</th>
+                <td>
+                  <input name="englishName" placeholder="Hong Gil Dong" />
+                </td>
+                <th scope="row">생년월일<span class="required">*</span></th>
+                <td>
+                  <div class="phone-field">
+                    <select name="birthYear" aria-label="출생 연도">
+                      <option value="">년</option>
+                      <option>1990</option>
+                      <option>1995</option>
+                      <option>2000</option>
+                      <option>2005</option>
+                    </select>
+                    <select name="birthMonth" aria-label="출생 월">
+                      <option value="">월</option>
+                      <option>01</option>
+                      <option>02</option>
+                      <option>03</option>
+                      <option>04</option>
+                      <option>05</option>
+                      <option>06</option>
+                      <option>07</option>
+                      <option>08</option>
+                      <option>09</option>
+                      <option>10</option>
+                      <option>11</option>
+                      <option>12</option>
+                    </select>
+                    <select name="birthDay" aria-label="출생 일">
+                      <option value="">일</option>
+                      <option>01</option>
+                      <option>05</option>
+                      <option>10</option>
+                      <option>15</option>
+                      <option>20</option>
+                      <option>25</option>
+                    </select>
+                  </div>
+                </td>
+                <th scope="row">이메일<span class="required">*</span></th>
+                <td>
+                  <input name="email" type="email" placeholder="example@email.com" required />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">국적</th>
+                <td>
+                  <select name="nationality">
+                    <option>대한민국</option>
+                    <option>미국</option>
+                    <option>중국</option>
+                    <option>일본</option>
+                    <option>기타</option>
+                  </select>
+                </td>
+                <th scope="row">소속</th>
+                <td colspan="3">
+                  <input name="affiliation" placeholder="회사 또는 학교명" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">내/외국인 구분</th>
+                <td colspan="5">
+                  <div class="choice-line">
+                    <label class="choice"><input type="radio" name="residentType" value="내국인 Domestic" checked />내국인 Domestic</label>
+                    <label class="choice"><input type="radio" name="residentType" value="외국인 Foreigner" />외국인 Foreigner</label>
+                    <label class="choice"><input type="radio" name="residentType" value="재외국민 Overseas" />재외국민 Overseas</label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">직업 Job</th>
+                <td colspan="5">
+                  <div class="choice-line">
+                    <label class="choice"><input type="checkbox" name="job" value="학생" />학생</label>
+                    <label class="choice"><input type="checkbox" name="job" value="대학생" />대학생</label>
+                    <label class="choice"><input type="checkbox" name="job" value="직장인" checked />직장인</label>
+                    <label class="choice"><input type="checkbox" name="job" value="교사" />교사</label>
+                    <label class="choice"><input type="checkbox" name="job" value="기타" />기타</label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">신청 경로</th>
+                <td colspan="5">
+                  <div class="choice-line">
+                    <label class="choice"><input type="checkbox" name="channel" value="네이버 검색" />네이버 검색</label>
+                    <label class="choice"><input type="checkbox" name="channel" value="인스타그램" />인스타그램</label>
+                    <label class="choice"><input type="checkbox" name="channel" value="유튜브" />유튜브</label>
+                    <label class="choice"><input type="checkbox" name="channel" value="지인 추천" />지인 추천</label>
+                    <label class="choice"><input type="checkbox" name="channel" value="오프라인 안내" />오프라인 안내</label>
+                    <label class="choice"><input type="checkbox" name="channel" value="기타" />기타</label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">연락처<span class="required">*</span></th>
+                <td colspan="2">
+                  <div class="phone-field">
+                    <select name="phonePrefix" aria-label="전화번호 앞자리">
+                      <option>02</option>
+                      <option>031</option>
+                      <option>032</option>
+                      <option>010</option>
+                    </select>
+                    <input name="phoneMiddle" inputmode="numeric" maxlength="4" aria-label="전화번호 중간자리" />
+                    <input name="phoneLast" inputmode="numeric" maxlength="4" aria-label="전화번호 끝자리" />
+                  </div>
+                </td>
+                <th scope="row">휴대폰<span class="required">*</span></th>
+                <td colspan="2">
+                  <div class="phone-field">
+                    <select name="mobilePrefix" aria-label="휴대폰 앞자리">
+                      <option>010</option>
+                      <option>011</option>
+                      <option>016</option>
+                      <option>017</option>
+                    </select>
+                    <input name="mobileMiddle" inputmode="numeric" maxlength="4" aria-label="휴대폰 중간자리" required />
+                    <input name="mobileLast" inputmode="numeric" maxlength="4" aria-label="휴대폰 끝자리" required />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">주소</th>
+                <td colspan="5">
+                  <div class="address-field">
+                    <input name="zipCode" placeholder="우편번호" />
+                    <button class="button-small" type="button">우편번호검색</button>
+                    <input name="addressBase" placeholder="기본 주소" />
+                  </div>
+                  <input name="addressDetail" placeholder="나머지 주소 입력" style="margin-top: 6px" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">교육 과정 선택 (클릭 시 세부 과정이 하단에 펼쳐집니다)</h2>
+          <div class="course-tabs">
+            <label class="course-tab"><input type="radio" name="courseGroup" value="TESOL" />TESOL </label>
+            <label class="course-tab"><input type="radio" name="courseGroup" value="AI 프롬프트" />AI 프롬프트 </label>
+            <label class="course-tab"><input type="radio" name="courseGroup" value="AI 윤리" checked />AI 윤리 </label>
+            <label class="course-tab"><input type="radio" name="courseGroup" value="AI 통역 번역" />AI 통역 번역 </label>
+            <label class="course-tab"><input type="radio" name="courseGroup" value="AI 방과후 교사" />AI 방과후 교사</label>
+          </div>
+
+          <div class="certificate-wrap" style="margin-top: 10px">
+            <div class="row-body">
+              <p class="form-note">선택한 과정의 세부 단계를 선택해 주세요.</p>
+              <div class="category-list" id="courseDetailList">
+                <label class="category-item"><input type="checkbox" name="courseDetail" value="AI 면접 실무 비즈니스 과정 (1급)" checked />AI 면접 실무 비즈니스 과정 (1급)</label>
+                <label class="category-item"><input type="checkbox" name="courseDetail" value="AI 머신러닝 번역 테크니컬 과정" />AI 머신러닝 번역 테크니컬 과정</label>
+                <label class="category-item"><input type="checkbox" name="courseDetail" value="글로벌 AI 번역 에디터 양성 과정" />글로벌 AI 번역 에디터 양성 과정</label>
+                <label class="category-item"><input type="checkbox" name="courseDetail" value="AI+Human 하이브리드 번역 테스트" />AI+Human 하이브리드 번역 테스트</label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">자기소개</h2>
+          <textarea name="introduction" placeholder="교육 참여 목적 또는 목표를 간단히 입력해주세요."></textarea>
+        </section>
+
+        <label class="privacy-consent">
+          <input type="checkbox" name="privacyConsent" />
+          <span>개인정보 수집 및 이용에 동의합니다.<span class="required">*</span></span>
+        </label>
+
+        <div class="actions">
+          <button class="button primary" type="submit">신청하기</button>
+          <button class="button secondary" type="reset">취소</button>
+        </div>
+      </form>
+
+      <section class="complete" id="completeBox" aria-live="polite">
+        <h2>재발급 신청이 접수되었습니다.</h2>
+        <p>선택한 확인서와 결제 정보를 확인한 뒤 처리됩니다.</p>
+        <table class="summary" id="summary"></table>
+      </section>
+    </main>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const title = document.querySelector(".form-title");
+      const reissueForm = document.querySelector("#reissueForm");
+      const courseForm = document.querySelector("#courseForm");
+      const courseDetailList = document.querySelector("#courseDetailList");
+      const forms = {
+        reissue: reissueForm,
+        course: courseForm
+      };
+      const completeBox = document.querySelector("#completeBox");
+      const summary = document.querySelector("#summary");
+      const totalFee = document.querySelector("#totalFee");
+      const apiEndpoint = params.get("api") || "";
+      const courseDetails = {
+        TESOL: [
+          "TESOL 정규 과정",
+          "영어 방과후 교사 과정",
+          "영어 독서지도 과정",
+          "온라인 TESOL 수료 과정"
+        ],
+        "프롬프트": [
+          "프롬프트 엔지니어링 입문",
+          "비즈니스 프롬프트 실무",
+          "AI 콘텐츠 제작 과정",
+          "생성형 AI 활용 과정"
+        ],
+        "AI 번역": [
+          "AI 면접 실무 비즈니스 과정 (1급)",
+          "AI 머신러닝 번역 테크니컬 과정",
+          "글로벌 AI 번역 에디터 양성 과정",
+          "AI+Human 하이브리드 번역 테스트"
+        ],
+        "AI 윤리": [
+          "AI 윤리 기본 과정",
+          "AI 데이터 활용 윤리",
+          "AI 저작권 및 보안 과정",
+          "AI 리스크 관리 과정"
+        ],
+        "ITT 번역교육": [
+          "ITT 비즈니스 번역",
+          "ITT 전문 번역 입문",
+          "ITT 통역 기초",
+          "ITT 번역 실전 대비"
+        ]
+      };
+      let activeFormType = params.get("form") === "course" ? "course" : "reissue";
+      let activeForm = forms[activeFormType];
+
+      function field(form, name) {
+        return form.elements[name];
+      }
+
+      function checkedValues(form, name) {
+        return [...form.querySelectorAll(`[name="${name}"]:checked`)].map((item) => item.value);
+      }
+
+      function radioValue(form, name) {
+        return form.querySelector(`[name="${name}"]:checked`)?.value || "";
+      }
+
+      function selectedCertificates() {
+        return [...reissueForm.querySelectorAll('[name="certificates"]:checked')];
+      }
+
+      function formatWon(amount) {
+        return `${amount.toLocaleString("ko-KR")}원`;
+      }
+
+      function calculateTotal() {
+        const total = selectedCertificates().reduce((sum, item) => {
+          return sum + Number(item.dataset.fee || 0);
+        }, 0);
+        totalFee.textContent = formatWon(total);
+        notifyHeight();
+        return total;
+      }
+
+      function normalizeNumericInput(input) {
+        input.value = input.value.replace(/\D/g, "").slice(0, input.maxLength || 4);
+      }
+
+      function renderCourseDetails(group) {
+        const details = courseDetails[group] || courseDetails.TESOL;
+        courseDetailList.innerHTML = details
+          .map((item, index) => {
+            const checked = index === 0 ? " checked" : "";
+            return `<label class="category-item"><input type="checkbox" name="courseDetail" value="${item}"${checked} />${item}</label>`;
+          })
+          .join("");
+        notifyHeight();
+      }
+
+      function setTheme() {
+        const allowedThemes = ["default", "neutral", "green", "blue", "teal", "amber", "mono"];
+        const theme = params.get("theme") || "default";
+        document.body.dataset.theme = allowedThemes.includes(theme) ? theme : "default";
+      }
+
+      function setActiveForm(type) {
+        activeFormType = forms[type] ? type : "reissue";
+        activeForm = forms[activeFormType];
+        Object.entries(forms).forEach(([key, form]) => {
+          form.hidden = key !== activeFormType;
+        });
+        title.textContent = activeForm.dataset.formTitle;
+        completeBox.classList.remove("is-active");
+        notifyHeight();
+      }
+
+      function validateReissueForm() {
+        if (!field(reissueForm, "memberId").value.trim()) return alert("회원아이디를 입력해주세요.");
+        if (!field(reissueForm, "password").value.trim()) return alert("비밀번호를 입력해주세요.");
+        if (!field(reissueForm, "name").value.trim()) return alert("이름을 입력해주세요.");
+        if (!field(reissueForm, "phoneMiddle").value.trim() || !field(reissueForm, "phoneLast").value.trim()) {
+          return alert("휴대전화 번호를 입력해주세요.");
+        }
+        if (!field(reissueForm, "email").checkValidity()) return alert("올바른 이메일을 입력해주세요.");
+        if (!field(reissueForm, "courseName").value) return alert("발급 대상 교육 과정을 선택해주세요.");
+        if (selectedCertificates().length === 0) return alert("발급할 확인서 또는 증명서를 선택해주세요.");
+        if (!field(reissueForm, "privacyConsent").checked) return alert("개인정보 수집 및 이용에 동의해주세요.");
+        return true;
+      }
+
+      function validateCourseForm() {
+        if (!field(courseForm, "memberId").value.trim()) return alert("회원아이디를 입력해주세요.");
+        if (!field(courseForm, "password").value.trim()) return alert("비밀번호를 입력해주세요.");
+        if (!field(courseForm, "name").value.trim()) return alert("이름을 입력해주세요.");
+        if (!field(courseForm, "birthYear").value || !field(courseForm, "birthMonth").value || !field(courseForm, "birthDay").value) {
+          return alert("생년월일을 선택해주세요.");
+        }
+        if (!field(courseForm, "email").checkValidity()) return alert("올바른 이메일을 입력해주세요.");
+        if (!field(courseForm, "mobileMiddle").value.trim() || !field(courseForm, "mobileLast").value.trim()) {
+          return alert("휴대폰 번호를 입력해주세요.");
+        }
+        if (checkedValues(courseForm, "courseDetail").length === 0) return alert("세부 교육 과정을 1개 이상 선택해주세요.");
+        if (!field(courseForm, "privacyConsent").checked) return alert("개인정보 수집 및 이용에 동의해주세요.");
+        return true;
+      }
+
+      function createReissuePayload() {
+        const total = calculateTotal();
+        const phone = [
+          field(reissueForm, "phonePrefix").value,
+          field(reissueForm, "phoneMiddle").value,
+          field(reissueForm, "phoneLast").value
+        ].join("-");
+
+        return {
+          request_id: crypto.randomUUID(),
+          request_type: "education_certificate_reissue",
+          status: "payment_requested",
+          applicant: {
+            member_id: field(reissueForm, "memberId").value.trim(),
+            name: field(reissueForm, "name").value.trim(),
+            resident_type: radioValue(reissueForm, "residentType"),
+            nationality: field(reissueForm, "nationality").value,
+            email: field(reissueForm, "email").value.trim(),
+            phone: phone,
+            language: radioValue(reissueForm, "language")
+          },
+          course: {
+            completed_course_name: field(reissueForm, "courseName").value
+          },
+          certificates: selectedCertificates().map((item) => ({
+            name: item.value,
+            fee: Number(item.dataset.fee || 0)
+          })),
+          delivery: {
+            method: radioValue(reissueForm, "deliveryMethod"),
+            zip_code: field(reissueForm, "zipCode").value.trim(),
+            address: [field(reissueForm, "addressBase").value.trim(), field(reissueForm, "addressDetail").value.trim()]
+              .filter(Boolean)
+              .join(" ")
+          },
+          payment: {
+            method: radioValue(reissueForm, "paymentMethod"),
+            total_fee: total
+          },
+          privacy: {
+            consent: field(reissueForm, "privacyConsent").checked
+          }
+        };
+      }
+
+      function createCoursePayload() {
+        const phone = [
+          field(courseForm, "phonePrefix").value,
+          field(courseForm, "phoneMiddle").value,
+          field(courseForm, "phoneLast").value
+        ].join("-");
+        const mobile = [
+          field(courseForm, "mobilePrefix").value,
+          field(courseForm, "mobileMiddle").value,
+          field(courseForm, "mobileLast").value
+        ].join("-");
+
+        return {
+          request_id: crypto.randomUUID(),
+          request_type: "course_application",
+          status: "pending",
+          applicant: {
+            member_id: field(courseForm, "memberId").value.trim(),
+            name: field(courseForm, "name").value.trim(),
+            english_name: field(courseForm, "englishName").value.trim(),
+            birth_date: [
+              field(courseForm, "birthYear").value,
+              field(courseForm, "birthMonth").value,
+              field(courseForm, "birthDay").value
+            ].join("-"),
+            email: field(courseForm, "email").value.trim(),
+            nationality: field(courseForm, "nationality").value,
+            affiliation: field(courseForm, "affiliation").value.trim(),
+            resident_type: radioValue(courseForm, "residentType"),
+            jobs: checkedValues(courseForm, "job"),
+            channels: checkedValues(courseForm, "channel"),
+            phone: phone,
+            mobile: mobile,
+            address: [field(courseForm, "addressBase").value.trim(), field(courseForm, "addressDetail").value.trim()]
+              .filter(Boolean)
+              .join(" ")
+          },
+          course: {
+            group: radioValue(courseForm, "courseGroup"),
+            details: checkedValues(courseForm, "courseDetail")
+          },
+          introduction: field(courseForm, "introduction").value.trim(),
+          privacy: {
+            consent: field(courseForm, "privacyConsent").checked
+          }
+        };
+      }
+
+      async function submitPayload(payload) {
+        if (!apiEndpoint) return { demo: true };
+
+        const response = await fetch(apiEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error(`서버 오류: ${response.status}`);
+        return response.json().catch(() => ({}));
+      }
+
+      function renderSummary(payload) {
+        const rows =
+          payload.request_type === "course_application"
+            ? [
+                ["신청자", payload.applicant.name],
+                ["교육 과정", payload.course.group],
+                ["세부 과정", payload.course.details.join(", ")],
+                ["휴대폰", payload.applicant.mobile],
+                ["상태", "인터넷 접수 완료"]
+              ]
+            : [
+                ["신청자", payload.applicant.name],
+                ["수강 과정", payload.course.completed_course_name],
+                ["증명서", payload.certificates.map((item) => item.name).join(", ")],
+                ["수령 방법", payload.delivery.method],
+                ["결제 수단", payload.payment.method],
+                ["결제 금액", formatWon(payload.payment.total_fee)]
+              ];
+
+        summary.innerHTML = rows
+          .map(([label, value]) => `<tr><th scope="row">${label}</th><td>${value}</td></tr>`)
+          .join("");
+      }
+
+      function notifyHeight() {
+        if (window.parent === window) return;
+        window.parent.postMessage(
+          {
+            type: "apply-form:height",
+            form: activeFormType,
+            height: document.documentElement.scrollHeight
+          },
+          "*"
+        );
+      }
+
+      function notifySubmit(payload) {
+        if (window.parent === window) return;
+        window.parent.postMessage(
+          {
+            type: "apply-form:submitted",
+            form: activeFormType,
+            payload: payload
+          },
+          "*"
+        );
+      }
+
+      reissueForm.querySelectorAll('[name="certificates"]').forEach((item) => {
+        item.addEventListener("change", calculateTotal);
+      });
+
+      courseForm.querySelectorAll('[name="courseGroup"]').forEach((item) => {
+        item.addEventListener("change", () => renderCourseDetails(item.value));
+      });
+
+      [
+        field(reissueForm, "phoneMiddle"),
+        field(reissueForm, "phoneLast"),
+        field(reissueForm, "zipCode"),
+        field(courseForm, "phoneMiddle"),
+        field(courseForm, "phoneLast"),
+        field(courseForm, "mobileMiddle"),
+        field(courseForm, "mobileLast"),
+        field(courseForm, "zipCode")
+      ].forEach((input) => {
+        input.addEventListener("input", () => normalizeNumericInput(input));
+      });
+
+      [reissueForm, courseForm].forEach((form) => {
+        form.addEventListener("reset", () => {
+          window.setTimeout(() => {
+            completeBox.classList.remove("is-active");
+            calculateTotal();
+            notifyHeight();
+          }, 0);
+        });
+      });
+
+      reissueForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!validateReissueForm()) return;
+
+        const payload = createReissuePayload();
+        submitPayload(payload)
+          .then(() => {
+            renderSummary(payload);
+            completeBox.classList.add("is-active");
+            notifySubmit(payload);
+            notifyHeight();
+          })
+          .catch(() => {
+            alert("신청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+          });
+      });
+
+      courseForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!validateCourseForm()) return;
+
+        const payload = createCoursePayload();
+        submitPayload(payload)
+          .then(() => {
+            renderSummary(payload);
+            completeBox.classList.add("is-active");
+            notifySubmit(payload);
+            notifyHeight();
+          })
+          .catch(() => {
+            alert("신청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+          });
+      });
+
+      window.addEventListener("message", (event) => {
+        const data = event.data;
+        if (!data || typeof data !== "object") return;
+
+        if (data.type === "apply-form:set-theme") {
+          document.body.dataset.theme = data.theme || "default";
+          notifyHeight();
+        }
+
+        if (data.type === "apply-form:set-form") {
+          setActiveForm(data.form);
+        }
+      });
+
+      setTheme();
+      renderCourseDetails(radioValue(courseForm, "courseGroup") || "TESOL");
+      setActiveForm(activeFormType);
+      calculateTotal();
+      window.addEventListener("load", notifyHeight);
+      window.addEventListener("resize", notifyHeight);
+    </script>
+  </body>
+</html>

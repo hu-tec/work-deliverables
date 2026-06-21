@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>로그인 | AITP 시험 플랫폼</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="login-page">
+  <main class="login-shell">
+    <section class="login-aside">
+      <a class="brand" href="./public.html" aria-label="AITP 공개 홈페이지">
+        <span class="brand-mark">A</span>
+        <span><strong>AITP</strong><small>시험 운영 플랫폼</small></span>
+      </a>
+      <div>
+        <p class="eyebrow">권한별 홈 이동</p>
+        <h1>로그인하면 선택한 역할의 메뉴로 바로 이동합니다</h1>
+        <p>수험생, 출제자, 채점자, 관리자 메뉴를 분리해 각 역할의 업무만 보이도록 구성했습니다.</p>
+      </div>
+      <div class="login-role-summary">
+        <span>수험생: 접수/응시/결과</span>
+        <span>출제자: 문제 작성/제출</span>
+        <span>채점자: 답안 채점/평가서</span>
+        <span>관리자: 운영/대량관리</span>
+      </div>
+    </section>
+
+    <section class="login-panel">
+      <div class="section-head">
+        <div>
+          <h2>로그인</h2>
+          <p>시연용 화면이므로 권한 선택 후 바로 해당 홈으로 이동합니다.</p>
+        </div>
+      </div>
+      <form id="loginPageForm" class="form-grid">
+        <label class="field full" for="email">
+          <span>아이디</span>
+          <input id="email" name="email" value="candidate@example.com" autocomplete="username">
+        </label>
+        <label class="field full" for="password">
+          <span>비밀번호</span>
+          <input id="password" name="password" type="password" value="password" autocomplete="current-password">
+        </label>
+        <label class="field full" for="loginRole">
+          <span>권한</span>
+          <select id="loginRole" name="role">
+            <option value="examinee">수험생</option>
+            <option value="author">출제자</option>
+            <option value="grader">채점자</option>
+            <option value="admin">관리자</option>
+          </select>
+        </label>
+        <label class="check-line full">
+          <input type="checkbox" checked>
+          <span>로그인 상태 유지</span>
+        </label>
+        <div class="btn-row full">
+          <button class="btn primary" type="submit">로그인</button>
+          <a class="btn ghost" href="./public.html">공개 페이지</a>
+        </div>
+      </form>
+
+      <div class="login-links" aria-label="계정 지원 메뉴">
+        <button type="button" data-login-dialog="아이디 찾기">아이디 찾기</button>
+        <button type="button" data-login-dialog="비밀번호 재설정">비밀번호 재설정</button>
+        <button type="button" data-login-dialog="회원가입">회원가입</button>
+        <button type="button" data-login-dialog="본인인증">본인인증</button>
+      </div>
+
+      <div class="grid two login-cards">
+        <article class="card"><h3>간편가입</h3><p>일반회원과 전문가 신청 흐름을 분리해 가입합니다.</p></article>
+        <article class="card"><h3>권한 확인</h3><p>관리자 전용 메뉴는 관리자 권한에서만 표시됩니다.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+  <script>
+    const routeByRole = { examinee: "examinee", author: "author", grader: "grader", admin: "admin" };
+    const form = document.getElementById("loginPageForm");
+    const stack = document.getElementById("toastStack");
+
+    function showToast(message) {
+      const item = document.createElement("div");
+      item.className = "toast";
+      item.textContent = message;
+      stack.prepend(item);
+      setTimeout(() => item.remove(), 2200);
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const role = document.getElementById("loginRole").value;
+      const route = routeByRole[role] || "examinee";
+      window.location.href = `./index.html#${route}`;
+    });
+
+    document.querySelectorAll("[data-login-dialog]").forEach((button) => {
+      button.addEventListener("click", () => showToast(`${button.dataset.loginDialog} 화면은 인증/계정 플로우에 포함됩니다.`));
+    });
+  </script>
+</body>
+</html>

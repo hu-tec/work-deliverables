@@ -1,0 +1,8 @@
+{
+  "/page": "app/page.js",
+  "/upload-classification/upload/page": "app/upload-classification/upload/page.js",
+  "/upload-classification/review/page": "app/upload-classification/review/page.js",
+  "/upload-classification/rules/page": "app/upload-classification/rules/page.js",
+  "/upload-classification/results/page": "app/upload-classification/results/page.js",
+  "/upload-classification/history/page": "app/upload-classification/history/page.js"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "sinbom-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix 2025 run dev",
+    "dev:2024": "npm --prefix 2024 run dev",
+    "dev:2025": "npm --prefix 2025 run dev",
+    "dev:vibecoding": "npm --prefix vibecoding run dev",
+    "build": "npm --prefix 2025 run build",
+    "build:2024": "npm --prefix 2024 run build",
+    "build:2025": "npm --prefix 2025 run build",
+    "build:vibecoding": "npm --prefix vibecoding run build",
+    "test:2024": "npm --prefix 2024 test",
+    "test:2025": "npm --prefix 2025 test",
+    "test:vibecoding": "npm --prefix vibecoding test"
+  }
+}
