@@ -151,6 +151,41 @@
         color: var(--accent)
       }
 
+      .bulk-actions {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+        flex-wrap: wrap
+      }
+
+      .bulk-actions button {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: #fff;
+        color: var(--text);
+        padding: 5px 8px;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px
+      }
+
+      .bulk-actions button:not(:disabled):hover {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--accent)
+      }
+
+      .bulk-actions button:disabled {
+        cursor: not-allowed;
+        opacity: .45
+      }
+
+      .bulk-count {
+        color: var(--muted);
+        font-size: 11px
+      }
+
       .quick-layout {
         display: grid;
         grid-template-columns: 320px minmax(0, 1fr);
@@ -261,6 +296,60 @@
       }
 
       .download-link:hover {
+        background: var(--accent-soft);
+        text-decoration: underline
+      }
+
+      .group-downloads {
+        float: right;
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 3px;
+        max-width: 62%;
+        margin-top: -1px
+      }
+
+      .group-download-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--accent);
+        padding: 2px 5px;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 1.2;
+        text-decoration: none;
+        white-space: nowrap
+      }
+
+      .group-download-link:hover {
+        background: var(--accent-soft);
+        text-decoration: underline
+      }
+
+      .row-download-link {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--accent);
+        padding: 2px 5px;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        line-height: 1.2;
+        text-decoration: none;
+        white-space: nowrap
+      }
+
+      .row-download-link:hover {
         background: var(--accent-soft);
         text-decoration: underline
       }
@@ -499,6 +588,58 @@
         min-height: 170px
       }
 
+      .group-summary {
+        margin: 0;
+        padding: 5px 7px;
+        border-bottom: 1px solid var(--line);
+        background: #fff;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.3
+      }
+
+      .course-mini-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 4px;
+        padding: 6px;
+        border-bottom: 1px solid var(--line);
+        background: #fbfcfd
+      }
+
+      .course-mini-card {
+        display: block;
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--text);
+        padding: 5px 6px;
+        text-decoration: none
+      }
+
+      .course-mini-card:hover {
+        border-color: var(--accent);
+        background: var(--accent-soft)
+      }
+
+      .course-mini-card strong {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 10px;
+        line-height: 1.25
+      }
+
+      .course-mini-card span {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 8px;
+        line-height: 1.2
+      }
+
       .mini-table th,
       .mini-table td {
         padding: 4px 5px;
@@ -725,6 +866,7 @@
 
       .markdown {
         padding: 6px 8px;
+        font-size: 8px;
         line-height: 1.35;
         word-break: keep-all;
         overflow-wrap: anywhere
@@ -738,17 +880,17 @@
       }
 
       .markdown h1 {
-        font-size: 28px
+        font-size: 14px
       }
 
       .markdown h2 {
-        font-size: 22px;
+        font-size: 11px;
         border-bottom: 1px solid var(--line);
         padding-bottom: 2px
       }
 
       .markdown h3 {
-        font-size: 18px
+        font-size: 9px
       }
 
       .markdown p {
@@ -926,6 +1068,13 @@
               <div class="view-toggle" aria-label="HTML 보기 방식">
                 <button class="view-button active" type="button" data-list="html" data-view="table">표로 보기</button>
                 <button class="view-button" type="button" data-list="html" data-view="card">카드형으로 보기</button>
+                <button class="view-button" type="button" data-list="html" data-view="table2">표 2</button>
+                <button class="view-button" type="button" data-list="html" data-view="card2">카드형 2</button>
+              </div>
+              <div class="bulk-actions" aria-label="선택 다운로드">
+                <button id="html-selected-download" type="button" disabled>⬇ 선택 다운로드</button>
+                <button id="html-selected-clear" type="button" disabled>선택 해제</button>
+                <span id="html-selected-count" class="bulk-count">선택 0개</span>
               </div>
             </div>
             <div id="html-sections"></div>
@@ -934,7 +1083,7 @@
             <div class="head">
               <h2 id="preview-title" class="section-title">화면을 선택하세요</h2>
               <p id="preview-path" class="note">왼쪽 목록에서 HTML 산출물을 클릭하면 이 영역에 표시됩니다.</p>
-              <div class="viewer-actions"><button id="html-expand" type="button">오른쪽만 보기</button><button id="md-side-toggle" type="button">Markdown 닫기</button></div>
+              <div class="viewer-actions"><button id="html-expand" type="button">오른쪽만 보기</button><button id="md-side-toggle" type="button">Markdown 닫기</button><a id="html-open-full" href="#" target="_blank" rel="noopener" hidden>전체 화면으로 보기</a></div>
             </div>
             <div id="html-preview-grid" class="html-preview-grid">
               <iframe id="preview-frame" class="preview-frame" title="HTML 산출물 미리보기"></iframe>
@@ -1530,6 +1679,9 @@
         mdSections = document.getElementById('md-sections'),
         htmlSearch = document.getElementById('html-search'),
         mdSearch = document.getElementById('md-search'),
+        htmlSelectedDownload = document.getElementById('html-selected-download'),
+        htmlSelectedClear = document.getElementById('html-selected-clear'),
+        htmlSelectedCount = document.getElementById('html-selected-count'),
         htmlLayout = document.querySelector('#html-panel .md-layout'),
         mdLayout = document.querySelector('#markdown-panel .md-layout'),
         titleEl = document.getElementById('viewer-title'),
@@ -1539,6 +1691,7 @@
         copyLink = document.getElementById('copy-link'),
         htmlExpand = document.getElementById('html-expand'),
         mdSideToggle = document.getElementById('md-side-toggle'),
+        htmlOpenFull = document.getElementById('html-open-full'),
         htmlPreviewGrid = document.getElementById('html-preview-grid'),
         mdExpand = document.getElementById('md-expand'),
         previewTitle = document.getElementById('preview-title'),
@@ -1659,6 +1812,7 @@
       let htmlView = 'table';
       let mdView = 'table';
       let activeMemoPath = '';
+      const selectedHtmlDownloads = new Set();
       let activePopupMemoPath = '';
       const SECTION_ORDER = [
         '디자인시스템/재사용 UI',
@@ -1680,6 +1834,43 @@
         '개발·운영 매뉴얼': 'downloads/개발_운영_매뉴얼.zip',
         '보관/원본 자료': 'downloads/보관_원본_자료.zip'
       };
+      const HTML_GROUP2_ORDER = [
+        '디자인관련',
+        '사용자/랜딩·신청 화면',
+        '내부 업무도구/자동화',
+        '그외',
+        '보관/원본 자료'
+      ];
+      const HTML_GROUP2_DOWNLOADS = {
+        '디자인관련': [
+          ['디자인', DOWNLOADS['디자인시스템/재사용 UI']],
+          ['BO', DOWNLOADS['관리자/BO 업무화면']]
+        ],
+        '사용자/랜딩·신청 화면': [
+          ['사용자', DOWNLOADS['사용자/랜딩·신청 화면']]
+        ],
+        '내부 업무도구/자동화': [
+          ['전체', DOWNLOADS['내부 업무도구/자동화']],
+          ['MD', 'downloads/마크다운에디터_내부용.zip'],
+          ['추적', 'downloads/업무_추적_댓글_웹프로그램.zip'],
+          ['협업', 'downloads/협업연동_커뮤니케이션_업무툴_테스트.zip']
+        ],
+        '그외': [
+          ['개발', DOWNLOADS['개발·운영 매뉴얼']],
+          ['기획', DOWNLOADS['기획·전략 자료']],
+          ['교육자료', DOWNLOADS['교육·시험·콘텐츠 자료']]
+        ],
+        '보관/원본 자료': [
+          ['보관', DOWNLOADS['보관/원본 자료']]
+        ]
+      };
+      const EDUCATION_COURSE_ITEMS = [
+        ['1과', 'AI 방과후 교사 양성과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=ai-after-school-teacher'],
+        ['2과', '교습소·학원·공부방 교사 양성과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=academy-studyroom-teacher'],
+        ['3과', 'AI 온라인 교사 양성과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=ai-online-teacher'],
+        ['4과', '어린이 TESOL 교사 양성과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=kids-tesol-teacher'],
+        ['5과', 'AI 방과후·교육기관 운영 강사과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=after-school-edu-operation']
+      ];
 
       function inferSubsection(doc) {
         const p = String(doc.path || ''),
@@ -1812,6 +2003,156 @@
         }, {})
       }
 
+      function htmlGroup2(doc) {
+        const section = String(doc.section || ''),
+          subsection = String(doc.subsection || ''),
+          path = String(doc.path || '');
+        if (section === '디자인시스템/재사용 UI' || section === '관리자/BO 업무화면') return '디자인관련';
+        if (section === '사용자/랜딩·신청 화면') return '사용자/랜딩·신청 화면';
+        if (section === '내부 업무도구/자동화') return '내부 업무도구/자동화';
+        if (section === '보관/원본 자료') return '보관/원본 자료';
+        return '그외'
+      }
+
+      function groupHtmlView2(items) {
+        return items.reduce((a, d) => {
+          const key = htmlGroup2(d);
+          (a[key] || (a[key] = [])).push(d);
+          return a
+        }, {})
+      }
+
+      function group2Keys(grouped) {
+        return Object.keys(grouped).sort((a, b) => {
+          const ai = HTML_GROUP2_ORDER.indexOf(a),
+            bi = HTML_GROUP2_ORDER.indexOf(b);
+          if (ai > -1 || bi > -1) return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+          return a.localeCompare(b, 'ko')
+        })
+      }
+
+      function originalGroupLabel(d) {
+        return String(d.section || '기타') + (d.subsection ? ' > ' + d.subsection : '')
+      }
+
+      function group2DownloadButtons(title) {
+        const links = HTML_GROUP2_DOWNLOADS[title] || [],
+          allButton = '<button class="group-download-link" type="button" data-download-group2="' + esc(title) + '" title="HTML과 관련 Markdown 모두 다운로드">⬇ 모두</button>';
+        return '<span class="group-downloads">' + allButton + links.map(([label, href]) => '<a class="group-download-link" href="' + encodeURI(href) + '" download title="' + esc(label) + ' ZIP 다운로드">⬇ ' + esc(label) + '</a>').join('') + '</span>'
+      }
+
+      function group2Heading(title, items) {
+        const count = title === '사용자/랜딩·신청 화면' ? items.length + '개 · 교육과정 ' + EDUCATION_COURSE_ITEMS.length + '개' : items.length + '개';
+        return '<h3>' + esc(title) + ' <span class="count">' + esc(count) + '</span>' + group2DownloadButtons(title) + '</h3>'
+      }
+
+      function renderEducationCourseGrid() {
+        return '<p class="group-summary">사용자/랜딩·신청 화면 안의 교육 과정 5개입니다.</p><div class="course-mini-grid">' +
+          EDUCATION_COURSE_ITEMS.map(item => '<a class="course-mini-card" href="' + encodeURI(item[2]) + '" target="_blank" rel="noopener" title="' + esc(item[1]) + '"><span>' + esc(item[0]) + '</span><strong>' + esc(item[1]) + '</strong></a>').join('') +
+          '</div>'
+      }
+
+      function uniquePaths(paths) {
+        return paths.filter(Boolean).reduce((items, path) => {
+          if (!items.includes(path)) items.push(path);
+          return items
+        }, [])
+      }
+
+      function htmlDocDownloadPaths(doc) {
+        return uniquePaths([doc.path].concat(Array.isArray(doc.sourceDocs) ? doc.sourceDocs : []))
+      }
+
+      function triggerDownloads(paths) {
+        uniquePaths(paths).forEach((path, index) => {
+          setTimeout(() => {
+            const link = document.createElement('a');
+            link.href = encodeURI(path);
+            link.download = path.split('/').pop() || '';
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            link.remove()
+          }, index * 180)
+        })
+      }
+
+      function downloadHtmlDocSet(path) {
+        const doc = DATA.htmlDocs.find(item => item.path === path);
+        if (!doc) return;
+        triggerDownloads(htmlDocDownloadPaths(doc))
+      }
+
+      function downloadHtmlGroup2Set(title) {
+        const paths = [];
+        DATA.htmlDocs.filter(doc => htmlGroup2(doc) === title).forEach(doc => paths.push(...htmlDocDownloadPaths(doc)));
+        triggerDownloads(paths)
+      }
+
+      function selectedDownloadPaths() {
+        const paths = [];
+        selectedHtmlDownloads.forEach(path => {
+          const doc = DATA.htmlDocs.find(item => item.path === path);
+          if (doc) paths.push(...htmlDocDownloadPaths(doc))
+        });
+        return uniquePaths(paths)
+      }
+
+      function updateSelectedDownloadControls() {
+        const count = selectedHtmlDownloads.size,
+          fileCount = selectedDownloadPaths().length;
+        htmlSelectedDownload.disabled = count === 0;
+        htmlSelectedClear.disabled = count === 0;
+        htmlSelectedCount.textContent = count ? '선택 ' + count + '개 · 파일 ' + fileCount + '개' : '선택 0개'
+      }
+
+      function downloadSelectedHtmlSets() {
+        const paths = selectedDownloadPaths();
+        if (!paths.length) return;
+        triggerDownloads(paths)
+      }
+
+      function rowDownloadLink(d) {
+        const count = htmlDocDownloadPaths(d).length;
+        return '<button class="row-download-link" type="button" data-download-set="' + esc(d.path) + '" title="HTML과 관련 Markdown ' + count + '개 다운로드">⬇ 세트</button>'
+      }
+
+      function selectionCheckbox(d) {
+        return '<input type="checkbox" data-download-check="' + esc(d.path) + '" aria-label="' + esc(shortTitle(d)) + ' 선택"' + (selectedHtmlDownloads.has(d.path) ? ' checked' : '') + '>'
+      }
+
+      function renderTable2(items) {
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th><th>다운</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td><td>' + rowDownloadLink(d) + '</td></tr>').join('') +
+          '</tbody></table></div>'
+      }
+
+      function renderHtmlMiniTable2(items) {
+        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th><th>다운</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-popup="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><a href="' + encodeURI(d.path) + '" data-html-popup="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td><td>' + rowDownloadLink(d) + '</td></tr>').join('') +
+          '</tbody></table></div>'
+      }
+
+      function renderOriginalMiniTables(items) {
+        return renderHtmlMiniTable2(items)
+      }
+
+      function renderHtmlGroup2Tables(grouped) {
+        return group2Keys(grouped).map(title => {
+          const items = grouped[title],
+            courseGrid = title === '사용자/랜딩·신청 화면' ? renderEducationCourseGrid() : '';
+          return '<section class="section">' + group2Heading(title, items) + courseGrid + renderTable2(items) + '</section>'
+        }).join('')
+      }
+
+      function renderHtmlGroup2Cards(grouped) {
+        return group2Keys(grouped).map(title => {
+          const items = grouped[title],
+            courseGrid = title === '사용자/랜딩·신청 화면' ? renderEducationCourseGrid() : '';
+          return '<section class="section">' + group2Heading(title, items) + courseGrid + renderOriginalMiniTables(items) + '</section>'
+        }).join('')
+      }
+
       function sectionKeys(grouped) {
         const keys = Object.keys(grouped);
         return keys.sort((a, b) => {
@@ -1932,7 +2273,7 @@
 
       function shortPath(d) {
         const path = displayPath(d);
-        return path.length > 25 ? path.slice(0, 25) + '....' : path
+        return path.length > 34 ? '...' + path.slice(-34) : path
       }
 
       function shortTitle(d) {
@@ -2044,9 +2385,16 @@
       function renderHtmlList() {
         const term = htmlSearch.value.trim().toLowerCase(),
           filtered = DATA.htmlDocs.filter(d => !term || (d.section + ' ' + (d.subsection || '') + ' ' + d.title + ' ' + d.path + ' ' + d.date + ' ' + (d.sourceDocs || []).join(' ')).toLowerCase().includes(term)),
-          grouped = group(filtered);
-        htmlSections.className = htmlView === 'card' ? 'card-grid section-card-grid' : '';
-        htmlSections.innerHTML = (htmlView === 'table' ? renderNestedSections(grouped, renderTable) : renderNestedCards(grouped, renderHtmlMiniTable)) || '<div class="placeholder">검색 결과가 없습니다.</div>'
+          grouped = group(filtered),
+          grouped2 = groupHtmlView2(filtered);
+        let htmlOutput = '';
+        htmlSections.className = (htmlView === 'card' || htmlView === 'card2') ? 'card-grid section-card-grid' : '';
+        if (htmlView === 'table') htmlOutput = renderNestedSections(grouped, renderTable);
+        else if (htmlView === 'card') htmlOutput = renderNestedCards(grouped, renderHtmlMiniTable);
+        else if (htmlView === 'table2') htmlOutput = renderHtmlGroup2Tables(grouped2);
+        else if (htmlView === 'card2') htmlOutput = renderHtmlGroup2Cards(grouped2);
+        htmlSections.innerHTML = htmlOutput || '<div class="placeholder">검색 결과가 없습니다.</div>';
+        updateSelectedDownloadControls()
       }
 
       function renderMdList() {
@@ -2120,6 +2468,8 @@
         previewTitle.textContent = shortTitle(doc);
         previewPath.textContent = '만든날짜 ' + createdDate(doc) + ' · 수정날짜 ' + modifiedDate(doc) + ' · ' + doc.path;
         previewFrame.src = encodeURI(doc.path);
+        htmlOpenFull.href = encodeURI(doc.path);
+        htmlOpenFull.hidden = false;
         renderHtmlSourceList(doc)
       }
 
@@ -2244,10 +2594,11 @@
       });
       document.querySelectorAll('.view-button').forEach(button => button.addEventListener('click', () => {
         const list = button.dataset.list || 'html';
-        const layout = button.closest('.md-layout');
+        const layout = button.closest('.md-layout'),
+          isCardMode = button.dataset.view === 'card' || button.dataset.view === 'card2';
         if (layout) {
-          layout.classList.toggle('card-mode', button.dataset.view === 'card');
-          if (button.dataset.view === 'card') {
+          layout.classList.toggle('card-mode', isCardMode);
+          if (isCardMode) {
             layout.classList.remove('preview-only');
             const expandButton = layout.querySelector('#html-expand, #md-expand');
             if (expandButton) expandButton.textContent = '오른쪽만 보기'
@@ -2274,6 +2625,18 @@
         if (b) openDoc(b.dataset.path)
       });
       htmlSections.addEventListener('click', e => {
+        const setDownload = e.target.closest('[data-download-set]');
+        if (setDownload) {
+          e.preventDefault();
+          downloadHtmlDocSet(setDownload.dataset.downloadSet);
+          return
+        }
+        const groupDownload = e.target.closest('[data-download-group2]');
+        if (groupDownload) {
+          e.preventDefault();
+          downloadHtmlGroup2Set(groupDownload.dataset.downloadGroup2);
+          return
+        }
         const popupLink = e.target.closest('[data-html-popup]');
         if (popupLink) {
           e.preventDefault();
@@ -2284,6 +2647,18 @@
         if (!link) return;
         e.preventDefault();
         openHtmlPreview(link.dataset.htmlPreview)
+      });
+      htmlSections.addEventListener('change', e => {
+        const checkbox = e.target.closest('[data-download-check]');
+        if (!checkbox) return;
+        if (checkbox.checked) selectedHtmlDownloads.add(checkbox.dataset.downloadCheck);
+        else selectedHtmlDownloads.delete(checkbox.dataset.downloadCheck);
+        updateSelectedDownloadControls()
+      });
+      htmlSelectedDownload.addEventListener('click', downloadSelectedHtmlSets);
+      htmlSelectedClear.addEventListener('click', () => {
+        selectedHtmlDownloads.clear();
+        renderHtmlList()
       });
       htmlSourceList.addEventListener('click', e => {
         const b = e.target.closest('[data-source-doc]');
@@ -2301,6 +2676,17 @@
       htmlExpand.addEventListener('click', () => {
         htmlLayout.classList.toggle('preview-only');
         htmlExpand.textContent = htmlLayout.classList.contains('preview-only') ? '목록 같이 보기' : '오른쪽만 보기'
+      });
+      htmlOpenFull.addEventListener('click', e => {
+        const href = htmlOpenFull.getAttribute('href');
+        if (href && href !== '#') return;
+        const src = previewFrame.getAttribute('src');
+        if (!src) {
+          e.preventDefault();
+          return
+        }
+        e.preventDefault();
+        window.open(src, '_blank', 'noopener')
       });
       mdSideToggle.addEventListener('click', () => {
         htmlPreviewGrid.classList.toggle('md-closed');
