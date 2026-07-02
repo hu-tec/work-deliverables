@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>전체 공통 타이포그래피 글자크기 기준</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+.markdown-image{display:block;max-width:100%;height:auto;margin:12px 0 18px;border:1px solid #d6dfec;border-radius:8px;background:#fff}
+</style>
+</head>
+<body>
+<h1>타이포그래피 글자크기 기준</h1>
+<h2>1. 대분류: 화면 성격별 글자 크기</h2>
+<h3>1.1 중분류: 사용자 화면</h3>
+<p>사용자 화면은 읽기와 이해가 목적이므로 관리자 테이블보다 글자를 크게 둔다.</p>
+<p>소분류:</p>
+<ul>
+<li>본문: 읽기 편한 크기</li>
+<li>카드 제목: 본문보다 한 단계 크게</li>
+<li>버튼: 클릭 가능한 크기와 padding 유지</li>
+<li>안내 문장: 지나치게 작게 줄이지 않음</li>
+</ul>
+<h3>1.2 중분류: 관리자/BO 화면</h3>
+<p>관리자 화면은 정보 비교와 반복 작업이 목적이므로 더 조밀한 크기를 사용할 수 있다.</p>
+<p>소분류:</p>
+<ul>
+<li>대량 테이블 본문: 8px 기준 가능</li>
+<li>테이블 제목셀: 10px 기준 가능</li>
+<li>필터 label, checkbox label, badge: 8px 기준 가능</li>
+<li>상세 패널의 중요 제목: 10-12px 범위</li>
+</ul>
+<h3>1.3 중분류: 접근성 예외</h3>
+<p>접근성 점검 페이지는 글자 크기, line-height, control size를 줄이지 않는다.</p>
+<h2>2. 대분류: 제목 단계</h2>
+<h3>2.1 중분류: 화면 제목</h3>
+<p>소분류:</p>
+<ul>
+<li>화면 전체 제목은 명확한 업무명으로 쓴다.</li>
+<li>hero급 크기는 사용자 랜딩이나 소개 화면에만 제한적으로 쓴다.</li>
+<li>관리자 패널 안 제목은 작고 단단하게 둔다.</li>
+</ul>
+<h3>2.2 중분류: 패널 제목</h3>
+<p>소분류:</p>
+<ul>
+<li>패널 제목은 10-12px도 가능하다.</li>
+<li>작은 패널 안에 큰 H1처럼 보이는 제목을 쓰지 않는다.</li>
+<li>제목 아래 설명이 반복되면 제거한다.</li>
+</ul>
+<h3>2.3 중분류: label/value</h3>
+<p>소분류:</p>
+<ul>
+<li>label은 짧고 고정된 폭으로 둔다.</li>
+<li>value는 한 줄 표시를 우선한다.</li>
+<li>긴 값은 ellipsis 또는 상세에서 확인하게 한다.</li>
+<li>같은 행에 label과 value를 붙여 세로 공간을 줄인다.</li>
+</ul>
+<p>예시:</p>
+<pre><code>회원유형 : 전체 일반회원 정식회원 기업회원 전문가
+성별 : 전체 M F
+가입일 : 25-02-04 / 홈페이지</code></pre>
+<h2>3. 대분류: line-height와 letter spacing</h2>
+<h3>3.1 중분류: 촘촘한 업무 화면</h3>
+<p>소분류:</p>
+<ul>
+<li>line-height는 글자가 겹치지 않는 선에서 줄인다.</li>
+<li>원본 화면이 고정 px line-height와 좁은 letter spacing을 쓴다면 비슷한 밀도를 유지한다.</li>
+<li>글자 크기를 키울 때는 주변 padding과 row gap도 함께 확인한다.</li>
+</ul>
+<h3>3.2 중분류: 읽기 화면</h3>
+<p>소분류:</p>
+<ul>
+<li>긴 본문은 line-height를 충분히 둔다.</li>
+<li>문단 폭이 너무 넓으면 max-width를 둔다.</li>
+</ul>
+<h2>4. 대분류: 글자 크기 조정 원칙</h2>
+<h3>4.1 중분류: 1단계만 키우기</h3>
+<p>사용자가 &quot;글자 사이즈 1개씩만 키워줘&quot;라고 말하면 전체 비율을 바꾸지 않고 해당 범위의 font-size만 한 단계 올린다.</p>
+<p>소분류:</p>
+<ul>
+<li>범위를 먼저 확인한다.</li>
+<li>해당 범위 밖 글자는 바꾸지 않는다.</li>
+<li>크기만 키워서 줄바꿈이 생기면 grid 폭 또는 gap을 함께 점검한다.</li>
+</ul>
+<h3>4.2 중분류: 버튼과 입력의 글자</h3>
+<p>소분류:</p>
+<ul>
+<li>버튼 안 글자가 넘치면 width, min-width, white-space를 함께 조정한다.</li>
+<li>입력 label은 한 줄로 유지한다.</li>
+<li>너무 긴 버튼 텍스트는 짧은 동사로 바꾼다.</li>
+</ul>
+<h2>5. 요약표</h2>
+<table><tbody><tr><th>항목</th><th>기준</th></tr><tr><td>사용자 화면</td><td>읽기 편한 크기 우선</td></tr><tr><td>BO 테이블</td><td>본문 8px, 제목셀 10px 가능</td></tr><tr><td>패널 제목</td><td>작고 단단하게</td></tr><tr><td>label/value</td><td>한 줄 우선</td></tr><tr><td>크기 변경</td><td>지정 범위만 1단계 조정</td></tr><tr><td>금지</td><td>접근성 점검 페이지 크기 변경</td></tr></tbody></table>
+</body>
+</html>

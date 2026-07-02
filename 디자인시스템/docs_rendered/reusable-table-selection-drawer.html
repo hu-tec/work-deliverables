@@ -16,6 +16,7 @@ th{background:#f8f9fc;color:#666;font-weight:700}
 pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
 code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
 a{color:#006dcc;text-underline-offset:2px}
+.markdown-image{display:block;max-width:100%;height:auto;margin:12px 0 18px;border:1px solid #d6dfec;border-radius:8px;background:#fff}
 </style>
 </head>
 <body>
@@ -34,6 +35,7 @@ a{color:#006dcc;text-underline-offset:2px}
 <li>테이블 행은 <code>role=&quot;button&quot;</code>, <code>tabIndex=&quot;0&quot;</code>, <code>aria-controls=&quot;table-detail-drawer&quot;</code>를 가진다.</li>
 <li>행 클릭, Enter, Space로 Drawer를 연다.</li>
 <li>Drawer가 열리면 <code>table-workspace.is-drawer-open</code>을 적용하고, 선택 행에는 <code>tr.is-open</code>을 적용한다.</li>
+<li>기본 열림 상태의 <code>.table-detail-drawer</code>는 작업영역 기준 50% 이상을 사용한다. 상세 작업 패널은 단순 보기 영역이 아니라 상태 변경, 상담/메모 입력, 이력 확인을 수행하므로 좁은 보조 패널로 만들지 않는다.</li>
 <li>Drawer는 <code>role=&quot;dialog&quot;</code>, <code>aria-modal=&quot;false&quot;</code>로 둔다. Overlay modal이 아니라 테이블과 같은 작업 맥락 안에 붙는 패널이다.</li>
 <li>닫기 버튼과 Escape로 닫는다.</li>
 <li>닫을 때 <code>is-drawer-open</code>, <code>is-drawer-wide</code>, <code>tr.is-open</code>을 제거하고 포커스를 선택했던 행으로 돌린다.</li>
@@ -55,6 +57,7 @@ a{color:#006dcc;text-underline-offset:2px}
       닫기 / 저장</code></pre>
 <p>회원 테이블처럼 <code>이름</code>과 <code>이메일</code>이 있는 행은 일반 field 묶음이 아니라 <code>member-master-detail</code>을 사용한다.</p>
 <h2>회원 상세 Drawer 패널 구성</h2>
+<p>실제 HTML 구조는 <code>table_design/관리자패널_전체회원.html</code>의 상세 Drawer 영역을 최우선으로 참고한다. 특히 <code>member-master-detail</code>, <code>member-master-titlebar</code>, <code>member-master-grid</code>, <code>member-profile-panel</code>, <code>member-work-panel</code> 구조를 따른다. 기본 Drawer는 좌측 마스터 정보와 우측 작업 패널의 2열 구조를 유지하고, 넓게보기에서는 우측 작업 패널 내부 모듈을 4단 grid로 확장한다.</p>
 <p>회원 상세는 <code>회원기본정보 마스터</code>와 <code>회원 작업 패널</code>의 2열 구조를 기본으로 한다.</p>
 <pre><code>member-master-detail
   member-master-titlebar

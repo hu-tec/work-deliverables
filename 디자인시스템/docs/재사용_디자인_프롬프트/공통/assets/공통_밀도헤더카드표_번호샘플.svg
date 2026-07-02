@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="860" viewBox="0 0 1440 860" role="img" aria-labelledby="title desc">
+  <title id="title">공통 밀도 헤더 카드 표형 번호 샘플</title>
+  <desc id="desc">상단 헤더, 다단 밀도, 상태 칩과 이모지, 카드형과 표형 선택 기준을 한 화면에 보여주는 공통 샘플</desc>
+  <defs>
+    <style>
+      .bg{fill:#f5f7fa}.panel{fill:#fff;stroke:#c8d2df;stroke-width:1}.soft{fill:#eef5ff;stroke:#b9cce2}.dark{fill:#092747}.head{fill:#e9edf3}.card{fill:#fff;stroke:#d6dee8}.text{font:700 15px Arial,sans-serif;fill:#182536}.small{font:12px Arial,sans-serif;fill:#3d5064}.tiny{font:10px Arial,sans-serif;fill:#516579}.num{font:700 18px Arial,sans-serif;fill:#0b74e8}.chipOk{fill:#e8f8ee;stroke:#65bd88}.chipWait{fill:#fff4d5;stroke:#deb044}.chipInfo{fill:#e8f2ff;stroke:#82b7ef}.chipFail{fill:#ffe8e8;stroke:#e57272}.line{stroke:#0b74e8;stroke-width:2.5;fill:none;stroke-linecap:round}.input{fill:#fff;stroke:#aebed0}.label{font:700 10px Arial,sans-serif;fill:#0a2442}
+    </style>
+  </defs>
+  <rect class="bg" width="1440" height="860"/>
+  <rect class="dark" x="24" y="22" width="1392" height="64" rx="4"/>
+  <text class="num" x="44" y="60">1</text><text x="78" y="52" class="text" fill="#fff">상단 헤더는 설명이 아니라 현재 업무 기준점</text><text x="78" y="72" class="tiny" fill="#dce6f0">업무명 · 전체/선택 count · 상태 chip · 핵심 버튼을 한 줄에 압축</text>
+  <rect class="chipOk" x="1098" y="38" width="62" height="24" rx="12"/><text class="tiny" x="1114" y="54">완료</text><rect class="chipWait" x="1168" y="38" width="62" height="24" rx="12"/><text class="tiny" x="1184" y="54">대기</text><rect class="input" x="1240" y="34" width="72" height="30" rx="4"/><text class="tiny" x="1258" y="53">저장</text><rect class="input" x="1320" y="34" width="72" height="30" rx="4"/><text class="tiny" x="1338" y="53">닫기</text>
+
+  <rect class="panel" x="24" y="108" width="1392" height="154" rx="4"/>
+  <text class="num" x="44" y="140">2</text><text class="text" x="78" y="140">밀도: 1단 안에 2~4단을 넣어 세로 스크롤을 줄임</text>
+  <rect class="soft" x="76" y="160" width="300" height="70"/><text class="label" x="92" y="182">회원유형 :</text><text class="tiny" x="160" y="182">전체 일반 정식 기업 전문가</text><text class="label" x="92" y="206">성별 :</text><text class="tiny" x="160" y="206">전체 M F</text>
+  <rect class="soft" x="398" y="160" width="300" height="70"/><text class="label" x="414" y="182">상태 :</text><text class="tiny" x="472" y="182">전체 완료 대기 취소 검토</text><text class="label" x="414" y="206">결제 :</text><text class="tiny" x="472" y="206">정상 미납 환불 정산</text>
+  <rect class="soft" x="720" y="160" width="300" height="70"/><text class="label" x="736" y="182">기간 :</text><text class="tiny" x="794" y="182">오늘 1주 1개월 3개월</text><text class="label" x="736" y="206">검색 :</text><rect class="input" x="794" y="192" width="170" height="20"/>
+  <rect class="soft" x="1042" y="160" width="300" height="70"/><text class="label" x="1058" y="182">보기 :</text><text class="tiny" x="1116" y="182">표형 카드형 상세형</text><text class="label" x="1058" y="206">액션 :</text><text class="tiny" x="1116" y="206">검색 초기화 전체해제</text>
+
+  <rect class="panel" x="24" y="284" width="430" height="246" rx="4"/>
+  <text class="num" x="44" y="316">3</text><text class="text" x="78" y="316">카드형: 적은 수의 독립 항목</text>
+  <rect class="card" x="56" y="342" width="366" height="62" rx="6"/><text class="small" x="74" y="366">신청 유형 A</text><rect class="chipInfo" x="334" y="350" width="62" height="22" rx="11"/><text class="tiny" x="350" y="365">신규</text><text class="tiny" x="74" y="388">핵심값 24건 · 대기 3건 · 오늘 마감 1건</text>
+  <rect class="card" x="56" y="414" width="366" height="62" rx="6"/><text class="small" x="74" y="438">상담 요약</text><rect class="chipWait" x="334" y="422" width="62" height="22" rx="11"/><text class="tiny" x="350" y="437">확인</text><text class="tiny" x="74" y="460">완료 18 · 미처리 5 · 재연락 2</text>
+  <text class="tiny" x="58" y="506">카드는 반복 항목에만 사용. 카드 안에 또 카드를 넣지 않음.</text>
+
+  <rect class="panel" x="478" y="284" width="938" height="246" rx="4"/>
+  <text class="num" x="498" y="316">4</text><text class="text" x="532" y="316">표형: 많은 행 비교, 선택, 상세 진입</text>
+  <rect class="head" x="510" y="342" width="872" height="32"/><text class="tiny" x="530" y="362">선택</text><text class="tiny" x="604" y="362">이름/나이·성별</text><text class="tiny" x="780" y="362">가입/채널</text><text class="tiny" x="934" y="362">상태/결제</text><text class="tiny" x="1090" y="362">메모 요약</text><text class="tiny" x="1280" y="362">상세</text>
+  <rect class="card" x="510" y="374" width="872" height="42"/><text class="tiny" x="530" y="400">☐</text><text class="tiny" x="604" y="392">박서연 / 29세 / 여</text><text class="tiny" x="780" y="392">25-07-12 / 홈페이지</text><rect class="chipOk" x="934" y="382" width="50" height="20" rx="10"/><text class="tiny" x="948" y="396">완료</text><rect class="chipInfo" x="990" y="382" width="50" height="20" rx="10"/><text class="tiny" x="1004" y="396">정상</text><text class="tiny" x="1090" y="392">시험 접수 상담 완료</text><text class="tiny" x="1280" y="392">행 클릭</text>
+  <rect class="card" x="510" y="416" width="872" height="42"/><text class="tiny" x="604" y="434">최도윤 / 41세 / 남</text><text class="tiny" x="780" y="434">25-02-04 / 이메일</text><rect class="chipWait" x="934" y="424" width="50" height="20" rx="10"/><text class="tiny" x="948" y="438">대기</text><rect class="chipFail" x="990" y="424" width="50" height="20" rx="10"/><text class="tiny" x="1004" y="438">미납</text><text class="tiny" x="1090" y="434">다음통화 예정</text><text class="tiny" x="1280" y="434">행 클릭</text>
+  <text class="tiny" x="512" y="504">한 셀에는 관련 정보 2~3개까지만 묶고, 긴 메모는 한 줄 요약 후 상세에서 편집.</text>
+
+  <rect class="panel" x="24" y="552" width="686" height="250" rx="4"/>
+  <text class="num" x="44" y="584">5</text><text class="text" x="78" y="584">상태 chip + 짧은 라벨 + 보조 이모지</text>
+  <text class="small" x="64" y="624">좋은 예</text><rect class="chipOk" x="136" y="606" width="62" height="24" rx="12"/><text class="tiny" x="152" y="622">완료</text><rect class="chipWait" x="208" y="606" width="62" height="24" rx="12"/><text class="tiny" x="224" y="622">대기</text><rect class="chipFail" x="280" y="606" width="62" height="24" rx="12"/><text class="tiny" x="294" y="622">FAIL</text><text class="tiny" x="360" y="622">성별: 남 / 여, LT: P F 미</text>
+  <text class="small" x="64" y="670">나쁜 예</text><text class="tiny" x="136" y="670">색상만 빨간 글자, 이모지만 단독 표시, 긴 문장형 상태</text>
+  <text class="tiny" x="64" y="724">상태는 텍스트 + 배경 + 경계 + 위치가 함께 의미를 만든다.</text>
+
+  <rect class="panel" x="734" y="552" width="682" height="250" rx="4"/>
+  <text class="num" x="754" y="584">6</text><text class="text" x="788" y="584">공통 검수: 헤더/밀도/카드/표형 선택</text>
+  <text class="tiny" x="774" y="624">1. 상단은 현재 업무 기준점인가?</text>
+  <text class="tiny" x="774" y="652">2. 같은 맥락의 짧은 값이 가로로 묶였는가?</text>
+  <text class="tiny" x="774" y="680">3. 카드형은 독립 항목, 표형은 비교/선택/상세 진입에 쓰였는가?</text>
+  <text class="tiny" x="774" y="708">4. 상태값은 색상만이 아니라 chip과 텍스트로 보이는가?</text>
+  <text class="tiny" x="774" y="736">5. 빈 공간, 반복 제목, 불필요한 가로줄이 줄었는가?</text>
+</svg>

@@ -16,6 +16,7 @@ th{background:#f8f9fc;color:#666;font-weight:700}
 pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
 code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
 a{color:#006dcc;text-underline-offset:2px}
+.markdown-image{display:block;max-width:100%;height:auto;margin:12px 0 18px;border:1px solid #d6dfec;border-radius:8px;background:#fff}
 </style>
 </head>
 <body>
@@ -74,7 +75,7 @@ a{color:#006dcc;text-underline-offset:2px}
 &lt;/form&gt;</code></pre>
 <h2>정렬 기준</h2>
 <ul>
-<li>조건명 <code>legend</code>는 58px 고정 기준을 사용한다.</li>
+<li>조건명 <code>legend</code>는 고정 폭을 강제하지 않고, 필터 그룹 안에서 자연스럽게 흐르게 배치한다.</li>
 <li>옵션 영역은 flex-wrap으로 배치한다.</li>
 <li>조건 블록 사이에는 얇은 세로 구분선을 둘 수 있다.</li>
 <li>기간 조건은 한 줄로 유지하고, 공간이 부족하면 가로 스크롤을 허용한다.</li>

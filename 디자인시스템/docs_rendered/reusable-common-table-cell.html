@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>전체 공통 목록 테이블셀 데이터표현 기준</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+.markdown-image{display:block;max-width:100%;height:auto;margin:12px 0 18px;border:1px solid #d6dfec;border-radius:8px;background:#fff}
+</style>
+</head>
+<body>
+<h1>목록 테이블셀 데이터표현 기준</h1>
+<h2>1. 대분류: 테이블의 기본 원칙</h2>
+<h3>1.1 중분류: 한 행은 하나의 데이터 단위</h3>
+<p>소분류:</p>
+<ul>
+<li>회원 테이블은 한 행이 한 명이다.</li>
+<li>결제 테이블은 한 행이 한 결제 건이다.</li>
+<li>상담 테이블은 한 행이 한 상담 건이다.</li>
+<li>한 행 안에 서로 다른 주체를 섞지 않는다.</li>
+</ul>
+<h3>1.2 중분류: 첫 열과 선택</h3>
+<p>소분류:</p>
+<ul>
+<li>checkbox 열은 좁게 둔다.</li>
+<li>checkbox와 행 클릭은 서로 충돌하지 않게 한다.</li>
+<li>선택된 행은 배경, 좌측 인디케이터, aria 상태로 표시한다.</li>
+</ul>
+<h2>2. 대분류: 셀 안 데이터 묶기</h2>
+<h3>2.1 중분류: 한 셀에 2-3개 정보</h3>
+<p>같은 맥락의 짧은 정보는 한 셀에 묶어 세로와 가로 공간을 줄인다.</p>
+<p>예시:</p>
+<pre><code>이름: 김선수 / 34세 / 남
+가입: 25-03-15 / 이메일
+최근 로그인: 26-02-08 / 42m
+전문가: Lv.A / 4.8</code></pre>
+<p>소분류:</p>
+<ul>
+<li>주값은 굵게 또는 먼저 표시한다.</li>
+<li>보조값은 작게 표시한다.</li>
+<li>값 사이 구분은 slash, dot, 줄바꿈 중 가장 짧은 것을 선택한다.</li>
+<li>같은 셀에 긴 문장 2개를 넣지 않는다.</li>
+</ul>
+<h3>2.2 중분류: 한 줄 유지</h3>
+<p>소분류:</p>
+<ul>
+<li>관리번호, 상태, 등급, 날짜는 한 줄로 유지한다.</li>
+<li>이름+나이+성별은 한 줄 또는 2줄 안에서 끝낸다.</li>
+<li>이메일과 전화번호는 너무 길면 2줄까지 허용한다.</li>
+<li>메모는 한 줄 요약 후 상세에서 전체를 본다.</li>
+</ul>
+<h2>3. 대분류: 날짜, 연도, 시간 표기</h2>
+<h3>3.1 중분류: 테이블 날짜</h3>
+<p>소분류:</p>
+<ul>
+<li>테이블은 <code>YY-MM-DD</code>를 기본으로 한다.</li>
+<li>날짜와 채널은 <code>25-03-15 / 이메일</code>처럼 묶을 수 있다.</li>
+<li>최근 로그인은 날짜와 체류시간을 함께 보여준다.</li>
+</ul>
+<h3>3.2 중분류: 상세 날짜</h3>
+<p>소분류:</p>
+<ul>
+<li>입력 가능한 날짜는 date 또는 datetime-local을 쓴다.</li>
+<li>달력 선택이 가능해야 한다.</li>
+<li>회계/납부 날짜는 직접 입력보다 달력 선택을 우선한다.</li>
+</ul>
+<h3>3.3 중분류: 연도</h3>
+<p>소분류:</p>
+<ul>
+<li>긴 연도 범위가 필요 없으면 <code>25</code>, <code>26</code>처럼 짧게 쓴다.</li>
+<li>법적 문서, 인수인계, 정산 근거처럼 정확한 연도가 필요한 곳은 <code>2026</code>처럼 전체 연도를 쓴다.</li>
+</ul>
+<h2>4. 대분류: 테이블 폭과 스크롤</h2>
+<h3>4.1 중분류: 폭 배분</h3>
+<p>소분류:</p>
+<ul>
+<li>checkbox, 등급, 상태는 좁게 둔다.</li>
+<li>이름, 이메일, 주소, 메모는 상대적으로 넓게 둔다.</li>
+<li>긴 주소와 긴 메모를 동시에 넓게 두지 않는다.</li>
+<li>오른쪽 상세가 닫혔을 때 테이블은 전체 폭을 사용한다.</li>
+</ul>
+<h3>4.2 중분류: 가로 스크롤</h3>
+<p>소분류:</p>
+<ul>
+<li>많은 열이 필요하면 가로 스크롤을 허용한다.</li>
+<li>중요한 열은 왼쪽에 둔다.</li>
+<li>스크롤 때문에 주요 상태가 보이지 않으면 열 묶음을 다시 조정한다.</li>
+</ul>
+<h2>5. 대분류: 메모와 긴 값</h2>
+<h3>5.1 중분류: 목록 메모</h3>
+<p>소분류:</p>
+<ul>
+<li>목록에서는 한 줄 요약만 표시한다.</li>
+<li>전체 메모는 상세보기에서 편집한다.</li>
+<li>메모 열이 너무 넓어 테이블을 망치지 않게 한다.</li>
+</ul>
+<h3>5.2 중분류: 상세 메모</h3>
+<p>소분류:</p>
+<ul>
+<li>상담내용, 운영메모, 처리메모는 상세 패널에 둔다.</li>
+<li>이력 로그와 현재 입력 메모는 분리한다.</li>
+<li>누적 이력을 textarea 하나에 합치지 않는다.</li>
+</ul>
+<h2>공통 샘플: 밀도·헤더·카드형·표형 기준</h2>
+<p><img class="markdown-image" src="../docs/재사용_디자인_프롬프트/공통/assets/공통_밀도헤더카드표_번호샘플.svg" alt="공통 밀도 헤더 카드 표형 번호 샘플"></p>
+<p>샘플 번호 기준:</p>
+<ul>
+<li>1번: 상단 헤더는 업무명, count, 상태 chip, 주요 버튼을 한 줄에 압축한다.</li>
+<li>2번: 1단 안에 2~4단을 넣어 짧은 조건과 값을 가로로 묶는다.</li>
+<li>3번: 카드형은 적은 수의 독립 항목이나 요약 패널에만 쓴다.</li>
+<li>4번: 표형은 많은 행을 비교, 선택, 상세 진입해야 할 때 쓴다.</li>
+<li>5번: 상태는 chip과 짧은 label로 표시하고, 이모지는 보조 신호로만 제한한다.</li>
+<li>6번: 최종 검수는 헤더, 밀도, 카드/표 선택, 상태 표현, 빈 공간을 함께 확인한다.</li>
+</ul>
+<h2>6. 요약표</h2>
+<table><tbody><tr><th>항목</th><th>기준</th></tr><tr><td>행</td><td>하나의 데이터 단위</td></tr><tr><td>셀</td><td>같은 맥락 2-3개 정보 묶기</td></tr><tr><td>날짜</td><td>테이블은 짧게, 상세 입력은 달력</td></tr><tr><td>폭</td><td>짧은 값은 좁게, 긴 값은 필요한 만큼</td></tr><tr><td>메모</td><td>목록은 요약, 상세에서 전체</td></tr><tr><td>스크롤</td><td>많은 열은 가로 스크롤 허용</td></tr></tbody></table>
+</body>
+</html>

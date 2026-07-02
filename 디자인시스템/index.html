@@ -102,6 +102,1333 @@
           display: none;
         }
       }
+      #overview.overview-compact {
+        margin-bottom: 20px;
+      }
+      #overview.overview-compact .section-head {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        margin-bottom: 8px;
+        border-bottom: 1px solid var(--ds-color-border-default);
+        padding-bottom: 7px;
+      }
+      #overview.overview-compact .section-head h2 {
+        margin: 0;
+        font-size: 12px;
+        line-height: 16px;
+      }
+      #overview.overview-compact .section-head p {
+        font-size: 9px;
+        line-height: 14px;
+      }
+      .overview-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-top: 1px solid var(--ds-color-border-default);
+        border-left: 1px solid var(--ds-color-border-default);
+        background: var(--ds-color-bg-base);
+      }
+      .overview-summary > div {
+        min-width: 0;
+        border-right: 1px solid var(--ds-color-border-default);
+        border-bottom: 1px solid var(--ds-color-border-default);
+        padding: 7px 8px;
+      }
+      .overview-summary strong {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 10px;
+        line-height: 14px;
+      }
+      .overview-summary p {
+        margin: 0;
+        font-size: 8px;
+        line-height: 13px;
+      }
+      @media (max-width: 900px) {
+        .overview-summary {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 620px) {
+        #overview.overview-compact .section-head,
+        .overview-summary {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Compact documentation text without resizing embedded product examples. */
+      body.radius-zero-mode { letter-spacing: 0; }
+      .nav {
+        width: 220px;
+        padding: 12px 10px;
+      }
+      .nav h1 {
+        margin-bottom: 3px;
+        font-size: 11px;
+        line-height: 15px;
+      }
+      .nav > p {
+        margin-bottom: 8px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .nav-scroll {
+        gap: 2px;
+        max-height: calc(100vh - 58px);
+      }
+      .nav-category {
+        gap: 1px;
+        padding: 5px 7px;
+      }
+      .nav-category strong {
+        font-size: 10px;
+        line-height: 14px;
+      }
+      .nav-category span {
+        font-size: 8px;
+        line-height: 11px;
+      }
+      main {
+        width: calc(100vw - 220px);
+        padding: 0 24px 40px;
+      }
+      .section-tabs-shell {
+        margin: 0 -24px 14px;
+        padding: 7px 24px;
+      }
+      .section-tabs { gap: 4px; }
+      .section-tabs a {
+        min-height: 24px;
+        padding: 3px 7px;
+        font-size: 9px;
+      }
+      .section-subtabs {
+        gap: 4px;
+        margin-top: 6px;
+        padding-top: 6px;
+      }
+      .section-subtabs a {
+        min-height: 22px;
+        padding: 3px 7px;
+        font-size: 8px;
+      }
+      #rules-framework,
+      #rules-framework ~ section {
+        margin-bottom: 18px;
+      }
+      #rules-framework > .section-head,
+      #rules-framework ~ section:not(#bo-db-pages):not(#applyform) > .section-head {
+        margin-bottom: 6px;
+      }
+      #rules-framework > .section-head h2,
+      #rules-framework ~ section:not(#bo-db-pages):not(#applyform) > .section-head h2 {
+        margin-bottom: 2px;
+        font-size: 11px !important;
+        line-height: 15px !important;
+      }
+      #rules-framework > .section-head p,
+      #rules-framework ~ section:not(#bo-db-pages):not(#applyform) > .section-head p {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .rules-source {
+        gap: 6px;
+        margin-bottom: 6px;
+        padding: 6px 8px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .rule-grid { gap: 6px; }
+      .rule-card { padding: 8px; }
+      .rule-title {
+        gap: 5px;
+        margin-bottom: 4px;
+      }
+      .rule-title h3 {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      .rule-tag {
+        padding: 1px 5px;
+        font-size: 8px;
+      }
+      .rule-card p {
+        margin-bottom: 5px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .rule-apply {
+        padding: 5px 6px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #rules-framework .rule-apply,
+      #rules-framework .rule-apply strong {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .rules-catalogue { gap: 6px; }
+      .rules-category summary {
+        gap: 6px;
+        padding: 7px 8px;
+        font-size: 9px;
+        line-height: 13px;
+      }
+      .rules-category summary::after { font-size: 12px; }
+      .category-index {
+        min-width: 30px;
+        padding: 1px 5px;
+        font-size: 8px;
+      }
+      .category-body {
+        gap: 6px;
+        padding: 6px;
+      }
+      .category-body:has(> .subcategory:nth-child(1):last-child) {
+        grid-template-columns: 1fr;
+      }
+      .category-body:has(> .subcategory:nth-child(2):last-child) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .category-body:has(> .subcategory:nth-child(3):last-child) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .category-body:has(> .subcategory:nth-child(4):last-child) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .subcategory { padding: 7px; }
+      .subcategory h4 {
+        margin-bottom: 4px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .subcategory dl { gap: 4px; }
+      .subcategory dt {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .subcategory dd {
+        margin-top: 1px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .pattern-head { gap: 6px; }
+      .pattern-head h3 {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      .pattern-head p {
+        margin-top: 1px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .component-card h3 {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      .component-card > p {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #rules-framework ~ section:not(#bo-db-pages):not(#applyform) > .section-head h3,
+      #rules-framework .rule-title h3,
+      #rules-catalogue .rules-category summary,
+      #rule-components .pattern-head h3,
+      #rule-extended-components .pattern-head h3,
+      #homepage-pattern .pattern-head h3,
+      #components .component-card > h3 {
+        font-size: 9px !important;
+        line-height: 13px !important;
+      }
+      #rules-framework ~ section:not(#bo-db-pages):not(#applyform) > .section-head p,
+      #rule-components .pattern-head p,
+      #rule-extended-components .pattern-head p,
+      #homepage-pattern .pattern-head p,
+      #components .component-card > p {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #rule-extended-components .pattern-card > p.muted,
+      #rule-extended-components .pattern-preview,
+      #homepage-pattern .pattern-preview,
+      #homepage-pattern .rule-apply,
+      #homepage-pattern .preference-column h4,
+      #homepage-pattern .preference-column li,
+      #homepage-pattern .homepage-block strong,
+      #homepage-pattern .homepage-block small {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #rule-extended-components .filter-chip {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #tokens .token-table th {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      #tokens .token-table td,
+      #headers .code-label,
+      #footers .code-label {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #components > .component-filter button,
+      #components .code-label {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      .font-rule-card h3 {
+        margin-bottom: 5px;
+        font-size: 9px;
+        line-height: 13px;
+      }
+      #tokens .swatch-meta strong { font-size: 9px; }
+      #tokens .swatch-meta code { font-size: 8px; }
+      #upgrade-summary,
+      #upgrade-radius,
+      #upgrade-components,
+      #upgrade-roadmap,
+      #publishing {
+        font-size: 8px;
+        line-height: 12px;
+      }
+
+      /* Dense frames: simple content uses four columns, complex demos use two. */
+      .rule-card.lead {
+        display: grid;
+        grid-template-columns: minmax(170px, .75fr) minmax(220px, 1fr) minmax(300px, 1.35fr);
+        align-items: center;
+        gap: 8px;
+        padding: 7px 8px;
+      }
+      .rule-card.lead .rule-title,
+      .rule-card.lead p {
+        margin: 0;
+      }
+      .rule-card.lead .rule-apply {
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+      }
+      #rule-components .feature-lab {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      #rule-extended-components .feature-lab,
+      #homepage-pattern .grid.two {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      #rule-components .pattern-card,
+      #rule-extended-components .pattern-card,
+      #homepage-pattern .pattern-card {
+        min-width: 0;
+        gap: 8px;
+        padding: 10px;
+      }
+      #rule-components .pattern-head .icon,
+      #rule-extended-components .pattern-head .icon,
+      #homepage-pattern .pattern-head .icon {
+        width: 26px;
+        height: 26px;
+        flex-basis: 26px;
+        padding: 5px;
+      }
+      #rule-components .pattern-preview,
+      #rule-extended-components .pattern-preview,
+      #homepage-pattern .pattern-preview {
+        padding: 8px;
+      }
+      #rule-components .check-summary strong,
+      #rule-components .switch-row strong,
+      #rule-components .switch-row [data-toggle-output],
+      #rule-components .view-toolbar > strong,
+      #rule-extended-components .layout-note strong,
+      #rule-extended-components .layout-choice label,
+      #rule-extended-components .layout-example legend,
+      #boards .board-toolbar > strong {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      #rule-components .check-summary .state-pill,
+      #rule-components .check-item,
+      #rule-components .check-item small,
+      #rule-components .switch-row small,
+      #rule-components .view-toolbar .segmented button,
+      #rule-components .dash-stat span,
+      #rule-components .compact-row,
+      #rule-extended-components .layout-choice small,
+      #rule-extended-components .layout-note,
+      #rule-extended-components .answer-option {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #rule-components .check-list,
+      #rule-extended-components .layout-choices,
+      #rule-extended-components .layout-example fieldset {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      #rule-extended-components .layout-example legend {
+        grid-column: 1 / -1;
+      }
+      #tokens .grid.colors {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      #typography .type-sample {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      #typography .font-rule-grid {
+        grid-template-columns: 1fr;
+      }
+      #headers .header-doc-grid {
+        grid-template-columns: 1fr;
+      }
+      #components > .grid.two {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+      #components .component-card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 6px 8px;
+        padding: 10px;
+      }
+      #components .component-card h3,
+      #components .component-card p,
+      #components .component-card .component-preview,
+      #components .component-card .code-label,
+      #components .component-card pre {
+        grid-column: 1;
+        grid-row: auto;
+      }
+      #components .component-preview {
+        padding: 8px;
+      }
+      #components .component-card pre {
+        max-height: 110px;
+        padding: 8px;
+        font-size: 7px;
+        line-height: 11px;
+      }
+      #upgrade-summary .grid.three {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      #upgrade-summary .grid.three > div {
+        grid-row: auto;
+        padding: 8px;
+      }
+      #upgrade-components .grid.two {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      #upgrade-components .component-card {
+        gap: 6px;
+        padding: 9px;
+      }
+      #upgrade-radius .panel,
+      #upgrade-roadmap .panel,
+      #publishing .panel {
+        gap: 8px;
+        padding: 9px;
+      }
+      #upgrade-summary p,
+      #upgrade-radius p,
+      #upgrade-components p,
+      #upgrade-roadmap p,
+      #publishing p,
+      #upgrade-summary li,
+      #upgrade-radius li,
+      #upgrade-components li,
+      #upgrade-roadmap li,
+      #publishing li,
+      #upgrade-summary td,
+      #upgrade-radius td,
+      #upgrade-components td,
+      #upgrade-roadmap td,
+      #publishing td {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #upgrade-summary h3,
+      #upgrade-radius h3,
+      #upgrade-components h3,
+      #upgrade-roadmap h3,
+      #publishing h3,
+      #upgrade-summary strong,
+      #upgrade-radius strong,
+      #upgrade-components strong,
+      #upgrade-roadmap strong,
+      #publishing strong {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      #upgrade-roadmap .token-table tbody,
+      #publishing .token-table tbody {
+        gap: 6px;
+      }
+      #upgrade-roadmap .token-table tr,
+      #publishing .token-table tr {
+        grid-template-columns: 68px minmax(0, 1fr);
+      }
+      #upgrade-roadmap .token-table td,
+      #publishing .token-table td {
+        padding: 5px;
+      }
+
+      /* Dense 2-4 column documentation sections. Accessibility examples are excluded. */
+      #feedback .feedback-doc-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+      #feedback .feedback-doc-grid > .panel,
+      #feedback .feedback-doc-grid > .feedback-code-card {
+        grid-column: auto;
+        grid-row: auto;
+        min-width: 0;
+        padding: 9px;
+      }
+      #feedback .toast-stack {
+        gap: 5px;
+      }
+      #feedback .toast {
+        min-height: 36px;
+        padding: 6px 8px;
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #feedback .modal-backdrop {
+        min-height: 180px;
+        padding: 10px;
+      }
+      #feedback .modal {
+        width: 100%;
+        max-width: 280px;
+        padding: 14px;
+      }
+      #feedback .modal h3 {
+        margin-bottom: 5px;
+        font-size: 11px;
+        line-height: 15px;
+      }
+      #feedback .modal p,
+      #feedback .feedback-code-card pre {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #feedback .feedback-code-card pre {
+        max-height: 260px;
+        min-height: 0;
+        overflow: auto;
+      }
+      #layout {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+      #layout > .section-head {
+        grid-column: 1 / -1;
+        margin-bottom: 0;
+      }
+      #layout > .page-layout-tabs {
+        grid-column: span 1;
+        margin-bottom: 0;
+      }
+      #layout > .layout-preview {
+        grid-column: span 3;
+        min-width: 0;
+      }
+      #layout .layout-subpanel {
+        padding: 9px;
+      }
+      #layout .layout-subpanel strong {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      #layout .layout-subpanel p,
+      #layout .layout-subgrid span {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #layout .layout-subgrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      #layout .layout-subgrid span {
+        padding: 5px;
+      }
+      #upgrade-summary,
+      #upgrade-radius,
+      #upgrade-components,
+      #upgrade-roadmap {
+        grid-column: 1 / -1;
+      }
+      #upgrade-summary .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      #upgrade-radius .panel {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      }
+      #upgrade-components .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      #upgrade-components .component-card {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        grid-template-rows: auto auto;
+      }
+      #upgrade-components .component-card h3,
+      #upgrade-components .component-card p {
+        grid-column: 1;
+      }
+      #upgrade-components .component-card .token-table,
+      #upgrade-components .component-card ul {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        margin: 0;
+      }
+      #upgrade-roadmap .token-table tbody,
+      #publishing .token-table tbody {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      #publishing .panel {
+        grid-template-columns: 1fr;
+      }
+
+      /* Rules analysis through typography: increase documentation text by 1px only in this range. */
+      #rules-framework,
+      #rules-catalogue,
+      #rule-components,
+      #rule-extended-components,
+      #homepage-pattern,
+      #tokens,
+      #typography {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      #rules-framework > .section-head h2,
+      #rules-catalogue > .section-head h2,
+      #rule-components > .section-head h2,
+      #rule-extended-components > .section-head h2,
+      #homepage-pattern > .section-head h2,
+      #tokens > .section-head h2,
+      #typography > .section-head h2 {
+        font-size: 12px !important;
+        line-height: 16px !important;
+      }
+      #rules-framework > .section-head p,
+      #rules-catalogue > .section-head p,
+      #rule-components > .section-head p,
+      #rule-extended-components > .section-head p,
+      #homepage-pattern > .section-head p,
+      #tokens > .section-head p,
+      #typography > .section-head p,
+      #rules-framework p,
+      #rules-catalogue p,
+      #rule-components p,
+      #rule-extended-components p,
+      #homepage-pattern p,
+      #tokens p,
+      #typography p,
+      #rules-framework li,
+      #rules-catalogue li,
+      #rule-components li,
+      #rule-extended-components li,
+      #homepage-pattern li,
+      #tokens li,
+      #typography li,
+      #rules-framework dt,
+      #rules-catalogue dt,
+      #rules-framework dd,
+      #rules-catalogue dd,
+      #tokens td,
+      #typography td {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      #rules-framework h3,
+      #rules-catalogue h3,
+      #rule-components h3,
+      #rule-extended-components h3,
+      #homepage-pattern h3,
+      #tokens h3,
+      #typography h3,
+      #rules-framework strong,
+      #rules-catalogue strong,
+      #rule-components strong,
+      #rule-extended-components strong,
+      #homepage-pattern strong,
+      #tokens strong,
+      #typography strong,
+      #rules-catalogue .rules-category summary {
+        font-size: 10px !important;
+        line-height: 14px !important;
+      }
+      #rules-framework .rule-tag,
+      #rules-catalogue .category-index,
+      #rule-components .filter-chip,
+      #rule-extended-components .filter-chip,
+      #homepage-pattern .filter-chip,
+      #tokens code,
+      #typography code,
+      #tokens .code-label,
+      #typography .code-label {
+        font-size: 9px;
+        line-height: 13px;
+      }
+      #bo-db-pages .section-head {
+        margin-bottom: 6px;
+      }
+      #bo-db-pages .docs-viewer {
+        grid-template-columns: minmax(150px, 0.25fr) minmax(0, 3fr);
+        gap: 6px;
+      }
+      #bo-db-pages .docs-list {
+        gap: 4px;
+        max-height: 820px;
+        padding: 5px;
+      }
+      #bo-db-pages .doc-item {
+        gap: 1px;
+        padding: 5px;
+      }
+      #bo-db-pages .doc-item strong,
+      #bo-db-pages .doc-item span {
+        font-size: 10px;
+        line-height: 13px;
+      }
+      #bo-db-pages .docs-preview {
+        grid-template-rows: auto minmax(780px, 78vh);
+      }
+      #bo-db-pages .docs-preview-head {
+        padding: 7px 9px;
+      }
+      #bo-db-pages .docs-preview-head h3,
+      #bo-db-pages .docs-preview-head .code-label,
+      #bo-db-pages .docs-preview-head .btn {
+        font-size: 10px;
+        line-height: 13px;
+      }
+      #bo-db-pages .docs-frame {
+        min-height: 780px;
+      }
+
+      /* The document is organized as four vertical major-category lanes. */
+      main {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        align-content: start;
+        align-items: start;
+        gap: 8px;
+      }
+      main > .section-tabs-shell,
+      main > #overview {
+        grid-column: 1 / -1;
+      }
+      main > section {
+        min-width: 0;
+      }
+      main > #rules-framework,
+      main > #rules-framework ~ section {
+        margin-bottom: 0;
+      }
+      #rules-framework {
+        grid-column: span 3;
+      }
+      #rules-framework .rule-grid {
+        grid-template-columns: 1fr;
+      }
+      #rules-framework .rule-card.lead {
+        display: block;
+        padding: 8px;
+      }
+      #rules-framework .rule-card.lead .rule-title {
+        margin-bottom: 4px;
+      }
+      #rules-framework .rule-card.lead p {
+        margin-bottom: 5px;
+      }
+      #rules-framework .rule-card.lead .rule-apply {
+        display: block;
+      }
+      #rules-catalogue {
+        grid-column: span 9;
+      }
+      #rules-catalogue .rules-catalogue {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: start;
+        gap: 8px;
+      }
+      .rules-major-column {
+        display: grid;
+        min-width: 0;
+        gap: 6px;
+        align-content: start;
+      }
+      .rules-major-column > h3 {
+        margin: 0;
+        border-top: 2px solid var(--ds-color-text-primary);
+        border-bottom: 1px solid var(--ds-color-border-default);
+        background: var(--ds-color-bg-base);
+        padding: 6px 8px;
+        font-size: 11px;
+        line-height: 15px;
+      }
+      #rules-catalogue .category-body,
+      #rules-catalogue .category-body:has(> .subcategory:nth-child(2):last-child),
+      #rules-catalogue .category-body:has(> .subcategory:nth-child(3):last-child),
+      #rules-catalogue .category-body:has(> .subcategory:nth-child(4):last-child) {
+        grid-template-columns: 1fr;
+      }
+      #rules-catalogue .subcategory h4 {
+        font-size: 8px;
+        line-height: 12px;
+      }
+      #rule-components,
+      #rule-extended-components,
+      #headers,
+      #navigation,
+      #footers {
+        grid-column: span 6;
+      }
+      #homepage-pattern,
+      #tokens,
+      #typography {
+        grid-column: span 4;
+      }
+      #components {
+        grid-column: 1 / -1;
+      }
+      #upgrade-summary,
+      #upgrade-radius,
+      #upgrade-components,
+      #upgrade-roadmap {
+        grid-column: 1 / -1;
+      }
+      #boards,
+      #forms,
+      #tables,
+      #feedback,
+      #layout,
+      #md-docs,
+      #bo-db-pages,
+      #publishing,
+      #applyform {
+        grid-column: 1 / -1;
+      }
+
+      /* Final effective Rules-to-typography size override after layout lane rules. */
+      #rules-framework > .section-head h2,
+      #rules-catalogue > .section-head h2,
+      #rule-components > .section-head h2,
+      #rule-extended-components > .section-head h2,
+      #homepage-pattern > .section-head h2,
+      #tokens > .section-head h2,
+      #typography > .section-head h2 {
+        font-size: 12px !important;
+        line-height: 16px !important;
+      }
+      #rules-framework p,
+      #rules-catalogue p,
+      #rule-components p,
+      #rule-extended-components p,
+      #homepage-pattern p,
+      #tokens p,
+      #typography p,
+      #rules-framework li,
+      #rules-catalogue li,
+      #rule-components li,
+      #rule-extended-components li,
+      #homepage-pattern li,
+      #tokens li,
+      #typography li,
+      #rules-framework dt,
+      #rules-catalogue dt,
+      #rules-framework dd,
+      #rules-catalogue dd,
+      #tokens td,
+      #typography td,
+      #rules-framework .rule-tag,
+      #rules-catalogue .category-index,
+      #rule-components .filter-chip,
+      #rule-extended-components .filter-chip,
+      #homepage-pattern .filter-chip,
+      #tokens code,
+      #typography code,
+      #tokens .code-label,
+      #typography .code-label {
+        font-size: 9px !important;
+        line-height: 13px !important;
+      }
+      #rules-framework .rule-title h3,
+      #rules-catalogue .rules-category summary,
+      #rule-components .pattern-head h3,
+      #rule-extended-components .pattern-head h3,
+      #homepage-pattern .pattern-head h3,
+      #typography .font-rule-card h3,
+      #tokens .token-table th,
+      #rules-framework strong,
+      #rules-catalogue strong,
+      #rule-components strong,
+      #rule-extended-components strong,
+      #homepage-pattern strong,
+      #tokens strong,
+      #typography strong {
+        font-size: 10px !important;
+        line-height: 14px !important;
+      }
+      #rules-catalogue .subcategory h4 {
+        font-size: 9px !important;
+        line-height: 13px !important;
+      }
+      #rules-catalogue .rules-major-column > h3 {
+        font-size: 12px !important;
+        line-height: 16px !important;
+      }
+      /* Foundation components upgrade density pass. Accessibility reference page is untouched. */
+      #tokens .grid.colors {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+      }
+      #tokens .swatch {
+        min-width: 0;
+      }
+      #tokens .swatch-color {
+        min-height: 34px;
+      }
+      #tokens .swatch-meta {
+        min-width: 0;
+        padding: 6px;
+      }
+      #tokens .swatch-meta code {
+        display: block;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+      #tokens .token-table {
+        margin-top: 8px;
+      }
+
+      #typography .font-rule-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      #typography .font-rule-card {
+        min-width: 0;
+        padding: 8px;
+      }
+      #typography .font-rule-card ul {
+        margin: 0;
+        padding-left: 14px;
+      }
+      #typography .font-rule-card li {
+        margin: 1px 0;
+      }
+
+      #components > .grid.two {
+        display: block;
+        column-count: 4;
+        column-gap: 8px;
+      }
+      #components .component-card {
+        display: grid;
+        break-inside: avoid;
+        margin: 0 0 8px;
+        gap: 4px;
+        padding: 8px;
+      }
+      #components .component-card h3 {
+        margin-bottom: 0;
+      }
+      #components .component-card > p {
+        margin: 0;
+      }
+      #components .component-preview {
+        min-height: 0;
+        padding: 6px;
+      }
+      #components .component-card pre {
+        max-height: 82px;
+        min-height: 0;
+        padding: 6px;
+      }
+      #components .component-card .code-label {
+        margin-top: 0;
+      }
+      #components .board-row {
+        min-height: 32px;
+        padding: 5px 6px;
+      }
+      #components .ds-header {
+        height: 42px;
+        min-height: 42px;
+      }
+      #components .sidebar-demo .profile {
+        padding: 8px;
+      }
+      #components .side-menu {
+        gap: 2px;
+      }
+      #components .side-item {
+        min-height: 28px;
+      }
+
+      #upgrade-summary,
+      #upgrade-radius,
+      #upgrade-components {
+        grid-column: span 4;
+      }
+      #upgrade-roadmap,
+      #publishing {
+        grid-column: span 6;
+      }
+      #upgrade-summary > .section-head,
+      #upgrade-radius > .section-head,
+      #upgrade-components > .section-head,
+      #upgrade-roadmap > .section-head,
+      #publishing > .section-head {
+        margin-bottom: 4px;
+      }
+      #upgrade-summary > .section-head p,
+      #upgrade-radius > .section-head p,
+      #upgrade-components > .section-head p,
+      #upgrade-roadmap > .section-head p,
+      #publishing > .section-head p {
+        margin: 0;
+      }
+      #upgrade-summary .grid.three {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+      #upgrade-summary .grid.three > div {
+        padding: 7px;
+      }
+      #upgrade-radius .panel {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        padding: 7px;
+      }
+      #upgrade-radius .panel > .token-table,
+      #upgrade-radius .panel > .code-label,
+      #upgrade-radius .panel > pre {
+        grid-column: 1;
+        grid-row: auto;
+      }
+      #upgrade-radius .panel pre {
+        max-height: 150px;
+        overflow: auto;
+      }
+      #upgrade-components .grid.two {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+      #upgrade-components .component-card {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 7px;
+      }
+      #upgrade-components .component-card h3,
+      #upgrade-components .component-card p,
+      #upgrade-components .component-card .token-table,
+      #upgrade-components .component-card ul {
+        grid-column: 1;
+        grid-row: auto;
+      }
+      #upgrade-roadmap .panel,
+      #publishing .panel {
+        padding: 7px;
+      }
+      #upgrade-roadmap .token-table tbody,
+      #publishing .token-table tbody {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+      }
+      #upgrade-roadmap .token-table tr,
+      #publishing .token-table tr {
+        grid-template-columns: 58px minmax(0, 1fr);
+      }
+      #upgrade-roadmap .token-table td,
+      #publishing .token-table td {
+        padding: 4px;
+      }
+      @media (max-width: 980px) {
+        #components > .grid.two {
+          column-count: 2;
+        }
+        #tokens .grid.colors,
+        #typography .font-rule-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 620px) {
+        #components > .grid.two {
+          column-count: 1;
+        }
+        #tokens .grid.colors,
+        #typography .font-rule-grid,
+        #upgrade-roadmap .token-table tbody,
+        #publishing .token-table tbody {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Foundation density responsive fallback. */
+      @media (max-width: 980px) {
+        .nav {
+          width: auto;
+          padding: 10px;
+        }
+        main {
+          width: 100%;
+          padding: 0 14px 36px;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .section-tabs-shell {
+          margin: 0 -14px 12px;
+          padding: 6px 14px;
+        }
+        .rule-card.lead {
+          grid-template-columns: 1fr;
+        }
+        #rule-components .feature-lab,
+        #rule-extended-components .feature-lab,
+        #rule-components .check-list,
+        #rule-extended-components .layout-choices,
+        #rule-extended-components .layout-example fieldset,
+        #typography .type-sample,
+        #typography .font-rule-grid,
+        #upgrade-summary .grid.three {
+          grid-template-columns: 1fr;
+        }
+        #components > .grid.two,
+        #feedback .feedback-doc-grid,
+        #upgrade-summary .grid.three,
+        #upgrade-components .grid.two,
+        #upgrade-roadmap .token-table tbody,
+        #publishing .token-table tbody {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        #layout {
+          grid-template-columns: 1fr;
+        }
+        #layout > .page-layout-tabs,
+        #layout > .layout-preview {
+          grid-column: 1;
+        }
+        #upgrade-radius .panel,
+        #upgrade-components .component-card {
+          grid-template-columns: 1fr;
+        }
+        #upgrade-components .component-card h3,
+        #upgrade-components .component-card p,
+        #upgrade-components .component-card .token-table,
+        #upgrade-components .component-card ul {
+          grid-column: 1;
+          grid-row: auto;
+        }
+        #rules-catalogue .rules-catalogue {
+          grid-template-columns: 1fr;
+        }
+        #rules-framework,
+        #rules-catalogue {
+          grid-column: span 1;
+        }
+        #tokens,
+        #typography {
+          grid-column: 1 / -1;
+        }
+        #rule-components,
+        #rule-extended-components,
+        #homepage-pattern,
+        #tokens,
+        #typography,
+        #components,
+        #upgrade-summary,
+        #upgrade-radius,
+        #upgrade-components,
+        #upgrade-roadmap,
+        #headers,
+        #navigation,
+        #footers {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 620px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+        main > section {
+          grid-column: 1;
+        }
+        #rules-framework,
+        #rules-catalogue,
+        #tokens,
+        #typography,
+        #components,
+        #footers,
+        #rule-components,
+        #rule-extended-components,
+        #homepage-pattern,
+        #upgrade-summary,
+        #upgrade-radius,
+        #upgrade-components,
+        #upgrade-roadmap,
+        #headers,
+        #navigation {
+          grid-column: 1;
+        }
+        #components > .grid.two,
+        #feedback .feedback-doc-grid,
+        #upgrade-summary .grid.three,
+        #upgrade-components .grid.two,
+        #upgrade-roadmap .token-table tbody,
+        #publishing .token-table tbody {
+          grid-template-columns: 1fr;
+        }
+        #layout,
+        #upgrade-radius .panel,
+        #upgrade-components .component-card,
+        #bo-db-pages .docs-viewer {
+          grid-template-columns: 1fr;
+        }
+        #layout > .page-layout-tabs,
+        #layout > .layout-preview {
+          grid-column: 1;
+        }
+        #upgrade-components .component-card h3,
+        #upgrade-components .component-card p,
+        #upgrade-components .component-card .token-table,
+        #upgrade-components .component-card ul {
+          grid-column: 1;
+          grid-row: auto;
+        }
+        #bo-db-pages .docs-viewer {
+          grid-template-columns: 1fr;
+        }
+        #bo-db-pages .docs-list {
+          max-height: 260px;
+        }
+        .category-body,
+        .category-body:has(> .subcategory:nth-child(2):last-child),
+        .category-body:has(> .subcategory:nth-child(3):last-child),
+        .category-body:has(> .subcategory:nth-child(4):last-child) {
+          grid-template-columns: 1fr;
+        }
+      }
+      #components .component-card[data-component="header"] .component-preview {
+        overflow: hidden;
+      }
+      #components .component-card[data-component="header"] .ds-header {
+        display: grid;
+        grid-template-columns: minmax(0, 42px) minmax(0, 1fr) auto;
+        gap: 4px;
+        height: 32px;
+        min-height: 32px;
+        padding: 0 6px;
+      }
+      #components .component-card[data-component="header"] .ds-header-logo {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 10px;
+        line-height: 12px;
+      }
+      #components .component-card[data-component="header"] .ds-header-menu {
+        min-width: 0;
+        justify-content: flex-start;
+        gap: 4px;
+        overflow: hidden;
+        font-size: 7px;
+        line-height: 10px;
+      }
+      #components .component-card[data-component="header"] .ds-header-menu a,
+      #components .component-card[data-component="header"] .ds-header-menu button {
+        min-width: 0;
+        max-width: 36px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      #components .component-card[data-component="header"] .ds-header > .demo-row {
+        min-width: 20px;
+        gap: 2px;
+        font-size: 0;
+        line-height: 0;
+      }
+      #components .component-card[data-component="header"] .rail-icon {
+        width: 20px;
+        min-width: 20px;
+        height: 20px;
+        padding: 0;
+        font-size: 8px;
+        line-height: 20px;
+      }
+      #components .component-card[data-component="header"] .ds-header > .demo-row span:not(.rail-icon) {
+        display: none;
+      }
+      /* Foundation final responsive density guard. */
+      @media (max-width: 980px) {
+        #tokens,
+        #typography,
+        #components,
+        #upgrade-summary,
+        #upgrade-radius,
+        #upgrade-components,
+        #upgrade-roadmap,
+        #publishing {
+          grid-column: 1 / -1;
+        }
+        #tokens .grid.colors,
+        #typography .font-rule-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        #components > .grid.two {
+          display: block;
+          column-count: 2;
+        }
+        #upgrade-summary .grid.three {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        #upgrade-radius .panel,
+        #upgrade-components .grid.two,
+        #upgrade-roadmap .token-table tbody,
+        #publishing .token-table tbody {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        #upgrade-components .component-card {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 620px) {
+        #tokens,
+        #typography,
+        #components,
+        #upgrade-summary,
+        #upgrade-radius,
+        #upgrade-components,
+        #upgrade-roadmap,
+        #publishing {
+          grid-column: 1;
+        }
+        #tokens .grid.colors,
+        #typography .font-rule-grid,
+        #upgrade-summary .grid.three,
+        #upgrade-radius .panel,
+        #upgrade-components .grid.two,
+        #upgrade-roadmap .token-table tbody,
+        #publishing .token-table tbody {
+          grid-template-columns: 1fr;
+        }
+        #components > .grid.two {
+          column-count: 1;
+        }
+      }
     </style>
   </head>
   <body class="radius-zero-mode">
@@ -289,7 +1616,7 @@
             <a href="#upgrade-roadmap">실행 계획</a>
           </div>
         </div>
-        <section id="overview">
+        <section id="overview" class="overview-compact">
           <div class="section-head">
             <h2>개요</h2>
             <p>
@@ -297,7 +1624,7 @@
               관리자, 팝업, 토스트 패턴을 HTML 퍼블리싱 기준으로 정리했습니다.
             </p>
           </div>
-          <div class="panel grid three">
+          <div class="overview-summary">
             <div>
               <strong>기본 화면 폭</strong>
               <p class="muted">1440px, 1920px 데스크톱 화면이 공존합니다.</p>
@@ -312,6 +1639,12 @@
               <strong>기본 UI 밀도</strong>
               <p class="muted">
                 버튼/입력 32px, 테이블 행 60px, GNB/Footer 60px입니다.
+              </p>
+            </div>
+            <div>
+              <strong>정보 배치 기준</strong>
+              <p class="muted">
+                짧은 요약은 4단, 긴 설명은 2단, 파일 목록은 날짜와 제목이 있는 표로 구성합니다.
               </p>
             </div>
           </div>
@@ -423,7 +1756,9 @@
             </p>
           </div>
           <div class="rules-catalogue">
-            <details class="rules-category" open>
+            <div class="rules-major-column">
+              <h3>설계·분류·적용</h3>
+              <details class="rules-category" open>
               <summary>
                 <span class="category-index category-blue">01</span>업무 설계의
                 기본 원칙
@@ -561,7 +1896,7 @@
                 </article>
               </div>
             </details>
-            <details class="rules-category">
+            <details class="rules-category" open>
               <summary>
                 <span class="category-index category-violet">03</span>적용 대상
                 업무
@@ -638,8 +1973,11 @@
                   </dl>
                 </article>
               </div>
-            </details>
-            <details class="rules-category" open>
+              </details>
+            </div>
+            <div class="rules-major-column">
+              <h3>화면·작성·운영</h3>
+              <details class="rules-category" open>
               <summary>
                 <span class="category-index category-amber">04</span>화면 및
                 기능 설계
@@ -760,7 +2098,7 @@
                 </article>
               </div>
             </details>
-            <details class="rules-category">
+            <details class="rules-category" open>
               <summary>
                 <span class="category-index category-red">05</span>작성 및 운영
                 방식
@@ -831,8 +2169,11 @@
                   </dl>
                 </article>
               </div>
-            </details>
-            <details class="rules-category">
+              </details>
+            </div>
+            <div class="rules-major-column">
+              <h3>UI/UX·홈페이지</h3>
+              <details class="rules-category" open>
               <summary>
                 <span class="category-index category-cyan">06</span>UI/UX 선호
                 방향
@@ -887,7 +2228,7 @@
                 </article>
               </div>
             </details>
-            <details class="rules-category">
+            <details class="rules-category" open>
               <summary>
                 <span class="category-index category-purple">07</span>홈페이지
                 구성 원칙
@@ -976,7 +2317,8 @@
                   </dl>
                 </article>
               </div>
-            </details>
+              </details>
+            </div>
           </div>
         </section>
 
@@ -2211,7 +3553,772 @@
             </article>
           </div>
         </section>
-           <section id="boards">
+
+
+
+
+        <section id="footers">
+          <div class="section-head">
+            <h2>푸터</h2>
+            <p>
+              푸터는 <code>.ds-footer</code>로 분리합니다. 높이는 60px, 배경은
+              <code>--ds-color-bg-footer</code>입니다.
+            </p>
+          </div>
+          <div class="panel">
+            <footer class="ds-footer">
+              <span>CompanyName @ 202X. All rights reserved.</span>
+              <span>이용약관　개인정보보호정책</span>
+              <span>youtube facebook twitter instagram linkedin</span>
+            </footer>
+          </div>
+          <span class="code-label">HTML</span>
+          <pre><code>&lt;footer class="ds-footer"&gt;
+  &lt;span&gt;CompanyName @ 202X. All rights reserved.&lt;/span&gt;
+  &lt;span&gt;이용약관　개인정보보호정책&lt;/span&gt;
+  &lt;span&gt;youtube facebook twitter instagram linkedin&lt;/span&gt;
+&lt;/footer&gt;</code></pre>
+        </section>
+
+
+
+
+
+
+
+        <section id="feedback">
+          <div class="section-head">
+            <h2>토스트/팝업</h2>
+            <p>
+              토스트는 64px 높이, 팝업은 400px 폭을 기본으로 하고 큰 평가기준
+              팝업은 별도 large variant로 확장합니다.
+            </p>
+          </div>
+          <div class="feedback-doc-grid">
+            <div class="panel">
+              <div class="toast-stack">
+                <div class="toast success">
+                  <i class="toast-dot"></i><span>저장되었습니다.</span>
+                </div>
+                <div class="toast warning">
+                  <i class="toast-dot"></i><span>확인이 필요합니다.</span>
+                </div>
+                <div class="toast danger">
+                  <i class="toast-dot"></i><span>처리하지 못했습니다.</span>
+                </div>
+                <div class="toast">
+                  <i class="toast-dot"></i><span>새 알림이 있습니다.</span>
+                </div>
+              </div>
+              <div class="demo-row" style="margin-top: 16px">
+                <button
+                  class="btn btn--primary btn--md"
+                  type="button"
+                  data-toast-demo="info"
+                  data-toast-position="top-right"
+                >
+                  알림
+                </button>
+                <button
+                  class="btn btn--primary btn--md"
+                  type="button"
+                  data-toast-demo="success"
+                  data-toast-position="top-center"
+                >
+                  저장
+                </button>
+                <button
+                  class="btn btn--outline btn--md"
+                  type="button"
+                  data-toast-demo="confirm"
+                  data-toast-position="top-left"
+                >
+                  확인
+                </button>
+                <button
+                  class="btn btn--neutral btn--md"
+                  type="button"
+                  data-toast-demo="warning"
+                  data-toast-position="bottom-center"
+                >
+                  경고
+                </button>
+                <button
+                  class="btn btn--danger btn--md"
+                  type="button"
+                  data-toast-demo="danger"
+                  data-toast-position="bottom-right"
+                >
+                  오류
+                </button>
+              </div>
+            </div>
+            <div class="panel modal-backdrop">
+              <div
+                class="modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-title"
+              >
+                <h3 id="modal-title">팝업 제목</h3>
+                <p>
+                  사용자에게 확인이 필요한 내용을 간결하게 안내합니다. 버튼은
+                  취소/확인 순서로 배치합니다.
+                </p>
+                <div class="modal-actions">
+                  <button class="btn neutral">취소</button>
+                  <button class="btn">확인</button>
+                </div>
+              </div>
+            </div>
+            <div class="panel feedback-code-card">
+              <span class="code-label">HTML</span>
+              <pre><code>&lt;div class="toast success"&gt;
+  &lt;i class="toast-dot"&gt;&lt;/i&gt;
+  &lt;span&gt;저장되었습니다.&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="modal" role="dialog" aria-modal="true"&gt;
+  &lt;h3&gt;팝업 제목&lt;/h3&gt;
+  &lt;p&gt;확인이 필요한 내용을 안내합니다.&lt;/p&gt;
+  &lt;button&gt;취소&lt;/button&gt;
+  &lt;button&gt;확인&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+            <div class="panel feedback-code-card">
+              <span class="code-label">JavaScript</span>
+              <pre><code>function showToast(message, type = "success", position = "top-right") {
+  const viewport = document.querySelector("[data-toast-viewport]");
+  viewport.dataset.toastPosition = position;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `&lt;i class="toast-dot"&gt;&lt;/i&gt;&lt;span&gt;${message}&lt;/span&gt;`;
+  viewport.prepend(toast);
+  window.setTimeout(() =&gt; toast.remove(), 3000);
+}</code></pre>
+            </div>
+          </div>
+          <div class="demo-row" style="margin-top: 16px">
+            <button
+              class="btn btn--primary btn--md"
+              type="button"
+              data-modal-open
+            >
+              팝업 열기
+            </button>
+          </div>
+        </section>
+
+
+
+        <section id="md-docs">
+          <div class="section-head">
+            <h2>재사용 디자인 프롬프트</h2>
+            <p>
+              다른 화면에서도 동일한 output을 만들 수 있도록 사용자 화면,
+              BO 테이블, 반복 컴포넌트 기준 프롬프트를 분리해서 확인합니다.
+            </p>
+          </div>
+          <div class="docs-viewer">
+            <aside class="docs-list" aria-label="재사용 디자인 프롬프트 문서 목록">
+              <button
+                class="doc-item active"
+                type="button"
+                data-doc-src="./docs_rendered/reusable-prompts-index.html"
+                data-doc-title="재사용 디자인 프롬프트 문서목록"
+                aria-pressed="true"
+              >
+                <strong>문서목록</strong>
+                <span><b class="doc-date">생성 2026-07-02</b> docs/재사용_디자인_프롬프트</span>
+              </button>
+              <div class="docs-group docs-group--priority" aria-labelledby="docs-common-group">
+                <div class="docs-group-title docs-group-title--priority" id="docs-common-group">전체 공통 최우선</div>
+                <button class="doc-item doc-item--priority" type="button" data-doc-src="./docs_rendered/reusable-common-index.html" data-doc-title="전체 공통 문서목록" aria-pressed="false"><strong>공통 문서목록</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/00_문서목록.md</span></button>
+                <button class="doc-item doc-item--priority" type="button" data-doc-src="./docs_rendered/reusable-common-ai-work-rule.html" data-doc-title="전체 공통 AI 작업지시 검수 기준" aria-pressed="false"><strong>AI 작업지시 검수</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/10_AI작업지시_검수_기준.md</span></button>
+                <button class="doc-item doc-item--priority" type="button" data-doc-src="./docs_rendered/reusable-common-search-table-detail.html" data-doc-title="전체 공통 검색기능 테이블 상세보기 통합기준" aria-pressed="false"><strong>검색+테이블+상세보기</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/11_검색기능_테이블_상세보기_통합기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-screen-priority.html" data-doc-title="전체 공통 화면목적 정보우선순위 기준" aria-pressed="false"><strong>화면목적/정보우선순위</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/01_화면목적_정보우선순위_기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-header.html" data-doc-title="전체 공통 상단영역 메뉴탭 헤더 기준" aria-pressed="false"><strong>상단/메뉴/헤더</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/02_상단영역_메뉴탭_헤더_기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-density.html" data-doc-title="전체 공통 다단구조 밀도 간격 기준" aria-pressed="false"><strong>다단구조/밀도/간격</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/03_다단구조_밀도_간격_기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-typography.html" data-doc-title="전체 공통 타이포그래피 글자크기 기준" aria-pressed="false"><strong>타이포그래피</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/04_타이포그래피_글자크기_기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-card-table.html" data-doc-title="전체 공통 카드형 표형 선택기준" aria-pressed="false"><strong>카드형/표형</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/05_카드형_표형_선택기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-table-cell.html" data-doc-title="전체 공통 목록 테이블셀 데이터표현 기준" aria-pressed="false"><strong>목록/테이블셀</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/06_목록_테이블셀_데이터표현_기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-status-emoji.html" data-doc-title="전체 공통 상태값 칩 라벨 이모지 기준" aria-pressed="false"><strong>상태값/칩/이모지</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/07_상태값_칩_라벨_이모지_기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-input-filter.html" data-doc-title="전체 공통 입력폼 검색필터 컨트롤 기준" aria-pressed="false"><strong>입력폼/검색필터</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/08_입력폼_검색필터_컨트롤_기준.md</span></button>
+                <button class="doc-item" type="button" data-doc-src="./docs_rendered/reusable-common-detail-drawer.html" data-doc-title="전체 공통 상세보기 Drawer 패널 기준" aria-pressed="false"><strong>상세보기/Drawer</strong><span><b class="doc-date">생성 2026-07-02</b> 공통/09_상세보기_Drawer_패널_기준.md</span></button>
+              </div>              <div class="docs-group" aria-labelledby="docs-user-group">
+                <div class="docs-group-title" id="docs-user-group">사용자</div>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-user-index.html"
+                  data-doc-title="사용자 재사용 디자인 프롬프트"
+                  aria-pressed="false"
+                >
+                  <strong>사용자 문서목록</strong>
+                  <span>사용자/00_문서목록.md</span>
+                </button>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-user-design-system.html"
+                  data-doc-title="사용자화면 디자인시스템 기준"
+                  aria-pressed="false"
+                >
+                  <strong>사용자화면 기준</strong>
+                  <span>사용자/01_사용자화면_디자인시스템_기준.md</span>
+                </button>
+              </div>
+              <div class="docs-group" aria-labelledby="docs-admin-group">
+                <div class="docs-group-title" id="docs-admin-group">관리자</div>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-admin-index.html"
+                  data-doc-title="관리자 재사용 디자인 프롬프트"
+                  aria-pressed="false"
+                >
+                  <strong>관리자 문서목록</strong>
+                  <span>관리자/00_문서목록.md</span>
+                </button>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-bo-table-layout.html"
+                  data-doc-title="BO 테이블레이아웃 기준"
+                  aria-pressed="false"
+                >
+                  <strong>BO 테이블레이아웃</strong>
+                  <span>관리자/02_BO_테이블레이아웃_기준.md</span>
+                </button>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-bo-admin-screen.html"
+                  data-doc-title="BO 관리자화면 기준"
+                  aria-pressed="false"
+                >
+                  <strong>BO 관리자화면</strong>
+                  <span>관리자/03_BO_관리자화면_기준.md</span>
+                </button>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-bo-admin-layout.html"
+                  data-doc-title="BO 관리자용 레이아웃 기준"
+                  aria-pressed="false"
+                >
+                  <strong>BO 관리자용 레이아웃</strong>
+                  <span>관리자/04_BO_관리자용_레이아웃_기준.md</span>
+                </button>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-status-chip.html"
+                  data-doc-title="상태/유형 칩 기준"
+                  aria-pressed="false"
+                >
+                  <strong>상태/유형 칩</strong>
+                  <span>관리자/components/상태_유형_칩_기준.md</span>
+                </button>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-search-filter.html"
+                  data-doc-title="검색필터 기준"
+                  aria-pressed="false"
+                >
+                  <strong>검색필터</strong>
+                  <span>관리자/components/검색필터_기준.md</span>
+                </button>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-inline-drawer.html"
+                  data-doc-title="인라인 Drawer 기준"
+                  aria-pressed="false"
+                >
+                  <strong>인라인 Drawer</strong>
+                  <span>관리자/components/인라인_Drawer_기준.md</span>
+                </button>
+                <button
+                  class="doc-item"
+                  type="button"
+                  data-doc-src="./docs_rendered/reusable-table-selection-drawer.html"
+                  data-doc-title="테이블 선택 Drawer 상세패널 기준"
+                  aria-pressed="false"
+                >
+                  <strong>테이블 선택 상세패널</strong>
+                  <span>관리자/components/테이블선택_Drawer_상세패널_기준.md</span>
+                </button>
+              </div>
+            </aside>
+            <div class="docs-preview">
+              <div class="docs-preview-head">
+                <div>
+                  <span class="code-label">현재 문서</span>
+                  <h3 data-doc-current-title>재사용 디자인 프롬프트 문서목록</h3>
+                </div>
+                <a
+                  class="btn btn--outline btn--sm"
+                  href="./docs_rendered/reusable-prompts-index.html"
+                  target="_blank"
+                  rel="noopener"
+                  data-doc-open
+                  >새 탭 열기</a
+                >
+              </div>
+              <iframe
+                class="docs-frame"
+                src="./docs_rendered/reusable-prompts-index.html"
+                title="Markdown 문서 미리보기"
+                data-doc-frame
+              ></iframe>
+            </div>
+          </div>
+        </section>
+
+        <section id="bo-db-pages">
+          <div class="section-head">
+            <h2>BO/DB 페이지 보기</h2>
+            <p>
+              관리자 테이블 페이지와 DB v2 참고 화면을 디자인 시스템 안에서
+              바로 확인합니다. 목록에서 선택하면 우측 미리보기가 바뀝니다.
+            </p>
+          </div>
+          <div class="docs-viewer">
+            <aside class="docs-list" aria-label="BO/DB 페이지 목록">
+              <button
+                class="doc-item active"
+                type="button"
+                data-page-src="./table_design/관리자패널_전체회원.html"
+                data-page-title="관리자패널 전체회원"
+                aria-pressed="true"
+              >
+                <strong>관리자패널 전체회원</strong>
+                <span>회원목록 + 우측 Dense Drawer</span>
+              </button>
+              <button
+                class="doc-item"
+                type="button"
+                data-page-src="./table_design/신규테이블관리.html"
+                data-page-title="신규 테이블 관리"
+                aria-pressed="false"
+              >
+                <strong>신규 테이블 관리</strong>
+                <span>6개 테이블 전환 예시</span>
+              </button>
+              <button
+                class="doc-item"
+                type="button"
+                data-page-src="./table_design/결제관리.html"
+                data-page-title="결제 관리"
+                aria-pressed="false"
+              >
+                <strong>결제 관리</strong>
+                <span>결제/환불/정산 테이블</span>
+              </button>
+              <button
+                class="doc-item"
+                type="button"
+                data-page-src="./resource/DB_v2_HTML/DB페이지_v2(이거사용).html"
+                data-page-title="DB페이지 v2 원본 참고"
+                aria-pressed="false"
+              >
+                <strong>DB페이지 v2 원본 참고</strong>
+                <span>resource/DB_v2_HTML</span>
+              </button>
+              <button
+                class="doc-item"
+                type="button"
+                data-page-src="./resource/DB_v2_HTML/관리자패널_전체회원.html"
+                data-page-title="관리자패널 전체회원 원본"
+                aria-pressed="false"
+              >
+                <strong>관리자패널 전체회원 원본</strong>
+                <span>resource/DB_v2_HTML</span>
+              </button>
+              <button
+                class="doc-item"
+                type="button"
+                data-page-src="./resource/DB_v2_HTML/결제관리.html"
+                data-page-title="결제관리 원본"
+                aria-pressed="false"
+              >
+                <strong>결제관리 원본</strong>
+                <span>resource/DB_v2_HTML</span>
+              </button>
+            </aside>
+            <div class="docs-preview">
+              <div class="docs-preview-head">
+                <div>
+                  <span class="code-label">현재 페이지</span>
+                  <h3 data-page-current-title>관리자패널 전체회원</h3>
+                </div>
+                <a
+                  class="btn btn--outline btn--sm"
+                  href="./table_design/관리자패널_전체회원.html"
+                  target="_blank"
+                  rel="noopener"
+                  data-page-open
+                  >새 탭 열기</a
+                >
+              </div>
+              <iframe
+                class="docs-frame"
+                src="./table_design/관리자패널_전체회원.html"
+                title="BO/DB 페이지 미리보기"
+                data-page-frame
+              ></iframe>
+            </div>
+          </div>
+        </section>
+
+        <section id="upgrade-summary">
+          <div class="section-head">
+            <h2>디자인 시스템 고도화 요약</h2>
+            <p>
+              이 ver2 파일은 기존 <code>index.html</code>의 모든 섹션과 컴포넌트
+              예시를 그대로 유지한 상태에서, 고도화 분석과 보완 계획을 추가한
+              버전입니다.
+            </p>
+          </div>
+          <div class="panel grid three">
+            <div>
+              <strong>기존 내용 보존</strong>
+              <p class="muted">
+                Rules, Foundation, Components, Pages, Markdown 문서 보기, 신청서
+                iframe, 토스트/모달 데모를 모두 유지합니다.
+              </p>
+            </div>
+            <div>
+              <strong>Radius 0 우선</strong>
+              <p class="muted">
+                페이지 전체에 radius 0 정책을 강제 적용했습니다. 기존 변수와
+                예외 radius도 ver2에서는 0으로 재정의합니다.
+              </p>
+            </div>
+            <div>
+              <strong>보완 중심</strong>
+              <p class="muted">
+                새 디자인을 따로 만드는 대신 기존 컴포넌트를 기준으로 누락 규칙,
+                상태값, 접근성, 반응형 개선 방향을 추가합니다.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="upgrade-radius">
+          <div class="section-head">
+            <h2>Border Radius 0 정책</h2>
+            <p>
+              휴텍씨 디자인 시스템의 기본 시각 언어는 직각 UI입니다. 따라서
+              ver2에서는 카드, 패널, 버튼, 입력, 테이블, 모달, 토스트까지 기본
+              radius를 모두 0으로 고정합니다. 단, 게시판의 탭 하위 서브탭은
+              구분성을 위해 둥근 pill 형태를 예외로 둡니다.
+            </p>
+          </div>
+          <div class="panel">
+            <table class="token-table">
+              <thead>
+                <tr>
+                  <th>대상</th>
+                  <th>ver2 기준</th>
+                  <th>적용 방식</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>CSS radius token</td>
+                  <td><code>--ds-radius-*: 0</code></td>
+                  <td>
+                    기존 <code>layout.css</code>의 radius 변수를 ver2 내부에서
+                    재정의합니다.
+                  </td>
+                </tr>
+                <tr>
+                  <td>명시 radius 값</td>
+                  <td><code>border-radius: 0</code></td>
+                  <td>
+                    기존 CSS에 남아 있는 <code>4px</code>, <code>6px</code>,
+                    <code>20px</code>, <code>50%</code>도 ver2 페이지에서는
+                    0으로 강제합니다.
+                  </td>
+                </tr>
+                <tr>
+                  <td>컴포넌트 예외</td>
+                  <td>게시판 하위 서브탭</td>
+                  <td>
+                    <code>.board-subtabs</code> 안의 버튼만 둥근 pill 형태를
+                    허용합니다.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <span class="code-label">ver2 override</span>
+            <pre><code>:root {
+  --ds-radius-xs: 0;
+  --ds-radius-sm: 0;
+  --ds-radius-md: 0;
+  --ds-radius-lg: 0;
+  --ds-radius-full: 0;
+  --ds-radius-chip: 0;
+}
+.radius-zero-mode *,
+.radius-zero-mode *::before,
+.radius-zero-mode *::after {
+  border-radius: 0 !important;
+}
+.radius-zero-mode .board-subtabs .tab-item {
+  border-radius: 999px !important;
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="upgrade-components">
+          <div class="section-head">
+            <h2>컴포넌트 보완 체크리스트</h2>
+            <p>
+              기존 index에 들어 있던 컴포넌트는 삭제하지 않고, 반복 사용
+              가능하도록 규칙과 상태를 보강해야 합니다.
+            </p>
+          </div>
+          <div class="grid two">
+            <article class="component-card">
+              <h3>중복 정리 원칙</h3>
+              <p>
+                컴포넌트명은 <code>UI별 보기</code>와 각 상세 섹션에서만
+                반복합니다. 고도화 영역은 같은 컴포넌트 목록을 다시 나열하지
+                않고, 누락된 상태와 적용 규칙만 관리합니다.
+              </p>
+              <table class="token-table">
+                <tbody>
+                  <tr>
+                    <td>쇼케이스</td>
+                    <td>
+                      <code>#components</code>, <code>#buttons</code>,
+                      <code>#tabs</code>, <code>#boards</code>,
+                      <code>#forms</code>, <code>#tables</code>
+                    </td>
+                    <td>미리보기와 HTML 예시</td>
+                  </tr>
+                  <tr>
+                    <td>고도화</td>
+                    <td><code>#upgrade-components</code></td>
+                    <td>상태, 접근성, 예외 정책</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+            <article class="component-card">
+              <h3>보완 대상 상태</h3>
+              <p>
+                기존 컴포넌트 구조는 유지하고, 상태 정의가 약한 부분만 다음
+                단계에서 보강합니다.
+              </p>
+              <ul class="muted">
+                <li>Button: disabled, loading, danger confirm</li>
+                <li>Form: error, help, readonly, disabled</li>
+                <li>
+                  Board: 상위 탭, 둥근 서브탭, 검색, 목록, 페이지네이션,
+                  empty/loading
+                </li>
+                <li>
+                  Table: dense/admin, user, empty, loading, horizontal scroll
+                </li>
+                <li>Feedback: toast 위치, modal focus 복귀, Escape 닫기</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="upgrade-roadmap">
+          <div class="section-head">
+            <h2>우선순위별 실행 계획</h2>
+            <p>원본 구조를 유지하면서 낮은 위험 작업부터 진행합니다.</p>
+          </div>
+          <div class="panel">
+            <table class="token-table">
+              <thead>
+                <tr>
+                  <th>단계</th>
+                  <th>작업</th>
+                  <th>기대 효과</th>
+                  <th>위험도</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1단계</td>
+                  <td>기존 index 전체를 ver2에 보존하고 고도화 섹션만 추가</td>
+                  <td>컴포넌트 유실 방지</td>
+                  <td>낮음</td>
+                </tr>
+                <tr>
+                  <td>1단계</td>
+                  <td>radius 0 override 적용</td>
+                  <td>직각 UI 기준 회복</td>
+                  <td>낮음</td>
+                </tr>
+                <tr>
+                  <td>2단계</td>
+                  <td>Button/Form/Tab/Chip/Table 상태값 문서 보강</td>
+                  <td>반복 구현 시 일관성 확보</td>
+                  <td>중간</td>
+                </tr>
+                <tr>
+                  <td>2단계</td>
+                  <td><code>common.js</code> 선택자 null guard 추가</td>
+                  <td>섹션 분리나 문서 축소 시 JS 오류 방지</td>
+                  <td>낮음</td>
+                </tr>
+                <tr>
+                  <td>3단계</td>
+                  <td>관리자/사용자/홈페이지 패턴별 예시 확장</td>
+                  <td>시험, 번역, 서비스 홈페이지에 공통 적용</td>
+                  <td>중간</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="publishing">
+          <div class="section-head">
+            <h2>퍼블리싱 기준</h2>
+            <p>다른 프로젝트에서 구현할 때 유지해야 하는 최소 규칙입니다.</p>
+          </div>
+          <div class="panel">
+            <table class="token-table">
+              <tbody>
+                <tr>
+                  <td>CSS 변수</td>
+                  <td>
+                    문서 상단의 <code>:root</code> 토큰을 공통 CSS로 분리해서
+                    사용합니다.
+                  </td>
+                  <td>색상 직접 입력 대신 변수 사용</td>
+                </tr>
+                <tr>
+                  <td>컴포넌트 높이</td>
+                  <td>
+                    입력/기본 버튼 <code>32px</code>, 테이블 row
+                    <code>60px</code>, 사이드 메뉴 <code>40px</code>
+                  </td>
+                  <td>화면 밀도 유지</td>
+                </tr>
+                <tr>
+                  <td>테이블</td>
+                  <td>row마다 border를 주되 radius는 사용하지 않습니다.</td>
+                  <td>일반 collapse table보다 grid row 권장</td>
+                </tr>
+                <tr>
+                  <td>상태 색</td>
+                  <td>
+                    성공 <code>#51B117</code>, 경고 <code>#F7B22C</code>, 오류
+                    <code>#DC3D3D</code>
+                  </td>
+                  <td>토스트/검증/알림 공통</td>
+                </tr>
+                <tr>
+                  <td>상태/칩 접근성</td>
+                  <td>
+                    상태 pill, badge, chip, tag는 텍스트와 배경 또는 경계 대비를
+                    최소 <code>3:1</code> 이상으로 유지합니다.
+                  </td>
+                  <td>
+                    연한 배경에는
+                    <code>--ds-color-brand-primary-strong</code>처럼 strong 토큰
+                    사용
+                  </td>
+                </tr>
+                <tr>
+                  <td>접근성</td>
+                  <td>
+                    버튼과 입력은 <code>:focus-visible</code> 스타일을
+                    유지합니다.
+                  </td>
+                  <td>키보드 탐색 대응</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section id="applyform" class="grid two">
+          <iframe
+            class="inner_iframe"
+            src="./form/신청서/iframe-embed-demo.html"
+          ></iframe>
+          <iframe
+            class="inner_iframe"
+            src="./form/증명서_재발급_신청/iframe-embed-demo.html"
+          ></iframe>
+        </section>
+
+<section id="headers">
+          <div class="section-head">
+            <h2>헤더</h2>
+            <p>
+              상단 헤더는 <code>.ds-header</code>로 분리합니다. 높이는 Figma
+              기준과 동일한 60px입니다.
+            </p>
+          </div>
+          <div class="header-doc-grid">
+            <div class="panel">
+              <header class="ds-header">
+                <strong class="ds-header-logo">LOGO</strong>
+                <nav class="ds-header-menu" aria-label="헤더 예시">
+                  <button
+                    class="demo-nav-link"
+                    type="button"
+                    data-toast-demo="info"
+                  >
+                    창작작업실
+                  </button>
+                  <button
+                    class="demo-nav-link"
+                    type="button"
+                    data-toast-demo="info"
+                  >
+                    요금제
+                  </button>
+                  <button
+                    class="demo-nav-link"
+                    type="button"
+                    data-toast-demo="info"
+                  >
+                    고객센터
+                  </button>
+                  <button
+                    class="demo-nav-link"
+                    type="button"
+                    data-toast-demo="info"
+                  >
+                    회사소개
+                  </button>
+                </nav>
+                <div class="demo-row">
+                  <span>알림</span><span>장바구니</span
+                  ><span class="rail-icon active">계정</span>
+                </div>
+              </header>
+            </div>
+            <div class="panel">
+              <span class="code-label">HTML</span>
+              <pre><code>&lt;header class="ds-header"&gt;
+  &lt;strong class="ds-header-logo"&gt;LOGO&lt;/strong&gt;
+  &lt;nav class="ds-header-menu"&gt;
+    &lt;a href="#"&gt;창작작업실&lt;/a&gt;
+    &lt;a href="#"&gt;요금제&lt;/a&gt;
+    &lt;a href="#"&gt;고객센터&lt;/a&gt;
+    &lt;a href="#"&gt;회사소개&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+            </div>
+          </div>
+        </section>
+
+<section id="boards">
           <div class="section-head">
             <h2>게시판</h2>
             <p>
@@ -2421,7 +4528,45 @@
           </div>
         </section>
 
-        <section id="forms">
+<section id="navigation">
+          <div class="section-head">
+            <h2>내비게이션</h2>
+            <p>
+              마이페이지 좌측 메뉴는 220px 사이드바, 메뉴 항목은 40px 높이를
+              기준으로 합니다.
+            </p>
+          </div>
+          <div class="panel demo-row" style="align-items: flex-start">
+            <aside class="sidebar-demo">
+              <div class="profile">
+                <div class="avatar">홍</div>
+                <span class="badge">Premium</span>
+                <strong>홍 길 동</strong>
+                <span class="t-caption muted">로그아웃</span>
+              </div>
+              <div class="side-menu">
+                <a class="side-item active">시험접수</a>
+                <a class="side-item">시험응시</a>
+                <a class="side-item">시험결과</a>
+                <a class="side-item">자격증 신청</a>
+                <a class="side-item">결제 내역</a>
+                <a class="side-item">프로필 관리</a>
+                <a class="side-item">알림 설정</a>
+                <a class="side-item">1:1 문의</a>
+                <a class="side-item cta">전문가 신청</a>
+              </div>
+            </aside>
+            <div>
+              <div class="pagination" aria-label="페이지네이션">
+                <button>‹</button><button class="active">1</button
+                ><button>2</button><button>3</button><button>4</button
+                ><button>5</button><button>›</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+<section id="forms">
           <div class="section-head">
             <h2>입력/검색</h2>
             <p>
@@ -2580,131 +4725,7 @@
           </div>
         </section>
 
-        <section id="headers">
-          <div class="section-head">
-            <h2>헤더</h2>
-            <p>
-              상단 헤더는 <code>.ds-header</code>로 분리합니다. 높이는 Figma
-              기준과 동일한 60px입니다.
-            </p>
-          </div>
-          <div class="header-doc-grid">
-            <div class="panel">
-              <header class="ds-header">
-                <strong class="ds-header-logo">LOGO</strong>
-                <nav class="ds-header-menu" aria-label="헤더 예시">
-                  <button
-                    class="demo-nav-link"
-                    type="button"
-                    data-toast-demo="info"
-                  >
-                    창작작업실
-                  </button>
-                  <button
-                    class="demo-nav-link"
-                    type="button"
-                    data-toast-demo="info"
-                  >
-                    요금제
-                  </button>
-                  <button
-                    class="demo-nav-link"
-                    type="button"
-                    data-toast-demo="info"
-                  >
-                    고객센터
-                  </button>
-                  <button
-                    class="demo-nav-link"
-                    type="button"
-                    data-toast-demo="info"
-                  >
-                    회사소개
-                  </button>
-                </nav>
-                <div class="demo-row">
-                  <span>알림</span><span>장바구니</span
-                  ><span class="rail-icon active">계정</span>
-                </div>
-              </header>
-            </div>
-            <div class="panel">
-              <span class="code-label">HTML</span>
-              <pre><code>&lt;header class="ds-header"&gt;
-  &lt;strong class="ds-header-logo"&gt;LOGO&lt;/strong&gt;
-  &lt;nav class="ds-header-menu"&gt;
-    &lt;a href="#"&gt;창작작업실&lt;/a&gt;
-    &lt;a href="#"&gt;요금제&lt;/a&gt;
-    &lt;a href="#"&gt;고객센터&lt;/a&gt;
-    &lt;a href="#"&gt;회사소개&lt;/a&gt;
-  &lt;/nav&gt;
-&lt;/header&gt;</code></pre>
-            </div>
-          </div>
-        </section>
-
-        <section id="navigation">
-          <div class="section-head">
-            <h2>내비게이션</h2>
-            <p>
-              마이페이지 좌측 메뉴는 220px 사이드바, 메뉴 항목은 40px 높이를
-              기준으로 합니다.
-            </p>
-          </div>
-          <div class="panel demo-row" style="align-items: flex-start">
-            <aside class="sidebar-demo">
-              <div class="profile">
-                <div class="avatar">홍</div>
-                <span class="badge">Premium</span>
-                <strong>홍 길 동</strong>
-                <span class="t-caption muted">로그아웃</span>
-              </div>
-              <div class="side-menu">
-                <a class="side-item active">시험접수</a>
-                <a class="side-item">시험응시</a>
-                <a class="side-item">시험결과</a>
-                <a class="side-item">자격증 신청</a>
-                <a class="side-item">결제 내역</a>
-                <a class="side-item">프로필 관리</a>
-                <a class="side-item">알림 설정</a>
-                <a class="side-item">1:1 문의</a>
-                <a class="side-item cta">전문가 신청</a>
-              </div>
-            </aside>
-            <div>
-              <div class="pagination" aria-label="페이지네이션">
-                <button>‹</button><button class="active">1</button
-                ><button>2</button><button>3</button><button>4</button
-                ><button>5</button><button>›</button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="footers">
-          <div class="section-head">
-            <h2>푸터</h2>
-            <p>
-              푸터는 <code>.ds-footer</code>로 분리합니다. 높이는 60px, 배경은
-              <code>--ds-color-bg-footer</code>입니다.
-            </p>
-          </div>
-          <div class="panel">
-            <footer class="ds-footer">
-              <span>CompanyName @ 202X. All rights reserved.</span>
-              <span>이용약관　개인정보보호정책</span>
-              <span>youtube facebook twitter instagram linkedin</span>
-            </footer>
-          </div>
-          <span class="code-label">HTML</span>
-          <pre><code>&lt;footer class="ds-footer"&gt;
-  &lt;span&gt;CompanyName @ 202X. All rights reserved.&lt;/span&gt;
-  &lt;span&gt;이용약관　개인정보보호정책&lt;/span&gt;
-  &lt;span&gt;youtube facebook twitter instagram linkedin&lt;/span&gt;
-&lt;/footer&gt;</code></pre>
-        </section>
-
-        <section id="tables">
+<section id="tables">
           <div class="section-head">
             <h2>테이블</h2>
             <p>
@@ -2971,131 +4992,7 @@
           </div>
         </section>
 
-        <section id="feedback">
-          <div class="section-head">
-            <h2>토스트/팝업</h2>
-            <p>
-              토스트는 64px 높이, 팝업은 400px 폭을 기본으로 하고 큰 평가기준
-              팝업은 별도 large variant로 확장합니다.
-            </p>
-          </div>
-          <div class="feedback-doc-grid">
-            <div class="panel">
-              <div class="toast-stack">
-                <div class="toast success">
-                  <i class="toast-dot"></i><span>저장되었습니다.</span>
-                </div>
-                <div class="toast warning">
-                  <i class="toast-dot"></i><span>확인이 필요합니다.</span>
-                </div>
-                <div class="toast danger">
-                  <i class="toast-dot"></i><span>처리하지 못했습니다.</span>
-                </div>
-                <div class="toast">
-                  <i class="toast-dot"></i><span>새 알림이 있습니다.</span>
-                </div>
-              </div>
-              <div class="demo-row" style="margin-top: 16px">
-                <button
-                  class="btn btn--primary btn--md"
-                  type="button"
-                  data-toast-demo="info"
-                  data-toast-position="top-right"
-                >
-                  알림
-                </button>
-                <button
-                  class="btn btn--primary btn--md"
-                  type="button"
-                  data-toast-demo="success"
-                  data-toast-position="top-center"
-                >
-                  저장
-                </button>
-                <button
-                  class="btn btn--outline btn--md"
-                  type="button"
-                  data-toast-demo="confirm"
-                  data-toast-position="top-left"
-                >
-                  확인
-                </button>
-                <button
-                  class="btn btn--neutral btn--md"
-                  type="button"
-                  data-toast-demo="warning"
-                  data-toast-position="bottom-center"
-                >
-                  경고
-                </button>
-                <button
-                  class="btn btn--danger btn--md"
-                  type="button"
-                  data-toast-demo="danger"
-                  data-toast-position="bottom-right"
-                >
-                  오류
-                </button>
-              </div>
-            </div>
-            <div class="panel modal-backdrop">
-              <div
-                class="modal"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="modal-title"
-              >
-                <h3 id="modal-title">팝업 제목</h3>
-                <p>
-                  사용자에게 확인이 필요한 내용을 간결하게 안내합니다. 버튼은
-                  취소/확인 순서로 배치합니다.
-                </p>
-                <div class="modal-actions">
-                  <button class="btn neutral">취소</button>
-                  <button class="btn">확인</button>
-                </div>
-              </div>
-            </div>
-            <div class="panel feedback-code-card">
-              <span class="code-label">HTML</span>
-              <pre><code>&lt;div class="toast success"&gt;
-  &lt;i class="toast-dot"&gt;&lt;/i&gt;
-  &lt;span&gt;저장되었습니다.&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;div class="modal" role="dialog" aria-modal="true"&gt;
-  &lt;h3&gt;팝업 제목&lt;/h3&gt;
-  &lt;p&gt;확인이 필요한 내용을 안내합니다.&lt;/p&gt;
-  &lt;button&gt;취소&lt;/button&gt;
-  &lt;button&gt;확인&lt;/button&gt;
-&lt;/div&gt;</code></pre>
-            </div>
-            <div class="panel feedback-code-card">
-              <span class="code-label">JavaScript</span>
-              <pre><code>function showToast(message, type = "success", position = "top-right") {
-  const viewport = document.querySelector("[data-toast-viewport]");
-  viewport.dataset.toastPosition = position;
-
-  const toast = document.createElement("div");
-  toast.className = `toast ${type}`;
-  toast.innerHTML = `&lt;i class="toast-dot"&gt;&lt;/i&gt;&lt;span&gt;${message}&lt;/span&gt;`;
-  viewport.prepend(toast);
-  window.setTimeout(() =&gt; toast.remove(), 3000);
-}</code></pre>
-            </div>
-          </div>
-          <div class="demo-row" style="margin-top: 16px">
-            <button
-              class="btn btn--primary btn--md"
-              type="button"
-              data-modal-open
-            >
-              팝업 열기
-            </button>
-          </div>
-        </section>
-
-        <section id="layout">
+<section id="layout">
           <div class="section-head">
             <h2>페이지 레이아웃</h2>
             <p>
@@ -3692,534 +5589,6 @@
           </div>
         </section>
 
-        <section id="md-docs">
-          <div class="section-head">
-            <h2>재사용 디자인 프롬프트</h2>
-            <p>
-              다른 화면에서도 동일한 output을 만들 수 있도록 사용자 화면,
-              BO 테이블, 반복 컴포넌트 기준 프롬프트를 분리해서 확인합니다.
-            </p>
-          </div>
-          <div class="docs-viewer">
-            <aside class="docs-list" aria-label="재사용 디자인 프롬프트 문서 목록">
-              <button
-                class="doc-item active"
-                type="button"
-                data-doc-src="./docs_rendered/reusable-prompts-index.html"
-                data-doc-title="재사용 디자인 프롬프트 문서목록"
-                aria-pressed="true"
-              >
-                <strong>문서목록</strong>
-                <span>docs/재사용_디자인_프롬프트</span>
-              </button>
-              <div class="docs-group" aria-labelledby="docs-user-group">
-                <div class="docs-group-title" id="docs-user-group">사용자</div>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-user-index.html"
-                  data-doc-title="사용자 재사용 디자인 프롬프트"
-                  aria-pressed="false"
-                >
-                  <strong>사용자 문서목록</strong>
-                  <span>사용자/00_문서목록.md</span>
-                </button>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-user-design-system.html"
-                  data-doc-title="사용자화면 디자인시스템 기준"
-                  aria-pressed="false"
-                >
-                  <strong>사용자화면 기준</strong>
-                  <span>사용자/01_사용자화면_디자인시스템_기준.md</span>
-                </button>
-              </div>
-              <div class="docs-group" aria-labelledby="docs-admin-group">
-                <div class="docs-group-title" id="docs-admin-group">관리자</div>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-admin-index.html"
-                  data-doc-title="관리자 재사용 디자인 프롬프트"
-                  aria-pressed="false"
-                >
-                  <strong>관리자 문서목록</strong>
-                  <span>관리자/00_문서목록.md</span>
-                </button>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-bo-table-layout.html"
-                  data-doc-title="BO 테이블레이아웃 기준"
-                  aria-pressed="false"
-                >
-                  <strong>BO 테이블레이아웃</strong>
-                  <span>관리자/02_BO_테이블레이아웃_기준.md</span>
-                </button>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-bo-admin-screen.html"
-                  data-doc-title="BO 관리자화면 기준"
-                  aria-pressed="false"
-                >
-                  <strong>BO 관리자화면</strong>
-                  <span>관리자/03_BO_관리자화면_기준.md</span>
-                </button>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-bo-admin-layout.html"
-                  data-doc-title="BO 관리자용 레이아웃 기준"
-                  aria-pressed="false"
-                >
-                  <strong>BO 관리자용 레이아웃</strong>
-                  <span>관리자/04_BO_관리자용_레이아웃_기준.md</span>
-                </button>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-status-chip.html"
-                  data-doc-title="상태/유형 칩 기준"
-                  aria-pressed="false"
-                >
-                  <strong>상태/유형 칩</strong>
-                  <span>관리자/components/상태_유형_칩_기준.md</span>
-                </button>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-search-filter.html"
-                  data-doc-title="검색필터 기준"
-                  aria-pressed="false"
-                >
-                  <strong>검색필터</strong>
-                  <span>관리자/components/검색필터_기준.md</span>
-                </button>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-inline-drawer.html"
-                  data-doc-title="인라인 Drawer 기준"
-                  aria-pressed="false"
-                >
-                  <strong>인라인 Drawer</strong>
-                  <span>관리자/components/인라인_Drawer_기준.md</span>
-                </button>
-                <button
-                  class="doc-item"
-                  type="button"
-                  data-doc-src="./docs_rendered/reusable-table-selection-drawer.html"
-                  data-doc-title="테이블 선택 Drawer 상세패널 기준"
-                  aria-pressed="false"
-                >
-                  <strong>테이블 선택 상세패널</strong>
-                  <span>관리자/components/테이블선택_Drawer_상세패널_기준.md</span>
-                </button>
-              </div>
-            </aside>
-            <div class="docs-preview">
-              <div class="docs-preview-head">
-                <div>
-                  <span class="code-label">현재 문서</span>
-                  <h3 data-doc-current-title>재사용 디자인 프롬프트 문서목록</h3>
-                </div>
-                <a
-                  class="btn btn--outline btn--sm"
-                  href="./docs_rendered/reusable-prompts-index.html"
-                  target="_blank"
-                  rel="noopener"
-                  data-doc-open
-                  >새 탭 열기</a
-                >
-              </div>
-              <iframe
-                class="docs-frame"
-                src="./docs_rendered/reusable-prompts-index.html"
-                title="Markdown 문서 미리보기"
-                data-doc-frame
-              ></iframe>
-            </div>
-          </div>
-        </section>
-
-        <section id="bo-db-pages">
-          <div class="section-head">
-            <h2>BO/DB 페이지 보기</h2>
-            <p>
-              관리자 테이블 페이지와 DB v2 참고 화면을 디자인 시스템 안에서
-              바로 확인합니다. 목록에서 선택하면 우측 미리보기가 바뀝니다.
-            </p>
-          </div>
-          <div class="docs-viewer">
-            <aside class="docs-list" aria-label="BO/DB 페이지 목록">
-              <button
-                class="doc-item active"
-                type="button"
-                data-page-src="./table_design/관리자패널_전체회원.html"
-                data-page-title="관리자패널 전체회원"
-                aria-pressed="true"
-              >
-                <strong>관리자패널 전체회원</strong>
-                <span>회원목록 + 우측 Dense Drawer</span>
-              </button>
-              <button
-                class="doc-item"
-                type="button"
-                data-page-src="./table_design/신규테이블관리.html"
-                data-page-title="신규 테이블 관리"
-                aria-pressed="false"
-              >
-                <strong>신규 테이블 관리</strong>
-                <span>6개 테이블 전환 예시</span>
-              </button>
-              <button
-                class="doc-item"
-                type="button"
-                data-page-src="./table_design/결제관리.html"
-                data-page-title="결제 관리"
-                aria-pressed="false"
-              >
-                <strong>결제 관리</strong>
-                <span>결제/환불/정산 테이블</span>
-              </button>
-              <button
-                class="doc-item"
-                type="button"
-                data-page-src="./resource/DB_v2_HTML/DB페이지_v2(이거사용).html"
-                data-page-title="DB페이지 v2 원본 참고"
-                aria-pressed="false"
-              >
-                <strong>DB페이지 v2 원본 참고</strong>
-                <span>resource/DB_v2_HTML</span>
-              </button>
-              <button
-                class="doc-item"
-                type="button"
-                data-page-src="./resource/DB_v2_HTML/관리자패널_전체회원.html"
-                data-page-title="관리자패널 전체회원 원본"
-                aria-pressed="false"
-              >
-                <strong>관리자패널 전체회원 원본</strong>
-                <span>resource/DB_v2_HTML</span>
-              </button>
-              <button
-                class="doc-item"
-                type="button"
-                data-page-src="./resource/DB_v2_HTML/결제관리.html"
-                data-page-title="결제관리 원본"
-                aria-pressed="false"
-              >
-                <strong>결제관리 원본</strong>
-                <span>resource/DB_v2_HTML</span>
-              </button>
-            </aside>
-            <div class="docs-preview">
-              <div class="docs-preview-head">
-                <div>
-                  <span class="code-label">현재 페이지</span>
-                  <h3 data-page-current-title>관리자패널 전체회원</h3>
-                </div>
-                <a
-                  class="btn btn--outline btn--sm"
-                  href="./table_design/관리자패널_전체회원.html"
-                  target="_blank"
-                  rel="noopener"
-                  data-page-open
-                  >새 탭 열기</a
-                >
-              </div>
-              <iframe
-                class="docs-frame"
-                src="./table_design/관리자패널_전체회원.html"
-                title="BO/DB 페이지 미리보기"
-                data-page-frame
-              ></iframe>
-            </div>
-          </div>
-        </section>
-
-        <section id="upgrade-summary">
-          <div class="section-head">
-            <h2>디자인 시스템 고도화 요약</h2>
-            <p>
-              이 ver2 파일은 기존 <code>index.html</code>의 모든 섹션과 컴포넌트
-              예시를 그대로 유지한 상태에서, 고도화 분석과 보완 계획을 추가한
-              버전입니다.
-            </p>
-          </div>
-          <div class="panel grid three">
-            <div>
-              <strong>기존 내용 보존</strong>
-              <p class="muted">
-                Rules, Foundation, Components, Pages, Markdown 문서 보기, 신청서
-                iframe, 토스트/모달 데모를 모두 유지합니다.
-              </p>
-            </div>
-            <div>
-              <strong>Radius 0 우선</strong>
-              <p class="muted">
-                페이지 전체에 radius 0 정책을 강제 적용했습니다. 기존 변수와
-                예외 radius도 ver2에서는 0으로 재정의합니다.
-              </p>
-            </div>
-            <div>
-              <strong>보완 중심</strong>
-              <p class="muted">
-                새 디자인을 따로 만드는 대신 기존 컴포넌트를 기준으로 누락 규칙,
-                상태값, 접근성, 반응형 개선 방향을 추가합니다.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section id="upgrade-radius">
-          <div class="section-head">
-            <h2>Border Radius 0 정책</h2>
-            <p>
-              휴텍씨 디자인 시스템의 기본 시각 언어는 직각 UI입니다. 따라서
-              ver2에서는 카드, 패널, 버튼, 입력, 테이블, 모달, 토스트까지 기본
-              radius를 모두 0으로 고정합니다. 단, 게시판의 탭 하위 서브탭은
-              구분성을 위해 둥근 pill 형태를 예외로 둡니다.
-            </p>
-          </div>
-          <div class="panel">
-            <table class="token-table">
-              <thead>
-                <tr>
-                  <th>대상</th>
-                  <th>ver2 기준</th>
-                  <th>적용 방식</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>CSS radius token</td>
-                  <td><code>--ds-radius-*: 0</code></td>
-                  <td>
-                    기존 <code>layout.css</code>의 radius 변수를 ver2 내부에서
-                    재정의합니다.
-                  </td>
-                </tr>
-                <tr>
-                  <td>명시 radius 값</td>
-                  <td><code>border-radius: 0</code></td>
-                  <td>
-                    기존 CSS에 남아 있는 <code>4px</code>, <code>6px</code>,
-                    <code>20px</code>, <code>50%</code>도 ver2 페이지에서는
-                    0으로 강제합니다.
-                  </td>
-                </tr>
-                <tr>
-                  <td>컴포넌트 예외</td>
-                  <td>게시판 하위 서브탭</td>
-                  <td>
-                    <code>.board-subtabs</code> 안의 버튼만 둥근 pill 형태를
-                    허용합니다.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <span class="code-label">ver2 override</span>
-            <pre><code>:root {
-  --ds-radius-xs: 0;
-  --ds-radius-sm: 0;
-  --ds-radius-md: 0;
-  --ds-radius-lg: 0;
-  --ds-radius-full: 0;
-  --ds-radius-chip: 0;
-}
-.radius-zero-mode *,
-.radius-zero-mode *::before,
-.radius-zero-mode *::after {
-  border-radius: 0 !important;
-}
-.radius-zero-mode .board-subtabs .tab-item {
-  border-radius: 999px !important;
-}</code></pre>
-          </div>
-        </section>
-
-        <section id="upgrade-components">
-          <div class="section-head">
-            <h2>컴포넌트 보완 체크리스트</h2>
-            <p>
-              기존 index에 들어 있던 컴포넌트는 삭제하지 않고, 반복 사용
-              가능하도록 규칙과 상태를 보강해야 합니다.
-            </p>
-          </div>
-          <div class="grid two">
-            <article class="component-card">
-              <h3>중복 정리 원칙</h3>
-              <p>
-                컴포넌트명은 <code>UI별 보기</code>와 각 상세 섹션에서만
-                반복합니다. 고도화 영역은 같은 컴포넌트 목록을 다시 나열하지
-                않고, 누락된 상태와 적용 규칙만 관리합니다.
-              </p>
-              <table class="token-table">
-                <tbody>
-                  <tr>
-                    <td>쇼케이스</td>
-                    <td>
-                      <code>#components</code>, <code>#buttons</code>,
-                      <code>#tabs</code>, <code>#boards</code>,
-                      <code>#forms</code>, <code>#tables</code>
-                    </td>
-                    <td>미리보기와 HTML 예시</td>
-                  </tr>
-                  <tr>
-                    <td>고도화</td>
-                    <td><code>#upgrade-components</code></td>
-                    <td>상태, 접근성, 예외 정책</td>
-                  </tr>
-                </tbody>
-              </table>
-            </article>
-            <article class="component-card">
-              <h3>보완 대상 상태</h3>
-              <p>
-                기존 컴포넌트 구조는 유지하고, 상태 정의가 약한 부분만 다음
-                단계에서 보강합니다.
-              </p>
-              <ul class="muted">
-                <li>Button: disabled, loading, danger confirm</li>
-                <li>Form: error, help, readonly, disabled</li>
-                <li>
-                  Board: 상위 탭, 둥근 서브탭, 검색, 목록, 페이지네이션,
-                  empty/loading
-                </li>
-                <li>
-                  Table: dense/admin, user, empty, loading, horizontal scroll
-                </li>
-                <li>Feedback: toast 위치, modal focus 복귀, Escape 닫기</li>
-              </ul>
-            </article>
-          </div>
-        </section>
-
-        <section id="upgrade-roadmap">
-          <div class="section-head">
-            <h2>우선순위별 실행 계획</h2>
-            <p>원본 구조를 유지하면서 낮은 위험 작업부터 진행합니다.</p>
-          </div>
-          <div class="panel">
-            <table class="token-table">
-              <thead>
-                <tr>
-                  <th>단계</th>
-                  <th>작업</th>
-                  <th>기대 효과</th>
-                  <th>위험도</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1단계</td>
-                  <td>기존 index 전체를 ver2에 보존하고 고도화 섹션만 추가</td>
-                  <td>컴포넌트 유실 방지</td>
-                  <td>낮음</td>
-                </tr>
-                <tr>
-                  <td>1단계</td>
-                  <td>radius 0 override 적용</td>
-                  <td>직각 UI 기준 회복</td>
-                  <td>낮음</td>
-                </tr>
-                <tr>
-                  <td>2단계</td>
-                  <td>Button/Form/Tab/Chip/Table 상태값 문서 보강</td>
-                  <td>반복 구현 시 일관성 확보</td>
-                  <td>중간</td>
-                </tr>
-                <tr>
-                  <td>2단계</td>
-                  <td><code>common.js</code> 선택자 null guard 추가</td>
-                  <td>섹션 분리나 문서 축소 시 JS 오류 방지</td>
-                  <td>낮음</td>
-                </tr>
-                <tr>
-                  <td>3단계</td>
-                  <td>관리자/사용자/홈페이지 패턴별 예시 확장</td>
-                  <td>시험, 번역, 서비스 홈페이지에 공통 적용</td>
-                  <td>중간</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section id="publishing">
-          <div class="section-head">
-            <h2>퍼블리싱 기준</h2>
-            <p>다른 프로젝트에서 구현할 때 유지해야 하는 최소 규칙입니다.</p>
-          </div>
-          <div class="panel">
-            <table class="token-table">
-              <tbody>
-                <tr>
-                  <td>CSS 변수</td>
-                  <td>
-                    문서 상단의 <code>:root</code> 토큰을 공통 CSS로 분리해서
-                    사용합니다.
-                  </td>
-                  <td>색상 직접 입력 대신 변수 사용</td>
-                </tr>
-                <tr>
-                  <td>컴포넌트 높이</td>
-                  <td>
-                    입력/기본 버튼 <code>32px</code>, 테이블 row
-                    <code>60px</code>, 사이드 메뉴 <code>40px</code>
-                  </td>
-                  <td>화면 밀도 유지</td>
-                </tr>
-                <tr>
-                  <td>테이블</td>
-                  <td>row마다 border를 주되 radius는 사용하지 않습니다.</td>
-                  <td>일반 collapse table보다 grid row 권장</td>
-                </tr>
-                <tr>
-                  <td>상태 색</td>
-                  <td>
-                    성공 <code>#51B117</code>, 경고 <code>#F7B22C</code>, 오류
-                    <code>#DC3D3D</code>
-                  </td>
-                  <td>토스트/검증/알림 공통</td>
-                </tr>
-                <tr>
-                  <td>상태/칩 접근성</td>
-                  <td>
-                    상태 pill, badge, chip, tag는 텍스트와 배경 또는 경계 대비를
-                    최소 <code>3:1</code> 이상으로 유지합니다.
-                  </td>
-                  <td>
-                    연한 배경에는
-                    <code>--ds-color-brand-primary-strong</code>처럼 strong 토큰
-                    사용
-                  </td>
-                </tr>
-                <tr>
-                  <td>접근성</td>
-                  <td>
-                    버튼과 입력은 <code>:focus-visible</code> 스타일을
-                    유지합니다.
-                  </td>
-                  <td>키보드 탐색 대응</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section id="applyform" class="grid two">
-          <iframe
-            class="inner_iframe"
-            src="./form/신청서/iframe-embed-demo.html"
-          ></iframe>
-          <iframe
-            class="inner_iframe"
-            src="./form/증명서_재발급_신청/iframe-embed-demo.html"
-          ></iframe>
-        </section>
       </main>
     </div>
     <div

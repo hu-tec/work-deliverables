@@ -3,6 +3,18 @@ const path = require("path");
 
 const docs = [
   ["docs/재사용_디자인_프롬프트/00_문서목록.md", "reusable-prompts-index.html", "재사용 디자인 프롬프트 문서목록"],
+  ["docs/재사용_디자인_프롬프트/공통/00_문서목록.md", "reusable-common-index.html", "전체 공통 문서목록"],
+  ["docs/재사용_디자인_프롬프트/공통/01_화면목적_정보우선순위_기준.md", "reusable-common-screen-priority.html", "전체 공통 화면목적 정보우선순위 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/02_상단영역_메뉴탭_헤더_기준.md", "reusable-common-header.html", "전체 공통 상단영역 메뉴탭 헤더 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/03_다단구조_밀도_간격_기준.md", "reusable-common-density.html", "전체 공통 다단구조 밀도 간격 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/04_타이포그래피_글자크기_기준.md", "reusable-common-typography.html", "전체 공통 타이포그래피 글자크기 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/05_카드형_표형_선택기준.md", "reusable-common-card-table.html", "전체 공통 카드형 표형 선택기준"],
+  ["docs/재사용_디자인_프롬프트/공통/06_목록_테이블셀_데이터표현_기준.md", "reusable-common-table-cell.html", "전체 공통 목록 테이블셀 데이터표현 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/07_상태값_칩_라벨_이모지_기준.md", "reusable-common-status-emoji.html", "전체 공통 상태값 칩 라벨 이모지 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/08_입력폼_검색필터_컨트롤_기준.md", "reusable-common-input-filter.html", "전체 공통 입력폼 검색필터 컨트롤 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/09_상세보기_Drawer_패널_기준.md", "reusable-common-detail-drawer.html", "전체 공통 상세보기 Drawer 패널 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/10_AI작업지시_검수_기준.md", "reusable-common-ai-work-rule.html", "전체 공통 AI 작업지시 검수 기준"],
+  ["docs/재사용_디자인_프롬프트/공통/11_검색기능_테이블_상세보기_통합기준.md", "reusable-common-search-table-detail.html", "전체 공통 검색기능 테이블 상세보기 통합기준"],
   ["docs/재사용_디자인_프롬프트/사용자/00_문서목록.md", "reusable-user-index.html", "사용자 재사용 디자인 프롬프트"],
   ["docs/재사용_디자인_프롬프트/사용자/01_사용자화면_디자인시스템_기준.md", "reusable-user-design-system.html", "사용자화면 디자인시스템 기준"],
   ["docs/재사용_디자인_프롬프트/관리자/00_문서목록.md", "reusable-admin-index.html", "관리자 재사용 디자인 프롬프트"],
@@ -23,14 +35,22 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
-function renderInline(value) {
-  return escapeHtml(value)
-    .replace(/`([^`]+)`/g, "<code>$1</code>")
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+function resolveDocUrl(url, source) {
+  if (/^(https?:|mailto:|#|data:)/.test(url)) return url;
+  const sourceDir = path.dirname(source).replaceAll("\\", "/");
+  const absoluteFromDoc = path.posix.normalize(path.posix.join("..", sourceDir, url));
+  return absoluteFromDoc;
 }
 
-function renderMarkdown(markdown) {
+function renderInline(value, source) {
+  return escapeHtml(value)
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, href) => `<img class="markdown-image" src="${escapeHtml(resolveDocUrl(href, source))}" alt="${escapeHtml(alt)}">`)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, href) => `<a href="${escapeHtml(resolveDocUrl(href, source))}">${text}</a>`);
+}
+
+function renderMarkdown(markdown, source) {
   const lines = markdown.replace(/\r\n/g, "\n").split("\n");
   const html = [];
   let inCode = false;
@@ -41,7 +61,7 @@ function renderMarkdown(markdown) {
 
   const flushParagraph = () => {
     if (!paragraph.length) return;
-    html.push(`<p>${renderInline(paragraph.join(" "))}</p>`);
+    html.push(`<p>${renderInline(paragraph.join(" "), source)}</p>`);
     paragraph = [];
   };
   const flushList = () => {
@@ -55,7 +75,7 @@ function renderMarkdown(markdown) {
     const rendered = rows.map((row, rowIndex) => {
       const tag = rowIndex === 0 ? "th" : "td";
       const cells = row.trim().replace(/^\|/, "").replace(/\|$/, "").split("|");
-      return `<tr>${cells.map((cell) => `<${tag}>${renderInline(cell.trim())}</${tag}>`).join("")}</tr>`;
+      return `<tr>${cells.map((cell) => `<${tag}>${renderInline(cell.trim(), source)}</${tag}>`).join("")}</tr>`;
     }).join("");
     html.push(`<table><tbody>${rendered}</tbody></table>`);
     tableRows = [];
@@ -98,7 +118,7 @@ function renderMarkdown(markdown) {
       flushParagraph();
       flushList();
       const level = heading[1].length;
-      html.push(`<h${level}>${renderInline(heading[2])}</h${level}>`);
+      html.push(`<h${level}>${renderInline(heading[2], source)}</h${level}>`);
       return;
     }
     const unordered = line.match(/^\s*[-*]\s+(.+)$/);
@@ -111,14 +131,14 @@ function renderMarkdown(markdown) {
         html.push(`<${type}>`);
         listType = type;
       }
-      html.push(`<li>${renderInline((unordered || ordered)[1])}</li>`);
+      html.push(`<li>${renderInline((unordered || ordered)[1], source)}</li>`);
       return;
     }
     const quote = line.match(/^>\s?(.+)$/);
     if (quote) {
       flushParagraph();
       flushList();
-      html.push(`<blockquote>${renderInline(quote[1])}</blockquote>`);
+      html.push(`<blockquote>${renderInline(quote[1], source)}</blockquote>`);
       return;
     }
     paragraph.push(line.trim());
@@ -141,6 +161,7 @@ th{background:#f8f9fc;color:#666;font-weight:700}
 pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
 code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
 a{color:#006dcc;text-underline-offset:2px}
+.markdown-image{display:block;max-width:100%;height:auto;margin:12px 0 18px;border:1px solid #d6dfec;border-radius:8px;background:#fff}
 `;
 
 fs.mkdirSync("docs_rendered", { recursive: true });
@@ -156,7 +177,7 @@ docs.forEach(([source, filename, title]) => {
   <style>${css}</style>
 </head>
 <body>
-${renderMarkdown(markdown)}
+${renderMarkdown(markdown, source)}
 </body>
 </html>
 `;

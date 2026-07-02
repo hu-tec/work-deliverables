@@ -16,22 +16,27 @@ th{background:#f8f9fc;color:#666;font-weight:700}
 pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
 code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
 a{color:#006dcc;text-underline-offset:2px}
+.markdown-image{display:block;max-width:100%;height:auto;margin:12px 0 18px;border:1px solid #d6dfec;border-radius:8px;background:#fff}
 </style>
 </head>
 <body>
 <h1>관리자 재사용 디자인 프롬프트</h1>
 <p>BO 관리자 화면, 대량 테이블, 검색조건, inline Drawer를 만들 때 쓰는 최종 기준 문서다.</p>
+<h2>먼저 볼 공통 문서</h2>
+<p>아래 문서는 관리자 화면보다 상위에 있는 전체/공통 기준이다. 관리자 화면을 만들 때는 이 문서를 먼저 보고, 그 다음 관리자 전용 문서를 적용한다.</p>
+<table><tbody><tr><th>문서</th><th>생성일</th><th>적용 우선</th><th>용도</th></tr><tr><td><code>../공통/11_검색기능_테이블_상세보기_통합기준.md</code></td><td>2026-07-02</td><td>전체/공통 최우선</td><td>검색조건, 테이블, 상세 Drawer가 함께 있는 화면의 최신 조립 기준</td></tr><tr><td><code>../공통/03_다단구조_밀도_간격_기준.md</code></td><td>2026-07-02</td><td>전체/공통</td><td>2-4단, 1단 안 여러 단, 빈 공간 압축 기준</td></tr><tr><td><code>../공통/10_AI작업지시_검수_기준.md</code></td><td>2026-07-02</td><td>전체/공통 최우선</td><td>의도 확인, 브레이크, 3스텝 제안, MD 자산화, 최종 검증 기준</td></tr></tbody></table>
 <h2>기준 문서</h2>
-<table><tbody><tr><th>문서</th><th>용도</th></tr><tr><td><code>03_BO_관리자화면_기준.md</code></td><td>관리자 화면 전체 shell, 업무 전환, 액션, 상세 편집 기준</td></tr><tr><td><code>04_BO_관리자용_레이아웃_기준.md</code></td><td>4단 그리드, 고밀도 업무 패널, 대시보드/상세 배치 기준</td></tr><tr><td><code>02_BO_테이블레이아웃_기준.md</code></td><td>대량 테이블, 검색필터, inline Drawer 테이블 화면 기준</td></tr></tbody></table>
+<table><tbody><tr><th>문서</th><th>생성일</th><th>용도</th></tr><tr><td><code>03_BO_관리자화면_기준.md</code></td><td>2026-07-02</td><td>관리자 화면 전체 shell, 업무 전환, 액션, 상세 편집 기준</td></tr><tr><td><code>04_BO_관리자용_레이아웃_기준.md</code></td><td>2026-07-02</td><td>4단 그리드, 고밀도 업무 패널, 대시보드/상세 배치 기준</td></tr><tr><td><code>02_BO_테이블레이아웃_기준.md</code></td><td>2026-07-02</td><td>대량 테이블, 검색필터, inline Drawer 테이블 화면 기준</td></tr></tbody></table>
 <h2>컴포넌트 문서</h2>
-<table><tbody><tr><th>문서</th><th>용도</th></tr><tr><td><code>components/검색필터_기준.md</code></td><td>고밀도 검색조건과 필터 그룹 구성 기준</td></tr><tr><td><code>components/상태_유형_칩_기준.md</code></td><td>상태값, 유형값, 구독/등급/결제수단 표시 기준</td></tr><tr><td><code>components/인라인_Drawer_기준.md</code></td><td>행 클릭 상세, 우측 inline Drawer, 넓게보기 작업영역 기준</td></tr><tr><td><code>components/테이블선택_Drawer_상세패널_기준.md</code></td><td>테이블 행 선택 후 열리는 상세 작업 패널, 상태 UI, 고정/변동 정보 기준</td></tr></tbody></table>
+<table><tbody><tr><th>문서</th><th>생성일</th><th>용도</th></tr><tr><td><code>components/검색필터_기준.md</code></td><td>2026-07-02</td><td>고밀도 검색조건과 필터 그룹 구성 기준</td></tr><tr><td><code>components/상태_유형_칩_기준.md</code></td><td>2026-07-02</td><td>상태값, 유형값, 구독/등급/결제수단 표시 기준</td></tr><tr><td><code>components/인라인_Drawer_기준.md</code></td><td>2026-07-02</td><td>행 클릭 상세, 우측 inline Drawer, 넓게보기 작업영역 기준</td></tr><tr><td><code>components/테이블선택_Drawer_상세패널_기준.md</code></td><td>2026-07-02</td><td>테이블 행 선택 후 열리는 상세 작업 패널, 상태 UI, 고정/변동 정보 기준</td></tr></tbody></table>
 <h2>사용 순서</h2>
 <ol>
-<li>관리자 화면 전체를 만들 때는 <code>03_BO_관리자화면_기준.md</code>를 먼저 적용한다.</li>
+<li>검색조건, 테이블, 상세 Drawer가 함께 있으면 <code>../공통/11_검색기능_테이블_상세보기_통합기준.md</code>를 먼저 적용한다.</li>
+<li>관리자 화면 전체를 만들 때는 <code>03_BO_관리자화면_기준.md</code>를 함께 적용한다.</li>
 <li>대시보드나 상세 작업 화면이면 <code>04_BO_관리자용_레이아웃_기준.md</code>를 함께 적용한다.</li>
 <li>대량 목록/검색/상세 테이블이면 <code>02_BO_테이블레이아웃_기준.md</code>를 함께 적용한다.</li>
 <li>상태/유형/필터/Drawer가 있으면 <code>components</code> 문서를 같이 적용한다.</li>
-<li>테이블 행 선택 후 상담/시험/결제/정산을 처리하는 상세 패널은 <code>components/테이블선택_Drawer_상세패널_기준.md</code>를 우선 적용한다.</li>
+<li>테이블 행 선택 후 상담/시험/결제/정산을 처리하는 상세 패널은 <code>components/테이블선택_Drawer_상세패널_기준.md</code>를 함께 적용한다.</li>
 </ol>
 </body>
 </html>

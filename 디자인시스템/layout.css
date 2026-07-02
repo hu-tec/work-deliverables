@@ -2139,6 +2139,29 @@ textarea.field { min-height: 112px; resize: vertical; }
     font-weight: 700;
     line-height: 18px;
 }
+.docs-group--priority {
+    border-top-color: var(--ds-color-brand-primary);
+    background: #f6fbff;
+    margin: -2px;
+    padding: 10px 8px 8px;
+    border-radius: var(--ds-radius-sm);
+}
+.docs-group-title--priority {
+    min-height: 28px;
+    color: var(--ds-color-brand-primary-strong);
+    font-size: 13px;
+}
+.doc-item--priority {
+    border-color: #b8d8f8;
+    background: #ffffff;
+}
+.doc-date {
+    display: inline-block;
+    margin-right: 6px;
+    color: var(--ds-color-brand-primary-strong);
+    font-weight: 700;
+    letter-spacing: 0;
+}
 .doc-item {
     display: grid;
     gap: 3px;
