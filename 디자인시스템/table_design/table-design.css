@@ -3760,3 +3760,171 @@ td.right .cell {
 .member-admin-page .table-workspace.is-drawer-open .table-card table {
   width: 100% !important;
 }
+
+/* Member detail B expansion pass - 2026-07-03.
+   A stays complete but denser; B gets the extra working width and the feed log grows. */
+.member-admin-page .member-master-grid,
+.member-admin-page .table-workspace.is-drawer-open .member-master-grid,
+.member-admin-page .table-workspace.is-drawer-open.is-drawer-wide .member-master-grid {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+}
+
+.member-admin-page .member-master-grid > .member-profile-panel {
+  flex: 0 0 calc(39% - 2px) !important;
+  width: calc(39% - 2px) !important;
+  max-width: calc(39% - 2px) !important;
+  min-width: 0 !important;
+}
+
+.member-admin-page .member-master-grid > .member-work-panel {
+  flex: 0 0 calc(61% - 2px) !important;
+  width: calc(61% - 2px) !important;
+  max-width: calc(61% - 2px) !important;
+  min-width: 0 !important;
+}
+
+.member-admin-page .member-profile-panel {
+  gap: 1px;
+  padding: 3px;
+}
+
+.member-admin-page .member-profile-head {
+  min-height: 16px;
+  gap: 4px;
+  font-size: 7px;
+  line-height: 10px;
+}
+
+.member-admin-page .member-profile-actions .btn {
+  min-height: 15px;
+  padding: 0 4px;
+  font-size: 7px;
+  line-height: 13px;
+}
+
+.member-admin-page .member-profile-fields--base,
+.member-admin-page .member-profile-group .member-profile-fields {
+  gap: 0 3px;
+}
+
+.member-admin-page .member-profile-fields--base .member-mini-field,
+.member-admin-page .member-profile-group .member-mini-field,
+.member-admin-page .member-profile-group--scores .member-mini-field {
+  min-height: 12px;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 1px;
+}
+
+.member-admin-page .member-mini-field span,
+.member-admin-page .member-profile-group > strong,
+.member-admin-page .member-radio-row,
+.member-admin-page .member-check-grid {
+  font-size: 7px;
+  line-height: 10px;
+}
+
+.member-admin-page .member-mini-field .field,
+.member-admin-page .member-profile-group .member-mini-field .field {
+  height: 12px;
+  min-height: 12px;
+  padding: 0 1px;
+  font-size: 7px;
+  line-height: 12px;
+}
+
+.member-admin-page .member-radio-row,
+.member-admin-page .member-check-grid {
+  min-height: 12px;
+  gap: 1px 4px;
+}
+
+.member-admin-page .member-note-box {
+  gap: 1px;
+  padding: 2px;
+}
+
+.member-admin-page .member-note-box .field {
+  height: 24px;
+  min-height: 24px;
+  padding: 1px 2px;
+  font-size: 7px;
+  line-height: 10px;
+}
+
+.member-admin-page .member-work-panel {
+  gap: 2px;
+}
+
+.member-admin-page .member-ops-panel {
+  padding: 2px 3px;
+}
+
+.member-admin-page .member-ops-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px 3px;
+}
+
+.member-admin-page .member-ops-field {
+  min-height: 14px;
+  grid-template-columns: 38px minmax(0, 1fr);
+}
+
+.member-admin-page .member-ops-field span,
+.member-admin-page .member-ops-field .field,
+.member-admin-page .member-inline-select,
+.member-admin-page .member-inline-select select,
+.member-admin-page .member-counsel-state-card summary,
+.member-admin-page .member-toolbar-interview legend,
+.member-admin-page .member-toolbar-interview label {
+  color: #334155;
+  font-size: 7px;
+  font-weight: 400;
+  line-height: 12px;
+}
+
+.member-admin-page .member-ops-field .field {
+  height: 14px;
+  padding: 0 2px;
+}
+
+.member-admin-page .member-work-columns {
+  grid-template-columns: minmax(220px, 0.82fr) minmax(260px, 1.18fr) !important;
+  gap: 3px;
+}
+
+.member-admin-page .member-case-box {
+  padding: 3px;
+  gap: 2px;
+}
+
+.member-admin-page .member-case-box textarea.field {
+  min-height: 46px;
+  padding: 2px;
+}
+
+.member-admin-page .member-history-box .member-log-list article {
+  grid-template-columns: 66px minmax(0, 1fr);
+  gap: 5px;
+}
+
+.member-admin-page .member-history-box .member-log-list p {
+  white-space: normal;
+}
+
+.member-admin-page .member-payment-card,
+.member-admin-page .member-payment-zone {
+  overflow-x: visible;
+}
+
+.member-admin-page .member-payment-split {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.member-admin-page .member-payment-zone,
+.member-admin-page .member-payment-table {
+  width: 100%;
+}
