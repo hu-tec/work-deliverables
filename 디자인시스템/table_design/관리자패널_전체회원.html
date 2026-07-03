@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="./table-design.css">
 </head>
-<body>
+<body class="member-admin-page">
   <div class="app">
     <aside class="sidebar" aria-label="관리자 메뉴">
       <div class="brand"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>관리자 패널</span></div>
@@ -70,10 +70,10 @@
             <button class="filter-toggle" type="button">선택된 검색조건 <span data-filter-count>0</span> <i class="fa-solid fa-chevron-up"></i></button>
           </div>
           <div class="dense-filter-flow" aria-label="회원 조건">
-            <section class="dense-filter-role-group" aria-label="회원 기본 조건">
+            <section class="dense-filter-role-group" aria-label="회원 및 서비스 기본 조건">
               <div class="dense-filter-role-body">
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>회원유형</legend>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="회원유형">
+                  <span class="dense-filter-label">회원유형</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox" checked> 전체</label>
                   <label class="dense-check"><input type="checkbox" checked> 일반회원</label>
@@ -81,17 +81,17 @@
                   <label class="dense-check"><input type="checkbox" checked> 기업회원</label>
                   <label class="dense-check"><input type="checkbox" checked> 전문가</label>
                   </div>
-                </fieldset>
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>성별</legend>
+                </div>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="성별">
+                  <span class="dense-filter-label">성별</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox" checked> 전체</label>
                   <label class="dense-check"><input type="checkbox" checked> M</label>
                   <label class="dense-check"><input type="checkbox" checked> F</label>
                   </div>
-                </fieldset>
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>구독상태</legend>
+                </div>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="구독상태">
+                  <span class="dense-filter-label">구독상태</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox"> 전체</label>
                   <label class="dense-check"><input type="checkbox"> 프리미엄</label>
@@ -99,13 +99,9 @@
                   <label class="dense-check"><input type="checkbox"> 베이직</label>
                   <label class="dense-check"><input type="checkbox"> free</label>
                   </div>
-                </fieldset>
-              </div>
-            </section>
-            <section class="dense-filter-role-group" aria-label="서비스 상태 조건">
-              <div class="dense-filter-role-body">
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>서비스유형</legend>
+                </div>
+                <div class="dense-filter-group service-type-group" data-filter-group role="group" aria-label="서비스유형">
+                  <span class="dense-filter-label">서비스유형</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox" checked> AI번역</label>
                   <label class="dense-check"><input type="checkbox"> 통독문서</label>
@@ -113,9 +109,13 @@
                   <label class="dense-check"><input type="checkbox"> 전시/행사</label>
                   <label class="dense-check"><input type="checkbox"> 시험사이트</label>
                   </div>
-                </fieldset>
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>매칭상태</legend>
+                </div>
+              </div>
+            </section>
+            <section class="dense-filter-role-group service-filter-status-group" aria-label="서비스 상세 조건">
+              <div class="dense-filter-role-body">
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="매칭상태">
+                  <span class="dense-filter-label">매칭상태</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox" checked> 전체</label>
                   <label class="dense-check"><input type="checkbox" checked> 완료</label>
@@ -123,9 +123,9 @@
                   <label class="dense-check"><input type="checkbox"> 취소</label>
                   <label class="dense-check"><input type="checkbox"> 검토중</label>
                   </div>
-                </fieldset>
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>전문가레벨</legend>
+                </div>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="전문가레벨">
+                  <span class="dense-filter-label">전문가레벨</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox"> 전체</label>
                   <label class="dense-check"><input type="checkbox"> Lv.S</label>
@@ -133,9 +133,9 @@
                   <label class="dense-check"><input type="checkbox"> Lv.B</label>
                   <label class="dense-check"><input type="checkbox"> Lv.C</label>
                   </div>
-                </fieldset>
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>시험종목</legend>
+                </div>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="시험종목">
+                  <span class="dense-filter-label">시험종목</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox"> 전체</label>
                   <label class="dense-check"><input type="checkbox"> 번역시험</label>
@@ -143,9 +143,9 @@
                   <label class="dense-check"><input type="checkbox"> AI윤리</label>
                   <label class="dense-check"><input type="checkbox"> 문서관리</label>
                   </div>
-                </fieldset>
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>결제상태</legend>
+                </div>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="결제상태">
+                  <span class="dense-filter-label">결제상태</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox" checked> 전체</label>
                   <label class="dense-check"><input type="checkbox" checked> 정상</label>
@@ -153,58 +153,31 @@
                   <label class="dense-check"><input type="checkbox"> 환불</label>
                   <label class="dense-check"><input type="checkbox"> 정산대기</label>
                   </div>
-                </fieldset>
+                </div>
               </div>
             </section>
             <section class="dense-filter-role-group" aria-label="운영 접근 조건">
               <div class="dense-filter-role-body">
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>알림</legend>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="알림">
+                  <span class="dense-filter-label">알림</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox"> 전체</label>
                   <label class="dense-check"><input type="checkbox"> SMS</label>
                   <label class="dense-check"><input type="checkbox"> 알림톡</label>
                   <label class="dense-check"><input type="checkbox"> 이메일</label>
                   </div>
-                </fieldset>
-                <fieldset class="dense-filter-group" data-filter-group>
-                <legend>기기</legend>
+                </div>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="기기">
+                  <span class="dense-filter-label">기기</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox"> 전체</label>
                   <label class="dense-check"><input type="checkbox"> PC</label>
                   <label class="dense-check"><input type="checkbox"> Mobile</label>
                   <label class="dense-check"><input type="checkbox"> Tablet</label>
                   </div>
-                </fieldset>
-              </div>
-            </section>
-            <section class="dense-filter-role-group" aria-label="분류 기간 조건">
-              <div class="dense-filter-role-body">
-                <fieldset class="dense-filter-group filter-select-group">
-                <legend>카테고리</legend>
-                  <div class="dense-filter-options">
-                  <select name="categoryMajor"><option>대분류</option><option>교육</option><option>비즈니스</option><option>시험</option></select>
-                  <select name="categoryMiddle"><option>중분류</option><option>온라인</option><option>오프라인</option><option>기관</option></select>
-                  <select name="categorySmall"><option>소분류</option><option>초급</option><option>중급</option><option>고급</option></select>
-                  </div>
-                </fieldset>
-                <fieldset class="dense-filter-group filter-date-group">
-                <legend>기간설정</legend>
-                  <div class="dense-filter-options">
-                  <select name="dateType"><option>가입일순</option><option>결제일순</option><option>활동일순</option><option>시험일순</option></select>
-                  <input type="date" name="startDate">
-                  <span class="date-separator">~</span>
-                  <input type="date" name="endDate">
-                  <button class="filter-chip" type="button" aria-pressed="false">오늘</button>
-                  <button class="filter-chip" type="button" aria-pressed="false">1주</button>
-                  <button class="filter-chip" type="button" aria-pressed="false">1개월</button>
-                  <button class="filter-chip" type="button" aria-pressed="false">3개월</button>
-                  <button class="filter-chip" type="button" aria-pressed="false">6개월</button>
-                  <button class="filter-chip" type="button" aria-pressed="false">1년</button>
-                  </div>
-                </fieldset>
-                 <fieldset class="dense-filter-group" data-filter-group>
-                <legend>가입채널</legend>
+                </div>
+                <div class="dense-filter-group" data-filter-group role="group" aria-label="가입채널">
+                  <span class="dense-filter-label">가입채널</span>
                   <div class="dense-filter-options">
                   <label class="dense-check"><input type="checkbox"> 전체</label>
                   <label class="dense-check"><input type="checkbox"> 이메일</label>
@@ -214,20 +187,54 @@
                   <label class="dense-check"><input type="checkbox"> 관리자등록</label>
                   <label class="dense-check"><input type="checkbox"> 기관계약</label>
                   </div>
-                </fieldset>
+                </div>
+              </div>
+            </section>
+            <section class="dense-filter-role-group" aria-label="분류 기간 조건">
+              <div class="dense-filter-role-body">
+                <div class="dense-filter-group filter-select-group" role="group" aria-label="카테고리">
+                  <span class="dense-filter-label">카테고리</span>
+                  <div class="dense-filter-options">
+                  <select name="categoryMajor"><option>대분류</option><option>교육</option><option>비즈니스</option><option>시험</option></select>
+                  <select name="categoryMiddle"><option>중분류</option><option>온라인</option><option>오프라인</option><option>기관</option></select>
+                  <select name="categorySmall"><option>소분류</option><option>초급</option><option>중급</option><option>고급</option></select>
+                  </div>
+                </div>
+                <div class="dense-filter-group filter-date-group" data-filter-group role="group" aria-label="기간설정">
+                  <span class="dense-filter-label">기간설정</span>
+                  <div class="dense-filter-options">
+                    <div class="filter-date-main">
+                      <select name="dateType"><option>가입일순</option><option>결제일순</option><option>활동일순</option><option>시험일순</option></select>
+                      <input type="date" name="startDate">
+                      <span class="date-separator">~</span>
+                      <input type="date" name="endDate">
+                    </div>
+                    <div class="filter-date-shortcuts">
+                      <button class="filter-chip" type="button" aria-pressed="false">오늘</button>
+                      <button class="filter-chip" type="button" aria-pressed="false">1주</button>
+                      <button class="filter-chip" type="button" aria-pressed="false">1개월</button>
+                      <button class="filter-chip" type="button" aria-pressed="false">3개월</button>
+                      <button class="filter-chip" type="button" aria-pressed="false">6개월</button>
+                      <button class="filter-chip" type="button" aria-pressed="false">1년</button>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </section>
           </div>
           <div class="filter-keyword-row filter-keyword-row--grouped">
             <div class="dense-filter-role-title"><strong>검색어</strong><span>식별자·연락처</span></div>
-            <div class="filter-keyword-controls">
-              <select name="keywordType"><option>전체</option><option>이름</option><option>이메일</option><option>관리번호</option><option>연락처</option><option>그룹명</option></select>
-              <input type="search" name="keyword" placeholder="검색어 입력">
-              <button class="btn primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
-              <button class="btn" type="reset"><i class="fa-solid fa-rotate-left"></i>초기화</button>
+            <div class="filter-keyword-content">
+              <div class="dense-active-filters" data-active-filters aria-live="polite"></div>
+              <div class="filter-keyword-controls">
+                <select name="keywordType"><option>전체</option><option>이름</option><option>이메일</option><option>관리번호</option><option>연락처</option><option>그룹명</option></select>
+                <input type="search" name="keyword" placeholder="검색어 입력">
+                <button class="btn primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
+                <button class="btn" type="reset"><i class="fa-solid fa-rotate-left"></i>초기화</button>
+              </div>
             </div>
           </div>
-          <div class="dense-active-filters" data-active-filters aria-live="polite"></div>
         </form>
         <section class="table-card">
           <article class="table-section active" id="all-members">

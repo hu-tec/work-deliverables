@@ -84,9 +84,11 @@ a{color:#006dcc;text-underline-offset:2px}
 <h3>3.2 중분류: 날짜 표기</h3>
 <p>소분류:</p>
 <ul>
-<li>목록 표시는 짧게 한다.</li>
-<li>상세 입력은 정확하게 입력 가능해야 한다.</li>
+<li>목록, 상세, 입력 결과는 모두 <code>YY-MM-DD</code>로 표시한다.</li>
+<li>회계, 정산, 법적 근거 날짜도 같은 형식을 사용한다.</li>
+<li>브라우저·서버 내부 값이 <code>YYYY-MM-DD</code>여도 화면에는 노출하지 않는다.</li>
 <li>날짜와 시간은 업무상 필요할 때만 함께 둔다.</li>
+<li>시간이 필요하면 <code>YY-MM-DD HH:mm</code>으로 표시한다.</li>
 </ul>
 <h2>4. 대분류: 버튼과 액션</h2>
 <h3>4.1 중분류: 검색 버튼</h3>
@@ -103,6 +105,6 @@ a{color:#006dcc;text-underline-offset:2px}
 <li>위험 액션은 저장과 구분한다.</li>
 </ul>
 <h2>5. 요약표</h2>
-<table><tbody><tr><th>항목</th><th>기준</th></tr><tr><td>label/input</td><td>가까이, 한 줄 우선</td></tr><tr><td>필터 옵션</td><td>제목 : 옵션들 가로 배치</td></tr><tr><td>필터 태그</td><td>검색어 앞 유동 배치</td></tr><tr><td>날짜</td><td>picker 가능한 date/datetime</td></tr><tr><td>검색 버튼</td><td>검색어 근처</td></tr><tr><td>금지</td><td>필터를 큰 카드 여러 개로 분리</td></tr></tbody></table>
+<table><tbody><tr><th>항목</th><th>기준</th></tr><tr><td>label/input</td><td>가까이, 한 줄 우선</td></tr><tr><td>필터 옵션</td><td>제목 : 옵션들 가로 배치</td></tr><tr><td>필터 태그</td><td>검색어 앞 유동 배치</td></tr><tr><td>날짜</td><td>picker 가능, 화면 표시는 항상 <code>YY-MM-DD</code></td></tr><tr><td>검색 버튼</td><td>검색어 근처</td></tr><tr><td>금지</td><td>필터를 큰 카드 여러 개로 분리</td></tr></tbody></table>
 </body>
 </html>

@@ -57,10 +57,10 @@ a{color:#006dcc;text-underline-offset:2px}
       닫기 / 저장</code></pre>
 <p>회원 테이블처럼 <code>이름</code>과 <code>이메일</code>이 있는 행은 일반 field 묶음이 아니라 <code>member-master-detail</code>을 사용한다.</p>
 <h2>회원 상세 Drawer 패널 구성</h2>
-<p>실제 HTML 구조는 <code>table_design/관리자패널_전체회원.html</code>의 상세 Drawer 영역을 최우선으로 참고한다. 특히 <code>member-master-detail</code>, <code>member-master-titlebar</code>, <code>member-master-grid</code>, <code>member-profile-panel</code>, <code>member-work-panel</code> 구조를 따른다. 기본 Drawer는 좌측 마스터 정보와 우측 작업 패널의 2열 구조를 유지하고, 넓게보기에서는 우측 작업 패널 내부 모듈을 4단 grid로 확장한다.</p>
+<p>실제 HTML 구조는 <code>table_design/관리자패널_전체회원.html</code>의 상세 Drawer 영역을 최우선으로 참고한다. 특히 <code>member-master-detail</code>, <code>member-master-grid</code>, <code>member-profile-panel</code>, <code>member-work-panel</code> 구조를 따른다. <code>member-master-titlebar</code> 클래스가 구조 hook으로 남아 있어도 상세 헤더와 중복되는 두 번째 진한 제목바로 렌더링하지 않는다. 기본 Drawer는 좌측 마스터 정보와 우측 작업 패널의 2열 구조를 유지하고, 넓게보기에서는 우측 작업 패널 내부 모듈을 4단 grid로 확장한다.</p>
 <p>회원 상세는 <code>회원기본정보 마스터</code>와 <code>회원 작업 패널</code>의 2열 구조를 기본으로 한다.</p>
 <pre><code>member-master-detail
-  member-master-titlebar
+  member-master-titlebar (구조 hook, 중복 제목바 금지)
   member-master-grid
     member-profile-panel
     member-work-panel</code></pre>
@@ -95,10 +95,10 @@ a{color:#006dcc;text-underline-offset:2px}
 <li><code>member-memo-box</code>: 상담, 결제, 시험, 정산 이슈를 함께 기록하는 운영 메모</li>
 </ul>
 <h2>패널별 상태 UI</h2>
-<table><tbody><tr><th>영역</th><th>상태 UI</th><th>표시 기준</th></tr><tr><td>Drawer 헤더</td><td><code>drawer-kicker</code>, <code>table-detail-title</code>, <code>detail-summary</code></td><td>현재 테이블 섹션명, 선택 행의 대표명, 관리번호를 표시</td></tr><tr><td>선택 행</td><td><code>tr.is-open</code></td><td>현재 Drawer에 연결된 행을 연한 배경과 좌측 인디케이터로 표시</td></tr><tr><td>제목 바</td><td><code>member-master-titlebar</code></td><td>회원명과 관리번호, 작업 목적을 어두운 헤더로 고정 표시</td></tr><tr><td>상단 상태</td><td><code>member-master-status</code> 안의 <code>status</code></td><td>상담상태, 매칭상태, 결제상태를 chip으로 표시</td></tr><tr><td>업무 액션 바</td><td><code>member-dark-strip</code></td><td>저장, 상담이력, 전환 같은 즉시 액션과 실패/위험 상태를 표시</td></tr><tr><td>상담 상태 선택</td><td><code>member-counsel-tabs button.active</code></td><td>현재 상담 결과를 선택 상태로 표시</td></tr><tr><td>상담 이력</td><td><code>member-log-list article</code></td><td>시간과 메모를 분리해 누적 로그로 표시</td></tr><tr><td>LT 결과</td><td><code>member-lt-row</code> radio</td><td>P/F/미 등 단일 선택 상태로 표시</td></tr><tr><td>납부/시험 테이블</td><td><code>member-data-table</code></td><td>각 행의 시험, 결제, 평가, 수수료, 처리메모를 고밀도 표로 표시</td></tr><tr><td>정산 요약</td><td><code>member-settlement-box</code></td><td>환급/수수료/정산 금액을 강조하고 상세 메모를 붙임</td></tr><tr><td>운영 메모</td><td><code>member-memo-box</code></td><td>여러 패널에서 발생한 이슈를 최종 처리 메모로 통합</td></tr></tbody></table>
+<table><tbody><tr><th>영역</th><th>상태 UI</th><th>표시 기준</th></tr><tr><td>Drawer 헤더</td><td><code>drawer-kicker</code>, <code>table-detail-title</code>, <code>detail-summary</code></td><td>현재 테이블 섹션명, 선택 행의 대표명, 관리번호를 표시</td></tr><tr><td>선택 행</td><td><code>tr.is-open</code></td><td>현재 Drawer에 연결된 행을 연한 배경과 좌측 인디케이터로 표시</td></tr><tr><td>상세 헤더</td><td><code>table-detail-head</code></td><td>회원명, 관리번호, 상태, 넓게보기, 닫기를 한 번만 표시</td></tr><tr><td>상단 상태</td><td><code>member-master-status</code> 안의 <code>status</code></td><td>상담상태, 매칭상태, 결제상태를 chip으로 표시</td></tr><tr><td>업무 액션 바</td><td><code>member-dark-strip</code></td><td>별도 제목을 반복하지 않고 저장, 상담이력, 전환 같은 즉시 액션과 실패/위험 상태만 표시</td></tr><tr><td>상담 상태 선택</td><td><code>member-counsel-tabs button.active</code></td><td>현재 상담 결과를 선택 상태로 표시</td></tr><tr><td>상담 이력</td><td><code>member-log-list article</code></td><td>시간과 메모를 분리해 누적 로그로 표시</td></tr><tr><td>LT 결과</td><td><code>member-lt-row</code> radio</td><td>P/F/미 등 단일 선택 상태로 표시</td></tr><tr><td>납부/시험 테이블</td><td><code>member-data-table</code></td><td>각 행의 시험, 결제, 평가, 수수료, 처리메모를 고밀도 표로 표시</td></tr><tr><td>정산 요약</td><td><code>member-settlement-box</code></td><td>환급/수수료/정산 금액을 강조하고 상세 메모를 붙임</td></tr><tr><td>운영 메모</td><td><code>member-memo-box</code></td><td>여러 패널에서 발생한 이슈를 최종 처리 메모로 통합</td></tr></tbody></table>
 <h2>상태 chip 기준</h2>
 <p>상태값은 텍스트 색상만으로 처리하지 않는다. 반드시 <code>status</code> chip을 사용한다.</p>
-<table><tbody><tr><th>클래스</th><th>용도</th><th>예시</th></tr><tr><td><code>status ok</code></td><td>완료, 정상, 상담중, 처리 가능</td><td><code>상담중</code>, <code>완료</code>, <code>정상</code></td></tr><tr><td><code>status wait</code></td><td>대기, 미결제, 보류, 추가 확인</td><td><code>대기</code>, <code>미결제</code>, <code>정산대기</code></td></tr><tr><td><code>status fail</code></td><td>실패, 취소, 환불, 위험</td><td><code>FAIL</code>, <code>취소</code>, <code>환불</code></td></tr><tr><td><code>status info</code></td><td>일반 정보, 기본 상태, 정상 흐름</td><td><code>정상</code>, <code>검토중</code></td></tr><tr><td><code>status</code> 기본</td><td>외부 데이터에서 상태 성격을 아직 분류하지 못한 값</td><td>매칭상태 또는 결제상태 원문</td></tr></tbody></table>
+<table><tbody><tr><th>클래스</th><th>용도</th><th>예시</th></tr><tr><td><code>status ok</code></td><td>완료, 성공, 정상, 처리 완료</td><td><code>완료</code>, <code>정상</code>, <code>결제완료</code></td></tr><tr><td><code>status wait</code></td><td>대기, 미결제, 보류, 추가 확인</td><td><code>대기</code>, <code>미결제</code>, <code>정산대기</code></td></tr><tr><td><code>status fail</code></td><td>실패, 취소, 환불, 위험</td><td><code>FAIL</code>, <code>취소</code>, <code>환불</code></td></tr><tr><td><code>status info</code></td><td>진행, 운영, 검토 중인 상태</td><td><code>상담중</code>, <code>진행중</code>, <code>검토중</code></td></tr><tr><td><code>status</code> 기본</td><td>외부 데이터에서 상태 성격을 아직 분류하지 못한 값</td><td>매칭상태 또는 결제상태 원문</td></tr></tbody></table>
 <p>상태가 업무 판단에 직접 영향을 주면 상단 상태 영역과 해당 패널 내부에 중복 노출해도 된다. 예를 들어 결제상태는 <code>member-master-status</code>에 요약으로 표시하고, 납부 상세 테이블에는 행별 상태로 다시 표시한다.</p>
 <h2>고정되는 정보</h2>
 <p>고정 정보는 선택 행이 바뀌어도 UI 위치와 의미가 유지되는 값이다. Drawer 안에서 항상 같은 영역에 둔다.</p>
@@ -122,7 +122,7 @@ a{color:#006dcc;text-underline-offset:2px}
 </ul>
 <h3>작업 패널 고정 정보</h3>
 <ul>
-<li>상담내용 제목 바</li>
+<li>상담 작업 액션 바</li>
 <li>완료 상담일시</li>
 <li>최근 상담일시</li>
 <li>누적 상담 이력 수</li>

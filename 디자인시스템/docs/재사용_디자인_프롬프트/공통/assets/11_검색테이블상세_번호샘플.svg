@@ -51,7 +51,7 @@
 
   <rect class="panel" x="496" y="246" width="1086" height="668" rx="3"/>
   <text class="blue" x="516" y="274" style="font:700 12px Arial,sans-serif">전체 회원 전체 50명</text><text class="text" x="516" y="298">최도윤 회원 상세</text><text class="tiny" x="516" y="318">006-Aa1 · 전체 회원 전체 50명</text>
-  <rect class="chipOk" x="1416" y="258" width="56" height="22" rx="11"/><text class="tiny" x="1431" y="273">상담중</text><rect class="input" x="1482" y="254" width="66" height="30" rx="4"/><text class="tiny" x="1496" y="273">넓게보기</text><text class="num" x="1558" y="276">×</text>
+  <rect class="chipInfo" x="1416" y="258" width="56" height="22" rx="11"/><text class="tiny" x="1431" y="273">상담중</text><rect class="input" x="1482" y="254" width="66" height="30" rx="4"/><text class="tiny" x="1496" y="273">넓게보기</text><text class="num" x="1558" y="276">×</text>
   <text class="num" x="506" y="276">4</text><path class="hand" d="M1420 252 C1494 228 1566 236 1574 292"/>
   <rect class="dark" x="516" y="338" width="1046" height="42"/><text class="num" x="530" y="365">5</text><text class="darkText" x="560" y="364">상세 내부 액션바: 상담내용 [최도윤 : 006-Aa1]</text><rect class="blue" x="1372" y="348" width="48" height="22" rx="3"/><text class="tiny" x="1387" y="363" fill="#fff">저장</text><rect class="input" x="1428" y="348" width="64" height="22" rx="3"/><text class="tiny" x="1442" y="363">상담이력</text><rect class="input" x="1500" y="348" width="42" height="22" rx="3"/><text class="tiny" x="1512" y="363">전환</text><rect class="chipFail" x="1548" y="348" width="44" height="22" rx="11"/><text class="tiny" x="1560" y="363">FAIL</text>
 

@@ -88,6 +88,9 @@ document.querySelectorAll("[data-dense-filter], [data-filter-bar]").forEach((fil
       filterRoot.querySelectorAll(".dense-check").forEach((item) => {
         if (item.textContent.trim() === label) item.querySelector("input").checked = false;
       });
+      filterRoot.querySelectorAll("select").forEach((select) => {
+        if (select.value === label) select.selectedIndex = 0;
+      });
       renderActiveFilters(filterRoot);
     }
 
@@ -131,6 +134,7 @@ function createDrawer() {
           <p data-detail-summary>선택한 행의 상세 정보를 확인합니다.</p>
         </div>
         <div class="drawer-head-actions">
+          <span class="status ok drawer-member-status" data-detail-member-status hidden>상담중</span>
           <button class="btn" type="button" data-detail-wide aria-pressed="false">넓게보기</button>
           <button class="drawer-close" type="button" data-detail-close aria-label="상세 닫기">×</button>
         </div>
@@ -172,6 +176,18 @@ function escapeHtml(value) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function normalizeFullDate(value) {
+  const trimmed = String(value || "").trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed) && trimmed !== "0000-00-00") return trimmed;
+  if (/^\d{2}-\d{2}-\d{2}$/.test(trimmed)) return `20${trimmed}`;
+  return "";
+}
+
+function formatYYDate(value) {
+  const fullDate = normalizeFullDate(value);
+  return fullDate ? fullDate.slice(2) : "";
 }
 
 function getCellParts(cell) {
@@ -332,153 +348,272 @@ function renderDetailSection(group) {
 }
 
 function renderMemberMasterDetail(details) {
-  const id = detailValue(details, ["회원 관리번호", "회원관리번호", "관리번호"]);
-  const name = detailValue(details, "이름");
-  const age = detailValue(details, "나이");
-  const gender = detailValue(details, "성별");
-  const email = detailValue(details, "이메일");
-  const phone = detailValue(details, ["휴대폰", "연락처"]);
-  const address = detailValue(details, "주소", "서울");
-  const country = detailValue(details, "국가", "대한민국");
-  const memberType = detailValue(details, "회원유형", "일반회원");
-  const subscription = detailValue(details, "구독상태", "free");
-  const joinedAt = detailValue(details, "가입일", "26-01-15");
-  const channel = detailValue(details, "가입채널", "홈페이지");
-  const matching = detailValue(details, "매칭상태", "대기");
-  const payment = detailValue(details, "결제상태", "정상");
-  const expertLevel = detailValue(details, "전문가 레벨", "Lv.B");
-  const rating = detailValue(details, "평점", "4.6");
+  const attr = (value) => escapeHtml(value).replace(/'/g, '&#39;');
+  const dateAttr = (value) => value === '0000-00-00' ? '' : attr(value);
+  const datePickerField = (value, label) => {
+    const fullDate = normalizeFullDate(value);
+    const displayDate = formatYYDate(fullDate);
+    return `
+      <span class='yy-date-control' data-yy-date-control>
+        <input class='field yy-date-display' type='text' inputmode='numeric' placeholder='YY-MM-DD' value='${attr(displayDate)}' aria-label='${escapeHtml(label)} 표시일'>
+        <button class='yy-date-trigger' type='button' aria-label='${escapeHtml(label)} 달력 열기'><i class='fa-solid fa-calendar-days'></i></button>
+        <input class='yy-date-native' type='date' value='${attr(fullDate)}' aria-label='${escapeHtml(label)} 달력'>
+      </span>
+    `;
+  };
+  const id = detailValue(details, ['회원 관리번호', '회원관리번호', '관리번호']);
+  const name = detailValue(details, '이름');
+  const email = detailValue(details, '이메일');
+  const phone = detailValue(details, ['휴대폰', '연락처']);
+  const address = detailValue(details, '주소', '서울 강남구');
+  const country = detailValue(details, '국가', '대한민국');
+  const memberType = detailValue(details, '회원유형', '일반회원');
+  const subscription = detailValue(details, '구독상태', 'free');
+  const joinedAt = detailValue(details, '가입일', '26-01-15');
+  const channel = detailValue(details, '가입채널', '홈페이지');
+  const matching = detailValue(details, '매칭상태', '대기');
+  const payment = detailValue(details, '결제상태', '정상');
+  const expertLevel = detailValue(details, '전문가 레벨', 'Lv.B');
+  const rating = detailValue(details, '평점', '4.6');
   const title = `${name} 회원 작업 상세`;
-  const profileFields = [
-    ["성명 / 영문", `${name} / ${name === "-" ? "-" : "Sury Jo"}`],
-    ["아이디", email.split("@")[0] || id],
-    ["관리번호", id],
-    ["이메일", email],
-    ["휴대폰", phone],
-    ["거주지 / 국가", `${address} / ${country}`],
-    ["회원유형", `${memberType} / ${subscription}`],
-    ["가입일 / 채널", `${joinedAt} / ${channel}`],
-    ["전문가 레벨", `${expertLevel} / 평점 ${rating}`],
+  const field = ([label, value]) => `
+    <label class='member-mini-field'>
+      <span title='${attr(label)}'>${escapeHtml(label)}</span>
+      <input class='field' value='${attr(value)}'>
+    </label>
+  `;
+  const compactSection = (titleText, fields, modifier = '') => `
+    <section class='member-profile-group ${modifier}'>
+      <strong>${escapeHtml(titleText)}</strong>
+      <div class='member-profile-fields'>${fields.map(field).join('')}</div>
+    </section>
+  `;
+  const opsField = ([label, value]) => {
+    const isDateTime = ['다음통화 예정일시', 'LT예정일시', '상담일'].includes(label);
+    const inputValue = isDateTime ? value.replace(' ', 'T') : value;
+    return `
+      <label class='member-ops-field'>
+        <span>${escapeHtml(label)}</span>
+        <input class='field' type='${isDateTime ? 'datetime-local' : 'text'}' value='${attr(inputValue)}'>
+      </label>
+    `;
+  };
+  const paymentRows = [
+    { item: '전형료', date: '0000-00-00', center: '강남', status: '미납', method: '방식', amount: '50,000', discount: '', month: '', card: '-', approval: '', deposit: '0000-00-00', accountStatus: '미정', fee: '1,500', net: '48,500', memo: '응시 상태 확인', note: '서류 확인 후 정산' },
+    { item: '입학금', date: '0000-00-00', center: '강남', status: '미납', method: '방식', amount: '500,000', discount: '', month: '', card: '-', approval: '', deposit: '0000-00-00', accountStatus: '미정', fee: '0', net: '500,000', memo: '등록 확인 필요', note: '입금자명 대조' },
+    { item: '수업료', date: '0000-00-00', center: '강남', status: '미납', method: '방식', amount: '1,980,000', discount: '장기 수강', month: '3', card: '-', approval: '', deposit: '0000-00-00', accountStatus: '미정', fee: '0', net: '1,980,000', memo: '수강정보와 연결', note: '분납 여부 확인' },
+    { item: '교재비', date: '0000-00-00', center: '강남', status: '미납', method: '방식', amount: '62,500', discount: '', month: '', card: '-', approval: '', deposit: '0000-00-00', accountStatus: '미정', fee: '0', net: '62,500', memo: '교재 발송 전 확인', note: '증명서/교재비 분리' },
+  ];
+  const basicFields = [
+    ['성명 / 영문', `${name} / ${name === '-' ? '-' : 'Sury Jo'}`],
+    ['아이디', email.split('@')[0] || id],
+    ['관리번호', id],
+    ['이메일', email],
+    ['휴대폰', phone],
+    ['집전화', '02-777-9012'],
+    ['거주지 / 국가', `${address} / ${country}`],
+    ['회원유형', `${memberType} / ${subscription}`],
+    ['가입일 / 채널', `${joinedAt} / ${channel}`],
+    ['전문가 레벨', `${expertLevel} / 평점 ${rating}`],
+  ];
+  const schoolFields = [
+    ['해외 국가', '미국'],
+    ['해외 기간', '2년 6개월'],
+    ['해외 목적', '어학연수'],
+    ['고교', '서울외국어고등학교'],
+    ['대학교', '한국대학교 영어영문학과'],
+    ['대학원', '통번역대학원 석사'],
+  ];
+  const scoreFields = [
+    ['TOEIC', '940'],
+    ['TOEFL', '105'],
+    ['TESOL', '수료'],
+    ['기타', 'OPIc AL'],
+  ];
+  const careerFields = [
+    ['이력 1', '전시 통번역 현장 지원'],
+    ['이력 2', '기업문서 번역 PM 보조'],
+    ['이력 3', '교육 수강 및 시험 응시 예정'],
+  ];
+  const opsFields = [
+    ['첫상담', '강남 이수율(2012-10-30)'],
+    ['최종상담', '연세대매니저(최혜원)(2026-04-09)'],
+    ['부재횟수', '8/12'],
+    ['최근부재', '강남 매니저(2024-01-10)'],
+    ['교육장', '강남'],
+    ['수정정보', '미등록 / 주중1'],
+    ['다음통화 예정일시', '2026-04-15 14:00'],
+    ['LT예정일시', '2026-04-17 11:00'],
+    ['강사명', '강사선택'],
+    ['상담자', '연세대매니저'],
+    ['상담일', '2026-04-09 17:46'],
+    ['결과', '다음혜통화'],
   ];
 
   return `
-    <section class="member-master-detail" aria-label="회원 상세 작업영역">
-      <header class="member-master-titlebar">
-        <div>
-          <strong>${escapeHtml(title)}</strong>
-          <span>상담, 시험, 결제, 정산을 한 화면에서 처리</span>
-        </div>
-        <div class="member-master-status">
-          <span class="status ok">상담중</span>
-          <span class="status">${escapeHtml(matching)}</span>
-          <span class="status">${escapeHtml(payment)}</span>
-        </div>
-      </header>
-      <div class="member-master-grid">
-        <aside class="member-profile-panel">
-          <header>회원기본정보 마스터</header>
-          <div class="member-profile-fields">
-            ${profileFields
-              .map(([label, value]) => `
-                <label class="member-mini-field">
-                  <span>${escapeHtml(label)}</span>
-                  <input class="field" value="${escapeHtml(value)}">
-                </label>
-              `)
-              .join("")}
+    <section class='member-master-detail' aria-label='회원 상세 작업영역'>
+
+      <div class='member-master-grid'>
+        <aside class='member-profile-panel' aria-label='A 회원 기본정보와 학력 이력'>
+          <header class='member-profile-head'>
+            <strong>A 회원 기본정보 마스터</strong>
+            <span class='member-profile-actions'>
+              <button class='btn' type='button' data-profile-edit>수정</button>
+              <button class='btn primary' type='button' data-profile-save>저장</button>
+            </span>
+          </header>
+          <div class='member-profile-fields member-profile-fields--base'>${basicFields.map(field).join('')}</div>
+          <div class='member-radio-row'>
+            <label><input type='radio' checked> 내국인</label>
+            <label><input type='radio'> 외국인</label>
           </div>
-          <div class="member-radio-row">
-            <label><input type="radio" checked> 내국인</label>
-            <label><input type="radio"> 외국인</label>
-          </div>
-          <div class="member-note-box">
+          ${compactSection('학력·해외 체류', schoolFields)}
+          ${compactSection('어학점수', scoreFields, 'member-profile-group--scores')}
+          ${compactSection('이력사항', careerFields)}
+          <div class='member-note-box'>
             <strong>[회원 사용 목적]</strong>
-            <textarea class="field" rows="4">AI번역과 통독문서 이용, 시험 응시 이력 및 상담 내용을 함께 관리합니다.</textarea>
+            <textarea class='field' rows='3'>AI번역과 통독문서 이용, 시험 응시 이력 및 상담 내용을 함께 관리합니다.</textarea>
           </div>
-          <div class="member-check-grid">
-            <label><input type="checkbox" checked> 출제/번역</label>
-            <label><input type="checkbox"> 수강등록</label>
-            <label><input type="checkbox"> 시험접수</label>
-            <label><input type="checkbox"> 전문가매칭</label>
+          <div class='member-check-grid'>
+            <label><input type='checkbox' checked> 출제/번역</label>
+            <label><input type='checkbox'> 수강등록</label>
+            <label><input type='checkbox'> 시험접수</label>
+            <label><input type='checkbox'> 전문가매칭</label>
           </div>
         </aside>
 
-        <div class="member-work-panel">
-          <div class="member-dark-strip">
+        <div class='member-work-panel'>
+          <div class='member-dark-strip'>
             <strong>상담내용 [${escapeHtml(name)} : ${escapeHtml(id)}]</strong>
-            <button class="btn primary" type="button">저장</button>
-            <button class="btn" type="button">상담이력</button>
-            <button class="btn" type="button">전환</button>
-            <span class="status fail">FAIL</span>
+            <button class='btn primary' type='button'>저장</button>
+            <button class='btn' type='button'>상담이력</button>
+            <button class='btn' type='button'>전환</button>
+            <span class='status fail'>FAIL</span>
           </div>
-          <div class="member-status-line">
+          <div class='member-status-line'>
             <span>완료 상담일시: 2024-01-02</span>
             <span>최근 상담일시: 2026-04-14</span>
             <strong>총 3회 내역 보관중</strong>
           </div>
-          <div class="member-control-row">
-            <label>상담종목<select><option>AI번역 상담</option><option>시험 접수 상담</option><option>전문가 매칭</option></select></label>
-            <label>교육<select><option>강의 보일</option><option>온라인</option><option>오프라인</option></select></label>
-            <label>수강정보<select><option>중기</option><option>단기</option><option>장기</option></select></label>
+
+          <div class='member-consult-toolbar' aria-label='B 상담 운영 빠른 입력'>
+            <label class='member-inline-select member-inline-select--course'>수강정보<select><option>중기</option><option>단기</option><option>장기</option></select></label>
+            <details class='member-counsel-state-card'>
+              <summary>상담결과 <strong data-counsel-state-value>다음등록</strong></summary>
+              <nav class='member-counsel-tabs member-counsel-tabs--top' aria-label='상담 상태'>
+                <button type='button' data-counsel-state-option aria-pressed='false'>미상담</button>
+                <button type='button' data-counsel-state-option aria-pressed='false'>완료</button>
+                <button type='button' data-counsel-state-option aria-pressed='false'>LT예약</button>
+                <button type='button' data-counsel-state-option class='active' aria-pressed='true'>다음등록</button>
+                <button type='button' data-counsel-state-option aria-pressed='false'>실종</button>
+                <button type='button' data-counsel-state-option aria-pressed='false'>부재</button>
+                <button type='button' data-counsel-state-option aria-pressed='false'>기타</button>
+              </nav>
+            </details>
+            <label class='member-inline-select'>상담종목<select><option>AI번역 상담</option><option>시험 접수 상담</option><option>전문가 매칭</option><option>수강 등록 상담</option></select></label>
+            <label class='member-inline-select'>교육<select><option>강의 보일</option><option>온라인</option><option>오프라인</option></select></label>
+            <label class='member-inline-select'>수정정보<select><option>중기</option><option>주중1</option><option>주말</option><option>미등록</option></select></label>
+            <fieldset class='member-toolbar-interview'>
+              <legend>LT 인터뷰 결과</legend>
+              <div>
+                <label><input type='radio' name='ltInterviewResult'> P</label>
+                <label><input type='radio' name='ltInterviewResult'> F</label>
+                <label><input type='radio' name='ltInterviewResult' checked> 미</label>
+              </div>
+            </fieldset>
           </div>
 
-          <div class="member-work-columns">
-            <section class="member-case-box">
-              <header>상담결과 선택</header>
-              <div class="member-counsel-grid">
-                <nav class="member-counsel-tabs" aria-label="상담 상태">
-                  <button type="button">미상담</button>
-                  <button type="button">완료</button>
-                  <button type="button">LT예약</button>
-                  <button type="button" class="active">다음등록</button>
-                  <button type="button">실종</button>
-                  <button type="button">부재</button>
-                  <button type="button">기타</button>
-                </nav>
-                <textarea class="field" rows="8">다음 상담 예정 내용을 여기에 메모합니다. 시험 응시 여부, 서비스 사용 목적, 결제 확인 상태를 함께 기록합니다.</textarea>
+          <section class='member-ops-panel' aria-label='B 상담 일정과 담당 정보'>
+            <header>B 상담 운영정보</header>
+            <div class='member-ops-grid'>${opsFields.map(opsField).join('')}</div>
+          </section>
+          <div class='member-work-columns'>
+            <section class='member-case-box member-note-composer'>
+              <header>상담내용 정리</header>
+              <textarea class='field' rows='5'>다음 상담 예정 내용을 여기에 메모합니다. 시험 응시 여부, 서비스 사용 목적, 결제 확인 상태를 함께 기록합니다.</textarea>
+              <div class='member-next-grid'>
+                <label class='member-next-field member-next-field--call'><span>다음통화 예정일시</span><input class='field' type='datetime-local' value='2026-04-15T14:00'></label>
+                <label class='member-next-field member-next-field--lt'><span>LT예정일시</span><input class='field' type='datetime-local' value='2026-04-17T11:00'></label>
+                <label class='member-next-field member-next-field--teacher'><span>강사명</span><select><option>강사선택</option><option>강남 전담강사</option><option>온라인 튜터</option></select></label>
               </div>
+
             </section>
-            <section class="member-case-box">
+            <section class='member-case-box member-history-box'>
               <header>상담이력 내역 피드 로그</header>
-              <div class="member-log-list">
-                <article><time>2026-04-14 17:58</time><p>베타 4, 5급 과정상담 완료. 다음 상담 일정 확인 필요.</p></article>
-                <article><time>2024-01-06 12:03</time><p>시험 안내 및 결제 상태 확인. 추가 서류 보완 요청.</p></article>
-              </div>
-              <div class="member-lt-row">
-                <span>LT 인터뷰 결과</span>
-                <label><input type="radio"> P</label>
-                <label><input type="radio"> F</label>
-                <label><input type="radio" checked> 미</label>
+              <div class='member-log-list'>
+                <article><time>260414 17:58</time><p>베타 4, 5급 과정상담 완료. 다음 상담 일정 확인 필요.</p></article>
+                <article><time>240106 12:03</time><p>시험 안내 및 결제 상태 확인. 추가 서류 보완 요청.</p></article>
+                <article><time>140310 12:04</time><p>다음혜통화 예정. 부재중 안내 문자 남김.</p></article>
               </div>
             </section>
           </div>
 
-          <section class="member-case-box">
-            <header>회원 납부 상세정보 및 증명서 실시간 결제·규칙 정산 현황</header>
-            <div class="member-data-table-wrap">
-              <table class="member-data-table">
-                <thead>
-                  <tr><th>구분</th><th>난이도</th><th>수험일</th><th>상태</th><th>결제금액</th><th>응시일</th><th>평가상태</th><th>수수료</th><th>처리메모</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>정규</td><td>일반</td><td>26-05-18</td><td>강남</td><td>50,000</td><td>26-05-19</td><td>완료</td><td>1,500</td><td><input class="field" value="응시 상태 확인"></td></tr>
-                  <tr><td>환불</td><td>중급</td><td>00-00-00</td><td>대기</td><td>50,000</td><td>00-00-00</td><td>미결제</td><td>0</td><td><input class="field" value="추가 상담 필요"></td></tr>
-                </tbody>
-              </table>
+          <section class='member-payment-card' aria-label='C 회원 납부 상세정보와 회계 정산'>
+            <header>
+              <strong>C 회원 납부 상세정보 및 증명서 실시간 결제·규칙 정산 현황</strong>
+              <span>센터 입력 영역과 회계 영역을 분리해 전형료부터 교재비까지 관리</span>
+            </header>
+            <div class='member-payment-split'>
+              <section class='member-payment-zone member-payment-zone--center'>
+                <h4>센터 입력 영역</h4>
+                <table class='member-payment-table member-payment-table--center'>
+                  <thead>
+                    <tr><th>항목</th><th>납입일자</th><th>수납센터</th><th>상태</th><th>방식</th><th>금액</th><th>할인이유</th><th>개월</th><th>카드사</th><th>승인번호</th></tr>
+                  </thead>
+                  <tbody>
+                    ${paymentRows.map((row) => `
+                      <tr>
+                        <td><strong>${escapeHtml(row.item)}</strong></td>
+                        <td>${datePickerField(row.date, `${row.item} 납입일자`)}</td>
+                        <td>${escapeHtml(row.center)}</td>
+                        <td><select><option>${escapeHtml(row.status)}</option><option>완납</option><option>부분</option></select></td>
+                        <td><select><option>${escapeHtml(row.method)}</option><option>카드</option><option>현금</option><option>계좌</option></select></td>
+                        <td><input class='field is-money' value='${attr(row.amount)}'></td>
+                        <td><input class='field' value='${attr(row.discount)}'></td>
+                        <td><input class='field is-short' value='${attr(row.month)}'></td>
+                        <td><select><option>${escapeHtml(row.card)}</option><option>신한</option><option>국민</option><option>현대</option></select></td>
+                        <td><input class='field' value='${attr(row.approval)}'></td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </section>
+              <section class='member-payment-zone member-payment-zone--account'>
+                <h4>회계 영역 (본부에서 정리하는 내용)</h4>
+                <table class='member-payment-table member-payment-table--account'>
+                  <thead>
+                    <tr><th>항목</th><th>회사입금일</th><th>회계상태</th><th>수수료</th><th>실입금액</th><th>비고</th><th>회계특이사항</th></tr>
+                  </thead>
+                  <tbody>
+                    ${paymentRows.map((row) => `
+                      <tr>
+                        <td><strong>${escapeHtml(row.item)}</strong></td>
+                        <td>${datePickerField(row.deposit, `${row.item} 회사입금일`)}</td>
+                        <td><select><option>${escapeHtml(row.accountStatus)}</option><option>확인</option><option>보류</option></select></td>
+                        <td><input class='field is-money' value='${attr(row.fee)}'></td>
+                        <td><input class='field is-money' value='${attr(row.net)}'></td>
+                        <td><input class='field' value='${attr(row.memo)}'></td>
+                        <td><input class='field' value='${attr(row.note)}'></td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </section>
             </div>
           </section>
 
-          <section class="member-settlement-box">
+
+          <section class='member-settlement-box'>
             <div>
               <span>환급 진행 수수료 총액</span>
               <strong>3,000 KRW</strong>
             </div>
-            <textarea class="field" rows="3">수강권 연장기에 대한 수강확인서 1부 발급 상담 접수 완료. 결제 대기중.</textarea>
+            <textarea class='field' rows='3'>수강권 연장기에 대한 수강확인서 1부 발급 상담 접수 완료. 회계 입금일과 실입금액 대조 필요.</textarea>
           </section>
 
-          <section class="member-memo-box">
+          <section class='member-memo-box'>
             <header>운영 메모</header>
-            <textarea class="field" rows="4" name="memberMemo">회원 상세 처리 메모를 입력합니다. 상담, 결제, 시험, 정산 이슈를 한 곳에 기록합니다.</textarea>
+            <textarea class='field' rows='4' name='memberMemo'>회원 상세 처리 메모를 입력합니다. 상담, 결제, 시험, 정산 이슈를 한 곳에 기록합니다.</textarea>
           </section>
         </div>
       </div>
@@ -511,6 +646,7 @@ function fillDetailDrawer(row) {
   detailDrawer.querySelector("[data-detail-summary]").textContent = secondary;
   const isMemberDetail = shouldRenderMemberMaster(row, details);
   detailDrawer.classList.toggle("is-member-detail", isMemberDetail);
+  detailDrawer.querySelector("[data-detail-member-status]").hidden = !isMemberDetail;
   sections.innerHTML = isMemberDetail
     ? renderMemberMasterDetail(details)
     : groupDrawerDetails(details).map(renderDetailSection).join("");
@@ -551,6 +687,76 @@ document.addEventListener("click", (event) => {
   openDetailDrawer(row, row);
 });
 
+document.addEventListener("click", (event) => {
+  const yyControlTrigger = event.target.closest("[data-yy-date-control] .yy-date-display, [data-yy-date-control] .yy-date-trigger");
+  if (yyControlTrigger) {
+    const nativePicker = yyControlTrigger.closest("[data-yy-date-control]")?.querySelector(".yy-date-native");
+    if (nativePicker && typeof nativePicker.showPicker === "function") {
+      try {
+        nativePicker.showPicker();
+      } catch (error) {
+        nativePicker.focus();
+      }
+    } else {
+      nativePicker?.focus();
+    }
+  }
+
+  const picker = event.target.closest(".member-master-detail input[type='date'], .member-master-detail input[type='datetime-local']");
+  if (picker && !picker.classList.contains("yy-date-native") && typeof picker.showPicker === "function") {
+    try {
+      picker.showPicker();
+    } catch (error) {
+      // The browser's native calendar icon still provides the fallback picker.
+    }
+  }
+
+  const option = event.target.closest("[data-counsel-state-option]");
+  if (!option) return;
+
+  const stateCard = option.closest(".member-counsel-state-card");
+  stateCard.querySelectorAll("[data-counsel-state-option]").forEach((button) => {
+    const selected = button === option;
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+  stateCard.querySelector("[data-counsel-state-value]").textContent = option.textContent.trim();
+  stateCard.open = false;
+});
+
+document.addEventListener("click", (event) => {
+  const editButton = event.target.closest("[data-profile-edit]");
+  if (editButton) {
+    const panel = editButton.closest(".member-profile-panel");
+    panel?.querySelector("input.field, textarea.field")?.focus();
+    return;
+  }
+
+  const saveButton = event.target.closest("[data-profile-save]");
+  if (saveButton) {
+    const originalText = saveButton.textContent;
+    saveButton.textContent = "저장됨";
+    window.setTimeout(() => {
+      saveButton.textContent = originalText;
+    }, 900);
+  }
+});
+document.addEventListener("change", (event) => {
+  const nativeDate = event.target.closest?.(".yy-date-native");
+  if (nativeDate) {
+    const display = nativeDate.closest("[data-yy-date-control]")?.querySelector(".yy-date-display");
+    if (display) display.value = formatYYDate(nativeDate.value);
+    return;
+  }
+
+  const displayDate = event.target.closest?.(".yy-date-display");
+  if (displayDate) {
+    const fullDate = normalizeFullDate(displayDate.value);
+    const native = displayDate.closest("[data-yy-date-control]")?.querySelector(".yy-date-native");
+    if (native) native.value = fullDate;
+    displayDate.value = formatYYDate(fullDate) || displayDate.value.trim();
+  }
+});
 document.addEventListener("keydown", (event) => {
   const row = event.target.closest?.(".table-card tbody tr");
   if (row && (event.key === "Enter" || event.key === " ")) {

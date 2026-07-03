@@ -44,14 +44,14 @@ table-detail-drawer
 
 ## 회원 상세 Drawer 패널 구성
 
-실제 HTML 구조는 `table_design/관리자패널_전체회원.html`의 상세 Drawer 영역을 최우선으로 참고한다. 특히 `member-master-detail`, `member-master-titlebar`, `member-master-grid`, `member-profile-panel`, `member-work-panel` 구조를 따른다. 기본 Drawer는 좌측 마스터 정보와 우측 작업 패널의 2열 구조를 유지하고, 넓게보기에서는 우측 작업 패널 내부 모듈을 4단 grid로 확장한다.
+실제 HTML 구조는 `table_design/관리자패널_전체회원.html`의 상세 Drawer 영역을 최우선으로 참고한다. 특히 `member-master-detail`, `member-master-grid`, `member-profile-panel`, `member-work-panel` 구조를 따른다. `member-master-titlebar` 클래스가 구조 hook으로 남아 있어도 상세 헤더와 중복되는 두 번째 진한 제목바로 렌더링하지 않는다. 기본 Drawer는 좌측 마스터 정보와 우측 작업 패널의 2열 구조를 유지하고, 넓게보기에서는 우측 작업 패널 내부 모듈을 4단 grid로 확장한다.
 
 
 회원 상세는 `회원기본정보 마스터`와 `회원 작업 패널`의 2열 구조를 기본으로 한다.
 
 ```text
 member-master-detail
-  member-master-titlebar
+  member-master-titlebar (구조 hook, 중복 제목바 금지)
   member-master-grid
     member-profile-panel
     member-work-panel
@@ -96,9 +96,9 @@ member-master-detail
 |---|---|---|
 | Drawer 헤더 | `drawer-kicker`, `table-detail-title`, `detail-summary` | 현재 테이블 섹션명, 선택 행의 대표명, 관리번호를 표시 |
 | 선택 행 | `tr.is-open` | 현재 Drawer에 연결된 행을 연한 배경과 좌측 인디케이터로 표시 |
-| 제목 바 | `member-master-titlebar` | 회원명과 관리번호, 작업 목적을 어두운 헤더로 고정 표시 |
+| 상세 헤더 | `table-detail-head` | 회원명, 관리번호, 상태, 넓게보기, 닫기를 한 번만 표시 |
 | 상단 상태 | `member-master-status` 안의 `status` | 상담상태, 매칭상태, 결제상태를 chip으로 표시 |
-| 업무 액션 바 | `member-dark-strip` | 저장, 상담이력, 전환 같은 즉시 액션과 실패/위험 상태를 표시 |
+| 업무 액션 바 | `member-dark-strip` | 별도 제목을 반복하지 않고 저장, 상담이력, 전환 같은 즉시 액션과 실패/위험 상태만 표시 |
 | 상담 상태 선택 | `member-counsel-tabs button.active` | 현재 상담 결과를 선택 상태로 표시 |
 | 상담 이력 | `member-log-list article` | 시간과 메모를 분리해 누적 로그로 표시 |
 | LT 결과 | `member-lt-row` radio | P/F/미 등 단일 선택 상태로 표시 |
@@ -112,10 +112,10 @@ member-master-detail
 
 | 클래스 | 용도 | 예시 |
 |---|---|---|
-| `status ok` | 완료, 정상, 상담중, 처리 가능 | `상담중`, `완료`, `정상` |
+| `status ok` | 완료, 성공, 정상, 처리 완료 | `완료`, `정상`, `결제완료` |
 | `status wait` | 대기, 미결제, 보류, 추가 확인 | `대기`, `미결제`, `정산대기` |
 | `status fail` | 실패, 취소, 환불, 위험 | `FAIL`, `취소`, `환불` |
-| `status info` | 일반 정보, 기본 상태, 정상 흐름 | `정상`, `검토중` |
+| `status info` | 진행, 운영, 검토 중인 상태 | `상담중`, `진행중`, `검토중` |
 | `status` 기본 | 외부 데이터에서 상태 성격을 아직 분류하지 못한 값 | 매칭상태 또는 결제상태 원문 |
 
 상태가 업무 판단에 직접 영향을 주면 상단 상태 영역과 해당 패널 내부에 중복 노출해도 된다. 예를 들어 결제상태는 `member-master-status`에 요약으로 표시하고, 납부 상세 테이블에는 행별 상태로 다시 표시한다.
@@ -144,7 +144,7 @@ member-master-detail
 
 ### 작업 패널 고정 정보
 
-- 상담내용 제목 바
+- 상담 작업 액션 바
 - 완료 상담일시
 - 최근 상담일시
 - 누적 상담 이력 수

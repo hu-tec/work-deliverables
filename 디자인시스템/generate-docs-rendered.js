@@ -15,6 +15,7 @@ const docs = [
   ["docs/재사용_디자인_프롬프트/공통/09_상세보기_Drawer_패널_기준.md", "reusable-common-detail-drawer.html", "전체 공통 상세보기 Drawer 패널 기준"],
   ["docs/재사용_디자인_프롬프트/공통/10_AI작업지시_검수_기준.md", "reusable-common-ai-work-rule.html", "전체 공통 AI 작업지시 검수 기준"],
   ["docs/재사용_디자인_프롬프트/공통/11_검색기능_테이블_상세보기_통합기준.md", "reusable-common-search-table-detail.html", "전체 공통 검색기능 테이블 상세보기 통합기준"],
+  ["../표2_카드형2_대중소분류_작업요청_가이드.md", "reusable-table2-card2-guide.html", "표2 카드형2 대중소분류 작업 요청 가이드"],
   ["docs/재사용_디자인_프롬프트/사용자/00_문서목록.md", "reusable-user-index.html", "사용자 재사용 디자인 프롬프트"],
   ["docs/재사용_디자인_프롬프트/사용자/01_사용자화면_디자인시스템_기준.md", "reusable-user-design-system.html", "사용자화면 디자인시스템 기준"],
   ["docs/재사용_디자인_프롬프트/관리자/00_문서목록.md", "reusable-admin-index.html", "관리자 재사용 디자인 프롬프트"],
