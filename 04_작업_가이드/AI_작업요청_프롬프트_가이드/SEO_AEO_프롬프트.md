@@ -4,7 +4,15 @@
 
 ## SEO와 AEO를 함께 보는 방법
 
-**SEO**는 검색엔진이 페이지를 발견·크롤링·색인하고 사용자가 필요한 내용을 찾도록 만드는 작업이다. **AEO(Answer Engine Optimization)**는 사용자의 질문에 대해 페이지가 명확한 답과 근거를 제공하도록 구성하는 실무적 관점이다. AEO는 검색엔진이 보장하는 별도 인증이나 노출 공식이 아니다.
+**SEO**는 검색엔진이 페이지를 발견·크롤링·색인하고 사용자가 필요한 내용을 찾도록 만드는 작업이다. **AEO(Answer Engine Optimization)**는 AI 답변 서비스가 웹 자료를 **발견하고, 질문에 맞는 근거로 가져와, 답변에서 이해·인용할 수 있게** 페이지를 준비하는 작업이다. 따라서 “AI가 웹을 탐색한다”는 이해가 맞다. 다만 **AEO 자체가 크롤러의 이름은 아니며**, 모든 AI 서비스가 매 질문마다 새로 웹을 돌아다니는 방식도 아니다. 서비스마다 자체 크롤러, 검색 색인, 검색 결과를 활용하는 방식이 다르다.
+
+| AI 답변 서비스 예 | 웹 자료를 찾는 기반 | 사이트에서 확인할 것 |
+|---|---|---|
+| Google AI Overviews·AI Mode | Google 검색에서 색인되고 스니펫 표시가 가능한 페이지를 지원 링크 후보로 활용 | Googlebot 접근, 색인, 본문 렌더링, 스니펫 허용 |
+| ChatGPT Search | OpenAI의 OAI-SearchBot 접근 허용이 콘텐츠 발견·요약·인용에 도움 | `robots.txt`·호스트/CDN의 OAI-SearchBot 차단 여부 |
+| Bing·Copilot | Bing의 크롤링·색인 기반을 AI 답변과 근거 링크에도 활용 | Bing 색인 적격성, 크롤링, AI 인용 현황 |
+
+즉 AEO는 **찾을 수 있는가 → 질문에 맞는 내용을 읽을 수 있는가 → 근거로 사용할 만한가 → 답변에서 인용되는가**를 함께 보는 관점이다. 마지막 인용·노출은 엔진이 결정하므로 보장할 수 없다. [Google AI 기능 안내](https://developers.google.com/search/docs/appearance/ai-features) · [OpenAI 게시자 안내](https://help.openai.com/en/articles/12627856) · [Bing 웹마스터 지침](https://www.bing.com/webmasters/help/bing-webmaster-guidelines-30fba23a)
 
 Google은 AI 검색 기능에도 기본 SEO 모범 사례가 유효하며, AI Overviews·AI Mode에 표시되기 위한 별도의 특별한 최적화는 필요하지 않다고 안내한다. 색인 가능하고 검색 결과의 스니펫으로 표시될 수 있는 페이지여야 지원 링크로 노출될 자격이 있지만, 요건을 충족해도 노출은 보장되지 않는다. [Google AI 기능 안내](https://developers.google.com/search/docs/appearance/ai-features)
 
@@ -24,11 +32,13 @@ Google은 AI 검색 기능에도 기본 SEO 모범 사례가 유효하며, AI Ov
 작업 모드: 읽기만. 파일을 수정하지 마.
 대상 공개 URL: [정확한 URL]
 대상 로컬 소스: [정확한 폴더/파일]
+확인할 AI 검색 서비스: [예: Google AI Overviews, ChatGPT Search, Bing·Copilot]
 우선 사용자 질문: [예: 신청 자격은? 교육 일정은? 자격증은 어떻게 발급받나?]
 원본 사실 자료: [확정된 기획/운영/정책 문서 경로]
 
 공개 URL과 로컬 소스의 차이를 먼저 확인해줘.
 1. 공개 접근성: 상태 코드, robots/noindex, canonical, 사이트맵·내부 링크, 모바일 화면을 확인해줘.
+   지정한 AI 검색 서비스별 크롤러 접근·색인 적격성을 구분하고, 확인할 수 없는 서비스는 미검증으로 표시해줘.
 2. 렌더링: HTML 원문과 JS 실행 후 본문·링크가 어떻게 다른지 확인해줘.
 3. 페이지별 title, meta description, H1~H3, 본문 중복과 누락을 표로 만들어줘.
 4. 위 사용자 질문 각각에 대해 '페이지에서 직접 답하는 위치 / 근거 문서 / 부족한 정보'를 매핑해줘.
@@ -87,6 +97,7 @@ Google은 AI 검색 기능에도 기본 SEO 모범 사례가 유효하며, AI Ov
 
 페이지별로 색인 가능 여부, Google Search Console URL 검사, 실제 렌더링된 본문,
 사이트맵·내부 링크, 구조화 데이터 유효성, 검색 유입 질의와 클릭을 확인하는 순서를 제안해줘.
+ChatGPT Search의 OAI-SearchBot 접근 여부와 Bing·Copilot의 색인·인용 현황도 해당 서비스 자료와 접근 권한이 있을 때 별도로 확인해줘.
 변경 전/후 비교 시 기간·계절성·다른 변경을 함께 기록하게 해줘.
 AI 답변에 등장하는지 관찰하더라도 검색엔진별·질의별 편차를 표시하고 성과를 단정하지 마.
 결과: 담당자, 도구, 확인 시점, 기대 관찰값, 실패 시 재진단 순서.
@@ -96,6 +107,8 @@ AI 답변에 등장하는지 관찰하더라도 검색엔진별·질의별 편�
 
 - [Google SEO 시작 가이드](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
 - [Google AI 기능과 웹사이트](https://developers.google.com/search/docs/appearance/ai-features)
+- [OpenAI: ChatGPT Search에서 웹사이트가 발견되는 방식](https://help.openai.com/en/articles/12627856)
+- [Bing: 검색과 AI 답변의 크롤링·색인 기반](https://www.bing.com/webmasters/help/bing-webmaster-guidelines-30fba23a)
 - [Google 생성형 AI 검색 최적화 안내](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
 - [Google JavaScript SEO 기본](https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics)
 - [Google 구조화 데이터 일반 지침](https://developers.google.com/search/docs/appearance/structured-data/sd-policies)
