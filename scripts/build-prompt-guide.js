@@ -13,7 +13,8 @@ const topics = {
 const references = {
   legalAccessibility: readMarkdown('웹접근성_법령_기준.md'),
   legalPrivacy: readMarkdown('개인정보_보안_법령_기준.md'),
-  skills: readMarkdown('점검_스킬_도구_해설.md')
+  skillAccessibility: readMarkdown('웹접근성_점검_스킬_도구.md'),
+  skillSecurity: readMarkdown('보안_점검_스킬_도구.md')
 };
 const artifacts = [
   {

@@ -1582,8 +1582,13 @@
       </section>
       <section id="skill-reference-panel" class="panel">
         <div class="guide-shell specialized-shell">
-          <div class="guide-head"><h2 class="section-title">점검 스킬·도구 해설</h2><p class="note">스킬의 역할과 사용 조건, 자동화로 확인하지 못하는 범위를 먼저 확인하세요. <button class="guide-panel-link" type="button" data-open-panel="special-prompt-panel">관련 프롬프트 보기 →</button></p></div>
-          <article id="skill-reference-content" class="markdown guide-content specialized-content"></article>
+          <div class="guide-head"><h2 class="section-title">점검 스킬·도구 해설</h2><p class="note">웹접근성과 보안에 쓰는 스킬·도구 및 복사용 진단 프롬프트를 주제별로 확인하세요. <button class="guide-panel-link" type="button" data-open-panel="special-prompt-panel">관련 프롬프트 보기 →</button></p></div>
+          <div class="special-topic-tabs" role="tablist" aria-label="점검 스킬·도구 주제">
+            <button id="skill-tab-accessibility" class="special-topic-tab" type="button" role="tab" aria-selected="true" aria-controls="skill-content-accessibility" tabindex="0" data-skill-topic="skillAccessibility">웹접근성 점검</button>
+            <button id="skill-tab-security" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="skill-content-security" tabindex="-1" data-skill-topic="skillSecurity">보안 점검</button>
+          </div>
+          <article id="skill-content-accessibility" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="skill-tab-accessibility" tabindex="0" data-skill-content="skillAccessibility"></article>
+          <article id="skill-content-security" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="skill-tab-security" tabindex="0" data-skill-content="skillSecurity" hidden></article>
         </div>
       </section>
     </main>
@@ -4740,32 +4745,42 @@
           legalAccessibility: '웹접근성_법령_기준.md',
           legalPrivacy: '개인정보_보안_법령_기준.md'
         };
-        const tabs = Array.from(document.querySelectorAll('[data-legal-topic]'));
-        tabs.forEach(tab => renderDocument(document.querySelector('[data-legal-content="' + tab.dataset.legalTopic + '"]'), tab.dataset.legalTopic, legalFiles[tab.dataset.legalTopic]));
-        function activateTab(index, moveFocus) {
-          tabs.forEach((tab, tabIndex) => {
-            const selected = tabIndex === index;
-            tab.setAttribute('aria-selected', String(selected));
-            tab.tabIndex = selected ? 0 : -1;
-            document.querySelector('[data-legal-content="' + tab.dataset.legalTopic + '"]').hidden = !selected
+        const skillFiles = {
+          skillAccessibility: '웹접근성_점검_스킬_도구.md',
+          skillSecurity: '보안_점검_스킬_도구.md'
+        };
+        function renderTabGroup(topicAttribute, contentAttribute, files, initialIndex) {
+          const tabs = Array.from(document.querySelectorAll('[' + topicAttribute + ']'));
+          tabs.forEach(tab => {
+            const key = tab.getAttribute(topicAttribute);
+            renderDocument(document.querySelector('[' + contentAttribute + '="' + key + '"]'), key, files[key])
           });
-          if (moveFocus) tabs[index].focus()
+          function activateTab(index, moveFocus) {
+            tabs.forEach((tab, tabIndex) => {
+              const selected = tabIndex === index;
+              tab.setAttribute('aria-selected', String(selected));
+              tab.tabIndex = selected ? 0 : -1;
+              document.querySelector('[' + contentAttribute + '="' + tab.getAttribute(topicAttribute) + '"]').hidden = !selected
+            });
+            if (moveFocus) tabs[index].focus()
+          }
+          tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => activateTab(index, false));
+            tab.addEventListener('keydown', event => {
+              let nextIndex;
+              if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+              else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+              else if (event.key === 'Home') nextIndex = 0;
+              else if (event.key === 'End') nextIndex = tabs.length - 1;
+              else return;
+              event.preventDefault();
+              activateTab(nextIndex, true)
+            })
+          });
+          activateTab(initialIndex, false)
         }
-        tabs.forEach((tab, index) => {
-          tab.addEventListener('click', () => activateTab(index, false));
-          tab.addEventListener('keydown', event => {
-            let nextIndex;
-            if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
-            else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
-            else if (event.key === 'Home') nextIndex = 0;
-            else if (event.key === 'End') nextIndex = tabs.length - 1;
-            else return;
-            event.preventDefault();
-            activateTab(nextIndex, true)
-          })
-        });
-        activateTab(location.hash === '#legal-privacy' ? 1 : 0, false);
-        renderDocument(document.getElementById('skill-reference-content'), 'skills', '점검_스킬_도구_해설.md')
+        renderTabGroup('data-legal-topic', 'data-legal-content', legalFiles, location.hash === '#legal-privacy' ? 1 : 0);
+        renderTabGroup('data-skill-topic', 'data-skill-content', skillFiles, location.hash === '#skill-security' ? 1 : 0)
       }
       renderPromptGuide();
       renderUiPromptGuide();
@@ -5345,7 +5360,7 @@
       updateMainTop();
       window.addEventListener('resize', updateMainTop);
       const linkedPanel = location.hash.slice(1);
-      const initialPanel = linkedPanel === 'legal-privacy' || linkedPanel === 'legal-accessibility' ? 'legal-reference-panel' : linkedPanel;
+      const initialPanel = linkedPanel === 'legal-privacy' || linkedPanel === 'legal-accessibility' ? 'legal-reference-panel' : linkedPanel === 'skill-security' || linkedPanel === 'skill-accessibility' ? 'skill-reference-panel' : linkedPanel;
       showPanel(document.getElementById(initialPanel)?.classList.contains('panel') ? initialPanel : (document.querySelector('.tab.active')?.dataset.panel || 'html-panel'));
       renderHtmlList();
       renderMdList();
