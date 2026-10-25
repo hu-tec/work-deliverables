@@ -1239,6 +1239,17 @@
       .guide-code { margin: 10px 0 16px }
       .guide-copy { display: block; margin: 0 0 5px auto; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--accent); padding: 5px 9px; cursor: pointer; font: inherit; font-size: 12px }
       .guide-copy:hover { background: var(--accent-soft) }
+      .specialized-shell { min-height: 480px }
+      .special-topic-tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid var(--line); background: #fafbfc }
+      .special-topic-tab { border: 1px solid transparent; border-bottom: 0; border-radius: 6px 6px 0 0; background: transparent; color: var(--muted); padding: 8px 12px; cursor: pointer; font: inherit; font-weight: 600 }
+      .special-topic-tab[aria-selected="true"] { border-color: var(--line); background: #fff; color: var(--accent) }
+      .special-topic-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px }
+      .specialized-content { flex: 1; min-height: 0; max-width: none }
+      .specialized-content[hidden] { display: none }
+      .specialized-content.markdown { padding: 20px 24px 48px; line-height: 1.65 }
+      .specialized-content.markdown h2 { margin-top: 26px }
+      .specialized-content.markdown .guide-code { max-width: 100% }
+      .specialized-content.markdown pre { white-space: pre-wrap; overflow-wrap: anywhere }
       .ui-prompt-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); flex: 1; min-height: 0 }
       .ui-prompt-preview { display: flex; flex-direction: column; min-width: 0; min-height: 0; border-left: 1px solid var(--line); background: #f8f9fc }
       .ui-prompt-preview-head { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 8px; border-bottom: 1px solid var(--line); background: #fff }
@@ -1381,7 +1392,7 @@
       <div class="wrap">
         <h1>📁 업무산출물</h1>
         <p style="margin:6px 0 10px; font-size:13px;"><a href="PROJECT_STRUCTURE.html" style="color:inherit; text-decoration:underline;">폴더 구조 안내</a> · <a href="01_화면_디자인/랜딩페이지/랜딩페이지3종/README.md" style="color:inherit; text-decoration:underline;">랜딩 ver1/ver2 위치</a></p>
-        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button><button class="tab" type="button" data-panel="prompt-guide-panel">6. 📋 프롬프트 제시 가이드</button><button class="tab" type="button" data-panel="ui-prompt-panel">7. 🧩 UI 설명 프롬프트</button><button class="tab" type="button" data-panel="ui-pattern-panel">8. 🧱 UI 패턴 예시</button></div>
+        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button><button class="tab" type="button" data-panel="prompt-guide-panel">6. 📋 프롬프트 제시 가이드</button><button class="tab" type="button" data-panel="ui-prompt-panel">7. 🧩 UI 설명 프롬프트</button><button class="tab" type="button" data-panel="ui-pattern-panel">8. 🧱 UI 패턴 예시</button><button class="tab" type="button" data-panel="special-prompt-panel">9. 🔍 접근성·SEO·개인정보 프롬프트</button></div>
       </div>
     </header>
     <main>
@@ -1541,6 +1552,19 @@
           <iframe class="ui-pattern-frame" title="동작하는 UI 패턴 예시" src="01_화면_디자인/디자인시스템/밀도_그리드_좌측정렬_검토/index.html?view=patterns" loading="lazy"></iframe>
         </div>
       </section>
+      <section id="special-prompt-panel" class="panel">
+        <div class="guide-shell specialized-shell">
+          <div class="guide-head"><h2 class="section-title">접근성·SEO·개인정보 프롬프트</h2><p class="note">주제별 설명을 읽고 실제 대상과 근거 문서를 채운 뒤 프롬프트를 복사하세요.</p></div>
+          <div class="special-topic-tabs" role="tablist" aria-label="전문 프롬프트 주제">
+            <button id="special-tab-accessibility" class="special-topic-tab" type="button" role="tab" aria-selected="true" aria-controls="special-content-accessibility" tabindex="0" data-special-topic="accessibility">웹접근성 · KWCAG</button>
+            <button id="special-tab-seo" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="special-content-seo" tabindex="-1" data-special-topic="seoAeo">SEO · AEO</button>
+            <button id="special-tab-privacy" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="special-content-privacy" tabindex="-1" data-special-topic="privacy">개인정보 · 자격증 발급</button>
+          </div>
+          <article id="special-content-accessibility" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-accessibility" tabindex="0" data-special-content="accessibility"></article>
+          <article id="special-content-seo" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-seo" tabindex="0" data-special-content="seoAeo" hidden></article>
+          <article id="special-content-privacy" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-privacy" tabindex="0" data-special-content="privacy" hidden></article>
+        </div>
+      </section>
     </main>
     <div id="doc-popup" class="popup" aria-hidden="true">
       <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title">
@@ -1568,6 +1592,7 @@
     <script src="file-dates.js"></script>
     <script src="db-files.js"></script>
     <script src="04_작업_가이드/AI_작업요청_프롬프트_가이드/content.js"></script>
+    <script src="04_작업_가이드/AI_작업요청_프롬프트_가이드/specialized-content.js"></script>
     <script>
       const DATA = {
   "htmlDocs": [
@@ -4636,8 +4661,50 @@
         content.innerHTML = renderMarkdown(markdown.slice(start, next < 0 ? undefined : next), '04_작업_가이드/AI_작업요청_프롬프트_가이드/README.md');
         addPromptCopyButtons(content)
       }
+      function renderSpecializedPromptGuides() {
+        const base = '04_작업_가이드/AI_작업요청_프롬프트_가이드/';
+        const sourceFiles = {
+          accessibility: '웹접근성_프롬프트.md',
+          seoAeo: 'SEO_AEO_프롬프트.md',
+          privacy: '개인정보_자격증발급_프롬프트.md'
+        };
+        const documents = window.SPECIALIZED_PROMPT_GUIDES || {};
+        const tabs = Array.from(document.querySelectorAll('[data-special-topic]'));
+        tabs.forEach(tab => {
+          const key = tab.dataset.specialTopic;
+          const panel = document.querySelector('[data-special-content="' + key + '"]');
+          const sourcePath = base + sourceFiles[key];
+          panel.innerHTML = documents[key]
+            ? renderMarkdown(documents[key], sourcePath)
+            : '<p>본문을 불러오지 못했습니다. <a href="' + sourcePath + '">원본 문서 열기</a></p>';
+          addPromptCopyButtons(panel)
+        });
+        function activateTab(index, moveFocus) {
+          tabs.forEach((tab, tabIndex) => {
+            const selected = tabIndex === index;
+            tab.setAttribute('aria-selected', String(selected));
+            tab.tabIndex = selected ? 0 : -1;
+            document.querySelector('[data-special-content="' + tab.dataset.specialTopic + '"]').hidden = !selected
+          });
+          if (moveFocus) tabs[index].focus()
+        }
+        tabs.forEach((tab, index) => {
+          tab.addEventListener('click', () => activateTab(index, false));
+          tab.addEventListener('keydown', event => {
+            let nextIndex;
+            if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+            else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+            else if (event.key === 'Home') nextIndex = 0;
+            else if (event.key === 'End') nextIndex = tabs.length - 1;
+            else return;
+            event.preventDefault();
+            activateTab(nextIndex, true)
+          })
+        })
+      }
       renderPromptGuide();
       renderUiPromptGuide();
+      renderSpecializedPromptGuides();
       document.getElementById('guide-layout-toggle').addEventListener('click', event => {
         const content = document.getElementById('guide-content');
         const single = content.classList.toggle('single-column');
