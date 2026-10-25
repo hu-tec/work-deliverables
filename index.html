@@ -1582,13 +1582,15 @@
       </section>
       <section id="skill-reference-panel" class="panel">
         <div class="guide-shell specialized-shell">
-          <div class="guide-head"><h2 class="section-title">점검 스킬·도구 해설</h2><p class="note">웹접근성과 보안에 쓰는 스킬·도구 및 복사용 진단 프롬프트를 주제별로 확인하세요. <button class="guide-panel-link" type="button" data-open-panel="special-prompt-panel">관련 프롬프트 보기 →</button></p></div>
+          <div class="guide-head"><h2 class="section-title">점검 스킬·도구 해설</h2><p class="note">웹접근성·보안·디자인 점검 방법과 복사용 진단 프롬프트를 주제별로 확인하세요. <button class="guide-panel-link" type="button" data-open-panel="special-prompt-panel">관련 프롬프트 보기 →</button></p></div>
           <div class="special-topic-tabs" role="tablist" aria-label="점검 스킬·도구 주제">
             <button id="skill-tab-accessibility" class="special-topic-tab" type="button" role="tab" aria-selected="true" aria-controls="skill-content-accessibility" tabindex="0" data-skill-topic="skillAccessibility">웹접근성 점검</button>
             <button id="skill-tab-security" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="skill-content-security" tabindex="-1" data-skill-topic="skillSecurity">보안 점검</button>
+            <button id="skill-tab-design" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="skill-content-design" tabindex="-1" data-skill-topic="skillDesign">디자인·밀도 점검</button>
           </div>
           <article id="skill-content-accessibility" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="skill-tab-accessibility" tabindex="0" data-skill-content="skillAccessibility"></article>
           <article id="skill-content-security" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="skill-tab-security" tabindex="0" data-skill-content="skillSecurity" hidden></article>
+          <article id="skill-content-design" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="skill-tab-design" tabindex="0" data-skill-content="skillDesign" hidden></article>
         </div>
       </section>
     </main>
@@ -4747,7 +4749,8 @@
         };
         const skillFiles = {
           skillAccessibility: '웹접근성_점검_스킬_도구.md',
-          skillSecurity: '보안_점검_스킬_도구.md'
+          skillSecurity: '보안_점검_스킬_도구.md',
+          skillDesign: '디자인_점검_Computer_Use.md'
         };
         function renderTabGroup(topicAttribute, contentAttribute, files, initialIndex) {
           const tabs = Array.from(document.querySelectorAll('[' + topicAttribute + ']'));
@@ -4780,7 +4783,7 @@
           activateTab(initialIndex, false)
         }
         renderTabGroup('data-legal-topic', 'data-legal-content', legalFiles, location.hash === '#legal-privacy' ? 1 : 0);
-        renderTabGroup('data-skill-topic', 'data-skill-content', skillFiles, location.hash === '#skill-security' ? 1 : 0)
+        renderTabGroup('data-skill-topic', 'data-skill-content', skillFiles, location.hash === '#skill-design' ? 2 : location.hash === '#skill-security' ? 1 : 0)
       }
       renderPromptGuide();
       renderUiPromptGuide();
@@ -5360,7 +5363,7 @@
       updateMainTop();
       window.addEventListener('resize', updateMainTop);
       const linkedPanel = location.hash.slice(1);
-      const initialPanel = linkedPanel === 'legal-privacy' || linkedPanel === 'legal-accessibility' ? 'legal-reference-panel' : linkedPanel === 'skill-security' || linkedPanel === 'skill-accessibility' ? 'skill-reference-panel' : linkedPanel;
+      const initialPanel = linkedPanel === 'legal-privacy' || linkedPanel === 'legal-accessibility' ? 'legal-reference-panel' : linkedPanel === 'skill-security' || linkedPanel === 'skill-accessibility' || linkedPanel === 'skill-design' ? 'skill-reference-panel' : linkedPanel;
       showPanel(document.getElementById(initialPanel)?.classList.contains('panel') ? initialPanel : (document.querySelector('.tab.active')?.dataset.panel || 'html-panel'));
       renderHtmlList();
       renderMdList();
