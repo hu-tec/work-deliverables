@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>업무산출물</title>
+    <link rel="stylesheet" href="catalog-search.css">
     <style>
       :root {
         --bg: #f6f7f9;
@@ -198,6 +199,19 @@
         line-height: 1.25;
         font-size: 13px
       }
+
+      .md-topic-bar { margin-bottom: 6px; padding: 7px 9px; border-bottom: 1px solid var(--line); background: #fff }
+      .md-topic-tabs { display: flex; flex-wrap: wrap; gap: 4px }
+      .md-topic-tab { display: inline-flex; align-items: center; justify-content: space-between; gap: 7px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--text); font: inherit; font-size: 12px; cursor: pointer }
+      .md-topic-tab[aria-selected="true"] { border-color: var(--accent); background: var(--accent); color: #fff; font-weight: 700 }
+      .md-topic-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+      .md-topic-count { font-size: 10px; font-variant-numeric: tabular-nums }
+      .md-topic-info { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 6px; font-size: 12px; line-height: 1.4 }
+      .md-topic-info p { margin: 0; color: var(--muted) }
+      #md-topic-status { color: var(--accent); font-weight: 700 }
+      #markdown-panel .md-layout { height: calc(100dvh - var(--md-content-top, var(--main-top, 160px)) - 6px) }
+      @media (max-width: 920px) { #markdown-panel .md-layout { height: auto } }
+      @media (max-width: 620px) { .md-topic-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) } }
 
       .search {
         width: 100%;
@@ -426,6 +440,12 @@
       .subgroup-block { margin: 8px 6px 10px 10px; border-left: 3px solid #cbdce9; border-bottom: 1px solid var(--line); background: #fff }
       .subgroup-block > .subsection-title { padding: 7px 8px; border-bottom: 1px solid var(--line); background: #f4f7fa; color: #253b52; font-size: 13px }
       .subgroup-block .section-folder-location { border-bottom: 1px solid #e5ebf1 }
+      .featured-subgroup { border-left-color: #1677c9 }
+      .featured-subgroup > .subsection-title { background: #e3f0ff; border-bottom-color: #b7d4ed; color: #0b4d86 }
+      .featured-subgroup .html-subgroup-toggle { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 8px; color: inherit }
+      .featured-subgroup .subgroup-name { flex: 1 1 100px; min-width: 0 }
+      .featured-subgroup .count { color: #2d658d }
+      .subgroup-date { flex: none; padding: 3px 5px; border: 1px solid #b7d4ed; border-radius: 4px; background: #fff; color: #0b4d86; font-size: 10px; font-weight: 700; white-space: nowrap }
 
       .version-heading {
         margin: 0;
@@ -1425,10 +1445,28 @@
       <div class="wrap">
         <h1>📁 업무산출물</h1>
         <p style="margin:6px 0 10px; font-size:13px;"><a href="PROJECT_STRUCTURE.html" style="color:inherit; text-decoration:underline;">폴더 구조 안내</a> · <a href="01_화면_디자인/랜딩페이지/랜딩페이지3종/README.md" style="color:inherit; text-decoration:underline;">랜딩 ver1/ver2 위치</a></p>
+        <form id="global-search-form" class="global-search" role="search" aria-label="산출물 통합검색">
+          <label for="global-search-input">통합검색</label>
+          <input id="global-search-input" type="search" placeholder="제목·파일명·본문 검색 (예: 개인정보 암호화)" aria-describedby="global-search-help" autocomplete="off">
+          <button type="submit">검색 · 결과 보기</button><button type="reset">초기화</button>
+        </form>
         <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button><button class="tab" type="button" data-panel="prompt-guide-panel">6. 📋 프롬프트 제시 가이드</button><button class="tab" type="button" data-panel="ui-prompt-panel">7. 🧩 UI 설명 프롬프트</button><button class="tab" type="button" data-panel="ui-pattern-panel">8. 🧱 UI 패턴 예시</button><button class="tab" type="button" data-panel="special-prompt-panel">9. 🔍 접근성·SEO·보안 프롬프트</button><button class="tab" type="button" data-panel="legal-reference-panel">10. ⚖ 법령·기준</button><button class="tab" type="button" data-panel="skill-reference-panel">11. 🛠 점검 스킬·도구</button></div>
       </div>
     </header>
     <main>
+      <section id="search-panel" class="panel" hidden>
+        <div class="box">
+          <div class="search-results-toolbar">
+            <h2>통합검색 결과</h2>
+            <label for="global-search-kind">자료 종류</label>
+            <select id="global-search-kind"><option value="all">전체</option><option value="html">HTML</option><option value="md">Markdown</option><option value="guide">프롬프트 가이드</option><option value="db">DB 자료</option><option value="tool">프로젝트·도구</option><option value="reference">레퍼런스</option></select>
+            <p id="global-search-status" role="status" aria-live="polite"></p>
+          </div>
+          <p id="global-search-help" class="search-scope-note">HTML·Markdown·가이드 본문, DB 미리보기 내용, 도구 설명, 레퍼런스 제목·주소에서 찾습니다. 여러 검색어는 모두 포함된 자료를 찾습니다. 제목을 누르면 자료가 열리며, 위 ‘검색 · 결과 보기’ 버튼으로 돌아올 수 있습니다.</p>
+          <div id="global-search-results" class="search-result-grid"></div>
+          <button id="global-search-more" class="search-more" type="button" hidden>결과 더 보기</button>
+        </div>
+      </section>
       <section id="db-panel" class="panel">
         <div class="md-layout">
           <section class="library">
@@ -1436,7 +1474,7 @@
               <div><h2 class="section-title">DB 정제 자료 <span id="db-total-count" class="count"></span></h2><p class="note">파일을 선택하면 오른쪽에서 내용을 봅니다. 연락처·이메일 형태 값이 있는 CSV 2개는 제외했습니다.</p></div>
               <a class="download-link" href="downloads/DB_정제_자료.zip" download>⬇ 전체 ZIP</a>
             </div>
-            <div class="head"><input id="db-search" class="search" type="search" placeholder="DB 파일명 또는 폴더 검색"></div>
+            <div class="head"><input id="db-search" class="search" type="search" placeholder="DB 파일명·폴더·내용 검색" aria-label="DB 파일명·폴더·내용 검색"></div>
             <div id="db-file-sections"></div>
           </section>
           <article class="viewer">
@@ -1469,7 +1507,7 @@
               <h2 class="section-title">📄 HTML 산출물 <span id="html-total-count" class="count"></span></h2>
               <p class="note">대분류를 펼친 뒤 소분류별 폴더를 확인하세요. 파일은 오른쪽에서 미리보고 각 행에서 다운로드합니다.</p>
               <div class="html-list-toolbar">
-                <input id="html-search" class="search" type="search" placeholder="HTML 제목 또는 경로 검색">
+                <input id="html-search" class="search" type="search" placeholder="HTML 제목·경로·본문 검색" aria-label="HTML 제목·경로·본문 검색">
                 <div class="view-toggle" aria-label="HTML 보기 방식">
                   <button class="view-button active" type="button" data-list="html" data-view="table2">표로 보기</button>
                   <button class="view-button" type="button" data-list="html" data-view="card2">카드로 보기</button>
@@ -1510,20 +1548,24 @@
         </div>
       </section>
       <section id="markdown-panel" class="panel">
+        <div class="md-topic-bar">
+          <div id="md-topic-tabs" class="md-topic-tabs" role="tablist" aria-label="Markdown 문서 목적별 분류"></div>
+          <div class="md-topic-info"><p id="md-topic-description"></p><p id="md-topic-status" role="status" aria-live="polite"></p></div>
+        </div>
         <div class="md-layout">
           <section class="library">
             <div class="head">
               <h2 class="section-title">📝 Markdown 산출물 <span id="md-total-count" class="count"></span></h2>
               <p class="note">소분류별 폴더 경로를 확인·복사할 수 있습니다. MD 본문은 이 페이지에서 바로 보고 각 파일을 다운로드합니다.</p>
               <div class="md-list-toolbar">
-                <input id="md-search" class="search" type="search" placeholder="Markdown 제목 또는 경로 검색">
+                <input id="md-search" class="search" type="search" placeholder="Markdown 제목·경로·본문 검색" aria-label="Markdown 제목·경로·본문 검색">
                 <div class="view-toggle" aria-label="Markdown 보기 방식">
                   <button class="view-button active" type="button" data-list="md" data-view="table">표로 보기</button>
                   <button class="view-button" type="button" data-list="md" data-view="card">카드로 보기</button>
                 </div>
               </div>
             </div>
-            <div id="md-sections"></div>
+            <div id="md-sections" role="tabpanel" tabindex="0" aria-labelledby="md-topic-all" aria-describedby="md-topic-description"></div>
           </section>
           <article class="viewer">
             <div class="head">
@@ -1651,6 +1693,9 @@
     </div>
     <script src="reference-links.js"></script>
     <script src="file-dates.js"></script>
+    <script src="search-index.js"></script>
+    <script src="catalog-search.js"></script>
+    <script src="markdown-topics.js"></script>
     <script src="db-files.js"></script>
     <script src="04_작업_가이드/AI_작업요청_프롬프트_가이드/content.js"></script>
     <script src="04_작업_가이드/AI_작업요청_프롬프트_가이드/specialized-content.js"></script>
@@ -3703,6 +3748,7 @@
       DATA.mdDocs = COMMON_MD_DOCS.concat(DATA.mdDocs.filter(doc => !COMMON_MD_PATHS.has(doc.path)));
       let htmlView = 'table2';
       let mdView = 'table';
+      let activeMdTopic = 'all';
       const expandedMdGroups = new Set();
       const collapsedMdSearchGroups = new Set();
       const expandedMdSubgroups = new Set();
@@ -4079,7 +4125,7 @@
       }
       function renderDbFiles() {
         const term = dbSearch.value.trim().toLowerCase();
-        const grouped = dbFiles.filter(file => !term || (file.name + ' ' + file.group).toLowerCase().includes(term)).reduce((result, file) => {
+        const grouped = dbFiles.filter(file => DeliverableSearch.matchesDocument(file, term)).reduce((result, file) => {
           (result[file.group] || (result[file.group] = [])).push(file);
           return result
         }, {});
@@ -4390,11 +4436,14 @@
           return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi) || a.localeCompare(b, 'ko')
         }).map((subsection, index) => {
           const group = grouped[subsection];
-          const body = subsection === '최종 랜딩페이지' ? renderVersionedLandingItems(group, renderItems) : renderItems(group);
+          const isFinalLanding = subsection === '최종 랜딩페이지';
+          const body = isFinalLanding ? renderVersionedLandingItems(group, renderItems) : renderItems(group);
+          const latestDate = isFinalLanding ? group.map(item => (window.FILE_MODIFIED_DATES || {})[item.path] || item.modifiedDate || item.date).filter(Boolean).sort().pop() : '';
+          const dateLabel = latestDate ? '<time class="subgroup-date" datetime="' + esc(latestDate) + '">최근 수정 ' + esc(latestDate) + '</time>' : '';
           const key = JSON.stringify([title, subsection]);
           const isOpen = searchTerm ? !collapsedSearchSubgroups.has(key) : expandedHtmlSubgroups.has(key);
           const bodyId = 'html-subgroup-body-' + groupIndex + '-' + index;
-          return '<section class="subgroup-block"><h4 class="subsection-title"><button class="html-subgroup-toggle" type="button" data-html-subgroup-toggle="' + esc(title) + '" data-html-subsection="' + esc(subsection) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(subsection) + ' <span class="count">' + group.length + '개</span></button></h4><div id="' + bodyId + '"' + (isOpen ? '' : ' hidden') + '>' + renderSectionFolderPaths(folderPathsForFiles(group), '소분류 폴더') + groupPurpose(subsection) + body + '</div></section>'
+          return '<section class="subgroup-block' + (isFinalLanding ? ' featured-subgroup' : '') + '"><h4 class="subsection-title"><button class="html-subgroup-toggle" type="button" data-html-subgroup-toggle="' + esc(title) + '" data-html-subsection="' + esc(subsection) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '"><span class="subgroup-name">' + esc(subsection) + ' <span class="count">' + group.length + '개</span></span>' + dateLabel + '</button></h4><div id="' + bodyId + '"' + (isOpen ? '' : ' hidden') + '>' + renderSectionFolderPaths(folderPathsForFiles(group), '소분류 폴더') + groupPurpose(subsection) + body + '</div></section>'
         }).join('')
       }
 
@@ -4457,7 +4506,7 @@
 
       function mdSectionDownload(section) {
         const href = DOWNLOADS[section];
-        return href ? '<a class="download-link" href="' + encodeURI(href) + '" download>다운로드</a>' : ''
+        return href ? '<a class="download-link" href="' + encodeURI(href) + '" download title="' + esc(section) + ' 원본 전체 ZIP · 탭과 검색 필터 미적용">전체 ZIP</a>' : ''
       }
 
       function renderMdGroupedTables(grouped, term) {
@@ -4973,7 +5022,7 @@
 
       function renderHtmlList() {
         const term = htmlSearch.value.trim().toLowerCase(),
-          filtered = DATA.htmlDocs.filter(d => !term || (d.section + ' ' + (d.subsection || '') + ' ' + d.title + ' ' + d.path + ' ' + d.date + ' ' + (d.sourceDocs || []).join(' ')).toLowerCase().includes(term)),
+          filtered = DATA.htmlDocs.filter(d => DeliverableSearch.matchesDocument(d, term)),
           grouped = group(filtered),
           grouped2 = groupHtmlView2(filtered);
         let htmlOutput = '';
@@ -4987,13 +5036,57 @@
         updateSelectedDownloadControls()
       }
 
+      function initMdTopics() {
+        const tabs = document.getElementById('md-topic-tabs');
+        tabs.innerHTML = MarkdownTopics.topics.map(topic => '<button id="md-topic-' + topic.id + '" class="md-topic-tab" type="button" role="tab" aria-selected="' + (topic.id === activeMdTopic) + '" aria-controls="md-sections" tabindex="' + (topic.id === activeMdTopic ? '0' : '-1') + '" data-md-topic="' + topic.id + '"><span>' + esc(topic.label) + '</span><span class="md-topic-count"></span></button>').join('');
+        function activate(id, focus) {
+          activeMdTopic = id;
+          renderMdList();
+          if (focus) document.getElementById('md-topic-' + id).focus();
+        }
+        tabs.addEventListener('click', event => {
+          const button = event.target.closest('[data-md-topic]');
+          if (button) activate(button.dataset.mdTopic, false);
+        });
+        tabs.addEventListener('keydown', event => {
+          const button = event.target.closest('[data-md-topic]');
+          if (!button) return;
+          const topics = MarkdownTopics.topics;
+          const index = topics.findIndex(topic => topic.id === button.dataset.mdTopic);
+          let next;
+          if (event.key === 'ArrowRight') next = (index + 1) % topics.length;
+          else if (event.key === 'ArrowLeft') next = (index + topics.length - 1) % topics.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = topics.length - 1;
+          else return;
+          event.preventDefault();
+          activate(topics[next].id, true);
+        });
+      }
+
       function renderMdList() {
-        const term = mdSearch.value.trim().toLowerCase(),
-          filtered = DATA.mdDocs.filter(d => !term || (d.section + ' ' + (d.subsection || '') + ' ' + d.title + ' ' + d.path + ' ' + d.date).toLowerCase().includes(term)),
+        const term = mdSearch.value.trim(),
+          matching = DATA.mdDocs.filter(d => DeliverableSearch.matchesDocument(d, term)),
+          filtered = matching.filter(d => activeMdTopic === 'all' || MarkdownTopics.classify(d) === activeMdTopic),
           grouped = group(filtered);
+        MarkdownTopics.topics.forEach(topic => {
+          const button = document.getElementById('md-topic-' + topic.id);
+          if (!button) return;
+          const total = DATA.mdDocs.filter(d => topic.id === 'all' || MarkdownTopics.classify(d) === topic.id).length;
+          const count = matching.filter(d => topic.id === 'all' || MarkdownTopics.classify(d) === topic.id).length;
+          button.querySelector('.md-topic-count').textContent = term ? count + '/' + total : total + '개';
+          button.title = topic.description + (term ? ' · 검색 일치 ' + count + '개 / 전체 ' + total + '개' : '');
+          button.setAttribute('aria-selected', String(topic.id === activeMdTopic));
+          button.tabIndex = topic.id === activeMdTopic ? 0 : -1;
+        });
+        const topic = MarkdownTopics.topics.find(item => item.id === activeMdTopic);
+        document.getElementById('md-topic-description').textContent = topic.description;
+        document.getElementById('md-topic-status').textContent = topic.label + ' · ' + filtered.length + '개' + (term ? ' 검색 결과' : ' 문서');
+        mdSections.setAttribute('aria-labelledby', 'md-topic-' + activeMdTopic);
         mdSections.className = mdView === 'card' ? 'card-grid section-card-grid' : '';
-        mdSections.innerHTML = (mdView === 'table' ? renderMdGroupedTables(grouped, term) : renderMdGroupedCards(grouped, term)) || '<div class="placeholder">검색 결과가 없습니다.</div>';
-        updateSectionFolderPaths()
+        mdSections.innerHTML = (mdView === 'table' ? renderMdGroupedTables(grouped, term) : renderMdGroupedCards(grouped, term)) || '<div class="placeholder">이 탭에 일치하는 문서가 없습니다. 검색어를 줄이거나 전체 탭에서 찾아보세요.</div>';
+        updateSectionFolderPaths();
+        updateMainTop();
       }
 
       function mdDoc(path) {
@@ -5064,7 +5157,8 @@
           const selected = p.id === panelId;
           p.classList.toggle('active', selected);
           p.hidden = !selected
-        })
+        });
+        updateMainTop();
       }
 
       function openHtmlPreview(path) {
@@ -5094,9 +5188,13 @@
         if (hasSource) renderHtmlSourceList(doc)
       }
 
-      function openDoc(p) {
-        const doc = DATA.mdDocs.find(d => d.path === p);
+      function openDoc(p, sourceDoc) {
+        const doc = sourceDoc || DATA.mdDocs.find(d => d.path === p);
         if (!doc) return;
+        if (activeMdTopic !== 'all' && DATA.mdDocs.some(item => item.path === p) && MarkdownTopics.classify(doc) !== activeMdTopic) {
+          activeMdTopic = MarkdownTopics.classify(doc);
+          renderMdList();
+        }
         document.querySelectorAll('[data-path]').forEach(b => b.classList.toggle('active', b.dataset.path === p));
         titleEl.textContent = shortTitle(doc);
         pathEl.textContent = '만든날짜 ' + createdDate(doc) + ' · 수정날짜 ' + modifiedDate(doc) + ' · ' + doc.path;
@@ -5514,7 +5612,56 @@
       }
       referenceSearch.addEventListener('input', renderReferenceLinks);
       renderReferenceLinks();
-      const updateMainTop = () => document.documentElement.style.setProperty('--main-top', Math.ceil(document.querySelector('main').getBoundingClientRect().top) + 'px');
+      DeliverableSearch.mount({
+        docs: DATA, tools: internalTools, dbFiles, title: shortTitle,
+        showResults: () => { showPanel('search-panel'); updateMainTop(); },
+        open: entry => {
+          let heading;
+          if (entry.kind === 'html') {
+            const doc = DATA.htmlDocs.find(item => item.path === entry.path);
+            if (!doc) return;
+            htmlSearch.value = '';
+            expandedHtmlGroups.add(htmlGroup2(doc));
+            expandedHtmlSubgroups.add(JSON.stringify([htmlGroup2(doc), htmlSubgroup(doc)]));
+            renderHtmlList();
+            showPanel('html-panel');
+            openHtmlPreview(entry.path);
+            heading = previewTitle;
+          } else if (entry.kind === 'md' || entry.kind === 'guide') {
+            const doc = DATA.mdDocs.find(item => item.path === entry.path);
+            mdSearch.value = '';
+            activeMdTopic = doc ? MarkdownTopics.classify(doc) : 'all';
+            if (doc) {
+              expandedMdGroups.add(doc.section);
+              expandedMdSubgroups.add(JSON.stringify([doc.section, doc.subsection || '기타']));
+            }
+            renderMdList();
+            showPanel('markdown-panel');
+            openDoc(entry.path, {...doc, ...entry, createdDate: (doc && (doc.createdDate || doc.date)) || '—', date: entry.date || '—'});
+            heading = titleEl;
+          } else if (entry.kind === 'db') {
+            dbSearch.value = '';
+            const file = dbFiles.find(item => item.path === entry.path);
+            if (file) expandedDbGroups.add(file.group);
+            renderDbFiles();
+            showPanel('db-panel');
+            openDbFile(entry.path);
+            heading = document.getElementById('db-preview-title');
+          } else if (entry.kind === 'tool') {
+            showPanel('downloads-panel');
+            selectTool(entry.toolIndex);
+            heading = document.getElementById('tool-detail-title');
+          }
+          if (heading) { heading.tabIndex = -1; heading.focus(); }
+          updateMainTop();
+        }
+      });
+      function updateMainTop() {
+        document.documentElement.style.setProperty('--main-top', Math.ceil(document.querySelector('main').getBoundingClientRect().top) + 'px');
+        const layout = document.querySelector('#markdown-panel .md-layout');
+        if (layout.getClientRects().length) document.documentElement.style.setProperty('--md-content-top', Math.ceil(layout.getBoundingClientRect().top) + 'px');
+      }
+      initMdTopics();
       updateMainTop();
       window.addEventListener('resize', updateMainTop);
       const linkedPanel = location.hash.slice(1);

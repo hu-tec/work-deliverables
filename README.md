@@ -31,8 +31,33 @@ work-deliverables/
 
 - `index.html`, `analyze.html`: 사이트 화면.
 - `db-files.js`, `file-dates.js`, `handover-source-data.js`, `reference-links.js`: 화면에서 사용하는 자료·날짜·연결 정보.
+- `search-index.js`: 등록된 HTML·Markdown·프롬프트 가이드 본문 검색 데이터. `catalog-search.js`, `catalog-search.css`: 통합검색 동작과 화면.
 - `AGENTS.md`: 저장소 작업 규칙. `PUSH_WORKFLOW.md`: 배포 절차.
 - `PROJECT_STRUCTURE.html`: 현재 폴더 구조를 보는 화면.
 - [기존 구조 분석 기록](04_작업_가이드/기존_구조_기록/): 이전 폴더명을 확인할 때만 사용.
 
 `downloads/`의 ZIP은 생성 당시 묶음입니다. 현재 소스의 내용·경로와 다를 수 있으므로 신규 작업과 원본 대조에는 위 용도별 폴더의 실제 파일을 사용합니다. 이동 내역은 [폴더 이동 대조표](04_작업_가이드/폴더_이동_대조표.md)에 기록합니다.
+
+## 통합검색
+
+상단 통합검색은 HTML·Markdown·프롬프트 가이드의 제목·파일명·경로·본문, DB 탭에 이미 공개된 미리보기 내용, 프로젝트·도구 설명, 레퍼런스 제목·주소를 함께 검색합니다. 여러 단어를 띄어 쓰면 모든 단어를 포함한 자료를 찾으며, 제목 일치를 우선 표시합니다. 결과는 2단 목록으로 표시되고 자료 종류 필터, 일치 문장 강조, 파일 다운로드를 제공합니다. 자료를 연 뒤 상단 ‘검색 · 결과 보기’를 누르면 검색 결과로 돌아옵니다. 기존 HTML·Markdown·DB 검색창에서도 본문/내용 검색이 됩니다.
+
+`file://`로 직접 열어도 검색하도록 본문을 `search-index.js`에 미리 저장합니다. 등록 산출물의 HTML·Markdown과 프롬프트 가이드 폴더의 Markdown만 수집합니다. HTML의 script/style/template 코드는 제외하며, 실행 후 JavaScript나 외부 API로 만들어지는 텍스트·외부 사이트 본문·ZIP/실행 파일 내부는 검색 범위에 포함하지 않습니다. DB 검색은 `db-files.js`의 공개된 자료만 사용합니다.
+
+자료 내용을 수정하거나 목록에 파일을 추가한 뒤 검색 데이터를 갱신하세요.
+
+```powershell
+python scripts/build-search-index.py
+python scripts/build-search-index.py --check
+node scripts/test-catalog-search.cjs
+```
+
+## Markdown 목적별 탭
+
+Markdown 화면은 `전체 / 디자인 분석 / 디자인 기준 / 사이트 분석 / 기획·기능정의 / 매뉴얼·사용법 / DB·교육자료 / 작업 프롬프트`로 나뉩니다. 탭의 숫자는 등록된 문서 수이며, 본문 검색 중에는 `검색 일치 / 전체` 개수를 표시합니다. 탭을 바꿔도 검색어는 유지되고 표·카드 보기, 소분류 접기/펼치기, 개별 다운로드를 사용할 수 있습니다. 통합검색에서 등록된 Markdown을 열면 해당 목적 탭을 선택합니다. 기존 묶음 ZIP에는 현재 탭·검색 필터가 적용되지 않으므로 ‘전체 ZIP’으로 표시합니다.
+
+분류는 `markdown-topics.js`에서 관리합니다. 디자인시스템 폴더에 있더라도 사이트맵 분석은 사이트 분석으로, DB 정리 문서는 DB·교육자료로 분류합니다. 공통 UI 제작 규칙은 디자인 기준에, 특정 화면의 수정 요청문은 작업 프롬프트에 둡니다. 실제 파일과 기존 문서 경로는 변경하지 않습니다.
+
+```powershell
+node scripts/test-markdown-topics.cjs
+```
