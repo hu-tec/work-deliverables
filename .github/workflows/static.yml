@@ -31,6 +31,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Refresh index metadata
+        run: |
+          python3 scripts/build-file-dates.py
+          python3 scripts/build-reference-links.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

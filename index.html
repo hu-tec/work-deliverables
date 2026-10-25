@@ -65,13 +65,56 @@
         color: #fff;
         padding: 5px 8px;
         cursor: pointer;
-        font: inherit
+        font: inherit;
+        text-decoration: none
       }
 
       .tab.active {
         background: #fff;
         color: var(--ink)
       }
+
+      .reference-list {
+        max-height: calc(100dvh - var(--main-top, 160px) - 6px);
+        overflow: auto;
+        padding: 8px
+      }
+
+      .reference-sheet {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+        table-layout: fixed;
+        background: #fff
+      }
+      .reference-sheet th,
+      .reference-sheet td { border: 1px solid var(--line); vertical-align: top; text-align: left }
+      .reference-sheet th { position: sticky; top: 0; z-index: 1; padding: 8px; background: #e9eef2; font-size: 13px }
+      .reference-sheet th:first-child, .reference-sheet td:first-child { width: 38px; text-align: center; background: #f3f5f7; color: var(--muted) }
+      .reference-sheet td { padding: 0; height: 50px }
+      .reference-sheet td:empty { background: #fafbfc }
+      .reference-sheet td a { display: block; height: 100%; padding: 8px; color: var(--text); text-decoration: none }
+      .reference-sheet td a:hover { background: var(--accent-soft); color: var(--accent) }
+      .reference-sheet td strong { display: block; font-size: 12px; overflow-wrap: anywhere }
+      .reference-sheet td small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; overflow-wrap: anywhere }
+
+      .tool-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px;
+        border-bottom: 1px solid var(--line)
+      }
+
+      .tool-row strong { display: block; margin-bottom: 4px }
+      .tool-row p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.4 }
+      .tool-row a { flex: none }
+      .tool-row.active { background: var(--accent-soft) }
+      .tool-doc-tabs { display: flex; flex-wrap: wrap; gap: 5px; padding: 8px; border-bottom: 1px solid var(--line) }
+      .tool-doc-tabs button { border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 5px 8px; cursor: pointer }
+      .tool-doc-tabs button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft) }
+      .tool-doc-body { padding: 12px; max-height: 55vh; overflow-y: auto }
 
       main {
         padding: 6px
@@ -134,6 +177,46 @@
         margin-top: 5px
       }
 
+      .html-list-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px
+      }
+
+      .md-list-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px
+      }
+
+      .md-list-toolbar .search {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+        margin-top: 0
+      }
+
+      .md-list-toolbar .view-toggle { flex: none; margin-top: 0 }
+
+      .html-list-toolbar .search {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+        margin-top: 0
+      }
+
+      .html-list-toolbar .view-toggle {
+        flex: none;
+        margin-top: 0
+      }
+
+      @media (max-width: 620px) {
+        .html-list-toolbar, .md-list-toolbar { flex-wrap: wrap }
+        .html-list-toolbar .search, .md-list-toolbar .search { flex-basis: 100% }
+      }
+
       .view-button {
         border: 1px solid var(--line);
         border-radius: 7px;
@@ -186,54 +269,6 @@
         font-size: 11px
       }
 
-      .quick-layout {
-        display: grid;
-        grid-template-columns: 320px minmax(0, 1fr);
-        gap: 6px
-      }
-
-      .quick-list {
-        display: grid;
-        gap: 6px;
-        padding: 6px
-      }
-
-      .quick-card {
-        width: 100%;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-        color: var(--text);
-        padding: 9px;
-        text-align: left;
-        cursor: pointer;
-        font: inherit
-      }
-
-      .quick-card:hover,
-      .quick-card.active {
-        border-color: var(--accent);
-        background: var(--accent-soft)
-      }
-
-      .quick-card strong {
-        display: block;
-        font-size: 15px;
-        line-height: 1.25
-      }
-
-      .quick-card span {
-        display: block;
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.3
-      }
-
-      .quick-viewer {
-        min-height: calc(100vh - 108px)
-      }
-
       .sections {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -272,6 +307,16 @@
 
       .section h3 + .subsection-title {
         border-top: 0
+      }
+
+      .version-heading {
+        margin: 0;
+        padding: 7px 9px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 13px
       }
 
       .count {
@@ -404,10 +449,10 @@
 
       .work-table .title-text {
         display: block;
-        max-width: 86px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        width: 100%;
+        max-width: none;
+        white-space: normal;
+        overflow-wrap: anywhere;
         font-size: 11px;
         font-weight: 600
       }
@@ -490,17 +535,45 @@
 
       .md-layout {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 25%) minmax(0, 1fr);
         gap: 6px;
-        align-items: start
+        align-items: stretch;
+        height: calc(100dvh - var(--main-top, 160px) - 6px);
+        min-height: 280px
       }
 
+      .md-layout .library,
+      .md-layout .viewer {
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain
+      }
+
+      .md-layout.preview-only .viewer,
       .md-layout.card-mode .library {
-        grid-column: 1 / -1
+        overflow-y: auto
+      }
+
+      .preview-empty {
+        display: grid;
+        place-items: center;
+        min-height: 55vh;
+        color: var(--muted);
+        font-size: 16px
+      }
+
+      [hidden] { display: none !important }
+
+      .md-layout.card-mode .library {
+        grid-column: span 1
       }
 
       .md-layout.card-mode .viewer {
-        display: none
+        display: block
+      }
+
+      .md-layout.card-mode .card-grid {
+        grid-template-columns: 1fr
       }
 
       .md-layout.preview-only .library {
@@ -522,10 +595,34 @@
 
       .html-preview-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+        grid-template-columns: 1fr;
         gap: 6px;
         padding: 6px;
+        position: relative;
         background: #fff
+      }
+
+      .html-preview-grid:has(.source-panel[hidden]) {
+        grid-template-columns: 1fr
+      }
+
+      .file-with-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        max-width: 100%
+      }
+
+      .file-with-download > .file-name {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis
+      }
+
+      .mini-title-file .file-name { color: var(--text) }
+
+      .file-with-download > .row-download-link {
+        flex: none
       }
 
       .html-preview-grid.md-closed {
@@ -540,6 +637,69 @@
         height: calc(100vh - 112px);
         border: 1px solid var(--line);
         border-radius: 8px
+      }
+
+      .html-preview-grid .source-panel {
+        position: absolute;
+        z-index: 2;
+        top: 6px;
+        right: 6px;
+        height: 88vh;
+        max-height: calc(100% - 12px);
+        width: min(90%, 1200px);
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 8px 28px rgba(23, 32, 42, .22)
+      }
+
+      .html-preview-grid .md-backdrop {
+        position: absolute;
+        z-index: 1;
+        inset: 6px;
+        background: rgba(255, 255, 255, .18)
+      }
+
+      .html-preview-grid.md-closed .md-backdrop { display: none }
+
+      body.md-overlay-open,
+      body.md-overlay-open #html-panel .library,
+      body.md-overlay-open #html-panel .viewer {
+        overflow: hidden
+      }
+
+      .html-preview-grid .source-body {
+        min-height: 0;
+        height: auto;
+        overflow-y: auto;
+        overscroll-behavior: contain
+      }
+
+      .source-content {
+        display: grid;
+        grid-template-columns: clamp(140px, 18%, 200px) minmax(0, 1fr);
+        flex: 1;
+        min-height: 0
+      }
+
+      .source-content .source-list {
+        display: block;
+        min-height: 0;
+        overflow-y: auto;
+        border-right: 1px solid var(--line);
+        border-bottom: 0;
+        background: #f7f9fa
+      }
+
+      .source-content .source-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 4px;
+        text-align: left;
+        overflow-wrap: anywhere
+      }
+
+      @media (max-width: 700px) {
+        .html-preview-grid .source-panel { width: calc(100% - 12px) }
       }
 
       .preview-list {
@@ -598,48 +758,6 @@
         line-height: 1.3
       }
 
-      .course-mini-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 4px;
-        padding: 6px;
-        border-bottom: 1px solid var(--line);
-        background: #fbfcfd
-      }
-
-      .course-mini-card {
-        display: block;
-        min-width: 0;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        background: #fff;
-        color: var(--text);
-        padding: 5px 6px;
-        text-decoration: none
-      }
-
-      .course-mini-card:hover {
-        border-color: var(--accent);
-        background: var(--accent-soft)
-      }
-
-      .course-mini-card strong {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 10px;
-        line-height: 1.25
-      }
-
-      .course-mini-card span {
-        display: block;
-        margin-top: 2px;
-        color: var(--muted);
-        font-size: 8px;
-        line-height: 1.2
-      }
-
       .mini-table th,
       .mini-table td {
         padding: 4px 5px;
@@ -657,7 +775,7 @@
       }
 
       .mini-table .mini-title {
-        width: 76px
+        width: auto
       }
 
       .mini-title-file {
@@ -803,11 +921,11 @@
       }
 
       .library {
-        grid-column: span 1
+        grid-column: 1
       }
 
       .viewer {
-        grid-column: span 3
+        grid-column: 2
       }
 
       .doc-list {
@@ -839,9 +957,7 @@
       }
 
       .viewer {
-        position: sticky;
-        top: 6px;
-        min-height: calc(100vh - 12px)
+        position: relative
       }
 
       .viewer-actions {
@@ -1027,7 +1143,13 @@
         }
 
         .md-layout {
-          grid-template-columns: 1fr
+          grid-template-columns: 1fr;
+          height: auto
+        }
+
+        .md-layout .library,
+        .md-layout .viewer {
+          max-height: 55vh
         }
 
         .library,
@@ -1063,9 +1185,6 @@
           padding: 4px
         }
 
-        .quick-layout {
-          grid-template-columns: 1fr
-        }
       }
     </style>
   </head>
@@ -1073,37 +1192,36 @@
     <header>
       <div class="wrap">
         <h1>📁 업무산출물</h1>
-        <p class="sub">HTML 화면과 Markdown 문서를 이 페이지 안에서 바로 확인합니다.</p>
-        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="quick-panel">3. 바로보기</button></div>
+        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="downloads-panel">4. ⬇ 내부 도구 다운로드</button></div>
       </div>
     </header>
-    <!-- 내부 도구 개별 다운로드 패널 -->
-    <div style="background:#fff;border-bottom:1px solid #dfe3e8;padding:8px 10px;">
-      <div style="font-size:11px;font-weight:700;color:#5f6875;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">내부 도구 개별 다운로드</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <a href="downloads/마크다운에디터_내부용.zip" download style="display:inline-flex;align-items:center;gap:6px;border:1px solid #dfe3e8;border-radius:7px;background:#f6f7f9;color:#0f6b63;padding:5px 12px;font-size:12px;font-weight:600;text-decoration:none;" onmouseover="this.style.background='#e8f3f1'" onmouseout="this.style.background='#f6f7f9'">
-          <span>⬇</span> 마크다운 에디터 (Node.js)
-        </a>
-        <a href="downloads/업무_추적_댓글_웹프로그램.zip" download style="display:inline-flex;align-items:center;gap:6px;border:1px solid #dfe3e8;border-radius:7px;background:#f6f7f9;color:#0f6b63;padding:5px 12px;font-size:12px;font-weight:600;text-decoration:none;" onmouseover="this.style.background='#e8f3f1'" onmouseout="this.style.background='#f6f7f9'">
-          <span>⬇</span> 업무 추적 댓글 프로그램 (SQLite)
-        </a>
-        <a href="downloads/협업연동_커뮤니케이션_업무툴_테스트.zip" download style="display:inline-flex;align-items:center;gap:6px;border:1px solid #dfe3e8;border-radius:7px;background:#f6f7f9;color:#0f6b63;padding:5px 12px;font-size:12px;font-weight:600;text-decoration:none;" onmouseover="this.style.background='#e8f3f1'" onmouseout="this.style.background='#f6f7f9'">
-          <span>⬇</span> 협업 커뮤니케이션 업무툴 (Node.js)
-        </a>
-      </div>
-    </div>
     <main>
+      <section id="downloads-panel" class="panel">
+        <div class="md-layout">
+          <section class="library">
+            <div class="head"><h2 class="section-title">내부 도구</h2><p class="note">도구를 선택하면 개발 배경 MD를 볼 수 있습니다.</p></div>
+            <div id="tool-nav"></div>
+          </section>
+          <article class="viewer">
+            <div class="head"><h2 class="section-title">내부 도구 개발 다운로드</h2><p class="note">각 ZIP과 관련 기획·사용 문서를 확인하세요.</p></div>
+            <div id="tool-download-list"></div>
+            <div id="tool-doc-tabs" class="tool-doc-tabs" hidden></div>
+            <div id="tool-doc-body" class="tool-doc-body markdown placeholder">왼쪽에서 도구를 선택하면 만든 이유와 관련 MD가 표시됩니다.</div>
+          </article>
+        </div>
+      </section>
       <section id="html-panel" class="panel active">
         <div class="md-layout">
           <section class="library">
             <div class="head">
               <h2 class="section-title">📄 HTML 산출물</h2>
-              <p class="note">HTML 파일은 오른쪽 패널에서 바로 확인합니다.</p><input id="html-search" class="search" type="search" placeholder="HTML 제목 또는 경로 검색">
-              <div class="view-toggle" aria-label="HTML 보기 방식">
-                <button class="view-button" type="button" data-list="html" data-view="table">표로 보기</button>
-                <button class="view-button" type="button" data-list="html" data-view="card">카드형으로 보기</button>
-                <button class="view-button active" type="button" data-list="html" data-view="table2">표 2</button>
-                <button class="view-button" type="button" data-list="html" data-view="card2">카드형 2</button>
+              <p class="note">HTML 파일은 오른쪽 패널에서 바로 확인합니다.</p>
+              <div class="html-list-toolbar">
+                <input id="html-search" class="search" type="search" placeholder="HTML 제목 또는 경로 검색">
+                <div class="view-toggle" aria-label="HTML 보기 방식">
+                  <button class="view-button active" type="button" data-list="html" data-view="table2">표로 보기</button>
+                  <button class="view-button" type="button" data-list="html" data-view="card2">카드로 보기</button>
+                </div>
               </div>
               <div class="bulk-actions" aria-label="선택 다운로드">
                 <button id="html-selected-download" type="button" disabled>⬇ 선택 다운로드</button>
@@ -1115,20 +1233,24 @@
           </section>
           <article class="viewer">
             <div class="head">
-              <h2 id="preview-title" class="section-title">화면을 선택하세요</h2>
-              <p id="preview-path" class="note">왼쪽 목록에서 HTML 산출물을 클릭하면 이 영역에 표시됩니다.</p>
-              <div class="viewer-actions"><button id="html-expand" type="button">오른쪽만 보기</button><button id="md-side-toggle" type="button">Markdown 닫기</button><a id="html-open-full" href="#" target="_blank" rel="noopener" hidden>전체 화면으로 보기</a></div>
+              <h2 id="preview-title" class="section-title">이 목록을 만든 이유</h2>
+              <p id="preview-path" class="note">산출물의 목적과 내용을 한곳에서 확인하기 위해 만들었습니다.</p>
+              <div class="viewer-actions"><button id="html-expand" type="button">목록 숨기기</button><button id="md-side-toggle" type="button" aria-expanded="false" aria-controls="html-source-panel" hidden>Markdown 열기</button><a id="html-open-full" href="#" target="_blank" rel="noopener" hidden>원본 HTML 새 탭에서 열기</a></div>
             </div>
             <div id="html-preview-grid" class="html-preview-grid">
-              <iframe id="preview-frame" class="preview-frame" title="HTML 산출물 미리보기"></iframe>
-              <div id="html-source-panel" class="source-panel">
+              <div id="preview-empty" class="preview-empty">업무 산출물을 분류해 문서와 화면을 찾고, 검토하고, 전달하기 쉽게 모았습니다.</div>
+              <iframe id="preview-frame" class="preview-frame" title="HTML 산출물 미리보기" hidden></iframe>
+              <div id="md-backdrop" class="md-backdrop" hidden></div>
+              <div id="html-source-panel" class="source-panel" hidden>
                 <div class="head">
                   <h3 id="html-source-title" class="popup-title">관련 Markdown</h3>
                   <p id="html-source-path" class="popup-note">HTML 산출물과 연결된 기준 문서를 오른쪽에서 함께 확인합니다.</p>
-                  <div class="viewer-actions"><a id="html-source-raw" href="#" target="_blank" rel="noopener" hidden>원문 열기</a></div>
+                  <div class="viewer-actions"><a id="html-source-raw" href="#" target="_blank" rel="noopener" hidden>원문 열기</a><button id="html-source-close" type="button">닫기</button></div>
                 </div>
-                <div id="html-source-list" class="source-list"></div>
-                <div id="html-source-body" class="source-body placeholder">HTML 산출물을 선택하면 관련 Markdown 문서가 표시됩니다.</div>
+                <div class="source-content">
+                  <div id="html-source-list" class="source-list"></div>
+                  <div id="html-source-body" class="source-body placeholder">HTML 산출물을 선택하면 관련 Markdown 문서가 표시됩니다.</div>
+                </div>
               </div>
             </div>
           </article>
@@ -1139,10 +1261,13 @@
           <section class="library">
             <div class="head">
               <h2 class="section-title">📝 Markdown 산출물</h2>
-              <p class="note">MD 파일은 본문을 이 페이지에 내장해 로컬에서도 바로 열리도록 했습니다.</p><input id="md-search" class="search" type="search" placeholder="Markdown 제목 또는 경로 검색">
-              <div class="view-toggle" aria-label="Markdown 보기 방식">
-                <button class="view-button active" type="button" data-list="md" data-view="table">표로 보기</button>
-                <button class="view-button" type="button" data-list="md" data-view="card">카드형으로 보기</button>
+              <p class="note">MD 파일은 본문을 이 페이지에 내장해 로컬에서도 바로 열리도록 했습니다.</p>
+              <div class="md-list-toolbar">
+                <input id="md-search" class="search" type="search" placeholder="Markdown 제목 또는 경로 검색">
+                <div class="view-toggle" aria-label="Markdown 보기 방식">
+                  <button class="view-button active" type="button" data-list="md" data-view="table">표로 보기</button>
+                  <button class="view-button" type="button" data-list="md" data-view="card">카드로 보기</button>
+                </div>
               </div>
             </div>
             <div id="md-sections"></div>
@@ -1151,7 +1276,7 @@
             <div class="head">
               <h2 id="viewer-title" class="section-title">문서를 선택하세요</h2>
               <p id="viewer-path" class="note">왼쪽 목록에서 Markdown 문서를 클릭하면 이 영역에 표시됩니다.</p>
-              <div class="viewer-actions"><button id="md-expand" type="button">오른쪽만 보기</button><a id="raw-link" href="#" target="_blank" rel="noopener" hidden>원문 열기</a><button id="copy-link" type="button" hidden>경로 복사</button></div>
+              <div class="viewer-actions"><button id="md-expand" type="button">목록 숨기기</button><a id="raw-link" href="#" target="_blank" rel="noopener" hidden>원문 열기</a><button id="copy-link" type="button" hidden>경로 복사</button></div>
             </div>
             <div id="viewer-body" class="placeholder">Markdown 탭의 문서 목록에서 항목을 선택하세요.</div>
             <div id="md-backlinks-panel" class="backlink-panel" hidden>
@@ -1173,23 +1298,14 @@
           </article>
         </div>
       </section>
-      <section id="quick-panel" class="panel">
-        <div class="quick-layout">
-          <section class="library">
-            <div class="head">
-              <h2 class="section-title">바로보기</h2>
-              <p class="note">인수인계서, 다른페이지 제작자료전달가이드, site 문서를 한 탭에서 빠르게 확인합니다.</p>
-            </div>
-            <div id="quick-list" class="quick-list"></div>
-          </section>
-          <article class="viewer quick-viewer">
-            <div class="head">
-              <h2 id="quick-title" class="section-title">문서를 선택하세요</h2>
-              <p id="quick-path" class="note">왼쪽 바로보기 목록에서 문서를 선택하면 표시됩니다.</p>
-              <div class="viewer-actions"><a id="quick-raw" href="#" target="_blank" rel="noopener" hidden>원문 열기</a></div>
-            </div>
-            <div id="quick-body" class="markdown placeholder">바로보기 문서를 선택하세요.</div>
-          </article>
+      <section id="links-panel" class="panel">
+        <div class="box">
+          <div class="head">
+            <h2 class="section-title">MD 문서에서 참고한 레퍼런스 링크</h2>
+            <p class="note">Markdown 문서에서 참고한 사이트를 용도별 바로가기로 모았습니다.</p>
+            <input id="reference-search" class="search" type="search" placeholder="사이트 또는 용도 검색" aria-label="레퍼런스 링크 검색">
+          </div>
+          <div id="reference-list" class="reference-list"></div>
         </div>
       </section>
     </main>
@@ -1215,18 +1331,11 @@
         </div>
       </div>
     </div>
+    <script src="reference-links.js"></script>
+    <script src="file-dates.js"></script>
     <script>
       const DATA = {
         "htmlDocs": [
-                {
-                        "section": "개발·운영 매뉴얼",
-                        "title": "휴텍씨 업무 인수인계서",
-                        "path": "휴텍씨_업무_인수인계서.html",
-                        "date": "2026-06-21",
-                        "sourceDocs": [
-                                "휴텍씨 업무 인수인계서.md"
-                        ]
-                },
                 {
                         "section": "보관/원본 자료",
                         "title": "interview ui",
@@ -1301,20 +1410,38 @@
                 },
                 {
                         "section": "사용자/랜딩·신청 화면",
-                        "title": "랜딩페이지-교육",
-                        "path": "랜딩페이지/랜딩페이지3종/교육/about.html",
+                        "title": "랜딩페이지-교육 ver1",
+                        "path": "랜딩페이지/랜딩페이지3종/ver1/교육/about.html",
                         "date": "2026-06-05"
                 },
                 {
                         "section": "사용자/랜딩·신청 화면",
-                        "title": "랜딩페이지-시험",
-                        "path": "랜딩페이지/랜딩페이지3종/시험/about.html",
+                        "title": "랜딩페이지-교육 ver2",
+                        "path": "랜딩페이지/랜딩페이지3종/교육/index.html",
+                        "date": "2026-06-05"
+                },
+                {
+                        "section": "사용자/랜딩·신청 화면",
+                        "title": "랜딩페이지-시험 ver1",
+                        "path": "랜딩페이지/랜딩페이지3종/ver1/시험/about.html",
                         "date": "2026-06-02"
                 },
                 {
                         "section": "사용자/랜딩·신청 화면",
-                        "title": "랜딩페이지-협회",
-                        "path": "랜딩페이지/랜딩페이지3종/협회/ai-ethics.html",
+                        "title": "랜딩페이지-시험 ver2",
+                        "path": "랜딩페이지/랜딩페이지3종/시험/index.html",
+                        "date": "2026-06-02"
+                },
+                {
+                        "section": "사용자/랜딩·신청 화면",
+                        "title": "랜딩페이지-협회 ver1",
+                        "path": "랜딩페이지/랜딩페이지3종/ver1/협회/ai-ethics.html",
+                        "date": "2026-05-29"
+                },
+                {
+                        "section": "사용자/랜딩·신청 화면",
+                        "title": "랜딩페이지-협회 ver2",
+                        "path": "랜딩페이지/랜딩페이지3종/협회/index.html",
                         "date": "2026-05-29"
                 },
                 {
@@ -1754,95 +1881,7 @@
         popupMemoInput = document.getElementById('popup-memo-input'),
         popupMemoSave = document.getElementById('popup-memo-save'),
         popupMemoClear = document.getElementById('popup-memo-clear'),
-        popupCommentList = document.getElementById('popup-comment-list'),
-        quickList = document.getElementById('quick-list'),
-        quickTitle = document.getElementById('quick-title'),
-        quickPath = document.getElementById('quick-path'),
-        quickRaw = document.getElementById('quick-raw'),
-        quickBody = document.getElementById('quick-body');
-      const QUICK_DOCS = [
-        {
-          title: '인수인계서',
-          path: '휴텍씨 업무 인수인계서.md',
-          htmlPath: '휴텍씨_업무_인수인계서.html',
-          summary: '랜딩페이지, 디자인시스템, 내부 관리망 분석, Codex 문서, 시험 평가 사이트 등 전체 업무 맥락을 정리한 문서입니다.',
-          content: `# 휴텍씨 업무 인수인계서
-
-## 핵심 구성
-
-- 휴텍씨 홈페이지는 교육, 시험, 협회 중심의 3개 랜딩페이지 구조로 정리되어 있습니다.
-- 시험 영역은 타임즈 테솔, AITE, ITT 자료를 함께 참고합니다.
-- 교육 영역은 TESOL 과정과 강사 관련 페이지를 포함합니다.
-- 협회 홈페이지는 ITT 협회 소개 성격의 내용을 담는 방향입니다.
-- 분석자료는 별도 화면인 analyze.html에서 검색하고 미리볼 수 있습니다.
-
-## 바로 보기
-
-- [HTML 변환본](휴텍씨_업무_인수인계서.html)
-- [Markdown 원본](휴텍씨 업무 인수인계서.md)
-- [분석자료 통합 화면](analyze.html)
-
-## 주요 자료 위치
-
-- 내부 관리망분석: 3개 BO 통합을 위한 분석자료입니다.
-- codex_매뉴얼/index.html: WSL 설치부터 Codex 실행까지 일반 사용자가 바로 읽을 수 있게 정리한 HTML 매뉴얼입니다.
-- codex_자동승인모드_방법/index.html: 현재 폴더 제한, workspace-write, 자동 승인 설정을 바로 이해할 수 있게 정리한 HTML 매뉴얼입니다.
-- codex_문서작성방안/index.html: Codex, Claude 등 AI 도구에 전달할 문서 작성 기준입니다.
-- 휴텍씨_시험_평가_사이트: 기존 시험 평가 사이트 클론, 분석, 디자인 리소스, 예전 작업을 포함합니다.`
-        },
-        {
-          title: '다른페이지 제작자료전달가이드',
-          path: '다른페이지_제작_자료전달_가이드.md',
-          summary: '새 HTML 페이지나 화면 제작을 요청할 때 어떤 자료를 어떤 순서로 전달해야 하는지 정리한 가이드입니다.',
-          content: `# 다른 페이지 제작 시 자료 전달 가이드
-
-## 전달 순서
-
-1. 만들 화면의 목적
-2. 최종 산출물 형식
-3. 반드시 따를 기준 Markdown
-4. 참고할 HTML/CSS/JS 파일
-5. 화면에 들어갈 실제 콘텐츠
-6. 기존 파일에서 유지해야 할 기능
-7. 금지할 디자인/구현 방식
-8. 검수 기준
-
-## 핵심 원칙
-
-- 자료를 많이 붙여넣기보다 역할과 우선순위를 분명하게 전달합니다.
-- Markdown 문서는 디자인 기준, 콘텐츠 원문, 기능 명세 중 어떤 역할인지 함께 적습니다.
-- HTML/CSS/JS 파일은 참고용인지, 재사용 대상인지, 유지해야 할 동작인지 구분합니다.`
-        },
-        {
-          title: 'site',
-          path: 'sites.md',
-          summary: '타임즈 테솔, AITE, 타임스미디어, A.TESOL, BO 사이트 URL을 한 곳에 모은 빠른 링크 문서입니다.',
-          content: `# 사이트 정리
-
-## 외부 사이트
-
-1. 타임즈 테솔
-   - https://timestesol.imweb.me/
-
-2. AITE(AI 자격시험)사이트
-   - https://aite-test.imweb.me/
-
-3. 타임스미디어
-   - https://hu-tec.github.io/ai-teacher
-   - https://hu-tec.github.io/TESOL/
-
-4. A.TESOL
-   - https://hu-tec.github.io/TESOL-v3/
-
-## BO(BackOffice)
-
-1. 사내 Studio
-   - http://54.116.15.136:81/app/work-log
-
-2. Work Studio
-   - http://54.116.15.136/`
-        }
-      ];
+        popupCommentList = document.getElementById('popup-comment-list');
       const COMMON_MD_DOCS = [
     {
         "section": "디자인시스템/재사용 UI",
@@ -2143,14 +2182,6 @@
           ['보관', DOWNLOADS['보관/원본 자료']]
         ]
       };
-      const EDUCATION_COURSE_ITEMS = [
-        ['1과', 'AI 방과후 교사 양성과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=ai-after-school-teacher'],
-        ['2과', '교습소·학원·공부방 교사 양성과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=academy-studyroom-teacher'],
-        ['3과', 'AI 온라인 교사 양성과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=ai-online-teacher'],
-        ['4과', '어린이 TESOL 교사 양성과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=kids-tesol-teacher'],
-        ['5과', 'AI 방과후·교육기관 운영 강사과정', '랜딩페이지/랜딩페이지3종/교육/course-detail.html?id=after-school-edu-operation']
-      ];
-
       function inferSubsection(doc) {
         const p = String(doc.path || ''),
           t = String(doc.title || ''),
@@ -2324,14 +2355,7 @@
       }
 
       function group2Heading(title, items) {
-        const count = title === '사용자/랜딩·신청 화면' ? items.length + '개 · 교육과정 ' + EDUCATION_COURSE_ITEMS.length + '개' : items.length + '개';
-        return '<h3>' + esc(title) + ' <span class="count">' + esc(count) + '</span>' + group2DownloadButtons(title) + '</h3>'
-      }
-
-      function renderEducationCourseGrid() {
-        return '<p class="group-summary">사용자/랜딩·신청 화면 안의 교육 과정 5개입니다.</p><div class="course-mini-grid">' +
-          EDUCATION_COURSE_ITEMS.map(item => '<a class="course-mini-card" href="' + encodeURI(item[2]) + '" target="_blank" rel="noopener" title="' + esc(item[1]) + '"><span>' + esc(item[0]) + '</span><strong>' + esc(item[1]) + '</strong></a>').join('') +
-          '</div>'
+        return '<h3>' + esc(title) + ' <span class="count">' + items.length + '개</span>' + group2DownloadButtons(title) + '</h3>'
       }
 
       function uniquePaths(paths) {
@@ -2395,8 +2419,7 @@
       }
 
       function rowDownloadLink(d) {
-        const count = htmlDocDownloadPaths(d).length;
-        return '<button class="row-download-link" type="button" data-download-set="' + esc(d.path) + '" title="HTML과 관련 Markdown ' + count + '개 다운로드">⬇ 세트</button>'
+        return '<a class="row-download-link" href="' + encodeURI(d.path) + '" download="' + esc(d.path.split('/').pop()) + '" title="' + esc(d.path) + ' 다운로드" aria-label="' + esc(shortTitle(d)) + ' 파일 다운로드">⬇</a>'
       }
 
       function selectionCheckbox(d) {
@@ -2404,14 +2427,14 @@
       }
 
       function renderTable2(items) {
-        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th><th>다운</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td><td>' + rowDownloadLink(d) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><span class="file-with-download"><span class="file-name" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</span>' + rowDownloadLink(d) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderHtmlMiniTable2(items) {
-        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th><th>다운</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-popup="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><a href="' + encodeURI(d.path) + '" data-html-popup="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td><td>' + rowDownloadLink(d) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><span class="file-with-download"><span class="file-name" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</span>' + rowDownloadLink(d) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
@@ -2419,19 +2442,28 @@
         return renderHtmlMiniTable2(items)
       }
 
+      function renderVersionedLandingItems(items, renderItems) {
+        const versions = ['ver1', 'ver2'];
+        const regular = items.filter(item => !versions.some(version => item.title.endsWith(' ' + version)));
+        let output = regular.length ? renderItems(regular) : '';
+        versions.forEach(version => {
+          const matches = items.filter(item => item.title.endsWith(' ' + version));
+          if (matches.length) output += '<h4 class="version-heading">랜딩페이지 ' + version + ' <span class="count">' + matches.length + '개</span></h4>' + renderItems(matches)
+        });
+        return output
+      }
+
       function renderHtmlGroup2Tables(grouped) {
         return group2Keys(grouped).map(title => {
-          const items = grouped[title],
-            courseGrid = title === '사용자/랜딩·신청 화면' ? renderEducationCourseGrid() : '';
-          return '<section class="section">' + group2Heading(title, items) + courseGrid + renderTable2(items) + '</section>'
+          const items = grouped[title];
+          return '<section class="section">' + group2Heading(title, items) + (title === '사용자/랜딩·신청 화면' ? renderVersionedLandingItems(items, renderTable2) : renderTable2(items)) + '</section>'
         }).join('')
       }
 
       function renderHtmlGroup2Cards(grouped) {
         return group2Keys(grouped).map(title => {
-          const items = grouped[title],
-            courseGrid = title === '사용자/랜딩·신청 화면' ? renderEducationCourseGrid() : '';
-          return '<section class="section">' + group2Heading(title, items) + courseGrid + renderOriginalMiniTables(items) + '</section>'
+          const items = grouped[title];
+          return '<section class="section">' + group2Heading(title, items) + (title === '사용자/랜딩·신청 화면' ? renderVersionedLandingItems(items, renderOriginalMiniTables) : renderOriginalMiniTables(items)) + '</section>'
         }).join('')
       }
 
@@ -2543,7 +2575,7 @@
       }
 
       function modifiedDate(d) {
-        return formatDate(d.modifiedDate || d.date)
+        return formatDate((window.FILE_MODIFIED_DATES || {})[d.path] || d.modifiedDate || d.date)
       }
 
       function displayPath(d) {
@@ -2558,17 +2590,12 @@
         return path.length > 34 ? '...' + path.slice(-34) : path
       }
 
+      function fileName(d) {
+        return String(d.path || '').split('/').pop()
+      }
+
       function shortTitle(d) {
-        let title = String(d.title);
-        if (d.section === '디자인시스템') {
-          title = title.replace(/^디자인시스템\s*-\s*/, '디자인-');
-          if (title === '디자인시스템') return '디자인';
-        }
-        if (d.section === '랜딩페이지') {
-          if (title === '랜딩페이지 기초 레이아웃') return '랜딩-기초';
-          title = title.replace(/^랜딩페이지\s*-\s*/, '랜딩-');
-        }
-        return title
+        return String(d.title)
       }
 
       function resolveMdUrl(url, basePath) {
@@ -2672,25 +2699,25 @@
 
       function renderTable(items) {
         return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><span class="file-with-download"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a>' + rowDownloadLink(d) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderMdTable(items) {
         return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderHtmlMiniTable(items) {
         return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-popup="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><a href="' + encodeURI(d.path) + '" data-html-popup="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a><small>' + esc(modifiedDate(d)) + '</small></td></tr>').join('') +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><span class="file-with-download"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a>' + rowDownloadLink(d) + '</span><small>' + esc(modifiedDate(d)) + '</small></td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderMdMiniTable(items) {
         return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-md-popup="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><button class="doc-table-button" type="button" data-md-popup="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '<small>' + esc(modifiedDate(d)) + '</small></button></td></tr>').join('') +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
@@ -2769,6 +2796,13 @@
       }
 
       function showPanel(panelId) {
+        if (panelId !== 'html-panel') {
+          document.body.classList.remove('md-overlay-open');
+          htmlPreviewGrid.classList.add('md-closed');
+          document.getElementById('md-backdrop').hidden = true;
+          mdSideToggle.textContent = 'Markdown 열기';
+          mdSideToggle.setAttribute('aria-expanded', 'false')
+        }
         document.querySelectorAll('.tab').forEach(t => {
           const selected = t.dataset.panel === panelId;
           t.classList.toggle('active', selected);
@@ -2787,10 +2821,20 @@
         document.querySelectorAll('[data-html-preview]').forEach(b => b.classList.toggle('active', b.dataset.htmlPreview === path));
         previewTitle.textContent = shortTitle(doc);
         previewPath.textContent = '만든날짜 ' + createdDate(doc) + ' · 수정날짜 ' + modifiedDate(doc) + ' · ' + doc.path;
+        document.getElementById('preview-empty').hidden = true;
+        previewFrame.hidden = false;
+        const hasSource = Array.isArray(doc.sourceDocs) && doc.sourceDocs.length > 0;
+        htmlSourcePanel.hidden = !hasSource;
+        htmlPreviewGrid.classList.add('md-closed');
+        document.body.classList.remove('md-overlay-open');
+        document.getElementById('md-backdrop').hidden = true;
+        mdSideToggle.hidden = !hasSource;
+        mdSideToggle.textContent = 'Markdown 열기';
+        mdSideToggle.setAttribute('aria-expanded', 'false');
         previewFrame.src = encodeURI(doc.path);
         htmlOpenFull.href = encodeURI(doc.path);
         htmlOpenFull.hidden = false;
-        renderHtmlSourceList(doc)
+        if (hasSource) renderHtmlSourceList(doc)
       }
 
       function openDoc(p) {
@@ -2846,24 +2890,6 @@
         popupReturnFocus = null
       }
 
-      function renderQuickList() {
-        quickList.innerHTML = QUICK_DOCS.map((doc, i) => '<button class="quick-card' + (i === 0 ? ' active' : '') + '" type="button" data-quick-path="' + esc(doc.path) + '"><strong>' + esc(doc.title) + '</strong><span>' + esc(doc.summary) + '</span></button>').join('')
-      }
-
-      function openQuickDoc(path) {
-        const doc = QUICK_DOCS.find(item => item.path === path);
-        if (!doc) return;
-        document.querySelectorAll('[data-quick-path]').forEach(button => button.classList.toggle('active', button.dataset.quickPath === path));
-        quickTitle.textContent = doc.title;
-        quickPath.textContent = doc.path;
-        quickRaw.href = encodeURI(doc.htmlPath || doc.path);
-        quickRaw.textContent = doc.htmlPath ? 'HTML 보기' : '원문 열기';
-        quickRaw.hidden = false;
-        quickBody.className = 'markdown';
-        const htmlLink = doc.htmlPath ? '\n\n[HTML 변환본 열기](' + doc.htmlPath + ')' : '';
-        quickBody.innerHTML = renderMarkdown(doc.content + htmlLink, doc.path)
-      }
-
       function memoKey(path) {
         return 'work-deliverables:memo:' + path
       }
@@ -2911,11 +2937,6 @@
         renderMemoList(path, listEl)
       }
       document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => showPanel(tab.dataset.panel)));
-      quickList.addEventListener('click', e => {
-        const button = e.target.closest('[data-quick-path]');
-        if (!button) return;
-        openQuickDoc(button.dataset.quickPath)
-      });
       document.querySelectorAll('.view-button').forEach(button => button.addEventListener('click', () => {
         const list = button.dataset.list || 'html';
         const layout = button.closest('.md-layout'),
@@ -2925,7 +2946,7 @@
           if (isCardMode) {
             layout.classList.remove('preview-only');
             const expandButton = layout.querySelector('#html-expand, #md-expand');
-            if (expandButton) expandButton.textContent = '오른쪽만 보기'
+            if (expandButton) expandButton.textContent = '목록 숨기기'
           }
         }
         if (list === 'md') {
@@ -3007,7 +3028,7 @@
       mdSearch.addEventListener('input', renderMdList);
       htmlExpand.addEventListener('click', () => {
         htmlLayout.classList.toggle('preview-only');
-        htmlExpand.textContent = htmlLayout.classList.contains('preview-only') ? '목록 같이 보기' : '오른쪽만 보기'
+        htmlExpand.textContent = htmlLayout.classList.contains('preview-only') ? '목록 보이기' : '목록 숨기기'
       });
       htmlOpenFull.addEventListener('click', e => {
         const href = htmlOpenFull.getAttribute('href');
@@ -3022,11 +3043,21 @@
       });
       mdSideToggle.addEventListener('click', () => {
         htmlPreviewGrid.classList.toggle('md-closed');
-        mdSideToggle.textContent = htmlPreviewGrid.classList.contains('md-closed') ? 'Markdown 열기' : 'Markdown 닫기'
+        const isOpen = !htmlPreviewGrid.classList.contains('md-closed');
+        document.body.classList.toggle('md-overlay-open', isOpen);
+        document.getElementById('md-backdrop').hidden = !isOpen;
+        mdSideToggle.textContent = isOpen ? 'Markdown 닫기' : 'Markdown 열기';
+        mdSideToggle.setAttribute('aria-expanded', String(isOpen));
+        htmlPreviewGrid.closest('.viewer').scrollTop = 0
+      });
+      document.getElementById('md-backdrop').addEventListener('click', () => mdSideToggle.click());
+      document.getElementById('html-source-close').addEventListener('click', () => {
+        mdSideToggle.click();
+        mdSideToggle.focus()
       });
       mdExpand.addEventListener('click', () => {
         mdLayout.classList.toggle('preview-only');
-        mdExpand.textContent = mdLayout.classList.contains('preview-only') ? '목록 같이 보기' : '오른쪽만 보기'
+        mdExpand.textContent = mdLayout.classList.contains('preview-only') ? '목록 보이기' : '목록 숨기기'
       });
       popupClose.addEventListener('click', closePopup);
       popup.addEventListener('click', e => {
@@ -3050,12 +3081,82 @@
         }
       });
       document.querySelectorAll('.view-button').forEach(button => button.setAttribute('aria-pressed', String(button.classList.contains('active'))));
+      const referenceSearch = document.getElementById('reference-search');
+      const referenceList = document.getElementById('reference-list');
+      const internalTools = [
+        {
+          name: '마크다운 에디터',
+          zip: 'downloads/마크다운에디터_내부용.zip',
+          why: '문서를 작성·미리보기하고 선택 영역에 댓글을 남기며 Word로 내보내는 내부 도구입니다.',
+          docs: ['마크다운에디터_내부용/README.md', '마크다운에디터_내부용/docs/markdown-editor-enhancement.prompt.md']
+        },
+        {
+          name: '업무 추적 댓글 프로그램',
+          zip: 'downloads/업무_추적_댓글_웹프로그램.zip',
+          why: '흩어진 업무 진행, 논의, 첨부와 의사결정 기록을 한 화면에서 추적하기 위해 만들었습니다.',
+          docs: ['업무_추적_댓글_웹프로그램/docs/01-plan/features/work-history-tracker.plan.md', '업무_추적_댓글_웹프로그램/docs/02-design/features/work-history-tracker.design.md']
+        },
+        {
+          name: '협업 커뮤니케이션 업무툴',
+          zip: 'downloads/협업연동_커뮤니케이션_업무툴_테스트.zip',
+          why: '현업 업무의 생성, 검색, 상세 확인, 댓글과 활동 이력을 연결해 협업 흐름을 시험하기 위한 도구입니다.',
+          docs: ['협업연동_커뮤니케이션_업무툴_테스트/현업연동_커뮤니케이션_업무툴_구현프롬프트.md', '협업연동_커뮤니케이션_업무툴_테스트/apps/work-communication-tool/README.md']
+        }
+      ];
+      const toolNav = document.getElementById('tool-nav');
+      const toolDownloadList = document.getElementById('tool-download-list');
+      const toolDocTabs = document.getElementById('tool-doc-tabs');
+      const toolDocBody = document.getElementById('tool-doc-body');
+      toolNav.innerHTML = internalTools.map((tool, i) => '<button class="doc-button" type="button" data-tool="' + i + '">' + esc(tool.name) + '</button>').join('');
+      toolDownloadList.innerHTML = internalTools.map((tool, i) => '<div class="tool-row" id="tool-row-' + i + '"><div><strong>' + esc(tool.name) + '</strong><p>' + esc(tool.why) + '</p></div><a class="row-download-link" href="' + encodeURI(tool.zip) + '" download>⬇ ZIP 다운로드</a></div>').join('');
+      function showToolDoc(path) {
+        const doc = DATA.mdDocs.find(item => item.path === path);
+        toolDocTabs.querySelectorAll('button').forEach(button => button.classList.toggle('active', button.dataset.toolDoc === path));
+        toolDocBody.className = 'tool-doc-body markdown';
+        toolDocBody.innerHTML = doc ? renderMarkdown(doc.content, doc.path) : '<p>내장된 본문이 없습니다. <a href="' + encodeURI(path) + '" target="_blank" rel="noopener">MD 원문 열기</a></p>'
+      }
+      function selectTool(index) {
+        const tool = internalTools[index];
+        if (!tool) return;
+        toolNav.querySelectorAll('button').forEach(button => button.classList.toggle('active', Number(button.dataset.tool) === index));
+        toolDownloadList.querySelectorAll('.tool-row').forEach((row, i) => row.classList.toggle('active', i === index));
+        toolDocTabs.hidden = false;
+        toolDocTabs.innerHTML = tool.docs.map((path, i) => '<button type="button" data-tool-doc="' + esc(path) + '">' + (i === 0 ? '개발 배경 / 기획 MD' : '사용 / 상세 MD') + '</button>').join('');
+        showToolDoc(tool.docs[0]);
+        document.getElementById('tool-row-' + index).scrollIntoView({block: 'nearest'})
+      }
+      toolNav.addEventListener('click', event => {
+        const button = event.target.closest('[data-tool]');
+        if (button) selectTool(Number(button.dataset.tool))
+      });
+      toolDocTabs.addEventListener('click', event => {
+        const button = event.target.closest('[data-tool-doc]');
+        if (button) showToolDoc(button.dataset.toolDoc)
+      });
+      function renderReferenceLinks() {
+        const term = referenceSearch.value.trim().toLowerCase();
+        const items = (window.REFERENCE_LINKS || []).filter(item => !term || (item.url + ' ' + item.label + ' ' + item.purpose).toLowerCase().includes(term));
+        const groups = new Map();
+        items.forEach(item => {
+          if (!groups.has(item.purpose)) groups.set(item.purpose, []);
+          groups.get(item.purpose).push(item)
+        });
+        const order = ['테솔·교육', '시험·자격', '사내 업무·관리', '제작·개발 참고', '기타 참고'];
+        const columns = order.filter(purpose => groups.has(purpose));
+        const rowCount = Math.max(0, ...columns.map(purpose => groups.get(purpose).length));
+        referenceList.innerHTML = items.length ? '<table class="reference-sheet"><thead><tr><th scope="col">#</th>' + columns.map(purpose => '<th scope="col">' + esc(purpose) + ' <span class="count">' + groups.get(purpose).length + '개</span></th>').join('') + '</tr></thead><tbody>' + Array.from({length: rowCount}, (_, row) => '<tr><td>' + (row + 1) + '</td>' + columns.map(purpose => {
+          const item = groups.get(purpose)[row];
+          return item ? '<td><a href="' + esc(item.url) + '" target="_blank" rel="noopener noreferrer" title="' + esc(item.url) + '"><strong>' + esc(item.label) + '</strong><small>' + esc(new URL(item.url).host) + ' ↗</small></a></td>' : '<td></td>'
+        }).join('') + '</tr>').join('') + '</tbody></table>' : '<div class="placeholder">검색 결과가 없습니다.</div>'
+      }
+      referenceSearch.addEventListener('input', renderReferenceLinks);
+      renderReferenceLinks();
+      const updateMainTop = () => document.documentElement.style.setProperty('--main-top', Math.ceil(document.querySelector('main').getBoundingClientRect().top) + 'px');
+      updateMainTop();
+      window.addEventListener('resize', updateMainTop);
       showPanel(document.querySelector('.tab.active')?.dataset.panel || 'html-panel');
       renderHtmlList();
       renderMdList();
-      renderQuickList();
-      if (DATA.htmlDocs[0]) openHtmlPreview(DATA.htmlDocs[0].path);
-      if (QUICK_DOCS[0]) openQuickDoc(QUICK_DOCS[0].path);
     </script>
   </body>
 </html>
