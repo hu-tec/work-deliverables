@@ -9,8 +9,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path(r"C:\Users\itban\Desktop\까마귀\신봄\신봄_업무(3.02GB)")
-DEST = ROOT / "추가_산출물"
 INDEX = ROOT / "index.html"
+DESTINATIONS = {
+    "디자인리소스_Figma_비교": ROOT / "01_화면_디자인/디자인리소스_Figma_비교",
+    "디자인시스템_확장시안": ROOT / "01_화면_디자인/디자인시스템_확장시안",
+    "랜딩_커뮤니티_시안": ROOT / "01_화면_디자인/랜딩_커뮤니티_시안",
+    "신청서_삽입_예시": ROOT / "01_화면_디자인/신청서_삽입_예시",
+    "서비스_기획": ROOT / "02_분석_기획/서비스_기획",
+    "ITT_AI_시험홈페이지_분석": ROOT / "02_분석_기획/ITT_AI_시험홈페이지_분석",
+    "DB_정제_설명문서": ROOT / "02_분석_기획/DB_정제_설명문서",
+    "DB_원본_엑셀": ROOT / "02_분석_기획/DB_원본_엑셀",
+    "시험홈페이지_통합_구현": ROOT / "03_프로젝트_도구/시험홈페이지_통합_구현",
+    "파일추출_업무프롬프트_생성기": ROOT / "03_프로젝트_도구/파일추출_업무프롬프트_생성기",
+}
 
 GROUPS = [
     ("예전작업/시험홈페이지_통합_구현", "시험홈페이지_통합_구현", "내부 업무도구/자동화"),
@@ -63,7 +74,7 @@ def main():
             relative = file.relative_to(origin)
             if not include(target_name, relative):
                 continue
-            target = DEST / target_name / relative
+            target = DESTINATIONS[target_name] / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(file, target)
             copied.append(target)
@@ -84,14 +95,14 @@ def main():
                 entries["htmlDocs"].append(item)
 
     # The archived AITE variants expect shared assets beside their HTML files.
-    output = DEST / "랜딩_커뮤니티_시안" / "랜딩페이지_시안_도출" / "output"
+    output = DESTINATIONS["랜딩_커뮤니티_시안"] / "랜딩페이지_시안_도출" / "output"
     variant = output / "aite-layout-redesign-variant-02-institution.html"
     variant.write_text(
         variant.read_text(encoding="utf-8").replace('href="../styles.css"', 'href="./styles.css"'),
         encoding="utf-8",
     )
-    shutil.copy2(ROOT / "랜딩페이지" / "기초_레이아웃" / "site.js", output / "site.js")
-    nested_index = DEST / "디자인시스템_확장시안" / "디자인MD" / "index.html"
+    shutil.copy2(ROOT / "01_화면_디자인/랜딩페이지/기초_레이아웃/site.js", output / "site.js")
+    nested_index = DESTINATIONS["디자인시스템_확장시안"] / "디자인MD" / "index.html"
     nested_index.write_text(
         nested_index.read_text(encoding="utf-8")
         .replace("./docs_rendered/", "../docs_rendered/")
@@ -99,7 +110,7 @@ def main():
         encoding="utf-8",
     )
     workbook_source = SOURCE / "Database" / "2. 추가  중요 디비.xlsx"
-    workbook_target = DEST / "DB_원본_엑셀" / workbook_source.name
+    workbook_target = DESTINATIONS["DB_원본_엑셀"] / workbook_source.name
     workbook_target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(workbook_source, workbook_target)
 
@@ -109,9 +120,9 @@ def main():
     ]:
         archive = ROOT / "downloads" / archive_name
         with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as output:
-            for file in sorted((DEST / folder).rglob("*")):
+            for file in sorted(DESTINATIONS[folder].rglob("*")):
                 if file.is_file() and file.suffix.lower() != ".exe":
-                    output.write(file, file.relative_to(DEST))
+                    output.write(file, file.relative_to(ROOT))
 
     source = INDEX.read_text(encoding="utf-8")
     prefix = "      const DATA = "

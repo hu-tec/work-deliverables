@@ -9,10 +9,10 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CSS = (ROOT / "디자인시스템/resource/DB_v2_HTML/local-preview.css").read_text(encoding="utf-8")
+CSS = (ROOT / "01_화면_디자인/디자인시스템/resource/DB_v2_HTML/local-preview.css").read_text(encoding="utf-8")
 DIRECTORIES = [
-    ROOT / "디자인시스템/resource/DB_v2_HTML",
-    ROOT / "추가_산출물/디자인시스템_확장시안/resource/DB_v2_HTML",
+    ROOT / "01_화면_디자인/디자인시스템/resource/DB_v2_HTML",
+    ROOT / "01_화면_디자인/디자인시스템_확장시안/resource/DB_v2_HTML",
 ]
 EXPIRED_LINK = re.compile(r'<link rel="stylesheet" href="https://s3-figma-foundry-cached-previews-production-sig\.figma\.com/[^\"]+">\s*')
 LOCAL_STYLE = re.compile(r'\s*<style id="db-v2-local-styles">.*?</style>', re.DOTALL)

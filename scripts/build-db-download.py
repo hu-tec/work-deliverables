@@ -8,7 +8,7 @@ from openpyxl import load_workbook
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DB = ROOT / "추가_산출물/DB_정제_설명문서"
+DB = ROOT / "02_분석_기획/DB_정제_설명문서"
 ARCHIVE = ROOT / "downloads/DB_정제_자료.zip"
 MANIFEST = ROOT / "db-files.js"
 
@@ -18,7 +18,7 @@ def main():
         file for file in DB.rglob("*")
         if file.is_file() and file.suffix.lower() in {".csv", ".md"}
     )
-    files.extend(sorted((ROOT / "추가_산출물/DB_원본_엑셀").glob("*.xlsx")))
+    files.extend(sorted((ROOT / "02_분석_기획/DB_원본_엑셀").glob("*.xlsx")))
     with zipfile.ZipFile(ARCHIVE, "w", zipfile.ZIP_DEFLATED) as output:
         for file in files:
             output.write(file, file.relative_to(ROOT).as_posix())

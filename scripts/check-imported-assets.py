@@ -7,7 +7,16 @@ from urllib.parse import unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
-IMPORTED = ROOT / "추가_산출물"
+IMPORTED = [
+    ROOT / "01_화면_디자인" / name
+    for name in ("디자인리소스_Figma_비교", "디자인시스템_확장시안", "랜딩_커뮤니티_시안", "신청서_삽입_예시")
+] + [
+    ROOT / "02_분석_기획" / name
+    for name in ("서비스_기획", "ITT_AI_시험홈페이지_분석", "DB_원본_엑셀", "DB_정제_설명문서")
+] + [
+    ROOT / "03_프로젝트_도구" / name
+    for name in ("시험홈페이지_통합_구현", "파일추출_업무프롬프트_생성기")
+]
 
 
 class References(HTMLParser):
@@ -38,7 +47,8 @@ def local_path(base, url):
 
 def main():
     missing = []
-    for file in IMPORTED.rglob("*"):
+    for folder in IMPORTED:
+      for file in folder.rglob("*"):
         if file.suffix.lower() == ".html":
             parser = References()
             parser.feed(file.read_text(encoding="utf-8", errors="replace"))
