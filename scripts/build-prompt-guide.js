@@ -8,7 +8,7 @@ const readMarkdown = filename => fs.readFileSync(path.join(guideDir, filename), 
 const topics = {
   accessibility: readMarkdown('웹접근성_프롬프트.md'),
   seoAeo: readMarkdown('SEO_AEO_프롬프트.md'),
-  privacy: readMarkdown('개인정보_자격증발급_프롬프트.md')
+  security: readMarkdown('보안_프롬프트.md')
 };
 const references = {
   legalAccessibility: readMarkdown('웹접근성_법령_기준.md'),

@@ -75,6 +75,18 @@
         color: var(--ink)
       }
 
+      .folder-location { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 8px; padding: 6px 8px; border-bottom: 1px solid var(--line); background: #f7fafb; font-size: 12px }
+      .folder-location[hidden] { display: none }
+      .folder-location .folder-label { flex: none; color: var(--muted); font-weight: 700 }
+      .folder-location code { flex: 1 1 260px; min-width: 0; color: var(--text); font: inherit; overflow-wrap: anywhere; user-select: all }
+      .folder-location button { flex: none; border: 1px solid var(--line); border-radius: 5px; padding: 4px 7px; background: #fff; color: var(--accent); font: inherit; cursor: pointer }
+      .folder-location button:hover, .folder-location button:focus-visible { background: var(--accent-soft) }
+      .section-folder-location { gap: 8px; padding: 5px 9px; background: #f8fafc; font-size: 11px }
+      .section-folder-location .section-folder-main { flex: 1 1 0; min-width: 0 }
+      .section-folder-location .folder-label { display: block; margin-bottom: 2px; color: #64748b; font-size: 10px }
+      .section-folder-location code { display: block; color: #536477; font-size: 10px; line-height: 1.3 }
+      .section-folder-location button { align-self: center; font-size: 10px }
+
       .reference-list {
         max-height: calc(100dvh - var(--main-top, 160px) - 6px);
         overflow: auto;
@@ -403,6 +415,18 @@
         border-top: 0
       }
 
+      #html-sections .html-purpose-group,
+      #md-sections .md-purpose-group,
+      #db-file-sections .db-purpose-group,
+      #tool-nav .tool-group { margin-bottom: 10px; border-bottom: 2px solid #cbd7e3 }
+      #html-sections .html-purpose-group > h3,
+      #md-sections .md-purpose-group > h3,
+      #db-file-sections .db-purpose-group > h3,
+      #tool-nav .tool-group > h3 { padding: 8px 10px; border-bottom: 1px solid #d8e3ed; background: #edf3f8; color: #183149 }
+      .subgroup-block { margin: 8px 6px 10px 10px; border-left: 3px solid #cbdce9; border-bottom: 1px solid var(--line); background: #fff }
+      .subgroup-block > .subsection-title { padding: 7px 8px; border-bottom: 1px solid var(--line); background: #f4f7fa; color: #253b52; font-size: 13px }
+      .subgroup-block .section-folder-location { border-bottom: 1px solid #e5ebf1 }
+
       .version-heading {
         margin: 0;
         padding: 7px 9px;
@@ -540,6 +564,11 @@
         overflow: hidden;
         text-overflow: ellipsis
       }
+
+      .work-table .file-download-cell { position: sticky; right: 0; z-index: 1; width: 86px; min-width: 86px; white-space: nowrap; text-align: center; background: #fff; box-shadow: -1px 0 0 var(--line) }
+      .work-table .file-download-heading { position: sticky; right: 0; z-index: 2; min-width: 86px; text-align: center; box-shadow: -1px 0 0 var(--line) }
+      .work-table .file-download-cell a { word-break: normal }
+      .work-table .title-file .file-name, .work-table .mini-title-file .file-name { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 
       .work-table .title-text {
         display: block;
@@ -1396,7 +1425,7 @@
       <div class="wrap">
         <h1>📁 업무산출물</h1>
         <p style="margin:6px 0 10px; font-size:13px;"><a href="PROJECT_STRUCTURE.html" style="color:inherit; text-decoration:underline;">폴더 구조 안내</a> · <a href="01_화면_디자인/랜딩페이지/랜딩페이지3종/README.md" style="color:inherit; text-decoration:underline;">랜딩 ver1/ver2 위치</a></p>
-        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button><button class="tab" type="button" data-panel="prompt-guide-panel">6. 📋 프롬프트 제시 가이드</button><button class="tab" type="button" data-panel="ui-prompt-panel">7. 🧩 UI 설명 프롬프트</button><button class="tab" type="button" data-panel="ui-pattern-panel">8. 🧱 UI 패턴 예시</button><button class="tab" type="button" data-panel="special-prompt-panel">9. 🔍 접근성·SEO·개인정보 프롬프트</button><button class="tab" type="button" data-panel="legal-reference-panel">10. ⚖ 법령·기준</button><button class="tab" type="button" data-panel="skill-reference-panel">11. 🛠 점검 스킬·도구</button></div>
+        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button><button class="tab" type="button" data-panel="prompt-guide-panel">6. 📋 프롬프트 제시 가이드</button><button class="tab" type="button" data-panel="ui-prompt-panel">7. 🧩 UI 설명 프롬프트</button><button class="tab" type="button" data-panel="ui-pattern-panel">8. 🧱 UI 패턴 예시</button><button class="tab" type="button" data-panel="special-prompt-panel">9. 🔍 접근성·SEO·보안 프롬프트</button><button class="tab" type="button" data-panel="legal-reference-panel">10. ⚖ 법령·기준</button><button class="tab" type="button" data-panel="skill-reference-panel">11. 🛠 점검 스킬·도구</button></div>
       </div>
     </header>
     <main>
@@ -1412,6 +1441,7 @@
           </section>
           <article class="viewer">
             <div class="head db-download-head"><div><h2 id="db-preview-title" class="section-title">파일을 선택해 주세요.</h2><p id="db-preview-meta" class="note">CSV·Markdown·Excel 내용을 이 페이지에서 확인합니다.</p></div><a id="db-preview-download" class="row-download-link" href="#" download hidden>⬇ 파일 다운로드</a></div>
+            <div id="db-folder-location" class="folder-location" hidden><span class="folder-label">폴더 위치</span><code></code><button type="button" data-copy-folder="db">폴더 경로 복사</button></div>
             <div id="db-sheet-tabs" class="db-sheet-tabs" hidden></div>
             <div id="db-preview-body" class="db-preview-body placeholder">왼쪽 목록에서 DB 파일을 선택해 주세요.</div>
           </article>
@@ -1425,6 +1455,7 @@
           </section>
           <article class="viewer">
             <div class="head"><h2 id="tool-detail-title" class="section-title">소스·실행 파일 다운로드</h2><p class="note">선택한 항목의 다운로드 파일과 관련 기획 문서를 확인하세요.</p></div>
+            <div id="tool-folder-location" class="folder-location" hidden><span class="folder-label">폴더 위치</span><code></code><button type="button" data-copy-folder="tool">폴더 경로 복사</button></div>
             <div id="tool-download-list" class="placeholder">왼쪽에서 프로젝트나 도구를 선택해 주세요.</div>
             <div id="tool-doc-tabs" class="tool-doc-tabs" hidden></div>
             <div id="tool-doc-body" class="tool-doc-body markdown placeholder">왼쪽에서 도구를 선택하면 만든 이유와 관련 MD가 표시됩니다.</div>
@@ -1436,7 +1467,7 @@
           <section class="library">
             <div class="head">
               <h2 class="section-title">📄 HTML 산출물 <span id="html-total-count" class="count"></span></h2>
-              <p class="note">HTML 파일은 오른쪽 패널에서 바로 확인합니다.</p>
+              <p class="note">대분류를 펼친 뒤 소분류별 폴더를 확인하세요. 파일은 오른쪽에서 미리보고 각 행에서 다운로드합니다.</p>
               <div class="html-list-toolbar">
                 <input id="html-search" class="search" type="search" placeholder="HTML 제목 또는 경로 검색">
                 <div class="view-toggle" aria-label="HTML 보기 방식">
@@ -1456,8 +1487,9 @@
             <div class="head">
               <h2 id="preview-title" class="section-title">이 목록을 만든 이유</h2>
               <p id="preview-path" class="note">산출물의 목적과 내용을 한곳에서 확인하기 위해 만들었습니다.</p>
-              <div class="viewer-actions"><button id="html-expand" type="button">목록 숨기기</button><button id="md-side-toggle" type="button" aria-expanded="false" aria-controls="html-source-panel" hidden>Markdown 열기</button><a id="html-open-full" href="#" target="_blank" rel="noopener" hidden>원본 HTML 새 탭에서 열기</a></div>
+              <div class="viewer-actions"><button id="html-expand" type="button">목록 숨기기</button><button id="md-side-toggle" type="button" aria-expanded="false" aria-controls="html-source-panel" hidden>Markdown 열기</button><a id="html-open-full" href="#" target="_blank" rel="noopener" hidden>원본 HTML 새 탭에서 열기</a><a id="html-download-current" href="#" download hidden>⬇ 파일 다운로드</a></div>
             </div>
+            <div id="html-folder-location" class="folder-location" hidden><span class="folder-label">폴더 위치</span><code></code><button type="button" data-copy-folder="html">폴더 경로 복사</button></div>
             <div id="html-preview-grid" class="html-preview-grid">
               <div id="preview-empty" class="preview-empty">업무 산출물을 분류해 문서와 화면을 찾고, 검토하고, 전달하기 쉽게 모았습니다.</div>
               <iframe id="preview-frame" class="preview-frame" title="HTML 산출물 미리보기" hidden></iframe>
@@ -1482,7 +1514,7 @@
           <section class="library">
             <div class="head">
               <h2 class="section-title">📝 Markdown 산출물 <span id="md-total-count" class="count"></span></h2>
-              <p class="note">MD 파일은 본문을 이 페이지에 내장해 로컬에서도 바로 열리도록 했습니다.</p>
+              <p class="note">소분류별 폴더 경로를 확인·복사할 수 있습니다. MD 본문은 이 페이지에서 바로 보고 각 파일을 다운로드합니다.</p>
               <div class="md-list-toolbar">
                 <input id="md-search" class="search" type="search" placeholder="Markdown 제목 또는 경로 검색">
                 <div class="view-toggle" aria-label="Markdown 보기 방식">
@@ -1497,8 +1529,9 @@
             <div class="head">
               <h2 id="viewer-title" class="section-title">문서를 선택하세요</h2>
               <p id="viewer-path" class="note">왼쪽 목록에서 Markdown 문서를 클릭하면 이 영역에 표시됩니다.</p>
-              <div class="viewer-actions"><button id="md-expand" type="button">목록 숨기기</button><a id="raw-link" href="#" target="_blank" rel="noopener" hidden>원문 열기</a><button id="copy-link" type="button" hidden>경로 복사</button></div>
+              <div class="viewer-actions"><button id="md-expand" type="button">목록 숨기기</button><a id="raw-link" href="#" target="_blank" rel="noopener" hidden>원문 열기</a><a id="md-download-current" href="#" download hidden>⬇ 파일 다운로드</a><button id="copy-link" type="button" hidden>경로 복사</button></div>
             </div>
+            <div id="md-folder-location" class="folder-location" hidden><span class="folder-label">폴더 위치</span><code></code><button type="button" data-copy-folder="md">폴더 경로 복사</button></div>
             <div id="viewer-body" class="placeholder">Markdown 탭의 문서 목록에서 항목을 선택하세요.</div>
             <div id="md-backlinks-panel" class="backlink-panel" hidden>
               <div class="head">
@@ -1558,15 +1591,15 @@
       </section>
       <section id="special-prompt-panel" class="panel">
         <div class="guide-shell specialized-shell">
-          <div class="guide-head"><h2 class="section-title">접근성·SEO·개인정보 프롬프트</h2><p class="note">상황에 맞는 요청문을 복사하세요. <button class="guide-panel-link" type="button" data-open-panel="legal-reference-panel">법령·기준 보기 →</button> · <button class="guide-panel-link" type="button" data-open-panel="skill-reference-panel">점검 스킬·도구 보기 →</button></p></div>
+          <div class="guide-head"><h2 class="section-title">접근성·SEO·보안 프롬프트</h2><p class="note">상황에 맞는 요청문을 복사하세요. <button class="guide-panel-link" type="button" data-open-panel="legal-reference-panel">법령·기준 보기 →</button> · <button class="guide-panel-link" type="button" data-open-panel="skill-reference-panel">점검 스킬·도구 보기 →</button></p></div>
           <div class="special-topic-tabs" role="tablist" aria-label="전문 프롬프트 주제">
             <button id="special-tab-accessibility" class="special-topic-tab" type="button" role="tab" aria-selected="true" aria-controls="special-content-accessibility" tabindex="0" data-special-topic="accessibility">웹접근성 · KWCAG</button>
             <button id="special-tab-seo" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="special-content-seo" tabindex="-1" data-special-topic="seoAeo">SEO · AEO</button>
-            <button id="special-tab-privacy" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="special-content-privacy" tabindex="-1" data-special-topic="privacy">개인정보 · 자격증 발급</button>
+            <button id="special-tab-security" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="special-content-security" tabindex="-1" data-special-topic="security">보안 프롬프트</button>
           </div>
           <article id="special-content-accessibility" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-accessibility" tabindex="0" data-special-content="accessibility"></article>
           <article id="special-content-seo" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-seo" tabindex="0" data-special-content="seoAeo" hidden></article>
-          <article id="special-content-privacy" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-privacy" tabindex="0" data-special-content="privacy" hidden></article>
+          <article id="special-content-security" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-security" tabindex="0" data-special-content="security" hidden></article>
         </div>
       </section>
       <section id="legal-reference-panel" class="panel">
@@ -3897,6 +3930,112 @@
         } [c]))
       }
 
+      const selectedFolders = {};
+      const detectedLocalRoot = location.protocol === 'file:'
+        ? decodeURIComponent(new URL('.', location.href).pathname).replace(/^\/(?=[A-Za-z]:\/)/, '').replace(/\//g, '\\').replace(/\\+$/, '')
+        : '';
+      function folderPath(path, isFolder) {
+        const parts = String(path || '').replace(/\\/g, '/').split('/').filter(Boolean);
+        if (!isFolder) parts.pop();
+        return parts.join('\\')
+      }
+      function absoluteFolderPath(relative) {
+        const folder = String(relative || '').replace(/\//g, '\\');
+        return detectedLocalRoot ? detectedLocalRoot + (folder ? '\\' + folder : '') : folder
+      }
+      function summarizeFolderPaths(directories) {
+        const paths = [...new Set(directories.map(path => String(path || '').replace(/\\/g, '/').replace(/\/+$/, '')).filter(Boolean))];
+        if (paths.length < 2) return paths;
+        const parts = paths.map(path => path.split('/'));
+        let commonLength = 0;
+        while (parts.every(path => path[commonLength] && path[commonLength] === parts[0][commonLength])) commonLength++;
+        if (commonLength >= 2) return [parts[0].slice(0, commonLength).join('/')];
+        return [...new Set(parts.map(path => path.slice(0, Math.max(2, commonLength + 1)).join('/')))]
+      }
+      function folderPathsForFiles(items) {
+        return summarizeFolderPaths(items.map(item => String(item.path || '').split('/').slice(0, -1).join('/')))
+      }
+      function renderSectionFolderPaths(paths, label = '자료 폴더') {
+        return paths.map(path => '<div class="folder-location section-folder-location" data-section-folder="' + esc(path) + '"><div class="section-folder-main"><span class="folder-label">' + esc(label) + ' · 저장소 기준</span><code></code></div><button type="button" data-copy-section-folder="' + esc(path) + '" aria-label="' + esc(path) + ' 폴더 경로 복사">경로 복사</button></div>').join('')
+      }
+      function updateSectionFolderPaths() {
+        document.querySelectorAll('[data-section-folder]').forEach(row => {
+          const relative = row.dataset.sectionFolder;
+          const absolute = absoluteFolderPath(relative);
+          row.querySelector('code').textContent = relative.replace(/\//g, '\\');
+          row.querySelector('code').title = absolute;
+          row.querySelector('button').textContent = detectedLocalRoot ? '전체 경로 복사' : '경로 복사'
+        })
+      }
+      function updateFolderLocation(kind) {
+        const row = document.getElementById(kind + '-folder-location');
+        const relative = selectedFolders[kind];
+        if (relative === undefined) return;
+        const fullPath = absoluteFolderPath(relative);
+        row.querySelector('.folder-label').textContent = detectedLocalRoot ? '이 PC의 폴더' : '저장소 내 폴더';
+        row.querySelector('code').textContent = fullPath || '저장소 루트';
+        const button = row.querySelector('button');
+        button.disabled = !fullPath;
+        button.textContent = detectedLocalRoot ? '폴더 경로 복사' : '상대 경로 복사';
+        row.hidden = false
+      }
+      function showFolderLocation(kind, path, isFolder) {
+        selectedFolders[kind] = folderPath(path, isFolder);
+        updateFolderLocation(kind)
+      }
+      document.querySelectorAll('[data-copy-folder]').forEach(button => button.addEventListener('click', async () => {
+        const row = button.closest('.folder-location');
+        const value = row.querySelector('code').textContent;
+        if (button.disabled) return;
+        let copied = false;
+        try {
+          await navigator.clipboard.writeText(value);
+          copied = true
+        } catch (error) {
+          const textarea = document.createElement('textarea');
+          textarea.value = value;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          try {
+            copied = document.execCommand('copy')
+          } catch (copyError) {
+            copied = false
+          }
+          textarea.remove()
+        }
+        button.textContent = copied ? '복사됨' : '복사 실패';
+        setTimeout(() => updateFolderLocation(button.dataset.copyFolder), 1400)
+      }));
+      document.addEventListener('click', async event => {
+        const button = event.target.closest('[data-copy-section-folder]');
+        if (!button) return;
+        const value = absoluteFolderPath(button.dataset.copySectionFolder);
+        let copied = false;
+        try {
+          await navigator.clipboard.writeText(value);
+          copied = true
+        } catch (error) {
+          const textarea = document.createElement('textarea');
+          textarea.value = value;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          try {
+            copied = document.execCommand('copy')
+          } catch (copyError) {
+            copied = false
+          }
+          textarea.remove()
+        }
+        button.textContent = copied ? '복사됨' : '복사 실패';
+        setTimeout(() => {
+          if (button.isConnected) button.textContent = detectedLocalRoot ? '전체 경로 복사' : '경로 복사'
+        }, 1400)
+      });
+
       const dbSearch = document.getElementById('db-search');
       const dbFileSections = document.getElementById('db-file-sections');
       const dbFiles = window.DB_FILES || [];
@@ -3920,6 +4059,7 @@
         dbFileSections.querySelectorAll('.db-file-row').forEach(row => row.classList.toggle('active', row.dataset.dbPath === path));
         document.getElementById('db-preview-title').textContent = file.name;
         document.getElementById('db-preview-meta').textContent = file.path;
+        showFolderLocation('db', file.path, false);
         dbPreviewDownload.href = encodeURI(file.path);
         dbPreviewDownload.download = file.name;
         dbPreviewDownload.hidden = false;
@@ -3946,11 +4086,12 @@
         dbFileSections.innerHTML = Object.keys(grouped).sort((a, b) => a.localeCompare(b, 'ko')).map((group, index) => {
           const isOpen = term ? !collapsedDbSearchGroups.has(group) : expandedDbGroups.has(group);
           const bodyId = 'db-group-body-' + index;
-          return '<section class="section db-purpose-group"><h3><button class="db-group-toggle" type="button" data-db-group-toggle="' + esc(group) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(group) + ' <span class="count">' + grouped[group].length + '개</span></button></h3><div id="' + bodyId + '" class="db-file-list"' + (isOpen ? '' : ' hidden') + '>' +
+          return '<section class="section db-purpose-group"><h3><button class="db-group-toggle" type="button" data-db-group-toggle="' + esc(group) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(group) + ' <span class="count">' + grouped[group].length + '개</span></button></h3><div id="' + bodyId + '" class="db-file-list"' + (isOpen ? '' : ' hidden') + '>' + renderSectionFolderPaths(folderPathsForFiles(grouped[group]), 'DB 자료 폴더') +
           grouped[group].map(file => '<div class="db-file-row' + (file.path === activeDbPath ? ' active' : '') + '" data-db-path="' + esc(file.path) + '"><button type="button" data-db-open="' + esc(file.path) + '" title="' + esc(file.path) + '">' + esc(file.name) + '</button><small>' + Math.max(1, Math.round(file.size / 1024)) + ' KB</small><a class="row-download-link" href="' + encodeURI(file.path) + '" download>⬇ 다운로드</a></div>').join('') +
           '</div></section>'
         }
-        ).join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
+        ).join('') || '<div class="placeholder">검색 결과가 없습니다.</div>';
+        updateSectionFolderPaths()
       }
       dbSearch.addEventListener('input', () => {
         collapsedDbSearchGroups.clear();
@@ -4111,7 +4252,7 @@
       }
 
       function rowDownloadLink(d) {
-        return '<a class="row-download-link" href="' + encodeURI(d.path) + '" download="' + esc(d.path.split('/').pop()) + '" title="' + esc(d.path) + ' 다운로드" aria-label="' + esc(shortTitle(d)) + ' 파일 다운로드">⬇</a>'
+        return '<a class="row-download-link" href="' + encodeURI(d.path) + '" download="' + esc(d.path.split('/').pop()) + '" title="' + esc(d.path) + ' 다운로드" aria-label="' + esc(shortTitle(d)) + ' 파일 다운로드">⬇ 다운로드</a>'
       }
 
       function selectionCheckbox(d) {
@@ -4119,14 +4260,14 @@
       }
 
       function renderTable2(items) {
-        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><span class="file-with-download"><span class="file-name" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</span>' + rowDownloadLink(d) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th><th class="file-download-heading">다운로드</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><span class="file-name" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td><td class="file-download-cell">' + rowDownloadLink(d) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderHtmlMiniTable2(items) {
-        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><span class="file-with-download"><span class="file-name" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</span>' + rowDownloadLink(d) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>선택</th><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th><th class="file-download-heading">다운로드</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td>' + selectionCheckbox(d) + '</td><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><span class="file-name" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td><td class="file-download-cell">' + rowDownloadLink(d) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
@@ -4140,7 +4281,7 @@
         let output = regular.length ? renderItems(regular) : '';
         versions.forEach(version => {
           const matches = items.filter(item => item.title.endsWith(' ' + version));
-          if (matches.length) output += '<h4 class="version-heading">랜딩페이지 ' + version + ' <span class="count">' + matches.length + '개</span></h4>' + renderItems(matches)
+          if (matches.length) output += '<h4 class="version-heading">랜딩페이지 ' + version + ' <span class="count">' + matches.length + '개</span></h4>' + renderSectionFolderPaths(folderPathsForFiles(matches), '버전 폴더') + renderItems(matches)
         });
         return output
       }
@@ -4253,7 +4394,7 @@
           const key = JSON.stringify([title, subsection]);
           const isOpen = searchTerm ? !collapsedSearchSubgroups.has(key) : expandedHtmlSubgroups.has(key);
           const bodyId = 'html-subgroup-body-' + groupIndex + '-' + index;
-          return '<h4 class="subsection-title"><button class="html-subgroup-toggle" type="button" data-html-subgroup-toggle="' + esc(title) + '" data-html-subsection="' + esc(subsection) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(subsection) + ' <span class="count">' + group.length + '개</span></button></h4><div id="' + bodyId + '"' + (isOpen ? '' : ' hidden') + '>' + groupPurpose(subsection) + body + '</div>'
+          return '<section class="subgroup-block"><h4 class="subsection-title"><button class="html-subgroup-toggle" type="button" data-html-subgroup-toggle="' + esc(title) + '" data-html-subsection="' + esc(subsection) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(subsection) + ' <span class="count">' + group.length + '개</span></button></h4><div id="' + bodyId + '"' + (isOpen ? '' : ' hidden') + '>' + renderSectionFolderPaths(folderPathsForFiles(group), '소분류 폴더') + groupPurpose(subsection) + body + '</div></section>'
         }).join('')
       }
 
@@ -4328,7 +4469,7 @@
             const key = JSON.stringify([section, subsection]);
             const subOpen = term ? !collapsedMdSearchSubgroups.has(key) : expandedMdSubgroups.has(key);
             const subBodyId = 'md-subgroup-body-' + groupIndex + '-' + index;
-            return '<h4 class="subsection-title"><button class="md-subgroup-toggle" type="button" data-md-subgroup-toggle="' + esc(section) + '" data-md-subsection="' + esc(subsection) + '" aria-expanded="' + subOpen + '" aria-controls="' + subBodyId + '">' + esc(subsection) + ' <span class="count">' + bySubsection[subsection].length + '개</span></button></h4><div id="' + subBodyId + '" class="md-subgroup-body"' + (subOpen ? '' : ' hidden') + '>' + groupPurpose(subsection) + renderMdTable(bySubsection[subsection]) + '</div>'
+            return '<section class="subgroup-block"><h4 class="subsection-title"><button class="md-subgroup-toggle" type="button" data-md-subgroup-toggle="' + esc(section) + '" data-md-subsection="' + esc(subsection) + '" aria-expanded="' + subOpen + '" aria-controls="' + subBodyId + '">' + esc(subsection) + ' <span class="count">' + bySubsection[subsection].length + '개</span></button></h4><div id="' + subBodyId + '" class="md-subgroup-body"' + (subOpen ? '' : ' hidden') + '>' + renderSectionFolderPaths(folderPathsForFiles(bySubsection[subsection]), '소분류 폴더') + groupPurpose(subsection) + renderMdTable(bySubsection[subsection]) + '</div></section>'
           }).join('');
           return '<section class="section md-purpose-group"><h3><button class="md-group-toggle" type="button" data-md-group-toggle="' + esc(section) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(section) + ' <span class="count">' + grouped[section].length + '개</span></button>' + mdSectionDownload(section) + '</h3><div id="' + bodyId + '" class="md-group-body"' + (isOpen ? '' : ' hidden') + '>' + groupPurpose(section) + body + '</div></section>'
         }).join('')
@@ -4342,7 +4483,7 @@
           const key = JSON.stringify([group.section, group.subsection]);
           const isOpen = term ? !collapsedMdSearchSubgroups.has(key) : expandedMdSubgroups.has(key);
           const bodyId = 'md-card-body-' + index;
-          return '<section class="section md-purpose-group"><h3><button class="md-group-toggle" type="button" data-md-subgroup-toggle="' + esc(group.section) + '" data-md-subsection="' + esc(group.subsection) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(group.section + ' > ' + group.subsection) + ' <span class="count">' + group.items.length + '개</span></button>' + mdSectionDownload(group.section) + '</h3><div id="' + bodyId + '" class="md-group-body"' + (isOpen ? '' : ' hidden') + '>' + groupPurpose(group.subsection) + renderMdMiniTable(group.items) + '</div></section>'
+          return '<section class="section md-purpose-group"><h3><button class="md-group-toggle" type="button" data-md-subgroup-toggle="' + esc(group.section) + '" data-md-subsection="' + esc(group.subsection) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(group.section + ' > ' + group.subsection) + ' <span class="count">' + group.items.length + '개</span></button>' + mdSectionDownload(group.section) + '</h3><div id="' + bodyId + '" class="md-group-body"' + (isOpen ? '' : ' hidden') + '>' + renderSectionFolderPaths(folderPathsForFiles(group.items), '소분류 폴더') + groupPurpose(group.subsection) + renderMdMiniTable(group.items) + '</div></section>'
         }).join('')
       }
 
@@ -4695,7 +4836,7 @@
         const sourceFiles = {
           accessibility: '웹접근성_프롬프트.md',
           seoAeo: 'SEO_AEO_프롬프트.md',
-          privacy: '개인정보_자격증발급_프롬프트.md'
+          security: '보안_프롬프트.md'
         };
         const documents = window.SPECIALIZED_PROMPT_GUIDES || {};
         const tabs = Array.from(document.querySelectorAll('[data-special-topic]'));
@@ -4807,26 +4948,26 @@
       }));
 
       function renderTable(items) {
-        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><span class="file-with-download"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a>' + rowDownloadLink(d) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th><th class="file-download-heading">다운로드</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a></td><td class="date">' + esc(createdDate(d)) + '</td><td class="file-download-cell">' + rowDownloadLink(d) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderMdTable(items) {
-        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th><th class="file-download-heading">다운로드</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</td><td class="date">' + esc(createdDate(d)) + '</td><td class="file-download-cell">' + rowDownloadLink(d) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderHtmlMiniTable(items) {
-        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><span class="file-with-download"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a>' + rowDownloadLink(d) + '</span><small>' + esc(modifiedDate(d)) + '</small></td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th class="file-download-heading">다운로드</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a><small>' + esc(modifiedDate(d)) + '</small></td><td class="file-download-cell">' + rowDownloadLink(d) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
       function renderMdMiniTable(items) {
-        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th></tr></thead><tbody>' +
-          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</td></tr>').join('') +
+        return '<div class="table-wrap"><table class="work-table mini-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th class="file-download-heading">다운로드</th></tr></thead><tbody>' +
+          items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td class="mini-title"><button class="doc-table-button title-text" type="button" data-path="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="mini-title-file" title="' + esc(d.path) + '">' + esc(fileName(d)) + '</td><td class="file-download-cell">' + rowDownloadLink(d) + '</td></tr>').join('') +
           '</tbody></table></div>'
       }
 
@@ -4842,6 +4983,7 @@
         else if (htmlView === 'table2') htmlOutput = renderHtmlGroup2Tables(grouped2, term);
         else if (htmlView === 'card2') htmlOutput = renderHtmlGroup2Cards(grouped2, term);
         htmlSections.innerHTML = htmlOutput || '<div class="placeholder">검색 결과가 없습니다.</div>';
+        updateSectionFolderPaths();
         updateSelectedDownloadControls()
       }
 
@@ -4850,7 +4992,8 @@
           filtered = DATA.mdDocs.filter(d => !term || (d.section + ' ' + (d.subsection || '') + ' ' + d.title + ' ' + d.path + ' ' + d.date).toLowerCase().includes(term)),
           grouped = group(filtered);
         mdSections.className = mdView === 'card' ? 'card-grid section-card-grid' : '';
-        mdSections.innerHTML = (mdView === 'table' ? renderMdGroupedTables(grouped, term) : renderMdGroupedCards(grouped, term)) || '<div class="placeholder">검색 결과가 없습니다.</div>'
+        mdSections.innerHTML = (mdView === 'table' ? renderMdGroupedTables(grouped, term) : renderMdGroupedCards(grouped, term)) || '<div class="placeholder">검색 결과가 없습니다.</div>';
+        updateSectionFolderPaths()
       }
 
       function mdDoc(path) {
@@ -4930,6 +5073,7 @@
         document.querySelectorAll('[data-html-preview]').forEach(b => b.classList.toggle('active', b.dataset.htmlPreview === path));
         previewTitle.textContent = shortTitle(doc);
         previewPath.textContent = '만든날짜 ' + createdDate(doc) + ' · 수정날짜 ' + modifiedDate(doc) + ' · ' + doc.path;
+        showFolderLocation('html', doc.path, false);
         document.getElementById('preview-empty').hidden = true;
         previewFrame.hidden = false;
         const hasSource = Array.isArray(doc.sourceDocs) && doc.sourceDocs.length > 0;
@@ -4943,6 +5087,10 @@
         previewFrame.src = encodeURI(doc.path);
         htmlOpenFull.href = encodeURI(doc.path);
         htmlOpenFull.hidden = false;
+        const htmlDownloadCurrent = document.getElementById('html-download-current');
+        htmlDownloadCurrent.href = encodeURI(doc.path);
+        htmlDownloadCurrent.download = fileName(doc);
+        htmlDownloadCurrent.hidden = false;
         if (hasSource) renderHtmlSourceList(doc)
       }
 
@@ -4952,8 +5100,13 @@
         document.querySelectorAll('[data-path]').forEach(b => b.classList.toggle('active', b.dataset.path === p));
         titleEl.textContent = shortTitle(doc);
         pathEl.textContent = '만든날짜 ' + createdDate(doc) + ' · 수정날짜 ' + modifiedDate(doc) + ' · ' + doc.path;
+        showFolderLocation('md', doc.path, false);
         rawLink.href = encodeURI(doc.path);
         rawLink.hidden = false;
+        const mdDownloadCurrent = document.getElementById('md-download-current');
+        mdDownloadCurrent.href = encodeURI(doc.path);
+        mdDownloadCurrent.download = fileName(doc);
+        mdDownloadCurrent.hidden = false;
         copyLink.hidden = false;
         bodyEl.className = 'markdown';
         bodyEl.innerHTML = renderMarkdown(doc.content, doc.path);
@@ -5308,6 +5461,7 @@
         const bodyId = 'tool-group-body-' + groupIndex;
         return '<section class="tool-group"><h3><button class="tool-group-toggle" type="button" data-tool-group="' + groupIndex + '" aria-expanded="false" aria-controls="' + bodyId + '">' + esc(group.title) + ' <span class="count">' + group.indexes.length + '개</span></button></h3><div id="' + bodyId + '" class="tool-group-body" hidden>' + group.indexes.map(index => '<button class="doc-button" type="button" data-tool="' + index + '">' + esc(internalTools[index].name) + '</button>').join('') + '</div></section>'
       }).join('');
+      updateSectionFolderPaths();
       function showToolDoc(path) {
         const doc = DATA.mdDocs.find(item => item.path === path);
         toolDocTabs.querySelectorAll('button').forEach(button => button.classList.toggle('active', button.dataset.toolDoc === path));
@@ -5319,6 +5473,7 @@
         if (!tool) return;
         toolNav.querySelectorAll('button').forEach(button => button.classList.toggle('active', Number(button.dataset.tool) === index));
         document.getElementById('tool-detail-title').textContent = tool.name;
+        showFolderLocation('tool', tool.sourcePath || tool.docs[0].split('/').slice(0, 2).join('/'), true);
         toolDownloadList.className = '';
         toolDownloadList.innerHTML = '<div class="tool-row selected-tool"><div><strong>' + esc(tool.name) + '</strong><p>' + esc(tool.why) + '</p>' + (tool.sourcePath ? '<p class="tool-path">이관 위치: ' + esc(tool.sourcePath) + '</p>' : '') + '</div><div><a class="row-download-link" href="' + encodeURI(tool.zip) + '" download>⬇ ' + (tool.sourcePath ? '프로젝트 소스 ZIP' : 'ZIP 다운로드') + '</a>' + (tool.executable ? '<a class="row-download-link" href="' + encodeURI(tool.executable) + '" download>⬇ 실행 파일 다운로드</a>' : '') + '</div></div>';
         toolDocTabs.hidden = false;
