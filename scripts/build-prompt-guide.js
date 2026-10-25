@@ -10,6 +10,11 @@ const topics = {
   seoAeo: readMarkdown('SEO_AEO_프롬프트.md'),
   privacy: readMarkdown('개인정보_자격증발급_프롬프트.md')
 };
+const references = {
+  legalAccessibility: readMarkdown('웹접근성_법령_기준.md'),
+  legalPrivacy: readMarkdown('개인정보_보안_법령_기준.md'),
+  skills: readMarkdown('점검_스킬_도구_해설.md')
+};
 const artifacts = [
   {
     output: path.join(guideDir, 'content.js'),
@@ -20,6 +25,11 @@ const artifacts = [
     output: path.join(guideDir, 'specialized-content.js'),
     generated: '// Generated from topic Markdown files by scripts/build-prompt-guide.js.\n' +
       'window.SPECIALIZED_PROMPT_GUIDES = ' + JSON.stringify(topics) + ';\n'
+  },
+  {
+    output: path.join(guideDir, 'reference-content.js'),
+    generated: '// Generated from reference Markdown files by scripts/build-prompt-guide.js.\n' +
+      'window.PROMPT_REFERENCE_GUIDES = ' + JSON.stringify(references) + ';\n'
   }
 ];
 

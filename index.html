@@ -1202,6 +1202,8 @@
       .guide-heading-row { display: flex; align-items: center; justify-content: space-between; gap: 10px }
       .guide-layout-toggle { flex: none; border: 1px solid var(--line); background: #fff; color: var(--accent); padding: 5px 9px; cursor: pointer; font: inherit; font-size: 12px }
       .guide-layout-toggle:hover { background: var(--accent-soft) }
+      .guide-panel-link { border: 0; background: transparent; color: var(--accent); padding: 0 2px; cursor: pointer; font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px }
+      .guide-panel-link:hover, .guide-panel-link:focus-visible { background: var(--accent-soft) }
       .guide-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); flex: 1; min-height: 0 }
       .guide-nav { overflow: auto; padding: 8px; border-right: 1px solid var(--line); background: #fafbfc }
       .guide-nav button { display: block; width: 100%; border: 0; border-radius: 6px; background: transparent; color: var(--ink); padding: 7px 8px; text-align: left; cursor: pointer; font: inherit; font-size: 12px }
@@ -1394,7 +1396,7 @@
       <div class="wrap">
         <h1>📁 업무산출물</h1>
         <p style="margin:6px 0 10px; font-size:13px;"><a href="PROJECT_STRUCTURE.html" style="color:inherit; text-decoration:underline;">폴더 구조 안내</a> · <a href="01_화면_디자인/랜딩페이지/랜딩페이지3종/README.md" style="color:inherit; text-decoration:underline;">랜딩 ver1/ver2 위치</a></p>
-        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button><button class="tab" type="button" data-panel="prompt-guide-panel">6. 📋 프롬프트 제시 가이드</button><button class="tab" type="button" data-panel="ui-prompt-panel">7. 🧩 UI 설명 프롬프트</button><button class="tab" type="button" data-panel="ui-pattern-panel">8. 🧱 UI 패턴 예시</button><button class="tab" type="button" data-panel="special-prompt-panel">9. 🔍 접근성·SEO·개인정보 프롬프트</button></div>
+        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button><button class="tab" type="button" data-panel="prompt-guide-panel">6. 📋 프롬프트 제시 가이드</button><button class="tab" type="button" data-panel="ui-prompt-panel">7. 🧩 UI 설명 프롬프트</button><button class="tab" type="button" data-panel="ui-pattern-panel">8. 🧱 UI 패턴 예시</button><button class="tab" type="button" data-panel="special-prompt-panel">9. 🔍 접근성·SEO·개인정보 프롬프트</button><button class="tab" type="button" data-panel="legal-reference-panel">10. ⚖ 법령·기준</button><button class="tab" type="button" data-panel="skill-reference-panel">11. 🛠 점검 스킬·도구</button></div>
       </div>
     </header>
     <main>
@@ -1529,7 +1531,7 @@
       </section>
       <section id="prompt-guide-panel" class="panel">
         <div class="guide-shell">
-          <div class="guide-head"><div class="guide-heading-row"><h2 class="section-title">프롬프트 제시 가이드</h2><button id="guide-layout-toggle" class="guide-layout-toggle" type="button" aria-pressed="false">1단 보기</button></div><p class="note">작업 목적에 맞는 사례를 골라 프롬프트를 복사하세요. 원본 문서: <a href="04_작업_가이드/AI_작업요청_프롬프트_가이드/README.md" target="_blank" rel="noopener">README.md</a> · <a href="01_화면_디자인/디자인시스템/밀도_그리드_좌측정렬_검토/index.html" target="_blank" rel="noopener">밀도·그리드·좌측 정렬 UI 검토안</a></p></div>
+          <div class="guide-head"><div class="guide-heading-row"><h2 class="section-title">프롬프트 제시 가이드</h2><button id="guide-layout-toggle" class="guide-layout-toggle" type="button" aria-pressed="false">1단 보기</button></div><p class="note">작업 목적에 맞는 사례를 골라 프롬프트를 복사하세요. 세부 점검 요청은 9번, 법령·기준은 10번, 스킬 설명은 11번 탭에 있습니다. 원본 문서: <a href="04_작업_가이드/AI_작업요청_프롬프트_가이드/README.md" target="_blank" rel="noopener">README.md</a> · <a href="01_화면_디자인/디자인시스템/밀도_그리드_좌측정렬_검토/index.html" target="_blank" rel="noopener">밀도·그리드·좌측 정렬 UI 검토안</a></p></div>
           <div class="guide-layout">
             <nav id="guide-nav" class="guide-nav" aria-label="프롬프트 사례 목차"></nav>
             <article id="guide-content" class="markdown guide-content"></article>
@@ -1556,7 +1558,7 @@
       </section>
       <section id="special-prompt-panel" class="panel">
         <div class="guide-shell specialized-shell">
-          <div class="guide-head"><h2 class="section-title">접근성·SEO·개인정보 프롬프트</h2><p class="note">주제별 설명을 읽고 실제 대상과 근거 문서를 채운 뒤 프롬프트를 복사하세요.</p></div>
+          <div class="guide-head"><h2 class="section-title">접근성·SEO·개인정보 프롬프트</h2><p class="note">상황에 맞는 요청문을 복사하세요. <button class="guide-panel-link" type="button" data-open-panel="legal-reference-panel">법령·기준 보기 →</button> · <button class="guide-panel-link" type="button" data-open-panel="skill-reference-panel">점검 스킬·도구 보기 →</button></p></div>
           <div class="special-topic-tabs" role="tablist" aria-label="전문 프롬프트 주제">
             <button id="special-tab-accessibility" class="special-topic-tab" type="button" role="tab" aria-selected="true" aria-controls="special-content-accessibility" tabindex="0" data-special-topic="accessibility">웹접근성 · KWCAG</button>
             <button id="special-tab-seo" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="special-content-seo" tabindex="-1" data-special-topic="seoAeo">SEO · AEO</button>
@@ -1565,6 +1567,23 @@
           <article id="special-content-accessibility" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-accessibility" tabindex="0" data-special-content="accessibility"></article>
           <article id="special-content-seo" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-seo" tabindex="0" data-special-content="seoAeo" hidden></article>
           <article id="special-content-privacy" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="special-tab-privacy" tabindex="0" data-special-content="privacy" hidden></article>
+        </div>
+      </section>
+      <section id="legal-reference-panel" class="panel">
+        <div class="guide-shell specialized-shell">
+          <div class="guide-head"><h2 class="section-title">법령·기준 해설</h2><p class="note">웹접근성과 개인정보·보안의 적용 기준을 주제별로 확인하세요. <button class="guide-panel-link" type="button" data-open-panel="special-prompt-panel">관련 프롬프트 보기 →</button></p></div>
+          <div class="special-topic-tabs" role="tablist" aria-label="법령·기준 주제">
+            <button id="legal-tab-accessibility" class="special-topic-tab" type="button" role="tab" aria-selected="true" aria-controls="legal-content-accessibility" tabindex="0" data-legal-topic="legalAccessibility">웹접근성 · KWCAG</button>
+            <button id="legal-tab-privacy" class="special-topic-tab" type="button" role="tab" aria-selected="false" aria-controls="legal-content-privacy" tabindex="-1" data-legal-topic="legalPrivacy">개인정보 · 보안</button>
+          </div>
+          <article id="legal-content-accessibility" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="legal-tab-accessibility" tabindex="0" data-legal-content="legalAccessibility"></article>
+          <article id="legal-content-privacy" class="markdown guide-content specialized-content" role="tabpanel" aria-labelledby="legal-tab-privacy" tabindex="0" data-legal-content="legalPrivacy" hidden></article>
+        </div>
+      </section>
+      <section id="skill-reference-panel" class="panel">
+        <div class="guide-shell specialized-shell">
+          <div class="guide-head"><h2 class="section-title">점검 스킬·도구 해설</h2><p class="note">스킬의 역할과 사용 조건, 자동화로 확인하지 못하는 범위를 먼저 확인하세요. <button class="guide-panel-link" type="button" data-open-panel="special-prompt-panel">관련 프롬프트 보기 →</button></p></div>
+          <article id="skill-reference-content" class="markdown guide-content specialized-content"></article>
         </div>
       </section>
     </main>
@@ -1595,6 +1614,7 @@
     <script src="db-files.js"></script>
     <script src="04_작업_가이드/AI_작업요청_프롬프트_가이드/content.js"></script>
     <script src="04_작업_가이드/AI_작업요청_프롬프트_가이드/specialized-content.js"></script>
+    <script src="04_작업_가이드/AI_작업요청_프롬프트_가이드/reference-content.js"></script>
     <script>
       const DATA = {
   "htmlDocs": [
@@ -4705,9 +4725,52 @@
           })
         })
       }
+      function renderPromptReferenceGuides() {
+        const base = '04_작업_가이드/AI_작업요청_프롬프트_가이드/';
+        const documents = window.PROMPT_REFERENCE_GUIDES || {};
+        const renderDocument = (panel, key, file) => {
+          const sourcePath = base + file;
+          panel.innerHTML = documents[key]
+            ? renderMarkdown(documents[key], sourcePath)
+            : '<p>본문을 불러오지 못했습니다. <a href="' + sourcePath + '">원본 문서 열기</a></p>';
+          if (documents[key]) arrangePromptGuideContent(panel);
+          addPromptCopyButtons(panel)
+        };
+        const legalFiles = {
+          legalAccessibility: '웹접근성_법령_기준.md',
+          legalPrivacy: '개인정보_보안_법령_기준.md'
+        };
+        const tabs = Array.from(document.querySelectorAll('[data-legal-topic]'));
+        tabs.forEach(tab => renderDocument(document.querySelector('[data-legal-content="' + tab.dataset.legalTopic + '"]'), tab.dataset.legalTopic, legalFiles[tab.dataset.legalTopic]));
+        function activateTab(index, moveFocus) {
+          tabs.forEach((tab, tabIndex) => {
+            const selected = tabIndex === index;
+            tab.setAttribute('aria-selected', String(selected));
+            tab.tabIndex = selected ? 0 : -1;
+            document.querySelector('[data-legal-content="' + tab.dataset.legalTopic + '"]').hidden = !selected
+          });
+          if (moveFocus) tabs[index].focus()
+        }
+        tabs.forEach((tab, index) => {
+          tab.addEventListener('click', () => activateTab(index, false));
+          tab.addEventListener('keydown', event => {
+            let nextIndex;
+            if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+            else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+            else if (event.key === 'Home') nextIndex = 0;
+            else if (event.key === 'End') nextIndex = tabs.length - 1;
+            else return;
+            event.preventDefault();
+            activateTab(nextIndex, true)
+          })
+        });
+        activateTab(location.hash === '#legal-privacy' ? 1 : 0, false);
+        renderDocument(document.getElementById('skill-reference-content'), 'skills', '점검_스킬_도구_해설.md')
+      }
       renderPromptGuide();
       renderUiPromptGuide();
       renderSpecializedPromptGuides();
+      renderPromptReferenceGuides();
       document.getElementById('guide-layout-toggle').addEventListener('click', event => {
         const content = document.getElementById('guide-content');
         const single = content.classList.toggle('single-column');
@@ -4965,6 +5028,7 @@
         renderMemoList(path, listEl)
       }
       document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => showPanel(tab.dataset.panel)));
+      document.querySelectorAll('[data-open-panel]').forEach(button => button.addEventListener('click', () => showPanel(button.dataset.openPanel)));
       document.querySelectorAll('.view-button').forEach(button => button.addEventListener('click', () => {
         const list = button.dataset.list || 'html';
         const layout = button.closest('.md-layout'),
@@ -5281,7 +5345,8 @@
       updateMainTop();
       window.addEventListener('resize', updateMainTop);
       const linkedPanel = location.hash.slice(1);
-      showPanel(document.getElementById(linkedPanel)?.classList.contains('panel') ? linkedPanel : (document.querySelector('.tab.active')?.dataset.panel || 'html-panel'));
+      const initialPanel = linkedPanel === 'legal-privacy' || linkedPanel === 'legal-accessibility' ? 'legal-reference-panel' : linkedPanel;
+      showPanel(document.getElementById(initialPanel)?.classList.contains('panel') ? initialPanel : (document.querySelector('.tab.active')?.dataset.panel || 'html-panel'));
       renderHtmlList();
       renderMdList();
     </script>
