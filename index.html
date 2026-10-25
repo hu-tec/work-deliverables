@@ -112,6 +112,22 @@
       .tool-row .tool-path { margin-top: 5px; overflow-wrap: anywhere; font-size: 12px }
       .tool-row a { flex: none }
       .tool-row.active { background: var(--accent-soft) }
+      .db-download-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap }
+      .db-file-list { display: grid; gap: 0 }
+      .db-file-row { display: grid; grid-template-columns: minmax(0, 1fr) 74px 84px; align-items: center; gap: 10px; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 12px }
+      .db-file-row strong { overflow-wrap: anywhere; font-weight: 500 }
+      .db-file-row small { color: var(--muted); text-align: right }
+      .db-file-row a { text-align: center }
+      .db-file-row button { min-width: 0; border: 0; padding: 0; background: transparent; color: var(--text); text-align: left; cursor: pointer; font: inherit; overflow-wrap: anywhere }
+      .db-file-row button:hover, .db-file-row button:focus-visible { color: var(--accent); text-decoration: underline }
+      .db-file-row.active { background: var(--accent-soft) }
+      .db-preview-body { flex: 1; min-height: 0; overflow: auto; padding: 12px }
+      .db-preview-table { border-collapse: collapse; width: max-content; min-width: 100%; font-size: 12px }
+      .db-preview-table th, .db-preview-table td { border: 1px solid var(--line); padding: 5px 7px; min-width: 85px; max-width: 360px; vertical-align: top; white-space: pre-wrap; overflow-wrap: anywhere }
+      .db-preview-table th { position: sticky; top: 0; z-index: 1; background: #eef2f6; text-align: left }
+      .db-sheet-tabs { display: flex; flex-wrap: wrap; gap: 5px; padding: 8px 12px; border-bottom: 1px solid var(--line) }
+      .db-sheet-tabs button { padding: 5px 8px; border: 1px solid var(--line); background: #fff; cursor: pointer }
+      .db-sheet-tabs button.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent) }
       .tool-doc-tabs { display: flex; flex-wrap: wrap; gap: 5px; padding: 8px; border-bottom: 1px solid var(--line) }
       .tool-doc-tabs button { border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 5px 8px; cursor: pointer }
       .tool-doc-tabs button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft) }
@@ -1203,10 +1219,27 @@
     <header>
       <div class="wrap">
         <h1>📁 업무산출물</h1>
-        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="downloads-panel">4. ⬇ 프로젝트 소스·내부 도구</button></div>
+        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button></div>
       </div>
     </header>
     <main>
+      <section id="db-panel" class="panel">
+        <div class="md-layout">
+          <section class="library">
+            <div class="head db-download-head">
+              <div><h2 class="section-title">DB 정제 자료 <span id="db-total-count" class="count"></span></h2><p class="note">파일을 선택하면 오른쪽에서 내용을 봅니다. 연락처·이메일 형태 값이 있는 CSV 2개는 제외했습니다.</p></div>
+              <a class="download-link" href="downloads/DB_정제_자료.zip" download>⬇ 전체 ZIP</a>
+            </div>
+            <div class="head"><input id="db-search" class="search" type="search" placeholder="DB 파일명 또는 폴더 검색"></div>
+            <div id="db-file-sections"></div>
+          </section>
+          <article class="viewer">
+            <div class="head db-download-head"><div><h2 id="db-preview-title" class="section-title">파일을 선택해 주세요.</h2><p id="db-preview-meta" class="note">CSV·Markdown·Excel 내용을 이 페이지에서 확인합니다.</p></div><a id="db-preview-download" class="row-download-link" href="#" download hidden>⬇ 파일 다운로드</a></div>
+            <div id="db-sheet-tabs" class="db-sheet-tabs" hidden></div>
+            <div id="db-preview-body" class="db-preview-body placeholder">왼쪽 목록에서 DB 파일을 선택해 주세요.</div>
+          </article>
+        </div>
+      </section>
       <section id="downloads-panel" class="panel">
         <div class="md-layout">
           <section class="library">
@@ -1344,6 +1377,7 @@
     </div>
     <script src="reference-links.js"></script>
     <script src="file-dates.js"></script>
+    <script src="db-files.js"></script>
     <script>
       const DATA = {
   "htmlDocs": [
@@ -3586,6 +3620,73 @@
         } [c]))
       }
 
+      const dbSearch = document.getElementById('db-search');
+      const dbFileSections = document.getElementById('db-file-sections');
+      const dbFiles = window.DB_FILES || [];
+      const dbPreviewBody = document.getElementById('db-preview-body');
+      const dbSheetTabs = document.getElementById('db-sheet-tabs');
+      const dbPreviewDownload = document.getElementById('db-preview-download');
+      let activeDbPath = '';
+      document.getElementById('db-total-count').textContent = '전체 ' + dbFiles.length + '개';
+      function renderDbGrid(rows) {
+        if (!rows.length) return '<div class="placeholder">이 시트에는 표시할 데이터가 없습니다.</div>';
+        const cols = Math.max(...rows.map(row => row.length));
+        return '<table class="db-preview-table"><thead><tr>' + Array.from({length: cols}, (_, i) => '<th>' + esc(rows[0][i] || (i + 1)) + '</th>').join('') + '</tr></thead><tbody>' +
+          rows.slice(1).map(row => '<tr>' + Array.from({length: cols}, (_, i) => '<td>' + esc(row[i] || '') + '</td>').join('') + '</tr>').join('') + '</tbody></table>'
+      }
+      function openDbFile(path) {
+        const file = dbFiles.find(item => item.path === path);
+        if (!file) return;
+        activeDbPath = path;
+        dbFileSections.querySelectorAll('.db-file-row').forEach(row => row.classList.toggle('active', row.dataset.dbPath === path));
+        document.getElementById('db-preview-title').textContent = file.name;
+        document.getElementById('db-preview-meta').textContent = file.path;
+        dbPreviewDownload.href = encodeURI(file.path);
+        dbPreviewDownload.download = file.name;
+        dbPreviewDownload.hidden = false;
+        dbSheetTabs.hidden = true;
+        dbSheetTabs.innerHTML = '';
+        dbPreviewBody.className = 'db-preview-body';
+        if (file.type === 'md') {
+          dbPreviewBody.classList.add('markdown');
+          dbPreviewBody.innerHTML = renderMarkdown(file.content, file.path);
+        } else if (file.type === 'csv') {
+          dbPreviewBody.innerHTML = renderDbGrid(file.rows);
+        } else {
+          dbSheetTabs.hidden = false;
+          dbSheetTabs.innerHTML = file.sheets.map((sheet, i) => '<button type="button" data-db-sheet="' + i + '"' + (i === 0 ? ' class="active"' : '') + '>' + esc(sheet.name) + '</button>').join('');
+          dbPreviewBody.innerHTML = renderDbGrid(file.sheets[0].rows)
+        }
+      }
+      function renderDbFiles() {
+        const term = dbSearch.value.trim().toLowerCase();
+        const grouped = dbFiles.filter(file => !term || (file.name + ' ' + file.group).toLowerCase().includes(term)).reduce((result, file) => {
+          (result[file.group] || (result[file.group] = [])).push(file);
+          return result
+        }, {});
+        dbFileSections.innerHTML = Object.keys(grouped).sort((a, b) => a.localeCompare(b, 'ko')).map(group =>
+          '<section class="section"><h3>' + esc(group) + ' <span class="count">' + grouped[group].length + '개</span></h3><div class="db-file-list">' +
+          grouped[group].map(file => '<div class="db-file-row' + (file.path === activeDbPath ? ' active' : '') + '" data-db-path="' + esc(file.path) + '"><button type="button" data-db-open="' + esc(file.path) + '" title="' + esc(file.path) + '">' + esc(file.name) + '</button><small>' + Math.max(1, Math.round(file.size / 1024)) + ' KB</small><a class="row-download-link" href="' + encodeURI(file.path) + '" download>⬇ 다운로드</a></div>').join('') +
+          '</div></section>'
+        ).join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
+      }
+      dbSearch.addEventListener('input', renderDbFiles);
+      dbFileSections.addEventListener('click', event => {
+        const button = event.target.closest('[data-db-open]');
+        if (button) openDbFile(button.dataset.dbOpen)
+      });
+      dbSheetTabs.addEventListener('click', event => {
+        const button = event.target.closest('[data-db-sheet]');
+        if (!button) return;
+        const file = dbFiles.find(item => item.path === activeDbPath);
+        if (!file || !file.sheets) return;
+        dbSheetTabs.querySelectorAll('button').forEach(tab => tab.classList.toggle('active', tab === button));
+        dbPreviewBody.innerHTML = renderDbGrid(file.sheets[Number(button.dataset.dbSheet)].rows)
+      });
+      renderDbFiles();
+      const requestedDbPath = new URLSearchParams(location.search).get('db');
+      if (requestedDbPath) openDbFile(requestedDbPath);
+
       function group(items) {
         return items.reduce((a, d) => {
           (a[d.section] || (a[d.section] = [])).push(d);
@@ -4575,7 +4676,8 @@
       const updateMainTop = () => document.documentElement.style.setProperty('--main-top', Math.ceil(document.querySelector('main').getBoundingClientRect().top) + 'px');
       updateMainTop();
       window.addEventListener('resize', updateMainTop);
-      showPanel(document.querySelector('.tab.active')?.dataset.panel || 'html-panel');
+      const linkedPanel = location.hash.slice(1);
+      showPanel(document.getElementById(linkedPanel)?.classList.contains('panel') ? linkedPanel : (document.querySelector('.tab.active')?.dataset.panel || 'html-panel'));
       renderHtmlList();
       renderMdList();
     </script>

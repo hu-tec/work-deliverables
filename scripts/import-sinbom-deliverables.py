@@ -36,8 +36,15 @@ def include(group, relative):
         return False
     if group == "랜딩_커뮤니티_시안" and parts[0] == "community-redesign":
         return False  # Identical to 커뮤니티_시안3종.
-    if group == "DB_정제_설명문서" and relative.suffix.lower() != ".md":
-        return False  # Raw source data and question banks are excluded.
+    if group == "DB_정제_설명문서":
+        private_csv = {
+            "수집된DB/통합사본.csv",
+            "일반사용자용_정리DB/05_서비스기획/통합DB_항목사전.csv",
+        }
+        if relative.as_posix() in private_csv:
+            return False  # These files contain email or phone-shaped values.
+        if relative.suffix.lower() not in {".md", ".csv"}:
+            return False
     if group == "파일추출_업무프롬프트_생성기" and relative.suffix.lower() == ".exe":
         return len(parts) == 1  # Keep only the latest distributed executable.
     return True
@@ -91,6 +98,10 @@ def main():
         .replace("./form/", "../form/"),
         encoding="utf-8",
     )
+    workbook_source = SOURCE / "Database" / "2. 추가  중요 디비.xlsx"
+    workbook_target = DEST / "DB_원본_엑셀" / workbook_source.name
+    workbook_target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(workbook_source, workbook_target)
 
     for folder, archive_name in [
         ("시험홈페이지_통합_구현", "시험홈페이지_통합_구현.zip"),
