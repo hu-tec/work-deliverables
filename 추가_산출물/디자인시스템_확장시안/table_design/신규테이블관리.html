@@ -1,0 +1,1028 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>신규 테이블 관리</title>
+  <!-- 기준 프롬프트: docs/DB_v2_신규테이블_페이지_프롬프트.md -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #fff;
+      --line: #ddd;
+      --line-soft: #eee;
+      --head: #eceef2;
+      --text: #222;
+      --muted: #808080;
+      --primary: #0088ff;
+      --primary-soft: #e8f4ff;
+      --danger: #dc3d3d;
+      --warning: #cc8800;
+      --success: #178a3a;
+      --violet: #7c3aed;
+      --radius: 6px;
+      --bo-font-size-base: 8px;
+      --bo-font-size-muted: 8px;
+      --bo-font-size-head: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      font-size: var(--bo-font-size-base);
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      background: transparent;
+      color: inherit;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 224px minmax(0, 1fr);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background: var(--panel);
+      border-right: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 48px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .brand-mark {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius);
+      background: var(--primary);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+    }
+
+    .nav {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .nav-button {
+      width: 100%;
+      min-height: 36px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius);
+      color: #555;
+      text-align: left;
+    }
+
+    .nav-button:hover {
+      background: #f1f3f5;
+      color: var(--text);
+    }
+
+    .nav-button.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .nav-count {
+      margin-left: auto;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .content {
+      min-width: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    .topbar {
+      height: 48px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn {
+      min-height: 30px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .page {
+      padding: 18px 20px 22px;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-end;
+      margin-bottom: 14px;
+    }
+
+    .breadcrumb {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 32px;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .major-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .major-tab {
+      min-height: 32px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: #eef0f3;
+      color: #555;
+      font-size: 13px;
+    }
+
+    .major-tab.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .sub-tabs {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      margin-bottom: 10px;
+    }
+
+    .sub-tab {
+      min-height: 38px;
+      padding: 0 14px;
+      border-right: 1px solid var(--line);
+      background: #fff;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .sub-tab.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .sub-tab .count {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .filter-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .field label {
+      width: 68px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .search {
+      width: min(420px, 100%);
+      height: 30px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0 10px;
+      background: #fff;
+    }
+
+    select {
+      height: 30px;
+      min-width: 108px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+      padding: 0 8px;
+      color: #333;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(110px, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .summary-item {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 9px 10px;
+      min-height: 52px;
+    }
+
+    .summary-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .summary-value {
+      margin-top: 2px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .table-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      min-width: 0;
+    }
+
+    .table-headbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 42px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .table-title {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    .table-title small {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: calc(100vh - 340px);
+    }
+
+    table {
+      width: 100%;
+      min-width: 1180px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      height: 42px;
+      background: var(--head);
+      border-bottom: 1px solid var(--line);
+      color: #333;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.35;
+      padding: 4px;
+      white-space: nowrap;
+    }
+
+    td {
+      height: 50px;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--text);
+      font-size: 12px;
+      text-align: center;
+      vertical-align: middle;
+      padding: 4px 6px;
+      overflow: hidden;
+    }
+
+    tr:hover td {
+      background: #f8fbff;
+    }
+
+    .sticky-id {
+      position: sticky;
+      left: 0;
+      z-index: 4;
+      background: #fff;
+      box-shadow: 1px 0 0 var(--line);
+    }
+
+    th.sticky-id {
+      z-index: 7;
+      background: var(--head);
+    }
+
+    .cell {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .main {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .sub {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .left {
+      text-align: left;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 18px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      line-height: 1.2;
+      color: #fff;
+      background: var(--muted);
+      white-space: nowrap;
+    }
+
+    .badge.blue { background: var(--primary); }
+    .badge.violet { background: var(--violet); }
+    .badge.red { background: var(--danger); }
+    .badge.green { background: var(--success); }
+    .badge.gray { background: #808080; }
+    .badge.warn {
+      background: #fff5e6;
+      color: var(--warning);
+      border: 1px solid #f1d9a7;
+    }
+
+    .status {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status.ok { color: var(--success); }
+    .status.wait { color: var(--warning); }
+    .status.fail { color: var(--danger); }
+    .status.info { color: var(--primary); }
+
+    .table-section {
+      display: none;
+    }
+
+    .table-section.active {
+      display: block;
+    }
+
+    .bulkbar {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 12px;
+      border-top: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    .bulk-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pagination {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 64px minmax(0, 1fr);
+      }
+
+      .brand span,
+      .nav-label,
+      .nav-count {
+        display: none;
+      }
+
+      .brand {
+        justify-content: center;
+        padding: 0;
+      }
+
+      .nav-button {
+        justify-content: center;
+        padding: 0;
+      }
+
+      .page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .summary-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .table-wrap {
+        max-height: calc(100vh - 420px);
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="./table-design.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="관리자 메뉴">
+      <div class="brand"><span class="brand-mark"><i class="fa-solid fa-shield-halved"></i></span><span>관리자 패널</span></div>
+      <nav class="nav">
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-table-columns"></i></span><span class="nav-label">대시보드</span></button>
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-users"></i></span><span class="nav-label">회원</span><span class="nav-count">2</span></button>
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-bolt"></i></span><span class="nav-label">활동 관리</span></button>
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-wallet"></i></span><span class="nav-label">결제 관리</span></button>
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-handshake"></i></span><span class="nav-label">매칭 관리</span></button>
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-graduation-cap"></i></span><span class="nav-label">시험 관리</span><span class="nav-count">4</span></button>
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span><span class="nav-label">스케줄 관리</span></button>
+        <button class="nav-button active"><span class="nav-icon"><i class="fa-solid fa-database"></i></span><span class="nav-label">신규 테이블 관리</span></button>
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-comments"></i></span><span class="nav-label">1:1 문의</span></button>
+        <button class="nav-button"><span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span><span class="nav-label">통계</span></button>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="topbar-title">신규 테이블 관리</div>
+        <div class="topbar-actions">
+          <button class="btn">저장</button>
+          <button class="btn primary">새 테이블 추가</button>
+          <button class="btn">엑셀 내보내기</button>
+        </div>
+      </header>
+
+      <section class="page">
+        <div class="page-head">
+          <div>
+            <div class="breadcrumb">관리자 &gt; DB 테이블</div>
+            <h1>신규 테이블 관리</h1>
+            <div class="meta">대분류 탭별로 신규 테이블을 전환하고, 하위 탭에서 전체 수량을 함께 확인한다.</div>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn">컬럼설정</button>
+            <button class="btn">필터초기화</button>
+          </div>
+        </div>
+
+        <div class="major-tabs" role="tablist" aria-label="대분류 탭">
+          <button class="major-tab active" type="button"><i class="fa-solid fa-globe"></i>전체 <span class="count">(149건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-robot"></i>AI번역 <span class="count">(34건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-file-lines"></i>통독문서 <span class="count">(22건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-graduation-cap"></i>교육센터 <span class="count">(31건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-ticket"></i>전시/행사 <span class="count">(18건)</span></button>
+          <button class="major-tab" type="button"><i class="fa-solid fa-pen-to-square"></i>시험사이트 <span class="count">(44건)</span></button>
+        </div>
+
+        <div class="sub-tabs" role="tablist" aria-label="하위 테이블 탭">
+          <button class="sub-tab active" type="button" data-target="members">전체 회원 <span class="count">(전체 45명)</span></button>
+          <button class="sub-tab" type="button" data-target="payments">결제 내역 <span class="count">(전체 28건)</span></button>
+          <button class="sub-tab" type="button" data-target="matching">매칭 의뢰 <span class="count">(전체 26건)</span></button>
+          <button class="sub-tab" type="button" data-target="exams">시험 관리 <span class="count">(전체 14개)</span></button>
+          <button class="sub-tab" type="button" data-target="inquiries">문의 내역 <span class="count">(전체 16건)</span></button>
+          <button class="sub-tab" type="button" data-target="logs">활동 로그 <span class="count">(전체 20건)</span></button>
+        </div>
+
+        <form class="dense-filter-card" data-dense-filter aria-label="검색 및 필터">
+          <div class="dense-search-main">
+            <label class="dense-search-field">
+              <span>검색어</span>
+              <input type="search" name="keyword" placeholder="이름, 이메일, 회원번호, 연락처, 관리번호 검색">
+            </label>
+            <label class="dense-date-field"><span>시작일</span><input type="date" name="startDate"></label>
+            <label class="dense-date-field"><span>종료일</span><input type="date" name="endDate"></label>
+            <button class="btn primary" type="submit">검색</button>
+            <button class="btn" type="reset">초기화</button>
+          </div>
+          <div class="dense-filter-flow" aria-label="테이블 검색 조건">
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>회원유형</legend>
+              <button class="filter-chip" type="button" aria-pressed="true">전체</button>
+              <button class="filter-chip" type="button" aria-pressed="false">일반회원</button>
+              <button class="filter-chip" type="button" aria-pressed="false">기업회원</button>
+              <button class="filter-chip" type="button" aria-pressed="false">전문가</button>
+              <button class="filter-chip" type="button" aria-pressed="false">관리자</button>
+            </fieldset>
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>서비스</legend>
+              <button class="filter-chip" type="button" aria-pressed="false">AI번역</button>
+              <button class="filter-chip" type="button" aria-pressed="false">통독문서</button>
+              <button class="filter-chip" type="button" aria-pressed="false">교육센터</button>
+              <button class="filter-chip" type="button" aria-pressed="false">시험사이트</button>
+            </fieldset>
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>상태</legend>
+              <button class="filter-chip" type="button" aria-pressed="true">진행중</button>
+              <button class="filter-chip" type="button" aria-pressed="false">완료</button>
+              <button class="filter-chip" type="button" aria-pressed="false">대기</button>
+              <button class="filter-chip" type="button" aria-pressed="false">취소</button>
+            </fieldset>
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>검증</legend>
+              <label class="dense-check"><input type="checkbox" checked> 이메일 인증</label>
+              <label class="dense-check"><input type="checkbox"> 휴대폰 인증</label>
+              <label class="dense-check"><input type="checkbox" checked> 결제 정상</label>
+              <label class="dense-check"><input type="checkbox"> 환불 요청</label>
+              <label class="dense-check"><input type="checkbox"> 정산 대기</label>
+            </fieldset>
+            <fieldset class="dense-filter-group" data-filter-group>
+              <legend>운영</legend>
+              <label class="dense-check"><input type="checkbox"> 담당자 미배정</label>
+              <label class="dense-check"><input type="checkbox" checked> 메모 있음</label>
+              <label class="dense-check"><input type="checkbox"> 우선 처리</label>
+              <label class="dense-check"><input type="checkbox"> 최근 수정</label>
+            </fieldset>
+          </div>
+          <div class="dense-active-filters" data-active-filters aria-live="polite"></div>
+        </form>
+
+        <div class="summary-strip" aria-label="테이블 요약">
+          <div class="summary-item"><div class="summary-label">회원</div><div class="summary-value">45명</div></div>
+          <div class="summary-item"><div class="summary-label">결제</div><div class="summary-value">28건</div></div>
+          <div class="summary-item"><div class="summary-label">매칭</div><div class="summary-value">26건</div></div>
+          <div class="summary-item"><div class="summary-label">시험</div><div class="summary-value">14개</div></div>
+          <div class="summary-item"><div class="summary-label">문의</div><div class="summary-value">16건</div></div>
+          <div class="summary-item"><div class="summary-label">로그</div><div class="summary-value">20건</div></div>
+        </div>
+
+        <section class="table-card">
+          <article class="table-section active" id="members">
+            <div class="table-headbar">
+              <div class="table-title">전체 회원 <small>전체 45명</small></div>
+              <button class="btn">회원 컬럼 편집</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <colgroup>
+                  <col style="width:44px"><col style="width:92px"><col style="width:128px"><col style="width:180px"><col style="width:150px"><col style="width:118px"><col style="width:116px"><col style="width:122px"><col style="width:110px"><col style="width:92px"><col style="width:72px"><col style="width:92px"><col style="width:170px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" aria-label="전체 선택"></th>
+                    <th class="sticky-id">회원<br>관리번호</th>
+                    <th>이름<br>나이·성별</th>
+                    <th>이메일<br>휴대폰</th>
+                    <th>주소<br>국가</th>
+                    <th>회원유형<br>구독</th>
+                    <th>가입일<br>채널</th>
+                    <th>최근 로그인<br>체류시간</th>
+                    <th>전문가<br>레벨·평점</th>
+                    <th>매칭<br>상태</th>
+                    <th>등급</th>
+                    <th>결제<br>상태</th>
+                    <th>메모</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox" aria-label="001-Ab2 선택"></td>
+                    <td class="sticky-id">001-Ab2</td>
+                    <td><div class="cell"><span class="main">김민수</span><span class="sub">34세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">minsu.kim@email.com</span><span class="sub">010-1234-5678</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 강남구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">정식회원</span><span><span class="badge gray">베이직</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-03-15</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-08</span><span class="sub">42m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="AI번역 정기 이용 회원">AI번역 정기 이용 회원</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="002-Aa2 선택"></td>
+                    <td class="sticky-id">002-Aa2</td>
+                    <td><div class="cell"><span class="main">(주)글로벌텍</span><span class="sub">45세 · <i class="gender-icon fa-solid fa-mars" aria-hidden="true"></i> 남</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">admin@globaltek.co.kr</span><span class="sub">02-555-1234</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 서초구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">기업회원</span><span><span class="badge blue">프리미엄</span></span></div></td>
+                    <td><div class="cell"><span class="main">25-01-20</span><span class="sub">홈페이지</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">1h 15m</span></div></td>
+                    <td><span class="sub">-</span></td>
+                    <td><span class="status ok">완료</span></td>
+                    <td>S</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="대형 고객사 - 월 정기 결제">대형 고객사 - 월 정기 결제</div></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" aria-label="003-Aa1 선택"></td>
+                    <td class="sticky-id">003-Aa1</td>
+                    <td><div class="cell"><span class="main">이정희</span><span class="sub">38세 · <i class="gender-icon fa-solid fa-venus" aria-hidden="true"></i> 여</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">junghee.lee@email.com</span><span class="sub">010-9876-5432</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">서울 마포구</span><span class="sub">대한민국</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span><span class="badge violet">스탠다드</span></span></div></td>
+                    <td><div class="cell"><span class="main">24-11-05</span><span class="sub">이메일</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">2h 30m</span></div></td>
+                    <td><div class="cell"><span><span class="badge red">Lv.A</span></span><span class="sub">4.9</span></div></td>
+                    <td><span class="status wait">대기</span></td>
+                    <td>A</td>
+                    <td><span class="status info">정상</span></td>
+                    <td class="left"><div class="main" title="A등급 우수 전문가">A등급 우수 전문가</div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="payments">
+            <div class="table-headbar">
+              <div class="table-title">결제 내역 <small>전체 28건</small></div>
+              <button class="btn">정산 보기</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <colgroup>
+                  <col style="width:110px"><col style="width:160px"><col style="width:180px"><col style="width:130px"><col style="width:130px"><col style="width:128px"><col style="width:180px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="sticky-id">결제번호</th>
+                    <th>회원<br>관리번호</th>
+                    <th>상품<br>서비스</th>
+                    <th>금액<br>수수료</th>
+                    <th>결제상태<br>수단</th>
+                    <th>결제일<br>환불일</th>
+                    <th>담당<br>메모</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="sticky-id">PAY-AI-001</td>
+                    <td><div class="cell"><span class="main">김민수</span><span class="sub">001-Ab2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">AI 번역 프리미엄</span><span class="sub">AI번역</span></div></td>
+                    <td><div class="cell"><span class="main">350,000</span><span class="sub">수수료 10,500</span></div></td>
+                    <td><div class="cell"><span class="status ok">결제완료</span><span class="sub">카드</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-15</span><span class="sub">-</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">정산팀</span><span class="sub">월 정산 포함</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">PAY-DOC-004</td>
+                    <td><div class="cell"><span class="main">(주)글로벌텍</span><span class="sub">002-Aa2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">통독문서 기업팩</span><span class="sub">통독문서</span></div></td>
+                    <td><div class="cell"><span class="main">990,000</span><span class="sub">수수료 29,700</span></div></td>
+                    <td><div class="cell"><span class="status ok">결제완료</span><span class="sub">계좌이체</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-01</span><span class="sub">-</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">운영팀</span><span class="sub">세금계산서 발행</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">PAY-EX-011</td>
+                    <td><div class="cell"><span class="main">최윤호</span><span class="sub">005-Aa2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">번역능력 인증시험</span><span class="sub">시험사이트</span></div></td>
+                    <td><div class="cell"><span class="main">50,000</span><span class="sub">수수료 1,500</span></div></td>
+                    <td><div class="cell"><span class="status fail">환불완료</span><span class="sub">카드</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-03</span><span class="sub">26-02-05</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">CS팀</span><span class="sub">일정 변경 환불</span></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="matching">
+            <div class="table-headbar">
+              <div class="table-title">매칭 의뢰 <small>전체 26건</small></div>
+              <button class="btn">전문가 배정</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <colgroup>
+                  <col style="width:110px"><col style="width:160px"><col style="width:160px"><col style="width:150px"><col style="width:150px"><col style="width:128px"><col style="width:120px"><col style="width:128px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="sticky-id">의뢰번호</th>
+                    <th>의뢰인<br>관리번호</th>
+                    <th>유형<br>카테고리</th>
+                    <th>언어<br>분야</th>
+                    <th>전문가<br>배정상태</th>
+                    <th>진행상태<br>마감일</th>
+                    <th>금액<br>결제</th>
+                    <th>등록일<br>수정일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="sticky-id">SJ-AI-001</td>
+                    <td><div class="cell"><span class="main">김민수</span><span class="sub">001-Ab2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">AI 텍스트</span><span class="sub">번역 &gt; 영어</span></div></td>
+                    <td><div class="cell"><span class="main">영어 → 한국어</span><span class="sub">반도체</span></div></td>
+                    <td><div class="cell"><span class="main">이정희</span><span class="status ok">배정완료</span></div></td>
+                    <td><div class="cell"><span class="status info">진행중</span><span class="sub">26-01-20</span></div></td>
+                    <td><div class="cell"><span class="main">350,000</span><span class="status ok">결제완료</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-15</span><span class="sub">26-01-16</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">SJ-DOC-003</td>
+                    <td><div class="cell"><span class="main">(주)글로벌텍</span><span class="sub">002-Aa2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">문서 감수</span><span class="sub">기술문서</span></div></td>
+                    <td><div class="cell"><span class="main">한국어 → 일본어</span><span class="sub">IT</span></div></td>
+                    <td><div class="cell"><span class="main">노현우</span><span class="status ok">배정완료</span></div></td>
+                    <td><div class="cell"><span class="status wait">검수대기</span><span class="sub">26-01-28</span></div></td>
+                    <td><div class="cell"><span class="main">990,000</span><span class="status ok">결제완료</span></div></td>
+                    <td><div class="cell"><span class="main">26-01-20</span><span class="sub">26-01-22</span></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="exams">
+            <div class="table-headbar">
+              <div class="table-title">시험 관리 <small>전체 14개</small></div>
+              <button class="btn">시험 추가</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <colgroup>
+                  <col style="width:92px"><col style="width:220px"><col style="width:130px"><col style="width:110px"><col style="width:130px"><col style="width:120px"><col style="width:120px"><col style="width:80px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="sticky-id">시험번호</th>
+                    <th>시험명<br>분류</th>
+                    <th>대상<br>등급</th>
+                    <th>응시료<br>시간</th>
+                    <th>문항수<br>채점방식</th>
+                    <th>일정<br>회차</th>
+                    <th>응시자<br>합격률</th>
+                    <th>관리</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="sticky-id">EX-001</td>
+                    <td class="left"><div class="cell"><span class="main">번역능력인증시험 영-한</span><span class="sub">AI번역 &gt; 번역</span></div></td>
+                    <td><div class="cell"><span class="main">성인/일반</span><span class="sub">전문 1급</span></div></td>
+                    <td><div class="cell"><span class="main">50,000</span><span class="sub">120분</span></div></td>
+                    <td><div class="cell"><span class="main">40문항</span><span class="sub">자동채점</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-15</span><span class="sub">2교시</span></div></td>
+                    <td><div class="cell"><span class="main">128명</span><span class="sub">86%</span></div></td>
+                    <td><button class="btn">관리</button></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">EX-002</td>
+                    <td class="left"><div class="cell"><span class="main">통역사 자격시험 1급</span><span class="sub">ITT시험 &gt; 통역</span></div></td>
+                    <td><div class="cell"><span class="main">전문가</span><span class="sub">전문 2급</span></div></td>
+                    <td><div class="cell"><span class="main">80,000</span><span class="sub">90분</span></div></td>
+                    <td><div class="cell"><span class="main">30문항</span><span class="sub">휴먼채점</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-22</span><span class="sub">3교시</span></div></td>
+                    <td><div class="cell"><span class="main">76명</span><span class="sub">81%</span></div></td>
+                    <td><button class="btn">관리</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="inquiries">
+            <div class="table-headbar">
+              <div class="table-title">문의 내역 <small>전체 16건</small></div>
+              <button class="btn">답변 배정</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <colgroup>
+                  <col style="width:100px"><col style="width:150px"><col style="width:260px"><col style="width:130px"><col style="width:130px"><col style="width:120px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="sticky-id">문의번호</th>
+                    <th>회원<br>관리번호</th>
+                    <th>제목<br>문의유형</th>
+                    <th>접수일<br>답변일</th>
+                    <th>상태<br>담당자</th>
+                    <th>우선순위<br>메모</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="sticky-id">INQ-001</td>
+                    <td><div class="cell"><span class="main">김민수</span><span class="sub">001-Ab2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">AI 텍스트 번역 결과 오류 제보</span><span class="sub">AI번역 &gt; 품질문의</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-07</span><span class="sub">26-02-08</span></div></td>
+                    <td><div class="cell"><span class="status ok">답변완료</span><span class="sub">CS팀</span></div></td>
+                    <td><div class="cell"><span class="badge warn">보통</span><span class="sub">재현 확인</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">INQ-002</td>
+                    <td><div class="cell"><span class="main">최윤호</span><span class="sub">005-Aa2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">구독 환불 요청</span><span class="sub">결제 &gt; 환불</span></div></td>
+                    <td><div class="cell"><span class="main">26-02-09</span><span class="sub">-</span></div></td>
+                    <td><div class="cell"><span class="status wait">답변대기</span><span class="sub">미배정</span></div></td>
+                    <td><div class="cell"><span class="badge red">높음</span><span class="sub">결제 확인</span></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-section" id="logs">
+            <div class="table-headbar">
+              <div class="table-title">활동 로그 <small>전체 20건</small></div>
+              <button class="btn">로그 다운로드</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <colgroup>
+                  <col style="width:96px"><col style="width:150px"><col style="width:170px"><col style="width:170px"><col style="width:130px"><col style="width:160px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="sticky-id">로그번호</th>
+                    <th>회원<br>관리번호</th>
+                    <th>활동<br>경로</th>
+                    <th>IP<br>기기</th>
+                    <th>발생일시</th>
+                    <th>결과<br>메모</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="sticky-id">LOG-001</td>
+                    <td><div class="cell"><span class="main">김민수</span><span class="sub">001-Ab2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">로그인</span><span class="sub">/admin/login</span></div></td>
+                    <td><div class="cell"><span class="main">192.168.77.239</span><span class="sub">desktop</span></div></td>
+                    <td>26-02-09 14:32</td>
+                    <td><div class="cell"><span class="status ok">성공</span><span class="sub">정상 로그인</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">LOG-002</td>
+                    <td><div class="cell"><span class="main">(주)글로벌텍</span><span class="sub">002-Aa2</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">문서 업로드</span><span class="sub">/doc/upload</span></div></td>
+                    <td><div class="cell"><span class="main">192.168.108.146</span><span class="sub">desktop</span></div></td>
+                    <td>26-02-09 13:15</td>
+                    <td><div class="cell"><span class="status ok">성공</span><span class="sub">2개 파일</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="sticky-id">LOG-003</td>
+                    <td><div class="cell"><span class="main">이정희</span><span class="sub">003-Aa1</span></div></td>
+                    <td class="left"><div class="cell"><span class="main">번역 요청</span><span class="sub">/ai/translate</span></div></td>
+                    <td><div class="cell"><span class="main">192.168.213.198</span><span class="sub">mobile</span></div></td>
+                    <td>26-02-09 11:45</td>
+                    <td><div class="cell"><span class="status wait">대기</span><span class="sub">큐 처리중</span></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <div class="bulkbar">
+            <div class="bulk-actions">
+              <span class="pagination">선택 0건</span>
+              <button class="btn">선택정보내기</button>
+              <button class="btn">이메일보내기</button>
+              <button class="btn">SMS전송</button>
+              <button class="btn">상태변경</button>
+            </div>
+            <div class="pagination">1 / 5 페이지 · 50개씩 보기</div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const majorTabs = document.querySelectorAll(".major-tab");
+    const subTabs = document.querySelectorAll(".sub-tab");
+    const sections = document.querySelectorAll(".table-section");
+
+    majorTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        majorTabs.forEach((item) => item.classList.remove("active"));
+        tab.classList.add("active");
+      });
+    });
+
+    subTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.target;
+        subTabs.forEach((item) => item.classList.remove("active"));
+        sections.forEach((section) => section.classList.toggle("active", section.id === target));
+        tab.classList.add("active");
+      });
+    });
+  </script>
+  <script src="./table-design.js"></script>
+</body>
+</html>

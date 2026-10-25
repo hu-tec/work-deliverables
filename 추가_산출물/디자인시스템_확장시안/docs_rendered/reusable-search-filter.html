@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>검색필터 기준</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>검색필터 기준</h1>
+<p>기준 파일: <code>index.html</code>, <code>layout.css</code>, <code>table_design/table-design.css</code>, <code>table_design/table-design.js</code></p>
+<p>이 문서는 사용자 화면 필터와 BO 고밀도 검색조건을 구분해서 정의한다.</p>
+<h2>사용자 화면 필터</h2>
+<p>사용자 화면은 과도하게 많은 조건을 한 번에 노출하지 않는다.</p>
+<p>권장 구조:</p>
+<ul>
+<li>키워드 검색</li>
+<li>1~3개 주요 카테고리 chip</li>
+<li>기간 또는 상태 필터가 필요하면 한 줄 추가</li>
+<li>활성 필터는 <code>filter-tag</code>로 표시</li>
+</ul>
+<pre><code>&lt;div class=&quot;filter-bar&quot;&gt;
+  &lt;button class=&quot;filter-chip&quot; type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;전체&lt;/button&gt;
+  &lt;button class=&quot;filter-chip&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;접수중&lt;/button&gt;
+  &lt;button class=&quot;filter-chip&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;마감임박&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+<h2>BO 고밀도 검색조건</h2>
+<p>BO 테이블은 <code>dense-filter-card</code>를 기준으로 한다.</p>
+<p>필수 구조:</p>
+<ul>
+<li><code>dense-filter-card</code></li>
+<li><code>dense-search-main</code></li>
+<li><code>dense-filter-flow</code></li>
+<li><code>dense-filter-group</code></li>
+<li><code>dense-filter-options</code></li>
+<li><code>filter-chip</code></li>
+<li><code>dense-check</code></li>
+<li><code>dense-active-filters</code></li>
+</ul>
+<pre><code>&lt;form class=&quot;dense-filter-card&quot; data-dense-filter&gt;
+  &lt;div class=&quot;dense-search-main&quot;&gt;
+    &lt;label class=&quot;dense-search-field&quot;&gt;
+      &lt;span&gt;검색어&lt;/span&gt;
+      &lt;input type=&quot;search&quot; name=&quot;keyword&quot; placeholder=&quot;이름, 이메일, 관리번호 검색&quot;&gt;
+    &lt;/label&gt;
+    &lt;button class=&quot;btn primary&quot; type=&quot;submit&quot;&gt;검색&lt;/button&gt;
+    &lt;button class=&quot;btn&quot; type=&quot;reset&quot;&gt;초기화&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;dense-filter-flow&quot;&gt;
+    &lt;fieldset class=&quot;dense-filter-group&quot; data-single-choice&gt;
+      &lt;legend&gt;상태&lt;/legend&gt;
+      &lt;div class=&quot;dense-filter-options&quot;&gt;
+        &lt;button class=&quot;filter-chip&quot; type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;전체&lt;/button&gt;
+        &lt;button class=&quot;filter-chip&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;완료&lt;/button&gt;
+        &lt;button class=&quot;filter-chip&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;대기&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/fieldset&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;dense-active-filters&quot; data-active-filters&gt;&lt;/div&gt;
+&lt;/form&gt;</code></pre>
+<h2>정렬 기준</h2>
+<ul>
+<li>조건명 <code>legend</code>는 58px 고정 기준을 사용한다.</li>
+<li>옵션 영역은 flex-wrap으로 배치한다.</li>
+<li>조건 블록 사이에는 얇은 세로 구분선을 둘 수 있다.</li>
+<li>기간 조건은 한 줄로 유지하고, 공간이 부족하면 가로 스크롤을 허용한다.</li>
+<li>선택된 검색조건은 아래 활성 필터 영역에 tag로 요약한다.</li>
+</ul>
+<h2>권장 조건 세트</h2>
+<p>회원:</p>
+<ul>
+<li>회원유형: 일반회원, 정식회원, 기업회원, 전문가, 관리자</li>
+<li>성별: M, F</li>
+<li>구독상태: 프리미엄, 스탠다드, 베이직, free</li>
+<li>매칭상태: 완료, 대기, 취소, 검토중</li>
+<li>결제상태: 정상, 미납, 환불, 정산대기</li>
+<li>가입채널: 이메일, 홈페이지, 구글, 추천, 관리자등록, 기관계약</li>
+</ul>
+<p>결제:</p>
+<ul>
+<li>유형: 구독, 서비스의뢰, 시험응시, 문서구매</li>
+<li>상태: 결제완료, 정산대기, 환불완료, 결제취소</li>
+<li>수단: 카드, 계좌이체, 체크카드, 토스페이, 가상계좌</li>
+</ul>
+<p>매칭:</p>
+<ul>
+<li>유형, 카테고리, 언어, 분야, 배정상태, 진행상태, 결제상태</li>
+</ul>
+<h2>금지</h2>
+<ul>
+<li>BO 필터를 큰 카드 여러 개로 나누지 않는다.</li>
+<li>선택된 필터를 화면 오른쪽 끝으로 밀어내지 않는다.</li>
+<li><code>전체</code> chip과 개별 chip의 선택 상태가 동시에 모호하게 보이게 하지 않는다.</li>
+<li>조건명이 서로 다른 시작선에 걸려 옵션 정렬이 흐트러지게 하지 않는다.</li>
+</ul>
+</body>
+</html>

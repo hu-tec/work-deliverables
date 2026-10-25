@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>업무 히스토리 트래커 ver2</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <div class="brand-mark">WORKLOG</div>
+          <h1>업무 히스토리</h1>
+        </div>
+        <div class="header-controls">
+          <select id="department-select" aria-label="부서 선택"></select>
+          <button id="new-work-button" class="primary" type="button">업무 등록</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="list-pane" aria-label="업무 목록">
+          <div class="toolbar">
+            <div class="summary-count">
+              <strong id="visible-count">0</strong>
+              <span>건 표시</span>
+            </div>
+            <form id="filters" class="filters">
+              <input id="search-input" type="search" placeholder="제목, 내용, 댓글 검색">
+              <select id="project-filter" aria-label="프로젝트 필터"></select>
+              <select id="status-filter" aria-label="상태 필터">
+                <option value="">전체 상태</option>
+                <option value="OPEN">대기</option>
+                <option value="IN_PROGRESS">진행중</option>
+                <option value="BLOCKED">보류</option>
+                <option value="DONE">완료</option>
+                <option value="ARCHIVED">보관</option>
+              </select>
+            </form>
+          </div>
+          <div class="table-wrap">
+            <table class="work-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>상태</th>
+                  <th>업무</th>
+                  <th>댓글 미리보기</th>
+                  <th>프로젝트</th>
+                  <th>담당자</th>
+                  <th>댓글</th>
+                  <th>첨부</th>
+                  <th>생성일</th>
+                  <th>수정일</th>
+                </tr>
+              </thead>
+              <tbody id="work-rows"></tbody>
+            </table>
+          </div>
+          <p id="empty-message" class="empty hidden">표시할 업무가 없습니다.</p>
+        </section>
+      </main>
+    </div>
+
+    <div id="drawer-backdrop" class="drawer-backdrop hidden"></div>
+    <aside id="detail-drawer" class="detail-drawer" aria-label="업무 상세" aria-hidden="true">
+      <div class="drawer-header">
+        <div>
+          <p id="drawer-path" class="path"></p>
+          <h2 id="drawer-title"></h2>
+        </div>
+        <button id="close-drawer" class="icon-button" type="button" aria-label="상세 닫기">×</button>
+      </div>
+      <!-- <nav id="drawer-tabs" class="drawer-tabs" aria-label="상세 탭">
+      </nav> -->
+      <div class="drawer-body">
+        <section class="tab-panel detail-section">
+          <div class="detail-actions">
+            <select id="drawer-status" aria-label="업무 상태"></select>
+            <span id="drawer-priority"></span>
+          </div>
+          <dl id="drawer-meta" class="meta-list"></dl>
+          <p id="drawer-description" class="description"></p>
+        </section>
+        <section class="tab-panel detail-section">
+          <div class="section-row">
+            <h3>첨부파일</h3>
+            <label class="file-button">첨부
+              <input id="attachment-input" type="file">
+            </label>
+          </div>
+          <ul id="attachment-list" class="attachment-list"></ul>
+        </section>
+        <section class="tab-panel detail-section">
+          <div class="section-row">
+            <h3>댓글</h3>
+            <span id="drawer-comment-count" class="metric-pill"></span>
+          </div>
+          <ul id="drawer-comments" class="comments"></ul>
+          <form id="comment-form" class="comment-form">
+            <input id="editing-comment-id" type="hidden">
+            <textarea id="comment-input" rows="3" placeholder="댓글을 입력하세요." required></textarea>
+            <div class="comment-form-tools">
+              <label class="file-button">댓글 첨부
+                <input id="comment-attachment-input" type="file" multiple>
+              </label>
+              <span id="comment-attachment-label" class="muted">선택된 파일 없음</span>
+            </div>
+            <div class="form-actions">
+              <button id="cancel-comment-edit" class="ghost hidden" type="button">수정 취소</button>
+              <button id="comment-submit-button" class="primary" type="submit">댓글 등록</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="tab-panel detail-section" >
+          <h3>활동 히스토리</h3>
+          <ul id="activity-list" class="activity-list"></ul>
+        </section>
+      </div>
+    </aside>
+
+    <dialog id="work-dialog">
+      <form id="work-form" class="work-form" method="dialog">
+        <div class="section-row">
+          <h2>새 업무 등록</h2>
+          <button id="close-work-dialog" class="ghost" type="button">닫기</button>
+        </div>
+        <label>제목
+          <input name="title" maxlength="120" required>
+        </label>
+        <label>내용
+          <textarea name="description" rows="5"></textarea>
+        </label>
+        <div class="form-grid">
+          <label>프로젝트
+            <select id="work-project" name="projectId"></select>
+          </label>
+          <label>담당자
+            <select id="work-assignee" name="assigneeId"></select>
+          </label>
+          <label>상태
+            <select name="status">
+              <option value="OPEN">대기</option>
+              <option value="IN_PROGRESS">진행중</option>
+              <option value="BLOCKED">보류</option>
+              <option value="DONE">완료</option>
+            </select>
+          </label>
+          <label>우선순위
+            <select name="priority">
+              <option value="MEDIUM">보통</option>
+              <option value="HIGH">높음</option>
+              <option value="URGENT">긴급</option>
+              <option value="LOW">낮음</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button class="primary" type="submit">저장</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast hidden" aria-live="polite"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+  <title>교육과정 상세 | Times Education</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header"><div class="container header-inner">
+    <a class="brand" href="./index.html"><span class="brand-mark">TM</span><span>Times Education<small>AI 교육·자격 통합 플랫폼</small></span></a>
+    <nav class="gnb" aria-label="주요 메뉴"><a href="./index.html">홈</a><a class="active" href="./courses.html">교육과정</a><a href="./community.html">커뮤니티</a></nav>
+    <div class="header-actions"><button class="mobile-menu" type="button">MENU</button><a class="btn btn--primary btn--sm" href="#apply">신청하기</a></div>
+  </div></header>
+
+  <main id="main">
+    <section class="detail-hero"><div class="container"><div class="detail-hero-inner">
+      <div>
+        <span class="breadcrumb">Home / 교육과정 / 상세</span>
+        <div class="cat" id="dCat"></div>
+        <h1 id="dTitle">교육과정 상세</h1>
+        <p id="dSummary"></p>
+        <a class="btn btn--primary btn--lg" href="#apply">수강신청 바로가기</a>
+      </div>
+      <div class="hero-img"><img id="dImg" src="" alt=""></div>
+    </div></div></section>
+
+    <nav class="course-subnav" id="subnav" aria-label="과정 메뉴"></nav>
+
+    <section class="section--soft"><div class="container" id="detailRoot"></div></section>
+  </main>
+
+  <section class="cta" id="apply"><div class="container cta-inner">
+    <div><h2>나에게 맞는 과정인지 상담받아보세요</h2><p>학습 목표와 일정에 맞춰 과정과 시험을 안내합니다.</p></div>
+    <a class="btn btn--primary btn--lg" href="#">과정 상담하기</a>
+  </div></section>
+  <footer class="site-footer"><div class="container"><div class="footer-grid">
+    <div><h2>Times Education</h2><p>02-6207-9090</p></div>
+    <div><h3>과정</h3><a href="./courses.html">교육과정 안내</a></div>
+    <div><h3>커뮤니티</h3><a href="./community.html">공지·FAQ·후기</a></div>
+    <div><h3>지원</h3><a href="#">1:1 문의</a></div>
+  </div><div class="copyright">© 2026 Times Media Inc. — Design A</div></div></footer>
+
+  <script src="./data.js"></script>
+  <script>
+    (function () {
+      const { COURSES, findCourse, getParam, escapeHtml } = window.SiteData;
+      const c = findCourse(getParam("id"));
+      document.title = `${c.title} | Times Education`;
+      document.getElementById("dCat").textContent = c.category;
+      document.getElementById("dTitle").textContent = c.title;
+      document.getElementById("dSummary").textContent = c.summary;
+      const img = document.getElementById("dImg"); img.src = c.image; img.alt = c.title;
+
+      document.getElementById("subnav").innerHTML = COURSES.map((it) =>
+        `<a class="${it.id === c.id ? "active" : ""}" href="./course-detail.html?id=${encodeURIComponent(it.id)}">${escapeHtml(it.title)}</a>`).join("");
+
+      const list = (arr) => arr.map((x) => `<li>${escapeHtml(x)}</li>`).join("");
+      document.getElementById("detailRoot").innerHTML = `
+        <section class="detail-block" id="overview">
+          <h3 class="block-title">과정 개요</h3>
+          <table class="info-table"><tbody>
+            <tr><th>한 줄 정의</th><td>${escapeHtml(c.summary)}</td></tr>
+            <tr><th>교육기간</th><td>${escapeHtml(c.duration)}</td></tr>
+            <tr><th>교육일시</th><td>${escapeHtml(c.schedule)}</td></tr>
+            <tr><th>교육대상</th><td>${escapeHtml(c.target)}</td></tr>
+            <tr><th>수강료</th><td>${escapeHtml(c.fee)}</td></tr>
+            <tr><th>접수기간</th><td>상시 모집 (기수별 운영)</td></tr>
+          </tbody></table>
+        </section>
+
+        <section class="detail-block" id="intro">
+          <h3 class="block-title">과정소개</h3>
+          ${c.intro.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}
+        </section>
+
+        ${c.why ? `<section class="detail-block" id="why">
+          <h3 class="block-title">왜 이 과정이 필요한가</h3>
+          <ul class="rec-list">${list(c.why)}</ul>
+        </section>` : ""}
+
+        <section class="detail-block" id="recommend">
+          <h3 class="block-title">이런 분께 추천합니다</h3>
+          <ul class="rec-list">${list(c.recommend)}</ul>
+        </section>
+
+        <section class="detail-block" id="features">
+          <h3 class="block-title">과정 특징</h3>
+          <ul class="feat-list">${list(c.features)}</ul>
+        </section>
+
+        <section class="detail-block" id="ba">
+          <h3 class="block-title">교육 전 · 교육 후</h3>
+          <table class="ba-table"><thead><tr><th>교육 전</th><th>교육 후</th></tr></thead>
+          <tbody>${c.beforeAfter.map((r) => `<tr><td>${escapeHtml(r[0])}</td><td>${escapeHtml(r[1])}</td></tr>`).join("")}</tbody></table>
+        </section>
+
+        <section class="detail-block" id="curriculum">
+          <h3 class="block-title">주차별 커리큘럼</h3>
+          <table class="curri-table"><thead><tr><th>구분</th><th>주제</th><th>주요 내용</th></tr></thead>
+          <tbody>${c.curriculum.map((r) => `<tr><td>${escapeHtml(r[0])}</td><td><strong>${escapeHtml(r[1])}</strong></td><td>${escapeHtml(r[2])}</td></tr>`).join("")}</tbody></table>
+        </section>
+
+        <section class="detail-block" id="instructor">
+          <h3 class="block-title">책임 강사</h3>
+          <div class="instructor">
+            <div class="photo"><img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=400&q=80" alt="책임 강사"></div>
+            <div><h4>Times Education 전문 강사진</h4>
+            <ul><li>교육과정 설계 및 강사 양성 실무</li><li>AI 교육 콘텐츠 제작 및 현장 적용</li><li>수료 포트폴리오 피드백 운영</li></ul></div>
+          </div>
+        </section>
+
+        <section class="detail-block" id="faq">
+          <h3 class="block-title">자주 묻는 질문</h3>
+          <div class="faq-list">${c.faq.map(([q, a]) => `<div class="faq-item"><button class="faq-q" type="button"><span>${escapeHtml(q)}</span><span class="arrow">▾</span></button><div class="faq-a"><p>${escapeHtml(a)}</p></div></div>`).join("")}</div>
+        </section>
+
+        <section class="detail-block" id="reviews">
+          <h3 class="block-title">수강후기</h3>
+          <div class="review-grid">${c.reviews.map(([q, p, who]) => `<article class="review-card"><blockquote>${escapeHtml(q)}</blockquote><p>${escapeHtml(p)}</p><div class="review-meta"><span>${escapeHtml(who)}</span><span>${escapeHtml(c.title)}</span></div></article>`).join("")}</div>
+        </section>`;
+
+      document.querySelectorAll(".faq-q").forEach((b) => b.addEventListener("click", () => b.parentElement.classList.toggle("open")));
+    })();
+  </script>
+</body>
+</html>

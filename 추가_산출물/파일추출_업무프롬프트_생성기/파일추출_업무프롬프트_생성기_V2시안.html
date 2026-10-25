@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>파일 추출 + 업무 프롬프트 생성기 V2</title>
+<style>
+:root{
+  --bg:#eef1f5; --panel:#fff; --line:#c7ced8; --soft:#f8fafc;
+  --text:#222; --muted:#64748b; --accent:#0f4c81; --blue:#e8f1ff;
+  --yellow:#fff7df; --green:#eefbf2;
+  --left:30%; --center:50%; --right:20%;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;
+  font-size:12px; overflow:hidden;
+}
+.app{
+  height:100vh; max-width:1680px; margin:0 auto; background:#fff;
+  display:grid; grid-template-rows:42px 30px 1fr 148px;
+  border-left:1px solid var(--line); border-right:1px solid var(--line);
+}
+.top{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:6px 10px;border-bottom:1px solid var(--line);background:#fbfbfc;
+}
+h1{margin:0;font-size:20px;letter-spacing:-.6px}
+h2{font-size:13px;margin:0 0 5px;font-weight:800}
+h3{font-size:12px;margin:0 0 4px;font-weight:800}
+button{
+  border:1px solid #aeb6c2;background:#f7f7f7;height:24px;padding:3px 8px;
+  font-size:11px;cursor:pointer;white-space:nowrap;
+}
+button:hover{background:#eef2f6}
+.btns{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.shortcut{font-size:11px;color:var(--muted);margin-right:5px}
+.tabs{
+  display:flex;gap:2px;align-items:end;padding:4px 8px 0;border-bottom:1px solid var(--line);background:#fff;
+}
+.tab{
+  height:26px;padding:4px 10px;border:1px solid var(--line);border-bottom:none;background:#f1f3f6;font-weight:800;
+}
+.tab.on{background:#fff;color:var(--accent)}
+.page{display:none;min-height:0}
+.page.on{display:block}
+.work{
+  min-height:0;display:grid;
+  grid-template-columns:var(--left) 6px var(--center) 6px var(--right);
+  gap:0;padding:6px;
+}
+.panel{
+  min-height:0;border:1px solid var(--line);background:#fff;padding:6px;
+  display:flex;flex-direction:column;gap:5px;overflow:hidden;
+}
+.drag{
+  cursor:col-resize;background:linear-gradient(90deg,#eef1f5,#d6dde7,#eef1f5);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.drag:hover{background:#b8c7d9}
+.panelHead{display:flex;justify-content:space-between;align-items:center;gap:4px}
+.box{border:1px solid #dfe5ed;background:var(--soft);padding:5px;min-width:0}
+.box.yellow{background:var(--yellow)}
+.box.green{background:var(--green)}
+.row{display:grid;grid-template-columns:58px 1fr;gap:4px;margin-bottom:3px;align-items:center}
+.row.wide{grid-template-columns:82px 1fr}
+input,select,textarea{
+  width:100%;border:1px solid #aeb6c2;padding:3px 4px;font-size:11px;
+  font-family:inherit;background:#fff;min-width:0;
+}
+textarea{resize:none;min-height:44px}
+.memo{min-height:70px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 4px}
+.checks.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.checks.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+.check{
+  display:flex;align-items:center;gap:2px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  min-height:16px;
+}
+.check input{width:auto;margin:0}
+.denseChecks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+.denseChecks label{
+  border:1px solid #e0e5ec;background:#fff;padding:2px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15;
+}
+.denseChecks input{width:auto;margin:0 2px 0 0}
+.small{font-size:10px;color:var(--muted)}
+.tag{display:inline-block;border:1px solid #ccd3dd;background:#fff;border-radius:10px;padding:1px 5px;margin:1px;white-space:nowrap}
+.tableBox{min-height:0;overflow:auto;border:1px solid var(--line);background:#fff}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:11px}
+th,td{border:1px solid #d7dde6;padding:3px;vertical-align:top;overflow:hidden;text-overflow:ellipsis}
+th{background:#f2f4f7}
+td[contenteditable]{background:#fff}
+.results{display:grid;grid-template-columns:45% 55%;gap:6px;padding:6px;border-top:1px solid var(--line);background:#fbfcfe;min-height:0}
+.previewBox{
+  background:#fff;border:1px solid var(--line);padding:6px;overflow:auto;white-space:pre-wrap;
+  font-family:Consolas,"Malgun Gothic",monospace;font-size:11px;line-height:1.35;
+}
+.fileTable th:nth-child(1){width:34px}.fileTable th:nth-child(2){width:38px}.fileTable th:nth-child(3){width:65px}.fileTable th:nth-child(5){width:190px}
+details{border:1px solid #dfe5ed;background:#fff;margin-bottom:3px}
+summary{padding:3px 5px;cursor:pointer;font-weight:800;background:#f8fafc}
+.inside{padding:5px}
+.genPanel{display:none;min-height:0}
+.genPanel.on{display:block}
+.modal{
+  display:none;position:fixed;inset:40px 55px;z-index:50;background:#fff;border:1px solid #7a8696;
+  box-shadow:0 12px 36px #0003;grid-template-rows:34px 1fr;
+}
+.modal.on{display:grid}
+.modalHead{display:flex;align-items:center;justify-content:space-between;padding:6px 9px;border-bottom:1px solid var(--line);background:#f8fafc}
+.modalBody{padding:8px;overflow:auto}
+.backdrop{display:none;position:fixed;inset:0;background:#0003;z-index:49}
+.backdrop.on{display:block}
+.infoGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.card{border:1px solid var(--line);background:#fff;padding:7px}
+.settingsGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:8px}
+.helpGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px}
+@media(max-width:1100px){
+  body{overflow:auto}.app{height:auto;display:block}.work,.results,.settingsGrid,.helpGrid,.infoGrid{display:block}
+  .drag{display:none}.panel{margin:6px}.results{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>파일 추출 + 업무 프롬프트 생성기 V2</h1>
+    <div class="btns">
+      <span class="shortcut">Ctrl+F 파일 · Ctrl+G 생성 · Ctrl+S 저장 · Ctrl+1~5 생성기</span>
+      <button>📋 복사</button><button>💾 저장</button><button>⚡ 생성</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab on" data-page="workPage" onclick="showPage(this)">① 통합작업</button>
+    <button class="tab" data-page="filePage" onclick="showPage(this)">② 파일결과</button>
+    <button class="tab" data-page="settingPage" onclick="showPage(this)">③ 설정저장</button>
+    <button class="tab" data-page="helpPage" onclick="showPage(this)">④ 도움말</button>
+  </nav>
+
+  <!-- PAGE 1 -->
+  <section id="workPage" class="page on">
+    <main class="work" id="workGrid">
+      <!-- LEFT -->
+      <section class="panel">
+        <div class="panelHead">
+          <h2>① 관련 파일 찾기</h2>
+          <div class="btns"><button>🔍 찾기</button><button>📁 복사</button><button onclick="openModal('fileHelp')">?</button></div>
+        </div>
+        <div class="box">
+          <div class="row"><span>원본</span><input value="D:\회사자료\"></div>
+          <div class="row"><span>저장</span><input value="C:\Users\Desktop\outputs"></div>
+        </div>
+        <div class="box">
+          <h3>간단 조건</h3>
+          <div class="grid3">
+            <div><span class="small">파일</span><select><option>문서+표+PPT</option><option>문서만</option><option>PDF만</option><option>전체</option></select></div>
+            <div><span class="small">기간</span><select><option>최근 1년</option><option>최근 6개월</option><option>전체</option></select></div>
+            <div><span class="small">버전</span><select><option>최신/최종</option><option>초안 포함</option><option>반려 포함</option></select></div>
+          </div>
+        </div>
+        <div class="box" style="flex:1">
+          <h3>키워드 중심 검색</h3>
+          <div class="row"><span>포함</span><input value="사업계획서, 시장조사"></div>
+          <div class="row"><span>강화</span><input value="AI교육, 문제생성, 평가플랫폼"></div>
+          <div class="row"><span>보류</span><input value="초안, 예전안, 반려, 참고용"></div>
+          <div class="row"><span>제외</span><input value="폐기, 사용안함, 구버전"></div>
+          <details>
+            <summary>▾ 고급 검색 조건</summary>
+            <div class="inside">
+              <div class="checks">
+                <label class="check"><input type="checkbox" checked>파일명</label>
+                <label class="check"><input type="checkbox" checked>본문</label>
+                <label class="check"><input type="checkbox">표</label>
+                <label class="check"><input type="checkbox">이미지</label>
+                <label class="check"><input type="checkbox" checked>점수</label>
+                <label class="check"><input type="checkbox">하위폴더</label>
+              </div>
+            </div>
+          </details>
+        </div>
+        <div class="box green">
+          <b>안내</b> 대/중/소는 검색 조건이 아니라, 검색 후 선택 파일을 저장·정리할 때 붙이는 <b>분류 태그</b>로 이동했습니다.
+        </div>
+      </section>
+
+      <div class="drag" data-drag="left"></div>
+
+      <!-- CENTER -->
+      <section class="panel">
+        <div class="panelHead">
+          <h2>② 업무 프롬프트 설정</h2>
+          <div class="btns"><button onclick="openModal('genModal')">⛶ 크게보기</button><button>📝 정리</button><button>⚡ 생성</button></div>
+        </div>
+        <div class="box">
+          <div class="grid4">
+            <div><span class="small">생성기</span><select id="genSelect" onchange="showGen(this.value)"><option value="biz">사업계획서</option><option value="cert">자격증 규정</option><option value="edu">교육과정</option><option value="legal">법무증빙</option><option value="task">업무정리</option></select></div>
+            <div><span class="small">단계</span><select><option>1차 구조</option><option>2차 UX</option><option>최종산출</option><option>메일/보고</option></select></div>
+            <div><span class="small">대상</span><select><option>심사위원</option><option>대표님</option><option>이사님</option><option>변호사</option><option>직원</option></select></div>
+            <div><span class="small">결과</span><select><option>표+Word</option><option>메일</option><option>HTML</option><option>보고서</option><option>체크리스트</option></select></div>
+          </div>
+        </div>
+        <div class="box">
+          <h3>공통 정리 옵션</h3>
+          <div class="checks four">
+            <label class="check"><input type="checkbox" checked>두서없는 말</label>
+            <label class="check"><input type="checkbox" checked>빠진 질문</label>
+            <label class="check"><input type="checkbox" checked>중복 삭제</label>
+            <label class="check"><input type="checkbox" checked>대중소 정리</label>
+            <label class="check"><input type="checkbox" checked>고정/준/선택</label>
+            <label class="check"><input type="checkbox" checked>우선순위</label>
+            <label class="check"><input type="checkbox" checked>표 요약</label>
+            <label class="check"><input type="checkbox" checked>Word 문구</label>
+          </div>
+        </div>
+        <div class="box">
+          <h3>내 멘션 / 메모</h3>
+          <textarea class="memo" placeholder="이사님이 갑자기 말한 내용, 원하는 방향, 추가 요청을 두서없이 입력"></textarea>
+        </div>
+
+        <div class="box" style="flex:1;min-height:0;overflow:hidden">
+          <div class="panelHead">
+            <h3>생성기별 전용 설정</h3>
+            <div class="btns"><button onclick="openModal('genModal')">⛶</button><button>+추가</button></div>
+          </div>
+
+          <div id="biz" class="genPanel on">
+            <div class="grid3">
+              <div class="box"><h3>기본/문제</h3><div class="row"><span>사업</span><input></div><div class="row"><span>지원</span><input></div><div class="denseChecks"><label><input type="checkbox" checked>문제</label><label><input type="checkbox" checked>한계</label><label><input type="checkbox" checked>해결</label><label><input type="checkbox" checked>흐름</label></div></div>
+              <div class="box"><h3>시장/수익</h3><div class="denseChecks"><label><input type="checkbox" checked>국내</label><label><input type="checkbox" checked>해외</label><label><input type="checkbox" checked>규모</label><label><input type="checkbox" checked>성장</label><label><input type="checkbox" checked>수요</label><label><input type="checkbox" checked>유료</label><label><input type="checkbox" checked>B2B</label><label><input type="checkbox" checked>구독</label></div></div>
+              <div class="box"><h3>경쟁/도표</h3><div class="denseChecks"><label><input type="checkbox" checked>경쟁사</label><label><input type="checkbox" checked>비교표</label><label><input type="checkbox" checked>차별</label><label><input type="checkbox" checked>그래프</label><label><input type="checkbox" checked>도표</label><label><input type="checkbox" checked>예산</label><label><input type="checkbox" checked>로드맵</label><label><input type="checkbox" checked>출처</label></div></div>
+            </div>
+          </div>
+
+          <div id="cert" class="genPanel">
+            <div class="grid3">
+              <div class="box"><h3>기본</h3><div class="row"><span>기존</span><input></div><div class="row"><span>변경</span><input></div></div>
+              <div class="box"><h3>규정</h3><div class="denseChecks"><label><input type="checkbox" checked>변경사유</label><label><input type="checkbox" checked>직무</label><label><input type="checkbox" checked>검정</label><label><input type="checkbox" checked>합격</label><label><input type="checkbox" checked>응시</label><label><input type="checkbox" checked>등급</label></div></div>
+              <div class="box"><h3>반려/출력</h3><div class="denseChecks"><label><input type="checkbox" checked>반려</label><label><input type="checkbox" checked>동일직무</label><label><input type="checkbox" checked>문제표현</label><label><input type="checkbox" checked>전후표</label><label><input type="checkbox" checked>삭제유지</label><label><input type="checkbox" checked>Word</label></div></div>
+            </div>
+          </div>
+
+          <div id="edu" class="genPanel">
+            <div class="grid3">
+              <div class="box"><h3>기본</h3><div class="row"><span>과정</span><input></div><div class="row"><span>대상</span><input></div></div>
+              <div class="box"><h3>과정</h3><div class="denseChecks"><label><input type="checkbox" checked>소개</label><label><input type="checkbox" checked>목표</label><label><input type="checkbox" checked>차시</label><label><input type="checkbox" checked>실습</label><label><input type="checkbox" checked>평가</label><label><input type="checkbox" checked>수료</label></div></div>
+              <div class="box"><h3>안내</h3><div class="denseChecks"><label><input type="checkbox" checked>접수</label><label><input type="checkbox" checked>서류</label><label><input type="checkbox" checked>전형</label><label><input type="checkbox" checked>홈페이지</label><label><input type="checkbox" checked>A4</label><label><input type="checkbox" checked>Word</label></div></div>
+            </div>
+          </div>
+
+          <div id="legal" class="genPanel">
+            <div class="grid3">
+              <div class="box"><h3>기본</h3><div class="row"><span>사건</span><input></div><div class="row"><span>상대</span><input></div></div>
+              <div class="box"><h3>사건</h3><div class="denseChecks"><label><input type="checkbox" checked>개요</label><label><input type="checkbox" checked>타임라인</label><label><input type="checkbox" checked>주장</label><label><input type="checkbox" checked>반박</label><label><input type="checkbox" checked>손해액</label><label><input type="checkbox" checked>증거</label></div></div>
+              <div class="box"><h3>질문</h3><div class="denseChecks"><label><input type="checkbox" checked>질문</label><label><input type="checkbox" checked>확인필요</label><label><input type="checkbox" checked>사실분리</label><label><input type="checkbox" checked>감정삭제</label><label><input type="checkbox" checked>메일</label><label><input type="checkbox" checked>Word</label></div></div>
+            </div>
+          </div>
+
+          <div id="task" class="genPanel">
+            <div class="grid3">
+              <div class="box"><h3>업무</h3><div class="row"><span>업무</span><input></div><div class="row"><span>지시</span><select><option>이사님</option><option>대표님</option></select></div></div>
+              <div class="box"><h3>정리</h3><div class="denseChecks"><label><input type="checkbox" checked>요약</label><label><input type="checkbox" checked>할일</label><label><input type="checkbox" checked>빠진정보</label><label><input type="checkbox" checked>질문</label><label><input type="checkbox" checked>우선순위</label><label><input type="checkbox" checked>다음행동</label></div></div>
+              <div class="box"><h3>전달</h3><div class="denseChecks"><label><input type="checkbox" checked>담당자</label><label><input type="checkbox" checked>직원문</label><label><input type="checkbox" checked>대표보고</label><label><input type="checkbox" checked>리스크</label><label><input type="checkbox" checked>체크</label><label><input type="checkbox" checked>Word</label></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="drag" data-drag="right"></div>
+
+      <!-- RIGHT -->
+      <aside class="panel">
+        <div class="panelHead"><h2>③ 빠른 선택</h2><button>★</button></div>
+        <details open>
+          <summary>▾ 대상/말투</summary>
+          <div class="inside">
+            <span class="tag">대표님</span><span class="tag">이사님</span><span class="tag">심사위원</span><span class="tag">변호사</span>
+            <span class="tag">짧게</span><span class="tag">단정</span><span class="tag">부드럽게</span><span class="tag">공문</span>
+          </div>
+        </details>
+        <details open>
+          <summary>▾ 회사 규정</summary>
+          <div class="inside">
+            <label class="check"><input type="checkbox" checked>고밀도표</label>
+            <label class="check"><input type="checkbox" checked>세로배치</label>
+            <label class="check"><input type="checkbox" checked>표요약</label>
+            <label class="check"><input type="checkbox" checked>Word 구조</label>
+          </div>
+        </details>
+        <details open>
+          <summary>▾ 인삿말</summary>
+          <div class="inside"><textarea>안녕하세요.
+관련 자료 정리드립니다.</textarea></div>
+        </details>
+        <details>
+          <summary>▾ 마무리</summary>
+          <div class="inside"><textarea>확인 후 의견 부탁드립니다.
+필요한 자료가 있으면 추가 전달드리겠습니다.</textarea></div>
+        </details>
+        <details>
+          <summary>▾ 단축키</summary>
+          <div class="inside small">Ctrl+F 파일찾기<br>Ctrl+G 생성<br>Ctrl+S 저장<br>Ctrl+1~5 생성기 전환</div>
+        </details>
+      </aside>
+    </main>
+  </section>
+
+  <!-- PAGE 2 FILE RESULTS -->
+  <section id="filePage" class="page">
+    <div class="settingsGrid">
+      <div class="card">
+        <h2>② 파일결과</h2>
+        <div class="tableBox">
+          <table class="fileTable">
+            <tr><th>선택</th><th>점수</th><th>수정일</th><th>근거</th><th>파일</th></tr>
+            <tr><td><input type="checkbox" checked></td><td>92</td><td>최근</td><td>사업계획서·시장조사 키워드 일치</td><td>AI교육_사업계획서_최종.docx</td></tr>
+            <tr><td><input type="checkbox"></td><td>84</td><td>최근</td><td>경쟁사·수익모델 포함</td><td>시장조사_경쟁사분석.xlsx</td></tr>
+            <tr><td><input type="checkbox"></td><td>77</td><td>이전</td><td>로드맵·예산 참고 가능</td><td>정부사업_예산계획.pdf</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h2>저장용 분류 태그</h2>
+        <p class="small">대/중/소는 파일을 찾는 조건이 아니라, 선택 파일을 저장·정리할 때 쓰는 태그입니다.</p>
+        <table id="tagTable">
+          <tr><th>✓</th><th>대분류</th><th>중분류</th><th>소분류</th><th>수정</th></tr>
+          <tr><td><input type="checkbox" checked></td><td contenteditable>정부사업</td><td contenteditable>사업계획서</td><td contenteditable>시장조사, 예산, 경쟁사</td><td>✎</td></tr>
+          <tr><td><input type="checkbox"></td><td contenteditable>업무관리</td><td contenteditable>지시사항</td><td contenteditable>이사님, 회의록</td><td>✎</td></tr>
+        </table>
+        <div class="btns" style="margin-top:6px"><button onclick="addTagRow()">+ 분류 추가</button><button>★ 조합 저장</button></div>
+      </div>
+      <div class="card">
+        <h2>선택 파일 처리</h2>
+        <div class="checks">
+          <label class="check"><input type="checkbox" checked>선택 파일만 프롬프트 반영</label>
+          <label class="check"><input type="checkbox" checked>선택 파일 복사</label>
+          <label class="check"><input type="checkbox">요약 생성</label>
+          <label class="check"><input type="checkbox">Word 첨부목록</label>
+        </div>
+        <textarea style="margin-top:6px" placeholder="파일 결과에 대한 메모"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3 SETTINGS -->
+  <section id="settingPage" class="page">
+    <div class="settingsGrid">
+      <div class="card">
+        <h2>③ 설정저장 - 회사 고정 규정</h2>
+        <div class="checks">
+          <label class="check"><input type="checkbox" checked>고밀도 테이블형</label>
+          <label class="check"><input type="checkbox" checked>한 셀 세로배치</label>
+          <label class="check"><input type="checkbox" checked>표 중심</label>
+          <label class="check"><input type="checkbox" checked>대/중/소 분류</label>
+          <label class="check"><input type="checkbox" checked>마지막 요약표</label>
+          <label class="check"><input type="checkbox" checked>Word 구조</label>
+        </div>
+      </div>
+      <div class="card">
+        <h2>즐겨찾기 프리셋</h2>
+        <span class="tag">대표님 보고용</span><span class="tag">이사님 업무정리</span><span class="tag">변호사 메일용</span><span class="tag">심사위원 설득용</span>
+        <div class="btns" style="margin-top:8px"><button>+ 프리셋 추가</button><button>현재 설정 저장</button></div>
+      </div>
+      <div class="card">
+        <h2>고정 멘트</h2>
+        <textarea>안녕하세요.
+관련 자료 정리드립니다.</textarea>
+        <textarea style="margin-top:6px">확인 후 의견 부탁드립니다.</textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4 HELP -->
+  <section id="helpPage" class="page">
+    <div class="helpGrid">
+      <div class="card">
+        <h2>④ 도움말 - 사용 순서</h2>
+        <ol>
+          <li>관련 파일 찾기에서 폴더와 키워드만 간단히 입력</li>
+          <li>파일결과 탭에서 필요한 파일 선택</li>
+          <li>필요하면 저장용 대/중/소 태그 지정</li>
+          <li>업무 프롬프트에서 생성기와 단계 선택</li>
+          <li>내 멘션을 두서없이 입력 후 프롬프트 생성</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>단축키</h2>
+        <table>
+          <tr><th>단축키</th><th>기능</th></tr>
+          <tr><td>Ctrl+F</td><td>파일 찾기</td></tr>
+          <tr><td>Ctrl+G</td><td>프롬프트 생성</td></tr>
+          <tr><td>Ctrl+S</td><td>설정 저장</td></tr>
+          <tr><td>Ctrl+1~5</td><td>생성기 전환</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREVIEW FOOTER -->
+  <footer class="results">
+    <div class="tableBox">
+      <table class="fileTable">
+        <tr><th>선택</th><th>점수</th><th>수정일</th><th>근거</th><th>파일</th></tr>
+        <tr><td><input type="checkbox" checked></td><td>92</td><td>최근</td><td>사업계획서·시장조사 키워드 일치</td><td>AI교육_사업계획서_최종.docx</td></tr>
+        <tr><td><input type="checkbox"></td><td>84</td><td>최근</td><td>경쟁사·수익모델 포함</td><td>시장조사_경쟁사분석.xlsx</td></tr>
+      </table>
+    </div>
+    <div class="previewBox">너는 정부지원사업 사업계획서·시장조사 전문가야.
+
+[참고 파일]
+- 선택된 파일 목록만 반영
+
+[작업 목적]
+- 생성기: 사업계획서
+- 단계: 1차 구조 설계
+- 대상: 심사위원
+- 말투: 전문적이고 쉽게
+
+[반드시 반영]
+- 국내외 시장조사
+- 시장성과 수익성
+- 그래프·도표 제안
+- 경쟁사 분석
+- 수익모델
+- Word 문서 구조
+
+마지막에는 표로 요약하고, Word 문서로 저장할 수 있도록 제목 구조를 포함해줘.</div>
+  </footer>
+</div>
+
+<div class="backdrop" id="backdrop" onclick="closeModal()"></div>
+
+<div class="modal" id="genModal">
+  <div class="modalHead">
+    <b>생성기별 전용 설정 크게보기</b>
+    <button onclick="closeModal()">닫기</button>
+  </div>
+  <div class="modalBody">
+    <div class="infoGrid">
+      <div class="card"><h2>사업계획서</h2><p>시장조사, 수익성, 경쟁사, 그래프/도표, 로드맵, 예산표 중심</p></div>
+      <div class="card"><h2>자격증 규정</h2><p>반려사유, 동일직무, 변경사유, 검정기준, 등급체계 중심</p></div>
+      <div class="card"><h2>교육과정</h2><p>차시표, 모집안내, 평가, 수료, 홈페이지 문구 중심</p></div>
+      <div class="card"><h2>법무/업무</h2><p>사실분리, 증거목록, 질문목록, 업무 우선순위 중심</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="fileHelp">
+  <div class="modalHead">
+    <b>대/중/소 분류 안내</b>
+    <button onclick="closeModal()">닫기</button>
+  </div>
+  <div class="modalBody">
+    <p><b>대/중/소는 파일 찾기 조건이 아니라, 파일을 찾은 뒤 저장하거나 정리할 때 붙이는 분류 태그입니다.</b></p>
+    <table>
+      <tr><th>구분</th><th>의미</th><th>예시</th></tr>
+      <tr><td>대분류</td><td>큰 업무 영역</td><td>정부사업, 자격증, 법무</td></tr>
+      <tr><td>중분류</td><td>문서 성격</td><td>사업계획서, 운영규정, 증빙자료</td></tr>
+      <tr><td>소분류</td><td>세부 내용</td><td>시장조사, 반려, 손해액</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function showPage(btn){
+  const id = btn.dataset.page;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+}
+function showGen(id){
+  document.querySelectorAll('.genPanel').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function openModal(id){
+  document.getElementById('backdrop').classList.add('on');
+  document.getElementById(id).classList.add('on');
+}
+function closeModal(){
+  document.querySelectorAll('.modal').forEach(m=>m.classList.remove('on'));
+  document.getElementById('backdrop').classList.remove('on');
+}
+function addTagRow(){
+  const t = document.getElementById('tagTable');
+  const r = t.insertRow(-1);
+  r.innerHTML = '<td><input type="checkbox" checked></td><td contenteditable>새 대분류</td><td contenteditable>새 중분류</td><td contenteditable>새 소분류</td><td>✎</td>';
+}
+document.addEventListener('keydown', e=>{
+  if(e.ctrlKey && e.key === '1') document.getElementById('genSelect').value='biz', showGen('biz');
+  if(e.ctrlKey && e.key === '2') document.getElementById('genSelect').value='cert', showGen('cert');
+  if(e.ctrlKey && e.key === '3') document.getElementById('genSelect').value='edu', showGen('edu');
+  if(e.ctrlKey && e.key === '4') document.getElementById('genSelect').value='legal', showGen('legal');
+  if(e.ctrlKey && e.key === '5') document.getElementById('genSelect').value='task', showGen('task');
+});
+
+let dragging = null;
+document.querySelectorAll('.drag').forEach(d=>{
+  d.addEventListener('mousedown', e=>{
+    dragging = d.dataset.drag;
+    document.body.style.userSelect='none';
+  });
+});
+window.addEventListener('mouseup', ()=>{dragging=null;document.body.style.userSelect='auto';});
+window.addEventListener('mousemove', e=>{
+  if(!dragging) return;
+  const app = document.querySelector('.app').getBoundingClientRect();
+  const x = e.clientX - app.left;
+  const pct = Math.max(18, Math.min(72, x / app.width * 100));
+  if(dragging === 'left'){
+    const right = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--right')) || 20;
+    const center = 100 - pct - right;
+    if(center > 28){
+      document.documentElement.style.setProperty('--left', pct + '%');
+      document.documentElement.style.setProperty('--center', center + '%');
+    }
+  }
+  if(dragging === 'right'){
+    const left = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--left')) || 30;
+    const center = pct - left;
+    const right = 100 - pct;
+    if(center > 28 && right > 12){
+      document.documentElement.style.setProperty('--center', center + '%');
+      document.documentElement.style.setProperty('--right', right + '%');
+    }
+  }
+});
+</script>
+</body>
+</html>

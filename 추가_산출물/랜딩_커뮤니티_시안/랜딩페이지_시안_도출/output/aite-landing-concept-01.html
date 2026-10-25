@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITE 랜딩페이지 시안 01 - 기관 도입형</title>
+  <style>
+    :root {
+      --ink: #18222f;
+      --muted: #5c6876;
+      --line: #d9e2ea;
+      --paper: #f6f8fb;
+      --navy: #123b5d;
+      --teal: #0f8b8d;
+      --lime: #b7d968;
+      --white: #fff;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Pretendard, "Noto Sans KR", Arial, sans-serif; color: var(--ink); background: var(--white); line-height: 1.65; }
+    header, section, footer { width: 100%; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+    .hero { min-height: 720px; display: flex; align-items: center; background: linear-gradient(135deg, rgba(18,59,93,.94), rgba(15,139,141,.82)), url("https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1800&q=80") center/cover; color: #fff; }
+    .hero .wrap { padding-top: 72px; padding-bottom: 92px; }
+    .eyebrow { font-size: 14px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--lime); }
+    h1 { margin: 18px 0 22px; font-size: clamp(42px, 6vw, 78px); line-height: 1.08; letter-spacing: 0; max-width: 900px; }
+    h2 { margin: 0 0 18px; font-size: clamp(28px, 3.2vw, 46px); line-height: 1.2; letter-spacing: 0; }
+    h3 { margin: 0 0 10px; font-size: 21px; line-height: 1.35; }
+    p { margin: 0; }
+    .lead { max-width: 760px; font-size: 21px; color: rgba(255,255,255,.88); }
+    .buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 6px; font-weight: 800; text-decoration: none; }
+    .btn.primary { background: var(--lime); color: #102033; }
+    .btn.secondary { border: 1px solid rgba(255,255,255,.55); color: #fff; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 58px; max-width: 840px; }
+    .stat { border-top: 1px solid rgba(255,255,255,.35); padding-top: 18px; }
+    .stat strong { display: block; font-size: 30px; line-height: 1.1; }
+    .stat span { color: rgba(255,255,255,.76); }
+    section { padding: 92px 0; }
+    .band { background: var(--paper); }
+    .section-head { max-width: 760px; margin-bottom: 34px; }
+    .section-head p { color: var(--muted); font-size: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .card { border: 1px solid var(--line); border-radius: 8px; padding: 26px; background: #fff; }
+    .card p, li { color: var(--muted); }
+    .badge { display: inline-flex; margin-bottom: 14px; padding: 4px 10px; border-radius: 999px; background: #e6f3f2; color: var(--teal); font-size: 13px; font-weight: 800; }
+    .split { display: grid; grid-template-columns: .9fr 1.1fr; gap: 52px; align-items: center; }
+    .panel { background: var(--navy); color: #fff; border-radius: 8px; padding: 36px; }
+    .panel p { color: rgba(255,255,255,.78); }
+    ul { margin: 18px 0 0; padding-left: 20px; }
+    .faq { border-top: 1px solid var(--line); }
+    details { border-bottom: 1px solid var(--line); padding: 20px 0; }
+    summary { cursor: pointer; font-weight: 850; font-size: 18px; }
+    details p { margin-top: 10px; color: var(--muted); max-width: 920px; }
+    .cta { background: #112437; color: #fff; padding: 78px 0; }
+    .cta p { color: rgba(255,255,255,.78); max-width: 700px; }
+    .cta-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+    .cta-list span { border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 8px 14px; }
+    footer { padding: 34px 0; background: #081522; color: rgba(255,255,255,.68); font-size: 14px; }
+    @media (max-width: 820px) {
+      .hero { min-height: auto; }
+      .stats, .grid-3, .grid-2, .split { grid-template-columns: 1fr; }
+      section { padding: 68px 0; }
+      .wrap { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">AITE Future Assessment</div>
+      <h1>AI 시대의 언어 역량, 이제 검증 가능한 기준으로 평가합니다</h1>
+      <p class="lead">그리너스가 축적해 온 시험·교육 운영 경험을 바탕으로, AITE는 AI 활용 능력과 언어 실무 역량을 함께 확인하는 미래형 평가 브랜드로 확장됩니다.</p>
+      <div class="buttons">
+        <a class="btn primary" href="#contact">도입 문의하기</a>
+        <a class="btn secondary" href="#aite">AITE 평가 영역 보기</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>20년+</strong><span>시험·교육 운영 경험</span></div>
+        <div class="stat"><strong>AI + Language</strong><span>언어 실무와 AI 활용 평가</span></div>
+        <div class="stat"><strong>B2B/B2C</strong><span>기관 도입과 개인 응시 모두 고려</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>점수보다 중요한 것은 실제로 쓸 수 있는 역량입니다</h2>
+        <p>AI 번역, 프롬프트 작성, 콘텐츠 현지화, 교육 현장의 AI 활용은 이미 일상이 되었습니다. 필요한 것은 도구 사용 경험이 아니라 결과를 판단하고 책임 있게 활용할 수 있는 평가 기준입니다.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><span class="badge">Need 01</span><h3>AI 결과물 검증</h3><p>자연스러워 보이는 AI 결과도 원문 누락, 용어 오류, 환각, 보안 이슈를 포함할 수 있습니다.</p></div>
+        <div class="card"><span class="badge">Need 02</span><h3>실무형 언어 판단</h3><p>번역·통역·요약·현지화는 문장력뿐 아니라 목적, 독자, 산업 맥락을 반영해야 합니다.</p></div>
+        <div class="card"><span class="badge">Need 03</span><h3>기관이 신뢰할 기준</h3><p>교육기관과 기업은 학습자의 AI 활용 수준을 설명할 수 있는 공통 평가 체계가 필요합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap split">
+      <div>
+        <div class="section-head">
+          <h2>그리너스의 운영 경험은 AITE의 신뢰 기반입니다</h2>
+          <p>그리너스는 TESOL, 통번역 교육, 자격 연계 과정 등 언어 교육과 평가가 만나는 영역에서 운영 경험을 쌓아왔습니다. AITE는 이 경험을 AI 시대의 평가 수요로 확장하는 프로젝트입니다.</p>
+        </div>
+        <ul>
+          <li>언어 교육과 자격 과정 운영 경험</li>
+          <li>학습자, 강사, 기관 담당자가 궁금해하는 실제 문의 데이터</li>
+          <li>접수, 평가, 결과 안내, 수료·자격 활용까지 이어지는 운영 감각</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>신뢰를 만드는 운영 원칙</h3>
+        <p>평가 목적을 명확히 설명하고, 응시자가 이해할 수 있는 기준을 제공하며, 기관이 활용 가능한 결과를 설계합니다. AITE는 단순한 시험명이 아니라 운영 가능한 평가 사업으로 기획되어야 합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="aite">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>AITE 소개 문구</h2>
+        <p>AITE는 AI를 사용하는 능력만 보지 않습니다. AI가 만든 결과를 읽고, 고치고, 설명하고, 책임 있게 활용하는 능력을 평가합니다.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card"><h3>AI 외국어 통역·번역 역량</h3><p>AI 번역 결과의 정확성, 문맥 적합성, 용어 일관성, 문화적 표현을 검토하는 실무형 평가 영역입니다.</p></div>
+        <div class="card"><h3>AI 프롬프트 설계 역량</h3><p>역할, 목적, 독자, 출력 형식, 금지 조건을 반영해 언어 작업 지시를 구조화하는 능력을 봅니다.</p></div>
+        <div class="card"><h3>AI 윤리와 보안 판단</h3><p>개인정보, 저작권, 편향, 환각, 출처 표시, 기업 기밀 입력 위험을 점검하는 기준을 포함합니다.</p></div>
+        <div class="card"><h3>AI 교육 활용 역량</h3><p>학습자 수준에 맞는 AI 활용 활동, 피드백, 과제 윤리, 결과 검토 교육을 설계하는 능력을 다룹니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>기관과 개인 모두에게 활용 가능한 평가 결과</h2>
+        <p>AITE는 교육 과정의 성취 확인, 기업 내부 AI 활용 교육, 글로벌 커뮤니케이션 직무 검증, 프리랜서 역량 증빙 등 다양한 목적에 맞게 확장할 수 있습니다.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>교육기관</h3><p>AI 리터러시, 외국어 교육, 프로젝트 수업의 성취 기준으로 활용할 수 있습니다.</p></div>
+        <div class="card"><h3>기업·공공기관</h3><p>문서 작성, 번역 검수, 고객 응대, 보안 교육을 포함한 직무형 AI 역량 검증에 적합합니다.</p></div>
+        <div class="card"><h3>학습자·실무자</h3><p>AI 활용 경험을 객관적인 결과로 정리하고 취업, 이직, 직무 확장에 활용할 수 있습니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>전체 톤앤매너 제안</h2>
+        <p>기관 담당자가 신뢰할 수 있도록 전문성과 실용성을 우선합니다. 문장은 짧고 명확하게 쓰며, AI 기술의 새로움보다 평가 기준, 운영 경험, 활용 가능성을 중심으로 설득합니다.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>신뢰 기반</h3><p>20년 운영 경험, 평가 절차, 결과 활용 기준을 근거로 제시합니다.</p></div>
+        <div class="card"><h3>실무 중심</h3><p>번역 검수, 프롬프트, 윤리, 교육 활용처럼 현장에서 이해되는 언어를 사용합니다.</p></div>
+        <div class="card"><h3>미래 확장성</h3><p>AITE를 단일 시험이 아니라 기관과 기업으로 확장 가능한 평가 브랜드로 표현합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Hero 섹션 카피 3안</h2>
+        <p>실제 메인 비주얼에 교체 적용할 수 있는 헤드라인 후보입니다.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>안 1</h3><p>AI 시대의 언어 역량, 이제 검증 가능한 기준으로 평가합니다.</p></div>
+        <div class="card"><h3>안 2</h3><p>AI를 쓰는 사람에서, AI 결과를 판단하는 전문가로.</p></div>
+        <div class="card"><h3>안 3</h3><p>그리너스의 운영 경험 위에 세우는 미래형 AI 평가, AITE.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>FAQ</h2>
+        <p>기존 시험·교육 사이트 FAQ에서 반복되는 궁금증을 AITE 랜딩페이지용 질문으로 재구성했습니다.</p>
+      </div>
+      <div class="faq">
+        <details open><summary>AITE는 어떤 시험인가요?</summary><p>AITE는 AI 도구를 활용한 언어 작업, 번역 검수, 프롬프트 설계, AI 윤리, 교육 활용 역량을 평가하는 미래형 평가 브랜드입니다.</p></details>
+        <details><summary>기존 언어 시험과 무엇이 다른가요?</summary><p>기존 시험이 외국어 실력 자체를 주로 확인했다면, AITE는 AI 결과를 판단하고 실무 목적에 맞게 수정·검증하는 역량까지 함께 봅니다.</p></details>
+        <details><summary>기관 도입이 가능한가요?</summary><p>가능합니다. 교육기관, 기업, 공공기관의 교육 과정 목적에 맞춰 평가 영역, 응시 규모, 결과 활용 방식을 협의할 수 있습니다.</p></details>
+        <details><summary>외국어 실력이 부족해도 응시할 수 있나요?</summary><p>평가 영역에 따라 요구 수준이 다릅니다. 통역·번역 검수 영역은 외국어 이해력이 중요하고, AI 윤리·교육 영역은 활용 원칙과 판단 기준의 비중이 더 큽니다.</p></details>
+        <details><summary>시험에서는 특정 AI 도구 사용법을 평가하나요?</summary><p>특정 서비스의 버튼 사용법보다 여러 도구에 공통으로 적용되는 지시 설계, 결과 검증, 보안 기준, 책임 있는 활용 능력을 중심으로 구성하는 것이 적합합니다.</p></details>
+        <details><summary>결과는 어디에 활용할 수 있나요?</summary><p>AI 번역 검수, 다국어 콘텐츠 제작, 기업 교육, AI 리터러시 수업, 해외 커뮤니케이션 직무, 프리랜서 역량 증빙 등에 활용할 수 있습니다.</p></details>
+        <details><summary>평가 기준은 어떻게 안내되나요?</summary><p>응시자가 이해할 수 있도록 영역별 평가 요소, 문항 예시, 합격 또는 성취 기준, 결과 확인 절차를 사전에 안내하는 구성이 필요합니다.</p></details>
+        <details><summary>시험 준비 자료나 샘플 문항이 제공되나요?</summary><p>랜딩페이지에는 원문 검토, AI 결과 오류 찾기, 프롬프트 개선, 윤리 판단 사례처럼 시험 유형을 이해할 수 있는 예시를 제공하는 것이 좋습니다.</p></details>
+        <details><summary>AITE는 기존 사업을 대체하나요?</summary><p>대체가 아니라 확장입니다. 기존 언어 교육과 평가 운영 경험을 바탕으로 AI 시대에 필요한 새로운 평가 영역을 추가하는 방향입니다.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="cta">
+    <div class="wrap">
+      <h2>AITE 도입과 공동 운영을 상담해보세요</h2>
+      <p>교육 과정, 기업 연수, 자격 사업, 기관 평가 목적에 맞춰 AITE의 활용 가능성을 검토할 수 있습니다.</p>
+      <div class="buttons">
+        <a class="btn primary" href="mailto:contact@example.com">도입 문의하기</a>
+        <a class="btn secondary" href="#faq">FAQ 확인하기</a>
+      </div>
+      <h3 style="margin-top:30px;">CTA 문구 5개</h3>
+      <div class="cta-list">
+        <span>기관 도입 상담</span><span>시험 운영 제휴</span><span>샘플 문항 요청</span><span>교육 과정 연계 문의</span><span>AITE 소개서 받기</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">AITE Landing Concept 01. 그리너스 운영 경험과 미래형 평가 사업을 연결하는 기관 도입형 시안.</div>
+  </footer>
+</body>
+</html>

@@ -28,6 +28,9 @@ def main():
     for path in paths:
         if not (ROOT / path).is_file():
             continue
+        if path.startswith("추가_산출물/"):
+            dates[path] = datetime.fromtimestamp((ROOT / path).stat().st_mtime).date().isoformat()
+            continue
         history_path = path.replace("랜딩페이지/랜딩페이지3종/ver1/", "랜딩페이지/랜딩페이지3종/", 1)
         committed = git("log", "-1", "--format=%cs", "--", history_path)
         substantive_change = path in changed and subprocess.run(

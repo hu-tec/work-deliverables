@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>재사용 디자인 프롬프트 문서목록</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>재사용 디자인 프롬프트 문서목록</h1>
+<p>이 폴더는 현재 <code>design_system_major</code>를 다른 프로젝트나 다른 화면 제작에 재사용하기 위한 기준 프롬프트 모음이다.</p>
+<p>목표는 동일한 입력을 주었을 때 사용자 화면과 BO 테이블 화면이 같은 톤, 밀도, 컴포넌트 구조로 생성되게 하는 것이다.</p>
+<h2>폴더 구조</h2>
+<table><tbody><tr><th>폴더</th><th>용도</th><th>먼저 볼 문서</th></tr><tr><td><code>사용자/</code></td><td>사용자 화면, 서비스 소개, 신청/안내 화면 제작 기준</td><td><code>사용자/00_문서목록.md</code></td></tr><tr><td><code>관리자/</code></td><td>BO 관리자 화면, 대량 테이블, 검색필터, inline Drawer 제작 기준</td><td><code>관리자/00_문서목록.md</code></td></tr></tbody></table>
+<h2>사용자 문서</h2>
+<table><tbody><tr><th>문서</th><th>기준 파일</th><th>용도</th></tr><tr><td><code>사용자/01_사용자화면_디자인시스템_기준.md</code></td><td><code>index.html</code>, <code>layout.css</code>, <code>common.js</code>, <code>dense-drawer.css</code>, <code>dense-drawer.js</code></td><td>사용자 화면, 서비스 소개 화면, 신청/안내 화면 제작 기준</td></tr></tbody></table>
+<h2>관리자 문서</h2>
+<table><tbody><tr><th>문서</th><th>기준 파일</th><th>용도</th></tr><tr><td><code>관리자/02_BO_테이블레이아웃_기준.md</code></td><td><code>table_design/*.html</code>, <code>table_design/table-design.css</code>, <code>table_design/table-design.js</code></td><td>관리자/BO 대량 테이블, 검색필터, inline Drawer 제작 기준</td></tr><tr><td><code>관리자/03_BO_관리자화면_기준.md</code></td><td><code>index.html</code>, <code>dense-drawer.*</code>, <code>table_design/*</code></td><td>BO 관리자 화면 전체 shell, 업무 전환, 액션, 상세 편집 기준</td></tr><tr><td><code>관리자/04_BO_관리자용_레이아웃_기준.md</code></td><td><code>index.html</code>, <code>dense-drawer.css</code>, <code>table_design/table-design.css</code></td><td>4단 그리드, 밀도 높은 업무 패널, BO 대시보드/상세 배치 기준</td></tr></tbody></table>
+<h2>관리자 컴포넌트 문서</h2>
+<table><tbody><tr><th>문서</th><th>용도</th></tr><tr><td><code>관리자/components/상태_유형_칩_기준.md</code></td><td>상태값, 유형값, 구독/등급/결제수단 같은 반복값을 chip/pill로 표시하는 기준</td></tr><tr><td><code>관리자/components/검색필터_기준.md</code></td><td>사용자 화면 필터와 BO 고밀도 검색조건 구성 기준</td></tr><tr><td><code>관리자/components/인라인_Drawer_기준.md</code></td><td>행 클릭 상세, 우측 inline Drawer, 넓게보기 상세 작업영역 기준</td></tr><tr><td><code>관리자/components/테이블선택_Drawer_상세패널_기준.md</code></td><td>테이블 행 선택 후 열리는 상세 작업 패널, 상태 UI, 고정/변동 정보 기준</td></tr></tbody></table>
+<h2>사용 순서</h2>
+<ol>
+<li>사용자 화면을 만들 때는 <code>사용자/01_사용자화면_디자인시스템_기준.md</code>를 먼저 적용한다.</li>
+<li>관리자 화면 전체를 만들 때는 <code>관리자/03_BO_관리자화면_기준.md</code>를 먼저 적용한다.</li>
+<li>관리자 대시보드나 상세 작업 레이아웃은 <code>관리자/04_BO_관리자용_레이아웃_기준.md</code>를 함께 적용한다.</li>
+<li>관리자 대량 테이블 화면을 만들 때는 <code>관리자/02_BO_테이블레이아웃_기준.md</code>를 함께 적용한다.</li>
+<li>상태/유형/필터/Drawer가 필요한 관리자 화면은 <code>관리자/components</code> 문서를 함께 적용한다.</li>
+<li>테이블 행 선택 후 상세 작업을 처리하는 화면은 <code>관리자/components/테이블선택_Drawer_상세패널_기준.md</code>를 함께 적용한다.</li>
+<li>새 프로젝트에 복사할 때는 이 폴더 전체를 기준 프롬프트로 전달한다.</li>
+</ol>
+<h2>공통 금지</h2>
+<ul>
+<li>기준 파일에 없는 새로운 색상 팔레트를 임의로 만들지 않는다.</li>
+<li>큰 카드, 과한 radius, 넓은 여백, 마케팅식 장식을 BO 테이블 화면에 적용하지 않는다.</li>
+<li>상태값을 색상 텍스트만으로 표시하지 않는다.</li>
+<li>날짜와 카운트 표기 형식을 화면마다 다르게 쓰지 않는다.</li>
+<li>사용자 화면과 관리자 화면의 밀도, 글자 크기, 정보 구조를 섞지 않는다.</li>
+</ul>
+</body>
+</html>

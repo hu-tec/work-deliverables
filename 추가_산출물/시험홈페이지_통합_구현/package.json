@@ -1,0 +1,27 @@
+{
+  "name": "hutechc-exam-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "휴텍씨 시험 홈페이지 통합 플랫폼 (2024 토대 + 2025 UX + vibecoding 관리)",
+  "scripts": {
+    "seed": "node scripts/seed-from-csv.mjs",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^15.5.18",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.16",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.5.1",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.7.3"
+  }
+}

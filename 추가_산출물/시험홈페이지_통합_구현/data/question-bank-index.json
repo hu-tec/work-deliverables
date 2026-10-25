@@ -1,0 +1,74 @@
+[
+  {
+    "field": "개발",
+    "count": 4,
+    "withQuestion": 4,
+    "withModelAnswer": 4
+  },
+  {
+    "field": "건강",
+    "count": 3,
+    "withQuestion": 3,
+    "withModelAnswer": 3
+  },
+  {
+    "field": "관계교육",
+    "count": 3,
+    "withQuestion": 3,
+    "withModelAnswer": 0
+  },
+  {
+    "field": "문서작성",
+    "count": 5,
+    "withQuestion": 5,
+    "withModelAnswer": 5
+  },
+  {
+    "field": "생활기타",
+    "count": 3,
+    "withQuestion": 3,
+    "withModelAnswer": 0
+  },
+  {
+    "field": "영상콘텐츠",
+    "count": 3,
+    "withQuestion": 3,
+    "withModelAnswer": 3
+  },
+  {
+    "field": "음성콘텐츠",
+    "count": 7,
+    "withQuestion": 7,
+    "withModelAnswer": 7
+  },
+  {
+    "field": "재무생활",
+    "count": 4,
+    "withQuestion": 4,
+    "withModelAnswer": 0
+  },
+  {
+    "field": "전문분야",
+    "count": 5,
+    "withQuestion": 5,
+    "withModelAnswer": 5
+  },
+  {
+    "field": "창작활동",
+    "count": 5,
+    "withQuestion": 5,
+    "withModelAnswer": 5
+  },
+  {
+    "field": "취업",
+    "count": 2,
+    "withQuestion": 2,
+    "withModelAnswer": 0
+  },
+  {
+    "field": "통번역",
+    "count": 3,
+    "withQuestion": 3,
+    "withModelAnswer": 3
+  }
+]

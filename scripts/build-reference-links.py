@@ -9,7 +9,7 @@ from urllib.parse import urlsplit, urlunsplit
 ROOT = Path(__file__).resolve().parents[1]
 URL = re.compile(r"https?://[^\s<>\[\](){}\"'`]+", re.IGNORECASE)
 SKIP_DIRS = {".git", "node_modules", ".bkit", "dist", "build"}
-SKIP_HOSTS = {"localhost", "127.0.0.1", "example.com", "www.example.com"}
+SKIP_HOSTS = {"localhost", "127.0.0.1", "example.com", "www.example.com", "아무주소"}
 
 
 def purpose_for(url):

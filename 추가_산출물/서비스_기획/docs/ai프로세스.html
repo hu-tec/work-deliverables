@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>시험/검증/AI분석 플랫폼 v0.3</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #d9e0ea;
+      --blue: #1d4ed8;
+      --blue-soft: #e8f0ff;
+      --green: #047857;
+      --green-soft: #e8f7ef;
+      --amber: #b45309;
+      --amber-soft: #fff4df;
+      --red: #b42318;
+      --red-soft: #ffebe9;
+      --purple: #6d28d9;
+      --purple-soft: #f0e8ff;
+      --slate: #344054;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    header {
+      background: #111827;
+      color: #fff;
+      padding: 40px 28px 34px;
+    }
+
+    .header-inner,
+    main {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      color: #b8c7e6;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 780px;
+      margin: 14px 0 0;
+      color: #d9e2f2;
+      font-size: 16px;
+    }
+
+    main {
+      padding: 28px 0 56px;
+    }
+
+    section {
+      margin-top: 24px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 17px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip,
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .blue { background: var(--blue-soft); color: var(--blue); }
+    .green { background: var(--green-soft); color: var(--green); }
+    .amber { background: var(--amber-soft); color: var(--amber); }
+    .red { background: var(--red-soft); color: var(--red); }
+    .purple { background: var(--purple-soft); color: var(--purple); }
+    .gray { background: #eef2f6; color: var(--slate); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+      min-height: 98px;
+    }
+
+    .step.ai-touch {
+      background: #f0e8ff;
+      border-color: #c9b6ff;
+    }
+
+    .step.ai-primary {
+      background: #e8f0ff;
+      border-color: #a8c5ff;
+    }
+
+    .step-label {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(109, 40, 217, 0.12);
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .step-num {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .step strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f0f4fa;
+      color: #27364f;
+      font-size: 13px;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .lane {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      margin-top: 12px;
+    }
+
+    .lane-title {
+      background: #f0f4fa;
+      padding: 14px;
+      font-weight: 800;
+      color: #27364f;
+    }
+
+    .lane-body {
+      padding: 12px;
+    }
+
+    .lane-body .chip {
+      margin: 3px;
+    }
+
+    .note {
+      border-left: 4px solid var(--blue);
+      background: #fff;
+      padding: 14px 16px;
+      border-radius: 0 8px 8px 0;
+      color: #344054;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1px solid var(--line);
+    }
+
+    .swatch.ai-touch {
+      background: #f0e8ff;
+      border-color: #c9b6ff;
+    }
+
+    .swatch.ai-primary {
+      background: #e8f0ff;
+      border-color: #a8c5ff;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin: 5px 0;
+    }
+
+    @media (max-width: 900px) {
+      .span-3,
+      .span-4,
+      .span-6,
+      .span-8 {
+        grid-column: span 12;
+      }
+
+      .flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .lane {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .header-inner,
+      main {
+        width: min(100% - 24px, 1180px);
+      }
+
+      header {
+        padding: 30px 12px 26px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="eyebrow">v0.3 기획 보드</div>
+      <h1>시험/검증/AI분석 플랫폼</h1>
+      <p class="subtitle">2024 사이트맵의 시험 접수, 결제, 응시, 채점, 결과, 자격증 흐름에 26년 AI 분석 상품과 전문가 검증 상품을 삽입하는 제안입니다.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid">
+      <article class="card span-3">
+        <h3>서비스 성격</h3>
+        <p class="muted">시험 응시 플랫폼과 번역/통역 전문가 검증 플랫폼을 함께 다룹니다.</p>
+        <div class="chips">
+          <span class="chip blue">시험</span>
+          <span class="chip green">번역</span>
+          <span class="chip purple">통독</span>
+        </div>
+      </article>
+      <article class="card span-3">
+        <h3>AI 분석</h3>
+        <p class="muted">응시 결과 분석 상품으로 기본, 중급, 고급 등급을 제공합니다.</p>
+        <div class="chips">
+          <span class="chip gray">기본</span>
+          <span class="chip amber">중급</span>
+          <span class="chip red">고급</span>
+        </div>
+      </article>
+      <article class="card span-3">
+        <h3>전문가 검증</h3>
+        <p class="muted">시험 타입에 따라 필수 또는 선택 옵션으로 붙습니다.</p>
+        <div class="chips">
+          <span class="chip green">필수형</span>
+          <span class="chip blue">선택형</span>
+        </div>
+      </article>
+      <article class="card span-3">
+        <h3>결제 확장</h3>
+        <p class="muted">시험 응시료에 AI 분석료, 전문가 검증료, 자격증 발급비를 연결합니다.</p>
+        <div class="chips">
+          <span class="chip blue">카드</span>
+          <span class="chip purple">포인트</span>
+          <span class="chip amber">정산</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>핵심 사용자 흐름</h2>
+      <div class="flow">
+        <div class="step">
+          <div class="step-num">01</div>
+          <strong>시험 선택</strong>
+          <p class="muted">시험, 번역, 통독 유형과 언어, 등급, 분류 선택</p>
+        </div>
+        <div class="step ai-touch">
+          <div class="step-num">02</div>
+          <strong>상품 구성</strong>
+          <p class="muted">AI 분석 등급과 전문가 검증 옵션 확인</p>
+          <span class="step-label">AI 상품 노출</span>
+        </div>
+        <div class="step ai-touch">
+          <div class="step-num">03</div>
+          <strong>결제</strong>
+          <p class="muted">응시료, 분석료, 검증료, 포인트 적용</p>
+          <span class="step-label">AI 분석 결제</span>
+        </div>
+        <div class="step ai-touch">
+          <div class="step-num">04</div>
+          <strong>응시/제출</strong>
+          <p class="muted">온라인, 오프라인, 혼합형 시험 진행</p>
+          <span class="step-label">제출 후 분석 대기</span>
+        </div>
+        <div class="step ai-primary">
+          <div class="step-num">05</div>
+          <strong>AI 분석</strong>
+          <p class="muted">제출 직후 또는 결과 화면에서 생성</p>
+          <span class="step-label">핵심 삽입 지점</span>
+        </div>
+        <div class="step ai-touch">
+          <div class="step-num">06</div>
+          <strong>검증/결과</strong>
+          <p class="muted">전문가 평가, 최종 결과, 자격증 신청</p>
+          <span class="step-label">리포트 보기</span>
+        </div>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch ai-primary"></span>AI 분석이 실제 생성되는 핵심 지점</span>
+        <span class="legend-item"><span class="swatch ai-touch"></span>AI 분석 상품, 상태, 리포트를 노출하는 접점</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card span-6">
+        <h2>결제 화면 제안</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>화면</th>
+              <th>v0.3 역할</th>
+              <th>핵심 표시</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>요금제</td>
+              <td>AI 분석 기본/중급/고급 비교</td>
+              <td><span class="badge blue">상품 비교</span></td>
+            </tr>
+            <tr>
+              <td>장바구니</td>
+              <td>응시료, 분석료, 검증료 묶음 확인</td>
+              <td><span class="badge purple">구성 요약</span></td>
+            </tr>
+            <tr>
+              <td>결제</td>
+              <td>카드/포인트 결제와 최종 금액 확인</td>
+              <td><span class="badge green">결제 실행</span></td>
+            </tr>
+            <tr>
+              <td>결제완료</td>
+              <td>다음 행동 안내</td>
+              <td><span class="badge blue">시험응시</span> <span class="badge gray">결과보기</span></td>
+            </tr>
+            <tr>
+              <td>결제관리</td>
+              <td>관리자 결제, 미승인, 환불 관리</td>
+              <td><span class="badge amber">운영 관리</span></td>
+            </tr>
+            <tr>
+              <td>정산관리</td>
+              <td>전문가 검증비와 상품별 매출 집계</td>
+              <td><span class="badge red">정산</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card span-6">
+        <h2>결제 대상 상품</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>상품</th>
+              <th>결제 시점</th>
+              <th>환불 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>시험 응시료</td>
+              <td>시험 접수</td>
+              <td>접수 취소 가능 기간</td>
+            </tr>
+            <tr>
+              <td>AI 분석 기본</td>
+              <td>접수 또는 결과 화면</td>
+              <td>분석 생성 전</td>
+            </tr>
+            <tr>
+              <td>AI 분석 중급</td>
+              <td>접수 또는 업그레이드</td>
+              <td>분석 생성 전</td>
+            </tr>
+            <tr>
+              <td>AI 분석 고급</td>
+              <td>접수 또는 업그레이드</td>
+              <td>분석/검증 시작 전</td>
+            </tr>
+            <tr>
+              <td>전문가 검증</td>
+              <td>시험 타입별 필수/선택</td>
+              <td>전문가 배정 전</td>
+            </tr>
+            <tr>
+              <td>자격증 발급비</td>
+              <td>합격 후 신청</td>
+              <td>발급 처리 전</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>AI 분석 삽입 위치</h2>
+      <div class="lane">
+        <div class="lane-title">수험생</div>
+        <div class="lane-body">
+          <span class="chip blue">시험접수 목록: AI 제공 여부</span>
+          <span class="chip blue">시험접수 팝업: 분석 샘플</span>
+          <span class="chip purple">요금제: 등급 비교</span>
+          <span class="chip purple">장바구니: 선택 상품 요약</span>
+          <span class="chip green">제출확인: 분석 예정 안내</span>
+          <span class="chip green">시험결과 목록: 리포트 보기</span>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lane-title">채점자</div>
+        <div class="lane-body">
+          <span class="chip amber">프롬프트 채점: AI 1차 분석 참고</span>
+          <span class="chip amber">번역 채점: 오류 유형 분석</span>
+          <span class="chip gray">평가서 팝업: AI 요약 초안</span>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lane-title">관리자</div>
+        <div class="lane-body">
+          <span class="chip red">관리자 홈: 분석 실패/대기 현황</span>
+          <span class="chip blue">시험관리: AI 옵션 설정</span>
+          <span class="chip purple">결제관리: 분석 상품 필터</span>
+          <span class="chip green">통계: 구매율/완료율/실패율</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card span-4">
+        <h2>1차 MVP</h2>
+        <ul>
+          <li>시험 접수 결제</li>
+          <li>AI 분석 상품 결제 연결</li>
+          <li>결제 완료/실패/미승인 상태 처리</li>
+          <li>결과 화면 리포트 보기</li>
+          <li>관리자 결제 필터</li>
+        </ul>
+      </article>
+      <article class="card span-4">
+        <h2>2차 확장</h2>
+        <ul>
+          <li>결과 화면 분석 업그레이드 구매</li>
+          <li>환불/부분취소</li>
+          <li>전문가 검증 정산</li>
+          <li>채점자 AI 참고 패널</li>
+          <li>분석 실패 재시도</li>
+        </ul>
+      </article>
+      <article class="card span-4">
+        <h2>남은 결정</h2>
+        <ul>
+          <li>기본 분석 무료 제공 여부</li>
+          <li>포인트의 현금성 여부</li>
+          <li>미승인 결제 시 응시권 부여 기준</li>
+          <li>전문가 검증비 정산 기준</li>
+          <li>분석 실패 시 환불 정책</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="note">
+      v0.3 제안의 핵심은 AI 분석을 별도 기능으로 분리하지 않고, 기존 2024 흐름의 접수, 결제, 제출, 결과, 채점, 관리자 운영 화면에 자연스럽게 삽입하는 것입니다. 사용자는 상품 가치를 구매 전에 이해하고, 운영자는 결제/분석/검증 상태를 한 흐름으로 추적할 수 있어야 합니다.
+    </section>
+  </main>
+</body>
+</html>

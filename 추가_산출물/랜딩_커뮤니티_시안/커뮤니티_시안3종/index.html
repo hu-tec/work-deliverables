@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>커뮤니티 리디자인 — 3가지 시안 비교</title>
+  <style>
+    :root{
+      --brand:#0088ff;--brand-strong:#006dcc;--secondary:#822afd;
+      --text:#222;--sub:#666;--muted:#808080;--page:#f8f9fc;--base:#fff;
+      --info:#e7f2ff;--border:#e3e5ed;--chip:20px;
+      --font:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--page);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.7;letter-spacing:-.02em}
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1100px,calc(100% - 40px));margin:0 auto}
+    header{background:#222;color:#fff;padding:56px 0}
+    header .eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.25);background:rgba(0,136,255,.18);padding:5px 12px;border-radius:var(--chip);font-size:13px;font-weight:800;color:#bfe0ff}
+    header h1{margin:18px 0 10px;font-size:clamp(30px,5vw,46px);font-weight:900;line-height:1.15}
+    header p{margin:0;max-width:680px;color:rgba(255,255,255,.75);font-size:17px}
+    .meta{margin-top:18px;color:rgba(255,255,255,.55);font-size:13px}
+    .section{padding:50px 0}
+    .section h2{font-size:24px;font-weight:900;margin:0 0 6px}
+    .section .lead{margin:0 0 26px;color:var(--sub)}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:var(--base);border:1px solid var(--border);display:flex;flex-direction:column}
+    .card .top{padding:22px;border-bottom:1px solid var(--border)}
+    .card .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:var(--chip);background:var(--info);color:var(--brand-strong);font-size:12px;font-weight:800}
+    .card h3{margin:12px 0 6px;font-size:21px;font-weight:900}
+    .card .desc{margin:0;color:var(--sub);font-size:14px}
+    .card ul{margin:0;padding:18px 22px;display:grid;gap:8px;list-style:none;flex:1}
+    .card li{display:grid;grid-template-columns:20px 1fr;gap:8px;color:var(--sub);font-size:14px}
+    .card li::before{content:"✓";color:var(--brand-strong);font-weight:900}
+    .card .actions{padding:18px 22px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 18px;border:1px solid transparent;background:var(--brand);color:#fff;font-weight:800;border-radius:0}
+    .btn:hover{filter:brightness(.96)}
+    .btn--outline{background:#fff;border-color:var(--brand);color:var(--brand-strong)}
+    .btn--sm{min-height:32px;padding:0 12px;font-size:13px}
+    table{width:100%;border-collapse:collapse;border-top:2px solid #333;background:#fff;font-size:14px}
+    th,td{border-bottom:1px solid var(--border);padding:13px 14px;text-align:left}
+    th{background:#f8f9fa;color:var(--sub);font-size:12px;font-weight:800}
+    .note{margin-top:14px;padding:16px;background:var(--info);border:1px solid #cfe4fb;color:var(--brand-strong);font-size:14px;border-radius:0}
+    footer{background:#222;color:rgba(255,255,255,.6);padding:30px 0;font-size:13px}
+    @media(max-width:820px){.cards{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap">
+    <span class="eyebrow">Community Redesign</span>
+    <h1>커뮤니티 / 공지 / 과정상세 리디자인 — 3가지 시안</h1>
+    <p>탭형 커뮤니티(TESOL식), 게시판 테이블 공지(timestesol식), 콘텐츠 풍부형 과정상세(ai-teacher식)를 세 가지 레이아웃으로 제안합니다. 색상·컴포넌트 토큰은 모두 <strong>design_system_major(휴텍씨 디자인 시스템, 브랜드 #0088ff)</strong>를 따릅니다.</p>
+    <div class="meta">레이아웃은 다르지만 토큰·컴포넌트 규칙(직각 radius, btn--*, 칩 20px, Noto Sans KR)은 동일 · 2026.05.29</div>
+  </div></header>
+
+  <main>
+    <section class="section"><div class="wrap">
+      <h2>시안 선택</h2>
+      <p class="lead">각 시안의 홈을 열어 커뮤니티 → 공지 상세 → 과정 상세 흐름을 확인하세요.</p>
+      <div class="cards">
+        <article class="card"><div class="top"><span class="badge">A · Classic</span><h3>정통 게시판형</h3><p class="desc">격식·신뢰. 공식 게시판 느낌.</p></div>
+          <ul><li>언더라인 탭</li><li>번호·분류·작성자·등록일·조회 풀컬럼 게시판</li><li>좌측 정보표 + 본문 블록 과정상세</li><li>다크 헤더 밴드</li></ul>
+          <div class="actions"><a class="btn" href="./design-a-classic/index.html">A 홈</a><a class="btn btn--outline btn--sm" href="./design-a-classic/community.html">커뮤니티</a><a class="btn btn--outline btn--sm" href="./design-a-classic/course-detail.html?id=ai-teacher">과정상세</a></div>
+        </article>
+        <article class="card"><div class="top"><span class="badge">B · Modern</span><h3>모던 카드+사이드형</h3><p class="desc">여백·패널·사이드 신청카드.</p></div>
+          <ul><li>pill 탭</li><li>미니멀 테이블(요약 노출) 공지</li><li>본문 + 우측 sticky 신청 패널</li><li>호버 카드 그리드</li></ul>
+          <div class="actions"><a class="btn" href="./design-b-modern/index.html">B 홈</a><a class="btn btn--outline btn--sm" href="./design-b-modern/community.html">커뮤니티</a><a class="btn btn--outline btn--sm" href="./design-b-modern/course-detail.html?id=ai-teacher">과정상세</a></div>
+        </article>
+        <article class="card"><div class="top"><span class="badge">C · Editorial</span><h3>에디토리얼/매거진형</h3><p class="desc">큰 타이포·목차 롱폼.</p></div>
+          <ul><li>대형 텍스트 탭 + 더블룰</li><li>hover 하이라이트 라인 테이블 / 드롭캡 상세</li><li>좌측 목차(TOC) 9섹션 롱폼 + 스크롤스파이</li><li>매거진형 과정 목록</li></ul>
+          <div class="actions"><a class="btn" href="./design-c-editorial/index.html">C 홈</a><a class="btn btn--outline btn--sm" href="./design-c-editorial/community.html">커뮤니티</a><a class="btn btn--outline btn--sm" href="./design-c-editorial/course-detail.html?id=ai-teacher">과정상세</a></div>
+        </article>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="wrap">
+      <h2>한눈에 비교</h2>
+      <p class="lead">세 시안의 차이는 레이아웃·정보 밀도이며, 디자인 토큰은 동일합니다.</p>
+      <table>
+        <thead><tr><th>항목</th><th>A 정통 게시판형</th><th>B 모던 카드+사이드</th><th>C 에디토리얼</th></tr></thead>
+        <tbody>
+          <tr><td>탭</td><td>언더라인</td><td>pill</td><td>대형 텍스트</td></tr>
+          <tr><td>공지 테이블</td><td>풀컬럼·번호·조회</td><td>미니멀·요약 노출</td><td>라인 hover·드롭캡 상세</td></tr>
+          <tr><td>과정 상세</td><td>정보표 + 블록</td><td>본문 + sticky 신청카드</td><td>좌측 TOC 롱폼</td></tr>
+          <tr><td>밀도</td><td>높음(공식)</td><td>중간(전환 유도)</td><td>낮음(가독·브랜딩)</td></tr>
+          <tr><td>추천 용도</td><td>기관 공지 중심</td><td>모집·신청 전환</td><td>브랜드·콘텐츠 강조</td></tr>
+        </tbody>
+      </table>
+      <div class="note">공통: design_system_major 토큰(브랜드 #0088ff, strong #006dcc, 보조 #822afd, 직각 radius·칩 20px, Noto Sans KR, 명도대비 3:1, aria-selected/expanded). 자세한 제안은 <strong>README.md</strong> 참고.</div>
+    </div></section>
+  </main>
+
+  <footer><div class="wrap">© 2026 Times Media Inc. — 커뮤니티 리디자인 3시안 비교 허브</div></footer>
+</body>
+</html>

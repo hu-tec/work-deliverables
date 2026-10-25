@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DB 정리 문서목록 및 읽는법</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>휴텍씨 DB 일반사용자용 정리본</h1>
+<h2>이 폴더는 무엇인가요?</h2>
+<p><code>수집된DB</code>와 <code>휴텍씨DB</code>의 초안 자료를 내용별로 나누어 읽기 쉽게 만든 열람용 문서입니다. 원본은 여러 표가 한 CSV에 같이 들어 있어 바로 이해하기 어려우므로, 서비스 분류, 시험 운영, 교육 자료, 문제은행, 서비스 기획으로 나누었습니다.</p>
+<h2>먼저 볼 문서</h2>
+<table><tbody><tr><th>알고 싶은 내용</th><th>열어볼 폴더 또는 문서</th></tr><tr><td>어떤 서비스 분야와 급수가 있는지</td><td><code>01_분류체계/</code></td></tr><tr><td>시험이 어떻게 구성되고 채점되는지</td><td><code>02_시험운영/</code></td></tr><tr><td>어떤 교재와 교육과정이 준비되어 있는지</td><td><code>03_교육자료/</code></td></tr><tr><td>실제 시험 문제와 답안 자료가 무엇인지</td><td><code>04_문제은행/</code></td></tr><tr><td>서비스, 매칭, 결제, DB 항목 초안이 무엇인지</td><td><code>05_서비스기획/</code></td></tr></tbody></table>
+<h2>정리된 자료 규모</h2>
+<ul>
+<li>서비스 분야 분류: 65건</li>
+<li>자격시험 급수 분류: 39건</li>
+<li>시험 기본설정 선택항목: 75건</li>
+<li>문제은행 본문: 47건 (개발 4건, 건강 3건, 관계교육 3건, 문서작성 5건, 생활기타 3건, 영상콘텐츠 3건, 음성콘텐츠 7건, 재무생활 4건, 전문분야 5건, 창작활동 5건, 취업 2건, 통번역 3건)</li>
+<li>통합 DB 항목 사전: 214개 열</li>
+</ul>
+<h2>주의해서 읽을 점</h2>
+<ul>
+<li>이 자료는 원본에 기록된 기획·수집 내용을 분류한 것이며, 확정된 서비스</li>
+<p>정책이나 최종 시험 규정으로 판정한 문서가 아닙니다.</p>
+<li>원본에 있는 <code>개발 완료 전 확정 필요</code>, 물음표, 중복, 맞춤법 표기는</li>
+<p>검토가 필요하다는 의미가 남도록 그대로 보존했습니다.</p>
+<li>병렬로 배치된 원본 표의 관계가 분명하지 않은 경우에는 임의로 합치지</li>
+<p>않았습니다. CSV의 <code>원본파일</code>, <code>원본행</code> 열로 출처를 확인할 수 있습니다.</p>
+<li>문제은행의 모범답안 및 채점자용 자료는 응시자 공개 범위를 별도로</li>
+<p>결정해야 합니다.</p>
+</ul>
+<h2>원본에서 어디로 정리되었나요?</h2>
+<table><tbody><tr><th>원본 파일</th><th>정리 위치</th></tr><tr><td><code>수집된DB/분야.csv</code></td><td><code>01_분류체계/</code></td></tr><tr><td><code>수집된DB/대표 DB-시험정보.csv</code></td><td><code>02_시험운영/시험_기본설정_선택항목.csv</code></td></tr><tr><td><code>수집된DB/대표DB.csv</code></td><td><code>02_시험운영/</code>, <code>05_서비스기획/서비스운영_기획원문_읽기자료.md</code></td></tr><tr><td><code>수집된DB/문제와 채점지.csv</code></td><td><code>02_시험운영/</code></td></tr><tr><td><code>수집된DB/통합사본.csv</code></td><td><code>05_서비스기획/</code></td></tr><tr><td><code>휴텍씨DB/교재.csv</code></td><td><code>03_교육자료/</code></td></tr><tr><td><code>휴텍씨DB/커리.csv</code>, <code>휴텍씨DB/커리 급수별 (프롬).csv</code></td><td><code>03_교육자료/교육과정_전체_읽기자료.md</code></td></tr><tr><td><code>휴텍씨DB/문제은행.csv</code></td><td><code>04_문제은행/</code></td></tr></tbody></table>
+<h2>재생성</h2>
+<p>입력 CSV가 수정된 후 동일한 구조로 다시 정리하려면 <code>python3 일반사용자용_정리DB/_생성도구/정리본_생성.py</code>를 실행합니다.</p>
+</body>
+</html>

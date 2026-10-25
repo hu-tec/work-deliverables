@@ -1,0 +1,392 @@
+[
+  {
+    "id": "grade-1",
+    "examType": "프롬",
+    "gradeGroup": "교육",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "7"
+    }
+  },
+  {
+    "id": "grade-2",
+    "examType": "프롬",
+    "gradeGroup": "교육",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "8"
+    }
+  },
+  {
+    "id": "grade-3",
+    "examType": "프롬",
+    "gradeGroup": "교육",
+    "grade": "3급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "9"
+    }
+  },
+  {
+    "id": "grade-4",
+    "examType": "프롬",
+    "gradeGroup": "교육",
+    "grade": "4급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "10"
+    }
+  },
+  {
+    "id": "grade-5",
+    "examType": "프롬",
+    "gradeGroup": "교육",
+    "grade": "5급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "11"
+    }
+  },
+  {
+    "id": "grade-6",
+    "examType": "프롬",
+    "gradeGroup": "교육",
+    "grade": "6급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "12"
+    }
+  },
+  {
+    "id": "grade-7",
+    "examType": "프롬",
+    "gradeGroup": "교육",
+    "grade": "7급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "13"
+    }
+  },
+  {
+    "id": "grade-8",
+    "examType": "프롬",
+    "gradeGroup": "교육",
+    "grade": "8급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "14"
+    }
+  },
+  {
+    "id": "grade-9",
+    "examType": "프롬",
+    "gradeGroup": "일반",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "15"
+    }
+  },
+  {
+    "id": "grade-10",
+    "examType": "프롬",
+    "gradeGroup": "일반",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "16"
+    }
+  },
+  {
+    "id": "grade-11",
+    "examType": "프롬",
+    "gradeGroup": "일반",
+    "grade": "3급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "17"
+    }
+  },
+  {
+    "id": "grade-12",
+    "examType": "프롬",
+    "gradeGroup": "전문",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "18"
+    }
+  },
+  {
+    "id": "grade-13",
+    "examType": "프롬",
+    "gradeGroup": "전문",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "19"
+    }
+  },
+  {
+    "id": "grade-14",
+    "examType": "번역",
+    "gradeGroup": "교육",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "20"
+    }
+  },
+  {
+    "id": "grade-15",
+    "examType": "번역",
+    "gradeGroup": "교육",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "21"
+    }
+  },
+  {
+    "id": "grade-16",
+    "examType": "번역",
+    "gradeGroup": "교육",
+    "grade": "3급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "22"
+    }
+  },
+  {
+    "id": "grade-17",
+    "examType": "번역",
+    "gradeGroup": "교육",
+    "grade": "4급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "23"
+    }
+  },
+  {
+    "id": "grade-18",
+    "examType": "번역",
+    "gradeGroup": "교육",
+    "grade": "5급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "24"
+    }
+  },
+  {
+    "id": "grade-19",
+    "examType": "번역",
+    "gradeGroup": "교육",
+    "grade": "6급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "25"
+    }
+  },
+  {
+    "id": "grade-20",
+    "examType": "번역",
+    "gradeGroup": "교육",
+    "grade": "7급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "26"
+    }
+  },
+  {
+    "id": "grade-21",
+    "examType": "번역",
+    "gradeGroup": "교육",
+    "grade": "8급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "27"
+    }
+  },
+  {
+    "id": "grade-22",
+    "examType": "번역",
+    "gradeGroup": "일반",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "28"
+    }
+  },
+  {
+    "id": "grade-23",
+    "examType": "번역",
+    "gradeGroup": "일반",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "29"
+    }
+  },
+  {
+    "id": "grade-24",
+    "examType": "번역",
+    "gradeGroup": "일반",
+    "grade": "3급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "30"
+    }
+  },
+  {
+    "id": "grade-25",
+    "examType": "번역",
+    "gradeGroup": "전문",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "31"
+    }
+  },
+  {
+    "id": "grade-26",
+    "examType": "번역",
+    "gradeGroup": "전문",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "32"
+    }
+  },
+  {
+    "id": "grade-27",
+    "examType": "윤리",
+    "gradeGroup": "교육",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "33"
+    }
+  },
+  {
+    "id": "grade-28",
+    "examType": "윤리",
+    "gradeGroup": "교육",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "34"
+    }
+  },
+  {
+    "id": "grade-29",
+    "examType": "윤리",
+    "gradeGroup": "교육",
+    "grade": "3급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "35"
+    }
+  },
+  {
+    "id": "grade-30",
+    "examType": "윤리",
+    "gradeGroup": "교육",
+    "grade": "4급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "36"
+    }
+  },
+  {
+    "id": "grade-31",
+    "examType": "윤리",
+    "gradeGroup": "교육",
+    "grade": "5급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "37"
+    }
+  },
+  {
+    "id": "grade-32",
+    "examType": "윤리",
+    "gradeGroup": "교육",
+    "grade": "6급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "38"
+    }
+  },
+  {
+    "id": "grade-33",
+    "examType": "윤리",
+    "gradeGroup": "교육",
+    "grade": "7급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "39"
+    }
+  },
+  {
+    "id": "grade-34",
+    "examType": "윤리",
+    "gradeGroup": "교육",
+    "grade": "8급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "40"
+    }
+  },
+  {
+    "id": "grade-35",
+    "examType": "윤리",
+    "gradeGroup": "일반",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "41"
+    }
+  },
+  {
+    "id": "grade-36",
+    "examType": "윤리",
+    "gradeGroup": "일반",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "42"
+    }
+  },
+  {
+    "id": "grade-37",
+    "examType": "윤리",
+    "gradeGroup": "일반",
+    "grade": "3급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "43"
+    }
+  },
+  {
+    "id": "grade-38",
+    "examType": "윤리",
+    "gradeGroup": "전문",
+    "grade": "1급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "44"
+    }
+  },
+  {
+    "id": "grade-39",
+    "examType": "윤리",
+    "gradeGroup": "전문",
+    "grade": "2급",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "45"
+    }
+  }
+]

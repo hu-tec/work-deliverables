@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BO 관리자화면 기준</title>
+  <style>
+body{margin:0;padding:28px 32px;color:#222;font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;line-height:1.75;letter-spacing:-.02em}
+h1,h2,h3,h4{margin:1.4em 0 .5em;line-height:1.35;letter-spacing:0}
+h1:first-child,h2:first-child,h3:first-child{margin-top:0}
+h1{font-size:28px}h2{border-bottom:1px solid #e3e5ed;padding-bottom:8px;font-size:22px}h3{font-size:18px}
+p,ul,ol,blockquote,table{margin:0 0 14px}ul,ol{padding-left:22px}
+blockquote{border-left:4px solid #0088ff;background:#e7f2ff;padding:10px 14px;color:#666}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #e3e5ed;padding:8px 10px;vertical-align:top}
+th{background:#f8f9fc;color:#666;font-weight:700}
+pre{overflow:auto;border:1px solid #e3e5ed;border-radius:6px;background:#fbfcff;padding:14px;white-space:pre-wrap}
+code{border-radius:4px;background:#f8f9fc;padding:2px 5px;color:#006dcc;font-family:Consolas,Monaco,monospace;font-size:12px;letter-spacing:0}
+a{color:#006dcc;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<h1>BO 관리자화면 기준 프롬프트</h1>
+<p>기준 파일: <code>index.html</code>, <code>dense-drawer.css</code>, <code>dense-drawer.js</code>, <code>table_design/*.html</code>, <code>table_design/table-design.css</code>, <code>table_design/table-design.js</code></p>
+<p>이 문서는 BO 관리자 화면 전체를 만들 때 적용하는 상위 기준이다. 대량 테이블 화면은 <code>02_BO_테이블레이아웃_기준.md</code>를 함께 적용한다.</p>
+<h2>실행 프롬프트</h2>
+<pre><code>너는 BO 관리자 화면을 설계하는 시니어 UI 디자이너이자 프론트엔드 설계자다.
+
+반드시 현재 `design_system_major`의 관리자 화면 기준을 따른다.
+기준 파일:
+- index.html
+- dense-drawer.css
+- dense-drawer.js
+- table_design/관리자패널_전체회원.html
+- table_design/신규테이블관리.html
+- table_design/결제관리.html
+- table_design/table-design.css
+- table_design/table-design.js
+
+화면 목적:
+- BO 화면은 운영자가 데이터를 빠르게 검색, 확인, 수정, 저장, 내보내기, 일괄 처리하는 업무 화면이다.
+- 사용자용 랜딩페이지, 서비스 소개 페이지, 마케팅 화면처럼 만들지 않는다.
+- 정보 밀도, 반복 업무 효율, 상태 식별, 행 단위 상세 편집을 우선한다.
+
+전체 레이아웃:
+1. App Shell
+   - 좌측 Sidebar와 우측 Content 2단 구조를 기본으로 한다.
+   - Sidebar 폭은 약 224px 기준이다.
+   - Content는 세로 스크롤을 담당하고, Topbar는 sticky로 유지한다.
+
+2. Sidebar
+   - 메뉴는 업무 도메인 기준으로 묶는다.
+   - 예: 대시보드, 회원, 활동 관리, 결제 관리, 매칭 관리, 시험 관리, 스케줄 관리, 신규 테이블 관리, 1:1 문의, 통계
+   - 현재 메뉴는 `.active`로 표시한다.
+   - 아이콘은 Font Awesome 또는 기존 아이콘 체계를 사용한다.
+   - 알림 카운트가 있으면 `nav-count`처럼 작고 명확하게 표시한다.
+
+3. Topbar
+   - 높이는 약 48px 기준이다.
+   - 좌측에는 현재 위치나 업무명을 표시한다.
+   - 우측에는 저장, 추가, 엑셀 내보내기, 컬럼설정, 필터초기화 같은 주요 action을 둔다.
+   - action 버튼은 작고 밀도 있게 배치한다.
+
+4. Page Head
+   - breadcrumb, H1, meta 문구를 포함한다.
+   - H1은 업무명을 직접 말한다. 예: `전체 회원 관리`, `결제 관리`, `신규 테이블 관리`
+   - meta는 화면 목적을 1줄로 설명한다.
+
+5. 업무 전환 영역
+   - Major Tabs는 사이트/업무 대분류 전환에 사용한다.
+   - Sub Tabs는 테이블 종류 또는 세부 업무 전환에 사용한다.
+   - 카운트는 반드시 라벨 안에 포함한다.
+   - 예: `AI번역 (13건)`, `전체 회원 (전체 50명)`
+
+6. 검색/필터
+   - BO 화면은 `dense-filter-card` 기반 고밀도 필터를 사용한다.
+   - 조건이 많아도 큰 카드 여러 개로 나누지 않는다.
+   - 활성 조건은 `filter-tag`로 요약한다.
+   - 자세한 기준은 `components/검색필터_기준.md`를 따른다.
+
+7. 본문 콘텐츠
+   - 대량 목록 화면은 `02_BO_테이블레이아웃_기준.md`를 따른다.
+   - 요약 통계는 카드형 박스보다 `summary-strip`처럼 한 줄로 정리한다.
+   - 관리 화면에서 필요한 경우에만 chart, KPI, mini table을 추가한다.
+   - 화면 첫 viewport에 필터, 요약, 테이블 시작점이 함께 보이도록 여백을 줄인다.
+
+8. 상세/편집
+   - 행 클릭 상세는 우측 inline Drawer를 우선한다.
+   - 목록 row 아래에 긴 아코디언을 펼치지 않는다.
+   - Drawer는 기본 정보, 이용 상태, 운영 메모, 저장 action을 포함한다.
+   - 자세한 기준은 `components/인라인_Drawer_기준.md`를 따른다.
+
+9. 하단 업무 action
+   - 선택 건수와 일괄 action을 table card 하단에 배치한다.
+   - 예: 선택정보내기, 이메일보내기, SMS전송, 상태변경, 엑셀내보내기
+
+시각 기준:
+- 배경은 `#f6f7f9` 계열 페이지 배경과 흰색 panel을 기본으로 한다.
+- 선은 `#ddd`, `#eee`처럼 얇고 약하게 사용한다.
+- 헤더/테이블 헤드는 `#eceef2` 계열 연한 회색을 사용한다.
+- primary `#0088ff`는 active, primary button, 선택 행, 핵심 상태에만 제한적으로 사용한다.
+- radius는 4~6px 수준을 기본으로 한다.
+- chip/status는 pill radius를 허용한다.
+- 과한 shadow, 큰 card, decorative gradient를 쓰지 않는다.
+
+타이포그래피:
+- BO 기본 폰트는 8px 기준으로 조밀하게 유지한다.
+- Topbar title, H1, section title처럼 화면 위계를 만드는 텍스트만 12~22px 범위로 키운다.
+- 테이블 헤더, 셀, filter chip, checkbox label, badge, status는 8px 기준이다.
+- 텍스트는 한 줄 말줄임을 기본으로 하고, title 또는 Drawer에서 전체 내용을 확인하게 한다.
+
+상태/유형:
+- 상태/유형/결제수단/구독등급/우선순위는 chip 또는 badge로 표시한다.
+- 상태값은 색상 텍스트만 쓰지 않는다.
+- `.status.ok`, `.status.wait`, `.status.fail`, `.status.info` 체계를 따른다.
+- 자세한 기준은 `components/상태_유형_칩_기준.md`를 따른다.
+
+권한/접근:
+- 관리자 화면은 사용자 권한에 따라 action 노출이 달라질 수 있음을 고려한다.
+- 삭제, 환불, 정산확정, 상태변경 같은 위험 action은 `danger` 또는 확인 flow를 둔다.
+- 저장/삭제/상태변경 후에는 toast 또는 명확한 feedback을 제공한다.
+
+접근성:
+- 버튼, 탭, 필터 chip, 행 클릭 영역은 키보드 접근이 가능해야 한다.
+- 선택/활성 상태는 `.active`뿐 아니라 `aria-pressed`, `aria-selected`를 함께 맞춘다.
+- Drawer는 `role=&quot;dialog&quot;`, `aria-modal=&quot;false&quot;`, `aria-labelledby`를 사용한다.
+- ESC 닫기와 focus 복귀를 지원한다.
+- 상태는 색상만으로 전달하지 않고 텍스트를 함께 제공한다.
+
+반응형:
+- BO 화면은 데스크톱 우선이다.
+- 모바일에서는 테이블을 완전히 카드화하지 말고 핵심 컬럼 유지 + 가로 스크롤을 허용한다.
+- Sidebar는 필요 시 접거나 숨길 수 있지만 업무 흐름이 끊기지 않게 한다.
+
+금지:
+- BO 화면에 사용자용 hero, 큰 마케팅 이미지, 넓은 카드형 소개 섹션을 넣지 않는다.
+- 상태값을 단순 색상 텍스트로만 표시하지 않는다.
+- 날짜를 화면마다 다르게 쓰지 않는다. 테이블 날짜는 `YY-MM-DD`를 기본으로 한다.
+- 하위 탭 카운트를 단독 배지로만 표현하지 않는다.
+- 검색조건 시작선이 어긋나게 배치하지 않는다.
+- 목록 상세를 하단 row로 길게 펼쳐 테이블 흐름을 깨지 않는다.
+
+산출물:
+- Sidebar
+- Sticky Topbar
+- Page Head
+- Major Tabs / Sub Tabs
+- Dense Filter
+- Summary Strip
+- BO Table 또는 업무 본문
+- 상태/유형 chip
+- Inline Drawer 상세
+- Bulk Action Bar
+- Toast 또는 저장 feedback</code></pre>
+<h2>적용 우선순위</h2>
+<ol>
+<li>화면 shell: Sidebar, Topbar, Page Head</li>
+<li>업무 전환: Major Tabs, Sub Tabs</li>
+<li>검색 조건: Dense Filter</li>
+<li>본문: Table 또는 운영 패널</li>
+<li>상세: Inline Drawer</li>
+<li>상태/유형 chip</li>
+<li>Bulk action, toast, 접근성</li>
+</ol>
+<h2>관련 문서</h2>
+<ul>
+<li><code>02_BO_테이블레이아웃_기준.md</code></li>
+<li><code>components/검색필터_기준.md</code></li>
+<li><code>components/상태_유형_칩_기준.md</code></li>
+<li><code>components/인라인_Drawer_기준.md</code></li>
+</ul>
+</body>
+</html>

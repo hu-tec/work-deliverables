@@ -1,0 +1,182 @@
+[
+  {
+    "id": "exam-grade-1",
+    "gradeGroup": "일반",
+    "detailGrade": "1급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "4"
+    }
+  },
+  {
+    "id": "exam-grade-2",
+    "gradeGroup": "일반",
+    "detailGrade": "2급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "5"
+    }
+  },
+  {
+    "id": "exam-grade-3",
+    "gradeGroup": "일반",
+    "detailGrade": "3급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "6"
+    }
+  },
+  {
+    "id": "exam-grade-4",
+    "gradeGroup": "전문",
+    "detailGrade": "1급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "7"
+    }
+  },
+  {
+    "id": "exam-grade-5",
+    "gradeGroup": "전문",
+    "detailGrade": "2급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "8"
+    }
+  },
+  {
+    "id": "exam-grade-6",
+    "gradeGroup": "교육",
+    "detailGrade": "3급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "9"
+    }
+  },
+  {
+    "id": "exam-grade-7",
+    "gradeGroup": "교육",
+    "detailGrade": "2급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "10"
+    }
+  },
+  {
+    "id": "exam-grade-8",
+    "gradeGroup": "교육",
+    "detailGrade": "1급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "11"
+    }
+  },
+  {
+    "id": "exam-grade-9",
+    "gradeGroup": "교육",
+    "detailGrade": "5급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "12"
+    }
+  },
+  {
+    "id": "exam-grade-10",
+    "gradeGroup": "교육",
+    "detailGrade": "4급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "13"
+    }
+  },
+  {
+    "id": "exam-grade-11",
+    "gradeGroup": "교육",
+    "detailGrade": "6급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "14"
+    }
+  },
+  {
+    "id": "exam-grade-12",
+    "gradeGroup": "교육",
+    "detailGrade": "7급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "15"
+    }
+  },
+  {
+    "id": "exam-grade-13",
+    "gradeGroup": "교육",
+    "detailGrade": "8급",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "16"
+    }
+  },
+  {
+    "id": "exam-grade-14",
+    "gradeGroup": "교육7-8",
+    "detailGrade": "",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "17"
+    }
+  },
+  {
+    "id": "exam-grade-15",
+    "gradeGroup": "교육 5-6",
+    "detailGrade": "",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "18"
+    }
+  },
+  {
+    "id": "exam-grade-16",
+    "gradeGroup": "중등 3-4",
+    "detailGrade": "",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "19"
+    }
+  },
+  {
+    "id": "exam-grade-17",
+    "gradeGroup": "교육 1-2",
+    "detailGrade": "",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "20"
+    }
+  },
+  {
+    "id": "exam-grade-18",
+    "gradeGroup": "일반 1-전문 2",
+    "detailGrade": "",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "21"
+    }
+  },
+  {
+    "id": "exam-grade-19",
+    "gradeGroup": "일반2-3급",
+    "detailGrade": "",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "22"
+    }
+  },
+  {
+    "id": "exam-grade-20",
+    "gradeGroup": "전문 1",
+    "detailGrade": "",
+    "source": {
+      "file": "수집된DB/문제와 채점지.csv",
+      "row": "23"
+    }
+  }
+]

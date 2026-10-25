@@ -1,0 +1,92 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== 휴텍씨 디자인 시스템 토큰 (raw CSS var) ===== */
+:root {
+  --ds-color-text-primary: #222222;
+  --ds-color-text-secondary: #666666;
+  --ds-color-text-muted: #808080;
+  --ds-color-text-disabled: #999999;
+  --ds-color-text-inverse: #ffffff;
+  --ds-color-brand-primary: #0088ff;
+  --ds-color-brand-secondary: #822afd;
+  --ds-color-accent-success: #51b117;
+  --ds-color-accent-warning: #f7b22c;
+  --ds-color-accent-danger: #dc3d3d;
+  --ds-color-bg-base: #ffffff;
+  --ds-color-bg-page: #f8f9fc;
+  --ds-color-bg-sidebar: #eff0fa;
+  --ds-color-bg-soft: #faf9ff;
+  --ds-color-bg-selected: #d7e7fc;
+  --ds-color-bg-footer: #fbfaff;
+  --ds-color-border-default: #e3e5ed;
+  --ds-color-border-soft: #e6e6e6;
+  --ds-color-border-strong: #cccccc;
+  --ds-font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", Arial,
+    sans-serif;
+  --ds-shadow-popup: 0 16px 40px rgba(34, 34, 34, 0.14);
+}
+
+@layer base {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    background: var(--ds-color-bg-page);
+    color: var(--ds-color-text-primary);
+    font-family: var(--ds-font-family);
+    font-size: 14px;
+    line-height: 1.571;
+    letter-spacing: -0.02em;
+    -webkit-font-smoothing: antialiased;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  button {
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+  }
+  /* 접근성: 포커스 가시화 (디자인 시스템 컴포넌트 계약) */
+  :focus-visible {
+    outline: 2px solid var(--ds-color-brand-primary);
+    outline-offset: 1px;
+  }
+}
+
+@layer components {
+  /* 본문 내용 영역 폭 */
+  .ds-content {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  /* 얇은 스크롤바 (고밀도 관리자 테이블용) */
+  .ds-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-color-border-strong) transparent;
+  }
+  .ds-scroll::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+  .ds-scroll::-webkit-scrollbar-thumb {
+    background: var(--ds-color-border-strong);
+    border-radius: 100px;
+  }
+  /* 멀티라인 문제 본문 보존 렌더 */
+  .ds-prewrap {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}

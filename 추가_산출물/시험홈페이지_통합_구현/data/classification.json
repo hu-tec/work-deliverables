@@ -1,0 +1,652 @@
+[
+  {
+    "id": "field-1",
+    "large": "문서",
+    "medium": "비즈니스",
+    "small": "사업계획서",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "7"
+    }
+  },
+  {
+    "id": "field-2",
+    "large": "문서",
+    "medium": "비즈니스",
+    "small": "회사소개",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "8"
+    }
+  },
+  {
+    "id": "field-3",
+    "large": "문서",
+    "medium": "비즈니스",
+    "small": "PPT",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "9"
+    }
+  },
+  {
+    "id": "field-4",
+    "large": "문서",
+    "medium": "비즈니스",
+    "small": "엑셀",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "10"
+    }
+  },
+  {
+    "id": "field-5",
+    "large": "문서",
+    "medium": "비즈니스",
+    "small": "기획서",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "11"
+    }
+  },
+  {
+    "id": "field-6",
+    "large": "문서",
+    "medium": "법률",
+    "small": "소송장",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "12"
+    }
+  },
+  {
+    "id": "field-7",
+    "large": "문서",
+    "medium": "법률",
+    "small": "준비서면",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "13"
+    }
+  },
+  {
+    "id": "field-8",
+    "large": "문서",
+    "medium": "법률",
+    "small": "형사",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "14"
+    }
+  },
+  {
+    "id": "field-9",
+    "large": "문서",
+    "medium": "법률",
+    "small": "민사",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "15"
+    }
+  },
+  {
+    "id": "field-10",
+    "large": "문서",
+    "medium": "의료",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "16"
+    }
+  },
+  {
+    "id": "field-11",
+    "large": "문서",
+    "medium": "특허",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "17"
+    }
+  },
+  {
+    "id": "field-12",
+    "large": "문서",
+    "medium": "노무",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "18"
+    }
+  },
+  {
+    "id": "field-13",
+    "large": "문서",
+    "medium": "교재",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "19"
+    }
+  },
+  {
+    "id": "field-14",
+    "large": "문서",
+    "medium": "논문",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "20"
+    }
+  },
+  {
+    "id": "field-15",
+    "large": "문서",
+    "medium": "기사",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "21"
+    }
+  },
+  {
+    "id": "field-16",
+    "large": "문서",
+    "medium": "고전",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "22"
+    }
+  },
+  {
+    "id": "field-17",
+    "large": "문서",
+    "medium": "그외",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "23"
+    }
+  },
+  {
+    "id": "field-18",
+    "large": "음성",
+    "medium": "아나운서",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "24"
+    }
+  },
+  {
+    "id": "field-19",
+    "large": "음성",
+    "medium": "관광가이드",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "25"
+    }
+  },
+  {
+    "id": "field-20",
+    "large": "음성",
+    "medium": "큐레이터",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "26"
+    }
+  },
+  {
+    "id": "field-21",
+    "large": "음성",
+    "medium": "안내 방송",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "27"
+    }
+  },
+  {
+    "id": "field-22",
+    "large": "음성",
+    "medium": "교육 강의",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "28"
+    }
+  },
+  {
+    "id": "field-23",
+    "large": "음성",
+    "medium": "실시간",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "29"
+    }
+  },
+  {
+    "id": "field-24",
+    "large": "음성",
+    "medium": "화상수업",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "30"
+    }
+  },
+  {
+    "id": "field-25",
+    "large": "영상/SNS",
+    "medium": "미디어/장르",
+    "small": "유튜브",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "31"
+    }
+  },
+  {
+    "id": "field-26",
+    "large": "영상/SNS",
+    "medium": "미디어/장르",
+    "small": "다큐멘터리",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "32"
+    }
+  },
+  {
+    "id": "field-27",
+    "large": "영상/SNS",
+    "medium": "미디어/장르",
+    "small": "영화",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "33"
+    }
+  },
+  {
+    "id": "field-28",
+    "large": "영상/SNS",
+    "medium": "미디어/장르",
+    "small": "드라마",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "34"
+    }
+  },
+  {
+    "id": "field-29",
+    "large": "영상/SNS",
+    "medium": "미디어/장르",
+    "small": "예능",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "35"
+    }
+  },
+  {
+    "id": "field-30",
+    "large": "IT/개발",
+    "medium": "개발/보안",
+    "small": "AI",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "36"
+    }
+  },
+  {
+    "id": "field-31",
+    "large": "IT/개발",
+    "medium": "개발/보안",
+    "small": "에이전트",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "37"
+    }
+  },
+  {
+    "id": "field-32",
+    "large": "IT/개발",
+    "medium": "개발/보안",
+    "small": "디비(DB)",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "38"
+    }
+  },
+  {
+    "id": "field-33",
+    "large": "IT/개발",
+    "medium": "개발/보안",
+    "small": "빅데이터",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "39"
+    }
+  },
+  {
+    "id": "field-34",
+    "large": "IT/개발",
+    "medium": "개발/보안",
+    "small": "백엔드",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "40"
+    }
+  },
+  {
+    "id": "field-35",
+    "large": "IT/개발",
+    "medium": "개발/보안",
+    "small": "프론트",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "41"
+    }
+  },
+  {
+    "id": "field-36",
+    "large": "IT/개발",
+    "medium": "개발/보안",
+    "small": "프로그램",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "42"
+    }
+  },
+  {
+    "id": "field-37",
+    "large": "IT/개발",
+    "medium": "디자인/기획",
+    "small": "웹모바일 디자인",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "43"
+    }
+  },
+  {
+    "id": "field-38",
+    "large": "IT/개발",
+    "medium": "디자인/기획",
+    "small": "웹기획",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "44"
+    }
+  },
+  {
+    "id": "field-39",
+    "large": "IT/개발",
+    "medium": "디자인/기획",
+    "small": "홈페이지 UIUX",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "45"
+    }
+  },
+  {
+    "id": "field-40",
+    "large": "IT/개발",
+    "medium": "디자인/기획",
+    "small": "컨텐츠",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "46"
+    }
+  },
+  {
+    "id": "field-41",
+    "large": "창의적활동",
+    "medium": "콘텐츠",
+    "small": "드라마",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "47"
+    }
+  },
+  {
+    "id": "field-42",
+    "large": "창의적활동",
+    "medium": "콘텐츠",
+    "small": "웹툰소설",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "48"
+    }
+  },
+  {
+    "id": "field-43",
+    "large": "창의적활동",
+    "medium": "콘텐츠",
+    "small": "소설",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "49"
+    }
+  },
+  {
+    "id": "field-44",
+    "large": "창의적활동",
+    "medium": "콘텐츠",
+    "small": "시",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "50"
+    }
+  },
+  {
+    "id": "field-45",
+    "large": "창의적활동",
+    "medium": "콘텐츠",
+    "small": "음악",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "51"
+    }
+  },
+  {
+    "id": "field-46",
+    "large": "창의적활동",
+    "medium": "콘텐츠",
+    "small": "미술",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "52"
+    }
+  },
+  {
+    "id": "field-47",
+    "large": "번역",
+    "medium": "통번역 방식",
+    "small": "순차통역",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "53"
+    }
+  },
+  {
+    "id": "field-48",
+    "large": "번역",
+    "medium": "통번역 방식",
+    "small": "동시통역",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "54"
+    }
+  },
+  {
+    "id": "field-49",
+    "large": "번역",
+    "medium": "통번역 방식",
+    "small": "음성번역",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "55"
+    }
+  },
+  {
+    "id": "field-50",
+    "large": "번역",
+    "medium": "통번역 방식",
+    "small": "자가선택",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "56"
+    }
+  },
+  {
+    "id": "field-51",
+    "large": "프롬프트",
+    "medium": "",
+    "small": "",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "57"
+    }
+  },
+  {
+    "id": "field-52",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "암",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "58"
+    }
+  },
+  {
+    "id": "field-53",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "요리",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "59"
+    }
+  },
+  {
+    "id": "field-54",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "재무",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "60"
+    }
+  },
+  {
+    "id": "field-55",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "주식",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "61"
+    }
+  },
+  {
+    "id": "field-56",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "부동산",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "62"
+    }
+  },
+  {
+    "id": "field-57",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "자녀",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "63"
+    }
+  },
+  {
+    "id": "field-58",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "연애",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "64"
+    }
+  },
+  {
+    "id": "field-59",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "입시",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "65"
+    }
+  },
+  {
+    "id": "field-60",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "사주",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "66"
+    }
+  },
+  {
+    "id": "field-61",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "결혼",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "67"
+    }
+  },
+  {
+    "id": "field-62",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "영어",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "68"
+    }
+  },
+  {
+    "id": "field-63",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "직장찾기",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "69"
+    }
+  },
+  {
+    "id": "field-64",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "운동",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "70"
+    }
+  },
+  {
+    "id": "field-65",
+    "large": "확장영역",
+    "medium": "라이프/전문",
+    "small": "사업",
+    "source": {
+      "file": "수집된DB/분야.csv",
+      "row": "71"
+    }
+  }
+]
