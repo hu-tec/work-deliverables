@@ -54,6 +54,7 @@
 
       .tabs {
         display: flex;
+        flex-wrap: wrap;
         gap: 4px;
         margin-top: 6px
       }
@@ -112,6 +113,20 @@
       .tool-row .tool-path { margin-top: 5px; overflow-wrap: anywhere; font-size: 12px }
       .tool-row a { flex: none }
       .tool-row.active { background: var(--accent-soft) }
+      #tool-nav { padding: 5px }
+      .tool-group { border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: #fff }
+      .tool-group > h3 { margin: 0; padding: 6px 8px; border: 0; background: #fafbfc; font-size: 14px }
+      .tool-group-toggle { display: block; width: 100%; border: 0; padding: 0; background: transparent; color: var(--text); text-align: left; cursor: pointer; font: inherit; font-weight: 700 }
+      .tool-group-toggle::before { content: '▸'; display: inline-block; width: 16px; color: var(--accent) }
+      .tool-group-toggle[aria-expanded="true"]::before { content: '▾' }
+      .tool-group-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+      .tool-group-body { padding: 3px 5px 6px }
+      .tool-group-body[hidden] { display: none }
+      .tool-group-body .doc-button { border-radius: 0; border-bottom: 1px solid var(--line); padding: 8px 7px; font-size: 12px }
+      .tool-group-body .doc-button:last-child { border-bottom: 0 }
+      .tool-row.selected-tool { flex-wrap: wrap; background: #fff }
+      .tool-row.selected-tool > div:first-child { min-width: 0; flex: 1 1 260px }
+      .tool-row.selected-tool > div:last-child { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px }
       .db-download-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap }
       .db-file-list { display: grid; gap: 0 }
       .db-file-row { display: grid; grid-template-columns: minmax(0, 1fr) 74px 84px; align-items: center; gap: 10px; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 12px }
@@ -295,14 +310,15 @@
 
       .section {
         min-width: 0;
-        border: 1px solid var(--line);
-        border-radius: 8px;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        border-radius: 0;
         background: #fff;
         overflow: hidden
       }
 
       .section:first-child {
-        border-top: 1px solid var(--line)
+        border-top: 0
       }
 
       .section h3 {
@@ -312,6 +328,57 @@
         background: #fafbfc;
         font-size: 15px
       }
+
+      .html-purpose-group > h3,
+      .md-purpose-group > h3,
+      .db-purpose-group > h3 {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        border-bottom: 0
+      }
+
+      .html-group-toggle,
+      .md-group-toggle,
+      .db-group-toggle {
+        flex: 1 1 160px;
+        min-width: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        padding: 0;
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 700
+      }
+
+      .html-group-toggle::before,
+      .md-group-toggle::before,
+      .db-group-toggle::before {
+        content: '▸';
+        display: inline-block;
+        width: 16px;
+        color: var(--accent)
+      }
+
+      .html-group-toggle[aria-expanded="true"]::before,
+      .md-group-toggle[aria-expanded="true"]::before,
+      .db-group-toggle[aria-expanded="true"]::before { content: '▾' }
+      .html-group-toggle:focus-visible,
+      .md-group-toggle:focus-visible,
+      .db-group-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+      .html-purpose-group .group-downloads { float: none; max-width: none; margin-top: 0 }
+      .md-purpose-group .download-link { float: none; margin-top: 0 }
+      #html-sections.section-card-grid .html-purpose-group,
+      #md-sections.section-card-grid .md-purpose-group { min-height: 0 }
+
+      .html-subgroup-toggle, .md-subgroup-toggle { width: 100%; border: 0; background: transparent; color: inherit; padding: 0; text-align: left; cursor: pointer; font: inherit; font-weight: 700 }
+      .html-subgroup-toggle::before, .md-subgroup-toggle::before { content: '▸'; display: inline-block; width: 14px; color: var(--accent) }
+      .html-subgroup-toggle[aria-expanded="true"]::before, .md-subgroup-toggle[aria-expanded="true"]::before { content: '▾' }
+      .html-subgroup-toggle:focus-visible, .md-subgroup-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+      .html-group-body[hidden], .md-group-body[hidden], .md-subgroup-body[hidden], .db-file-list[hidden] { display: none }
 
       .subsection-title {
         margin: 0;
@@ -601,6 +668,19 @@
 
       .md-layout.card-mode .card-grid {
         grid-template-columns: 1fr
+      }
+
+      /* 대분류 제목 영역은 상위 카드가 외곽선을 담당한다. */
+      .html-purpose-group > h3 .group-download-link {
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        border-radius: 0;
+        background: transparent
+      }
+
+      .html-purpose-group > h3 .group-download-link:hover {
+        border-bottom-color: var(--accent);
+        background: var(--accent-soft)
       }
 
       .md-layout.preview-only .library {
@@ -1106,6 +1186,65 @@
         background: #fff
       }
 
+      .guide-shell {
+        display: flex;
+        flex-direction: column;
+        height: calc(100dvh - var(--main-top, 160px) - 8px);
+        min-height: 420px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff
+      }
+
+      .guide-head { padding: 12px 16px; border-bottom: 1px solid var(--line) }
+      .guide-head .section-title { margin-bottom: 4px }
+      .guide-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); flex: 1; min-height: 0 }
+      .guide-nav { overflow: auto; padding: 8px; border-right: 1px solid var(--line); background: #fafbfc }
+      .guide-nav button { display: block; width: 100%; border: 0; border-radius: 6px; background: transparent; color: var(--ink); padding: 7px 8px; text-align: left; cursor: pointer; font: inherit; font-size: 12px }
+      .guide-nav button:hover, .guide-nav button:focus-visible { background: var(--accent-soft); color: var(--accent) }
+      .guide-nav-group { border-bottom: 1px solid var(--line); padding: 2px 0 }
+      .guide-nav button.guide-group-toggle { font-weight: 700 }
+      .guide-nav button.guide-group-toggle::before { content: '▸'; display: inline-block; width: 15px; color: var(--accent) }
+      .guide-nav button.guide-group-toggle[aria-expanded="true"]::before { content: '▾' }
+      .guide-nav-children[hidden] { display: none }
+      .guide-nav button.guide-subnav { padding-left: 24px; color: var(--muted) }
+      .guide-content { overflow: auto; scroll-behavior: smooth }
+      .guide-content.markdown { padding: 18px 22px 40px; font-size: 13px; line-height: 1.55 }
+      .guide-content.markdown h1 { font-size: 24px; margin: 0 0 12px }
+      .guide-content.markdown h2 { font-size: 18px; margin: 28px 0 12px; padding-bottom: 6px }
+      .guide-content.markdown h3 { font-size: 15px; margin: 22px 0 8px }
+      .guide-content.markdown p { margin: 8px 0 }
+      .guide-content.markdown ul { margin: 8px 0; padding-left: 22px }
+      .guide-content.markdown li { margin: 3px 0 }
+      .guide-content.markdown pre { margin: 0; padding: 12px; font-size: 12px; line-height: 1.5 }
+      .guide-content.markdown .markdown-table th, .guide-content.markdown .markdown-table td { padding: 7px 9px }
+      .guide-code { margin: 10px 0 16px }
+      .guide-copy { display: block; margin: 0 0 5px auto; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--accent); padding: 5px 9px; cursor: pointer; font: inherit; font-size: 12px }
+      .guide-copy:hover { background: var(--accent-soft) }
+      .ui-prompt-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); flex: 1; min-height: 0 }
+      .ui-prompt-preview { display: flex; flex-direction: column; min-width: 0; min-height: 0; border-left: 1px solid var(--line); background: #f8f9fc }
+      .ui-prompt-preview-head { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 8px; border-bottom: 1px solid var(--line); background: #fff }
+      .ui-prompt-preview-head strong { margin-right: auto; font-size: 12px }
+      .ui-prompt-preview-head button { border: 1px solid var(--line); background: #fff; padding: 5px 8px; cursor: pointer; font: inherit; font-size: 12px }
+      .ui-prompt-preview-head button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 700 }
+      .ui-prompt-preview-head a { padding: 5px; white-space: nowrap; font-size: 12px }
+      .ui-prompt-frame { display: block; flex: 1; min-height: 0; width: 100%; border: 0 }
+      .ui-pattern-shell { display: flex; flex-direction: column; height: calc(100dvh - var(--main-top, 160px) - 8px); min-height: 440px; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: #fff }
+      .ui-pattern-frame { display: block; flex: 1; min-height: 0; width: 100%; border: 0; background: #f8f9fc }
+
+      @media(max-width:700px) {
+        .guide-layout { grid-template-columns: 1fr; grid-template-rows: minmax(0, 115px) minmax(0, 1fr) }
+        .guide-nav { border-right: 0; border-bottom: 1px solid var(--line) }
+        .guide-content.markdown { padding: 12px }
+      }
+      @media(max-width:900px) {
+        .guide-shell.ui-prompt-shell { height: auto; min-height: 0; overflow: visible }
+        .ui-prompt-layout { display: block }
+        #ui-prompt-content { height: min(58vh, 700px) }
+        .ui-prompt-preview { height: 70vh; min-height: 430px; border-left: 0; border-top: 1px solid var(--line) }
+      }
+
       .placeholder {
         color: var(--muted);
         padding: 8px;
@@ -1219,7 +1358,7 @@
     <header>
       <div class="wrap">
         <h1>📁 업무산출물</h1>
-        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button></div>
+        <div class="tabs"><button class="tab active" type="button" data-panel="html-panel">1. 📄 HTML</button><button class="tab" type="button" data-panel="markdown-panel">2. 📝 Markdown</button><button class="tab" type="button" data-panel="links-panel">3. 🔗 레퍼런스 링크</button><button class="tab" type="button" data-panel="db-panel">4. 🗃 DB 정제 자료</button><button class="tab" type="button" data-panel="downloads-panel">5. ⬇ 프로젝트 소스·내부 도구</button><button class="tab" type="button" data-panel="prompt-guide-panel">6. 📋 프롬프트 제시 가이드</button><button class="tab" type="button" data-panel="ui-prompt-panel">7. 🧩 UI 설명 프롬프트</button><button class="tab" type="button" data-panel="ui-pattern-panel">8. 🧱 UI 패턴 예시</button></div>
       </div>
     </header>
     <main>
@@ -1243,12 +1382,12 @@
       <section id="downloads-panel" class="panel">
         <div class="md-layout">
           <section class="library">
-            <div class="head"><h2 class="section-title">프로젝트 소스·내부 도구</h2><p class="note">시험 홈페이지 통합 구현 등 이관된 프로젝트를 선택하세요.</p></div>
+            <div class="head"><h2 class="section-title">프로젝트 소스·내부 도구</h2><p class="note">대분류를 펼쳐 프로젝트나 도구를 선택하세요.</p></div>
             <div id="tool-nav"></div>
           </section>
           <article class="viewer">
-            <div class="head"><h2 class="section-title">소스·실행 파일 다운로드</h2><p class="note">원본 폴더 위치, 다운로드 파일, 관련 기획 문서를 확인하세요.</p></div>
-            <div id="tool-download-list"></div>
+            <div class="head"><h2 id="tool-detail-title" class="section-title">소스·실행 파일 다운로드</h2><p class="note">선택한 항목의 다운로드 파일과 관련 기획 문서를 확인하세요.</p></div>
+            <div id="tool-download-list" class="placeholder">왼쪽에서 프로젝트나 도구를 선택해 주세요.</div>
             <div id="tool-doc-tabs" class="tool-doc-tabs" hidden></div>
             <div id="tool-doc-body" class="tool-doc-body markdown placeholder">왼쪽에서 도구를 선택하면 만든 이유와 관련 MD가 표시됩니다.</div>
           </article>
@@ -1352,6 +1491,33 @@
           <div id="reference-list" class="reference-list"></div>
         </div>
       </section>
+      <section id="prompt-guide-panel" class="panel">
+        <div class="guide-shell">
+          <div class="guide-head"><h2 class="section-title">프롬프트 제시 가이드</h2><p class="note">작업 목적에 맞는 사례를 골라 프롬프트를 복사하세요. 원본 문서: <a href="AI_작업요청_프롬프트_가이드/README.md" target="_blank" rel="noopener">README.md</a> · <a href="디자인시스템/밀도_그리드_좌측정렬_검토/index.html" target="_blank" rel="noopener">밀도·그리드·좌측 정렬 UI 검토안</a></p></div>
+          <div class="guide-layout">
+            <nav id="guide-nav" class="guide-nav" aria-label="프롬프트 사례 목차"></nav>
+            <article id="guide-content" class="markdown guide-content"></article>
+          </div>
+        </div>
+      </section>
+      <section id="ui-prompt-panel" class="panel">
+        <div class="guide-shell ui-prompt-shell">
+          <div class="guide-head"><h2 class="section-title">UI 설명 프롬프트</h2><p class="note">왼쪽의 요청 문장과 오른쪽의 화면을 함께 비교하세요. 화면 목적, 구조, 밀도·정렬, 데이터와 기능 연결을 구체적으로 전달하는 예시입니다.</p></div>
+          <div class="ui-prompt-layout">
+            <article id="ui-prompt-content" class="markdown guide-content"></article>
+            <aside class="ui-prompt-preview" aria-label="UI 화면 미리보기">
+              <div class="ui-prompt-preview-head"><strong>화면 미리보기</strong><button type="button" data-ui-preview="review" aria-pressed="true">UI 검토 화면</button><button type="button" data-ui-preview="patterns" aria-pressed="false">UI 패턴 예시</button><a id="ui-prompt-preview-open" href="디자인시스템/밀도_그리드_좌측정렬_검토/index.html" target="_blank" rel="noopener">새 창으로 열기 ↗</a></div>
+              <iframe id="ui-prompt-frame" class="ui-prompt-frame" title="UI 검토 화면 미리보기" src="디자인시스템/밀도_그리드_좌측정렬_검토/index.html" loading="lazy"></iframe>
+            </aside>
+          </div>
+        </div>
+      </section>
+      <section id="ui-pattern-panel" class="panel">
+        <div class="ui-pattern-shell">
+          <div class="guide-head"><h2 class="section-title">UI 패턴 예시</h2><p class="note">사이드바부터 탭·필터·상세·폼·알림까지 14가지 UI의 모양과 동작을 확인하세요. <a href="디자인시스템/밀도_그리드_좌측정렬_검토/index.html?view=patterns" target="_blank" rel="noopener">별도 창에서 보기</a></p></div>
+          <iframe class="ui-pattern-frame" title="동작하는 UI 패턴 예시" src="디자인시스템/밀도_그리드_좌측정렬_검토/index.html?view=patterns" loading="lazy"></iframe>
+        </div>
+      </section>
     </main>
     <div id="doc-popup" class="popup" aria-hidden="true">
       <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title">
@@ -1378,6 +1544,7 @@
     <script src="reference-links.js"></script>
     <script src="file-dates.js"></script>
     <script src="db-files.js"></script>
+    <script src="AI_작업요청_프롬프트_가이드/content.js"></script>
     <script>
       const DATA = {
   "htmlDocs": [
@@ -1428,6 +1595,16 @@
       "title": "디자인시스템",
       "path": "디자인시스템/index.html",
       "date": "2026-06-04"
+    },
+    {
+      "section": "디자인시스템/재사용 UI",
+      "title": "밀도·그리드·좌측 정렬 UI 검토안",
+      "path": "디자인시스템/밀도_그리드_좌측정렬_검토/index.html",
+      "date": "2026-10-25",
+      "sourceDocs": [
+        "디자인시스템/밀도_그리드_좌측정렬_검토/README.md",
+        "디자인시스템/docs/재사용_디자인_프롬프트/공통/03_다단구조_밀도_간격_기준.md"
+      ]
     },
     {
       "section": "관리자/BO 업무화면",
@@ -3416,6 +3593,14 @@
       DATA.mdDocs = COMMON_MD_DOCS.concat(DATA.mdDocs.filter(doc => !COMMON_MD_PATHS.has(doc.path)));
       let htmlView = 'table2';
       let mdView = 'table';
+      const expandedMdGroups = new Set();
+      const collapsedMdSearchGroups = new Set();
+      const expandedMdSubgroups = new Set();
+      const collapsedMdSearchSubgroups = new Set();
+      const expandedHtmlGroups = new Set();
+      const collapsedSearchGroups = new Set();
+      const expandedHtmlSubgroups = new Set();
+      const collapsedSearchSubgroups = new Set();
       let activeMemoPath = '';
       const selectedHtmlDownloads = new Set();
       let activePopupMemoPath = '';
@@ -3627,6 +3812,8 @@
       const dbSheetTabs = document.getElementById('db-sheet-tabs');
       const dbPreviewDownload = document.getElementById('db-preview-download');
       let activeDbPath = '';
+      const expandedDbGroups = new Set();
+      const collapsedDbSearchGroups = new Set();
       document.getElementById('db-total-count').textContent = '전체 ' + dbFiles.length + '개';
       function renderDbGrid(rows) {
         if (!rows.length) return '<div class="placeholder">이 시트에는 표시할 데이터가 없습니다.</div>';
@@ -3664,14 +3851,34 @@
           (result[file.group] || (result[file.group] = [])).push(file);
           return result
         }, {});
-        dbFileSections.innerHTML = Object.keys(grouped).sort((a, b) => a.localeCompare(b, 'ko')).map(group =>
-          '<section class="section"><h3>' + esc(group) + ' <span class="count">' + grouped[group].length + '개</span></h3><div class="db-file-list">' +
+        dbFileSections.innerHTML = Object.keys(grouped).sort((a, b) => a.localeCompare(b, 'ko')).map((group, index) => {
+          const isOpen = term ? !collapsedDbSearchGroups.has(group) : expandedDbGroups.has(group);
+          const bodyId = 'db-group-body-' + index;
+          return '<section class="section db-purpose-group"><h3><button class="db-group-toggle" type="button" data-db-group-toggle="' + esc(group) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(group) + ' <span class="count">' + grouped[group].length + '개</span></button></h3><div id="' + bodyId + '" class="db-file-list"' + (isOpen ? '' : ' hidden') + '>' +
           grouped[group].map(file => '<div class="db-file-row' + (file.path === activeDbPath ? ' active' : '') + '" data-db-path="' + esc(file.path) + '"><button type="button" data-db-open="' + esc(file.path) + '" title="' + esc(file.path) + '">' + esc(file.name) + '</button><small>' + Math.max(1, Math.round(file.size / 1024)) + ' KB</small><a class="row-download-link" href="' + encodeURI(file.path) + '" download>⬇ 다운로드</a></div>').join('') +
           '</div></section>'
+        }
         ).join('') || '<div class="placeholder">검색 결과가 없습니다.</div>'
       }
-      dbSearch.addEventListener('input', renderDbFiles);
+      dbSearch.addEventListener('input', () => {
+        collapsedDbSearchGroups.clear();
+        renderDbFiles()
+      });
       dbFileSections.addEventListener('click', event => {
+        const toggle = event.target.closest('[data-db-group-toggle]');
+        if (toggle) {
+          const group = toggle.dataset.dbGroupToggle;
+          const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+          const body = document.getElementById(toggle.getAttribute('aria-controls'));
+          if (dbSearch.value.trim()) {
+            if (isOpen) collapsedDbSearchGroups.add(group);
+            else collapsedDbSearchGroups.delete(group);
+          } else if (isOpen) expandedDbGroups.delete(group);
+          else expandedDbGroups.add(group);
+          toggle.setAttribute('aria-expanded', String(!isOpen));
+          if (body) body.hidden = isOpen;
+          return
+        }
         const button = event.target.closest('[data-db-open]');
         if (button) openDbFile(button.dataset.dbOpen)
       });
@@ -3685,7 +3892,14 @@
       });
       renderDbFiles();
       const requestedDbPath = new URLSearchParams(location.search).get('db');
-      if (requestedDbPath) openDbFile(requestedDbPath);
+      if (requestedDbPath) {
+        const requestedFile = dbFiles.find(file => file.path === requestedDbPath);
+        if (requestedFile) {
+          expandedDbGroups.add(requestedFile.group);
+          renderDbFiles();
+          openDbFile(requestedDbPath)
+        }
+      }
 
       function group(items) {
         return items.reduce((a, d) => {
@@ -3740,8 +3954,8 @@
         return '<span class="group-downloads">' + allButton + links.map(([label, href]) => '<a class="group-download-link" href="' + encodeURI(href) + '" download title="' + esc(label) + ' ZIP 다운로드">⬇ ' + esc(label) + '</a>').join('') + '</span>'
       }
 
-      function group2Heading(title, items) {
-        return '<h3>' + esc(title) + ' <span class="count">' + items.length + '개</span>' + group2DownloadButtons(title) + '</h3>'
+      function group2Heading(title, items, isOpen, bodyId) {
+        return '<h3><button class="html-group-toggle" type="button" data-html-group-toggle="' + esc(title) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(title) + ' <span class="count">' + items.length + '개</span></button>' + group2DownloadButtons(title) + '</h3>'
       }
 
       function uniquePaths(paths) {
@@ -3931,7 +4145,7 @@
         return doc.subsection || '보관 자료'
       }
 
-      function renderHtmlSubgroups(title, items, renderItems) {
+      function renderHtmlSubgroups(title, items, renderItems, searchTerm, groupIndex) {
         const grouped = items.reduce((result, item) => {
           const key = htmlSubgroup(item);
           (result[key] || (result[key] = [])).push(item);
@@ -3941,24 +4155,31 @@
         return Object.keys(grouped).sort((a, b) => {
           const ai = order.indexOf(a), bi = order.indexOf(b);
           return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi) || a.localeCompare(b, 'ko')
-        }).map(subsection => {
+        }).map((subsection, index) => {
           const group = grouped[subsection];
           const body = subsection === '최종 랜딩페이지' ? renderVersionedLandingItems(group, renderItems) : renderItems(group);
-          return '<h4 class="subsection-title">' + esc(subsection) + ' <span class="count">' + group.length + '개</span></h4>' + groupPurpose(subsection) + body
+          const key = JSON.stringify([title, subsection]);
+          const isOpen = searchTerm ? !collapsedSearchSubgroups.has(key) : expandedHtmlSubgroups.has(key);
+          const bodyId = 'html-subgroup-body-' + groupIndex + '-' + index;
+          return '<h4 class="subsection-title"><button class="html-subgroup-toggle" type="button" data-html-subgroup-toggle="' + esc(title) + '" data-html-subsection="' + esc(subsection) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(subsection) + ' <span class="count">' + group.length + '개</span></button></h4><div id="' + bodyId + '"' + (isOpen ? '' : ' hidden') + '>' + groupPurpose(subsection) + body + '</div>'
         }).join('')
       }
 
-      function renderHtmlGroup2Tables(grouped) {
-        return group2Keys(grouped).map(title => {
+      function renderHtmlGroup2Tables(grouped, searchTerm) {
+        return group2Keys(grouped).map((title, index) => {
           const items = grouped[title];
-          return '<section class="section">' + group2Heading(title, items) + groupPurpose(title) + renderHtmlSubgroups(title, items, renderTable2) + '</section>'
+          const isOpen = searchTerm ? !collapsedSearchGroups.has(title) : expandedHtmlGroups.has(title);
+          const bodyId = 'html-purpose-body-' + index;
+          return '<section class="section html-purpose-group">' + group2Heading(title, items, isOpen, bodyId) + '<div id="' + bodyId + '" class="html-group-body"' + (isOpen ? '' : ' hidden') + '>' + groupPurpose(title) + renderHtmlSubgroups(title, items, renderTable2, searchTerm, index) + '</div></section>'
         }).join('')
       }
 
-      function renderHtmlGroup2Cards(grouped) {
-        return group2Keys(grouped).map(title => {
+      function renderHtmlGroup2Cards(grouped, searchTerm) {
+        return group2Keys(grouped).map((title, index) => {
           const items = grouped[title];
-          return '<section class="section">' + group2Heading(title, items) + groupPurpose(title) + renderHtmlSubgroups(title, items, renderOriginalMiniTables) + '</section>'
+          const isOpen = searchTerm ? !collapsedSearchGroups.has(title) : expandedHtmlGroups.has(title);
+          const bodyId = 'html-purpose-body-' + index;
+          return '<section class="section html-purpose-group">' + group2Heading(title, items, isOpen, bodyId) + '<div id="' + bodyId + '" class="html-group-body"' + (isOpen ? '' : ' hidden') + '>' + groupPurpose(title) + renderHtmlSubgroups(title, items, renderOriginalMiniTables, searchTerm, index) + '</div></section>'
         }).join('')
       }
 
@@ -3999,6 +4220,38 @@
             items: bySubsection[subsection]
           }))
         }).map(g => '<section class="section">' + sectionHeading(g.title, g.items.length, g.section) + groupPurpose(g.title.split(' > ').pop()) + itemRenderer(g.items) + '</section>').join('')
+      }
+
+      function mdSectionDownload(section) {
+        const href = DOWNLOADS[section];
+        return href ? '<a class="download-link" href="' + encodeURI(href) + '" download>다운로드</a>' : ''
+      }
+
+      function renderMdGroupedTables(grouped, term) {
+        return sectionKeys(grouped).map((section, groupIndex) => {
+          const isOpen = term ? !collapsedMdSearchGroups.has(section) : expandedMdGroups.has(section);
+          const bodyId = 'md-group-body-' + groupIndex;
+          const bySubsection = subgroup(grouped[section]);
+          const body = subsectionKeys(bySubsection).map((subsection, index) => {
+            const key = JSON.stringify([section, subsection]);
+            const subOpen = term ? !collapsedMdSearchSubgroups.has(key) : expandedMdSubgroups.has(key);
+            const subBodyId = 'md-subgroup-body-' + groupIndex + '-' + index;
+            return '<h4 class="subsection-title"><button class="md-subgroup-toggle" type="button" data-md-subgroup-toggle="' + esc(section) + '" data-md-subsection="' + esc(subsection) + '" aria-expanded="' + subOpen + '" aria-controls="' + subBodyId + '">' + esc(subsection) + ' <span class="count">' + bySubsection[subsection].length + '개</span></button></h4><div id="' + subBodyId + '" class="md-subgroup-body"' + (subOpen ? '' : ' hidden') + '>' + groupPurpose(subsection) + renderMdTable(bySubsection[subsection]) + '</div>'
+          }).join('');
+          return '<section class="section md-purpose-group"><h3><button class="md-group-toggle" type="button" data-md-group-toggle="' + esc(section) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(section) + ' <span class="count">' + grouped[section].length + '개</span></button>' + mdSectionDownload(section) + '</h3><div id="' + bodyId + '" class="md-group-body"' + (isOpen ? '' : ' hidden') + '>' + groupPurpose(section) + body + '</div></section>'
+        }).join('')
+      }
+
+      function renderMdGroupedCards(grouped, term) {
+        return sectionKeys(grouped).flatMap(section => {
+          const bySubsection = subgroup(grouped[section]);
+          return subsectionKeys(bySubsection).map(subsection => ({section, subsection, items: bySubsection[subsection]}))
+        }).map((group, index) => {
+          const key = JSON.stringify([group.section, group.subsection]);
+          const isOpen = term ? !collapsedMdSearchSubgroups.has(key) : expandedMdSubgroups.has(key);
+          const bodyId = 'md-card-body-' + index;
+          return '<section class="section md-purpose-group"><h3><button class="md-group-toggle" type="button" data-md-subgroup-toggle="' + esc(group.section) + '" data-md-subsection="' + esc(group.subsection) + '" aria-expanded="' + isOpen + '" aria-controls="' + bodyId + '">' + esc(group.section + ' > ' + group.subsection) + ' <span class="count">' + group.items.length + '개</span></button>' + mdSectionDownload(group.section) + '</h3><div id="' + bodyId + '" class="md-group-body"' + (isOpen ? '' : ' hidden') + '>' + groupPurpose(group.subsection) + renderMdMiniTable(group.items) + '</div></section>'
+        }).join('')
       }
 
       function cardGroups(grouped) {
@@ -4205,6 +4458,119 @@
         return html.join('\n')
       }
 
+      function addPromptCopyButtons(container) {
+        container.querySelectorAll('pre').forEach(pre => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'guide-code';
+          const button = document.createElement('button');
+          button.className = 'guide-copy';
+          button.type = 'button';
+          button.textContent = '프롬프트 복사';
+          button.setAttribute('aria-label', '아래 프롬프트 복사');
+          button.addEventListener('click', async () => {
+            const value = pre.textContent;
+            try {
+              await navigator.clipboard.writeText(value);
+              button.textContent = '복사됨'
+            } catch (error) {
+              const textarea = document.createElement('textarea');
+              textarea.value = value;
+              textarea.style.position = 'fixed';
+              textarea.style.opacity = '0';
+              document.body.appendChild(textarea);
+              textarea.select();
+              button.textContent = document.execCommand('copy') ? '복사됨' : '복사 실패';
+              textarea.remove()
+            }
+            setTimeout(() => button.textContent = '프롬프트 복사', 1500)
+          });
+          pre.parentNode.insertBefore(wrapper, pre);
+          wrapper.appendChild(button);
+          wrapper.appendChild(pre)
+        })
+      }
+
+      function renderPromptGuide() {
+        const guideNav = document.getElementById('guide-nav');
+        const guideContent = document.getElementById('guide-content');
+        const markdown = window.PROMPT_GUIDE_MARKDOWN;
+        if (!markdown) {
+          guideContent.innerHTML = '<p>가이드 본문을 불러오지 못했습니다. <a href="AI_작업요청_프롬프트_가이드/README.md">원본 문서 열기</a></p>';
+          return
+        }
+        guideContent.innerHTML = renderMarkdown(markdown, 'AI_작업요청_프롬프트_가이드/README.md');
+        const headings = Array.from(guideContent.querySelectorAll('h2, h3'));
+        const groups = [];
+        headings.forEach((heading, index) => {
+          heading.id = 'guide-heading-' + index;
+          if (heading.tagName === 'H2') groups.push({heading, children: []});
+          else if (groups.length) groups[groups.length - 1].children.push(heading)
+        });
+        groups.forEach((group, index) => {
+          const container = document.createElement('div');
+          container.className = 'guide-nav-group';
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = group.heading.textContent;
+          if (group.children.length) {
+            const childId = 'guide-nav-children-' + index;
+            const children = document.createElement('div');
+            children.id = childId;
+            children.className = 'guide-nav-children';
+            children.hidden = true;
+            button.className = 'guide-group-toggle';
+            button.setAttribute('aria-controls', childId);
+            button.setAttribute('aria-expanded', 'false');
+            button.addEventListener('click', () => {
+              const isOpen = button.getAttribute('aria-expanded') === 'true';
+              button.setAttribute('aria-expanded', String(!isOpen));
+              children.hidden = isOpen;
+              group.heading.scrollIntoView({block: 'start', behavior: 'smooth'})
+            });
+            group.children.forEach(heading => {
+              const childButton = document.createElement('button');
+              childButton.type = 'button';
+              childButton.className = 'guide-subnav';
+              childButton.textContent = heading.textContent;
+              childButton.addEventListener('click', () => heading.scrollIntoView({block: 'start', behavior: 'smooth'}));
+              children.appendChild(childButton)
+            });
+            container.appendChild(button);
+            container.appendChild(children)
+          } else {
+            button.addEventListener('click', () => group.heading.scrollIntoView({block: 'start', behavior: 'smooth'}));
+            container.appendChild(button)
+          }
+          guideNav.appendChild(container)
+        });
+        addPromptCopyButtons(guideContent)
+      }
+
+      function renderUiPromptGuide() {
+        const content = document.getElementById('ui-prompt-content');
+        const markdown = window.PROMPT_GUIDE_MARKDOWN || '';
+        const start = markdown.indexOf('## 9. 밀도·그리드·좌측 정렬을 UI로 요청하는 법');
+        if (start < 0) {
+          content.innerHTML = '<p>UI 설명 프롬프트를 불러오지 못했습니다. <a href="AI_작업요청_프롬프트_가이드/README.md">원본 문서 열기</a></p>';
+          return
+        }
+        const next = markdown.indexOf('\n## 사이트 표시 내용 갱신', start);
+        content.innerHTML = renderMarkdown(markdown.slice(start, next < 0 ? undefined : next), 'AI_작업요청_프롬프트_가이드/README.md');
+        addPromptCopyButtons(content)
+      }
+      renderPromptGuide();
+      renderUiPromptGuide();
+      const uiPreviewPaths = {
+        review: '디자인시스템/밀도_그리드_좌측정렬_검토/index.html',
+        patterns: '디자인시스템/밀도_그리드_좌측정렬_검토/index.html?view=patterns'
+      };
+      document.querySelectorAll('[data-ui-preview]').forEach(button => button.addEventListener('click', () => {
+        document.querySelectorAll('[data-ui-preview]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        const path = uiPreviewPaths[button.dataset.uiPreview];
+        document.getElementById('ui-prompt-frame').src = path;
+        document.getElementById('ui-prompt-preview-open').href = path;
+      }));
+
       function renderTable(items) {
         return '<div class="table-wrap"><table class="work-table"><thead><tr><th>순서</th><th>수정날</th><th>제목</th><th>파일명</th><th>만든날</th></tr></thead><tbody>' +
           items.map((d, i) => '<tr><td class="num">' + (i + 1) + '</td><td class="date">' + esc(modifiedDate(d)) + '</td><td><button class="doc-table-button title-text" type="button" data-html-preview="' + esc(d.path) + '" title="' + esc(shortTitle(d)) + '">' + esc(shortTitle(d)) + '</button></td><td class="title-file"><span class="file-with-download"><a href="' + encodeURI(d.path) + '" data-html-preview="' + esc(d.path) + '" title="' + esc(d.path) + '">' + esc(shortPath(d)) + '</a>' + rowDownloadLink(d) + '</span></td><td class="date">' + esc(createdDate(d)) + '</td></tr>').join('') +
@@ -4238,8 +4604,8 @@
         htmlSections.className = (htmlView === 'card' || htmlView === 'card2') ? 'card-grid section-card-grid' : '';
         if (htmlView === 'table') htmlOutput = renderNestedSections(grouped, renderTable);
         else if (htmlView === 'card') htmlOutput = renderNestedCards(grouped, renderHtmlMiniTable);
-        else if (htmlView === 'table2') htmlOutput = renderHtmlGroup2Tables(grouped2);
-        else if (htmlView === 'card2') htmlOutput = renderHtmlGroup2Cards(grouped2);
+        else if (htmlView === 'table2') htmlOutput = renderHtmlGroup2Tables(grouped2, term);
+        else if (htmlView === 'card2') htmlOutput = renderHtmlGroup2Cards(grouped2, term);
         htmlSections.innerHTML = htmlOutput || '<div class="placeholder">검색 결과가 없습니다.</div>';
         updateSelectedDownloadControls()
       }
@@ -4249,7 +4615,7 @@
           filtered = DATA.mdDocs.filter(d => !term || (d.section + ' ' + (d.subsection || '') + ' ' + d.title + ' ' + d.path + ' ' + d.date).toLowerCase().includes(term)),
           grouped = group(filtered);
         mdSections.className = mdView === 'card' ? 'card-grid section-card-grid' : '';
-        mdSections.innerHTML = (mdView === 'table' ? renderNestedSections(grouped, renderMdTable) : renderNestedCards(grouped, renderMdMiniTable)) || '<div class="placeholder">검색 결과가 없습니다.</div>'
+        mdSections.innerHTML = (mdView === 'table' ? renderMdGroupedTables(grouped, term) : renderMdGroupedCards(grouped, term)) || '<div class="placeholder">검색 결과가 없습니다.</div>'
       }
 
       function mdDoc(path) {
@@ -4476,6 +4842,34 @@
         renderHtmlList()
       }));
       mdSections.addEventListener('click', e => {
+        const subgroupToggle = e.target.closest('[data-md-subgroup-toggle]');
+        if (subgroupToggle) {
+          const key = JSON.stringify([subgroupToggle.dataset.mdSubgroupToggle, subgroupToggle.dataset.mdSubsection]);
+          const isOpen = subgroupToggle.getAttribute('aria-expanded') === 'true';
+          const body = document.getElementById(subgroupToggle.getAttribute('aria-controls'));
+          if (mdSearch.value.trim()) {
+            if (isOpen) collapsedMdSearchSubgroups.add(key);
+            else collapsedMdSearchSubgroups.delete(key);
+          } else if (isOpen) expandedMdSubgroups.delete(key);
+          else expandedMdSubgroups.add(key);
+          subgroupToggle.setAttribute('aria-expanded', String(!isOpen));
+          if (body) body.hidden = isOpen;
+          return
+        }
+        const groupToggle = e.target.closest('[data-md-group-toggle]');
+        if (groupToggle) {
+          const section = groupToggle.dataset.mdGroupToggle;
+          const isOpen = groupToggle.getAttribute('aria-expanded') === 'true';
+          const body = document.getElementById(groupToggle.getAttribute('aria-controls'));
+          if (mdSearch.value.trim()) {
+            if (isOpen) collapsedMdSearchGroups.add(section);
+            else collapsedMdSearchGroups.delete(section);
+          } else if (isOpen) expandedMdGroups.delete(section);
+          else expandedMdGroups.add(section);
+          groupToggle.setAttribute('aria-expanded', String(!isOpen));
+          if (body) body.hidden = isOpen;
+          return
+        }
         const popupButton = e.target.closest('[data-md-popup]');
         if (popupButton) {
           e.preventDefault();
@@ -4486,6 +4880,34 @@
         if (b) openDoc(b.dataset.path)
       });
       htmlSections.addEventListener('click', e => {
+        const subgroupToggle = e.target.closest('[data-html-subgroup-toggle]');
+        if (subgroupToggle) {
+          const key = JSON.stringify([subgroupToggle.dataset.htmlSubgroupToggle, subgroupToggle.dataset.htmlSubsection]);
+          const isOpen = subgroupToggle.getAttribute('aria-expanded') === 'true';
+          const body = document.getElementById(subgroupToggle.getAttribute('aria-controls'));
+          if (htmlSearch.value.trim()) {
+            if (isOpen) collapsedSearchSubgroups.add(key);
+            else collapsedSearchSubgroups.delete(key);
+          } else if (isOpen) expandedHtmlSubgroups.delete(key);
+          else expandedHtmlSubgroups.add(key);
+          subgroupToggle.setAttribute('aria-expanded', String(!isOpen));
+          if (body) body.hidden = isOpen;
+          return
+        }
+        const groupToggle = e.target.closest('[data-html-group-toggle]');
+        if (groupToggle) {
+          const title = groupToggle.dataset.htmlGroupToggle;
+          const isOpen = groupToggle.getAttribute('aria-expanded') === 'true';
+          const body = document.getElementById(groupToggle.getAttribute('aria-controls'));
+          if (htmlSearch.value.trim()) {
+            if (isOpen) collapsedSearchGroups.add(title);
+            else collapsedSearchGroups.delete(title);
+          } else if (isOpen) expandedHtmlGroups.delete(title);
+          else expandedHtmlGroups.add(title);
+          groupToggle.setAttribute('aria-expanded', String(!isOpen));
+          if (body) body.hidden = isOpen;
+          return
+        }
         const setDownload = e.target.closest('[data-download-set]');
         if (setDownload) {
           e.preventDefault();
@@ -4532,8 +4954,16 @@
         showPanel('html-panel');
         openHtmlPreview(b.dataset.openHtml)
       });
-      htmlSearch.addEventListener('input', renderHtmlList);
-      mdSearch.addEventListener('input', renderMdList);
+      htmlSearch.addEventListener('input', () => {
+        collapsedSearchGroups.clear();
+        collapsedSearchSubgroups.clear();
+        renderHtmlList()
+      });
+      mdSearch.addEventListener('input', () => {
+        collapsedMdSearchGroups.clear();
+        collapsedMdSearchSubgroups.clear();
+        renderMdList()
+      });
       htmlExpand.addEventListener('click', () => {
         htmlLayout.classList.toggle('preview-only');
         htmlExpand.textContent = htmlLayout.classList.contains('preview-only') ? '목록 보이기' : '목록 숨기기'
@@ -4593,6 +5023,7 @@
       const referenceList = document.getElementById('reference-list');
       const internalTools = [
         {
+          category: '프로젝트 소스',
           name: '시험홈페이지_통합_구현 · Next.js 프로젝트 소스',
           zip: 'downloads/시험홈페이지_통합_구현.zip',
           why: '2024 기반 자료와 2025 화면, 관리 기능을 묶은 시험 플랫폼입니다. Next.js 소스·설정·설계 문서 55개 파일을 이관했습니다.',
@@ -4600,6 +5031,7 @@
           docs: ['추가_산출물/시험홈페이지_통합_구현/source/기능상세정의.md', '추가_산출물/시험홈페이지_통합_구현/source/시험플랫폼_관점_2024_2025_vibecoding_해석.md']
         },
         {
+          category: '내부 도구',
           name: '파일추출·업무 프롬프트 생성기',
           zip: 'downloads/파일추출_업무프롬프트_생성기_소스.zip',
           why: '업무 파일을 찾아 추리고 관련 작업 프롬프트를 만드는 내부 도구입니다.',
@@ -4607,18 +5039,21 @@
           executable: '추가_산출물/파일추출_업무프롬프트_생성기/파일추출_업무프롬프트_생성기_V2.exe'
         },
         {
+          category: '내부 도구',
           name: '마크다운 에디터',
           zip: 'downloads/마크다운에디터_내부용.zip',
           why: '문서를 작성·미리보기하고 선택 영역에 댓글을 남기며 Word로 내보내는 내부 도구입니다.',
           docs: ['마크다운에디터_내부용/README.md', '마크다운에디터_내부용/docs/markdown-editor-enhancement.prompt.md']
         },
         {
+          category: '내부 도구',
           name: '업무 추적 댓글 프로그램',
           zip: 'downloads/업무_추적_댓글_웹프로그램.zip',
           why: '흩어진 업무 진행, 논의, 첨부와 의사결정 기록을 한 화면에서 추적하기 위해 만들었습니다.',
           docs: ['업무_추적_댓글_웹프로그램/docs/01-plan/features/work-history-tracker.plan.md', '업무_추적_댓글_웹프로그램/docs/02-design/features/work-history-tracker.design.md']
         },
         {
+          category: '내부 도구',
           name: '협업 커뮤니케이션 업무툴',
           zip: 'downloads/협업연동_커뮤니케이션_업무툴_테스트.zip',
           why: '현업 업무의 생성, 검색, 상세 확인, 댓글과 활동 이력을 연결해 협업 흐름을 시험하기 위한 도구입니다.',
@@ -4629,8 +5064,14 @@
       const toolDownloadList = document.getElementById('tool-download-list');
       const toolDocTabs = document.getElementById('tool-doc-tabs');
       const toolDocBody = document.getElementById('tool-doc-body');
-      toolNav.innerHTML = internalTools.map((tool, i) => '<button class="doc-button" type="button" data-tool="' + i + '">' + esc(tool.name) + '</button>').join('');
-      toolDownloadList.innerHTML = internalTools.map((tool, i) => '<div class="tool-row" id="tool-row-' + i + '"><div><strong>' + esc(tool.name) + '</strong><p>' + esc(tool.why) + '</p>' + (tool.sourcePath ? '<p class="tool-path">이관 위치: ' + esc(tool.sourcePath) + '</p>' : '') + '</div><div><a class="row-download-link" href="' + encodeURI(tool.zip) + '" download>⬇ ' + (tool.sourcePath ? '프로젝트 소스 ZIP' : 'ZIP 다운로드') + '</a>' + (tool.executable ? ' <a class="row-download-link" href="' + encodeURI(tool.executable) + '" download>⬇ 실행 파일 다운로드</a>' : '') + '</div></div>').join('');
+      const toolGroups = ['프로젝트 소스', '내부 도구'].map(title => ({
+        title,
+        indexes: internalTools.map((tool, index) => tool.category === title ? index : -1).filter(index => index >= 0)
+      }));
+      toolNav.innerHTML = toolGroups.map((group, groupIndex) => {
+        const bodyId = 'tool-group-body-' + groupIndex;
+        return '<section class="tool-group"><h3><button class="tool-group-toggle" type="button" data-tool-group="' + groupIndex + '" aria-expanded="false" aria-controls="' + bodyId + '">' + esc(group.title) + ' <span class="count">' + group.indexes.length + '개</span></button></h3><div id="' + bodyId + '" class="tool-group-body" hidden>' + group.indexes.map(index => '<button class="doc-button" type="button" data-tool="' + index + '">' + esc(internalTools[index].name) + '</button>').join('') + '</div></section>'
+      }).join('');
       function showToolDoc(path) {
         const doc = DATA.mdDocs.find(item => item.path === path);
         toolDocTabs.querySelectorAll('button').forEach(button => button.classList.toggle('active', button.dataset.toolDoc === path));
@@ -4641,13 +5082,22 @@
         const tool = internalTools[index];
         if (!tool) return;
         toolNav.querySelectorAll('button').forEach(button => button.classList.toggle('active', Number(button.dataset.tool) === index));
-        toolDownloadList.querySelectorAll('.tool-row').forEach((row, i) => row.classList.toggle('active', i === index));
+        document.getElementById('tool-detail-title').textContent = tool.name;
+        toolDownloadList.className = '';
+        toolDownloadList.innerHTML = '<div class="tool-row selected-tool"><div><strong>' + esc(tool.name) + '</strong><p>' + esc(tool.why) + '</p>' + (tool.sourcePath ? '<p class="tool-path">이관 위치: ' + esc(tool.sourcePath) + '</p>' : '') + '</div><div><a class="row-download-link" href="' + encodeURI(tool.zip) + '" download>⬇ ' + (tool.sourcePath ? '프로젝트 소스 ZIP' : 'ZIP 다운로드') + '</a>' + (tool.executable ? '<a class="row-download-link" href="' + encodeURI(tool.executable) + '" download>⬇ 실행 파일 다운로드</a>' : '') + '</div></div>';
         toolDocTabs.hidden = false;
         toolDocTabs.innerHTML = tool.docs.map((path, i) => '<button type="button" data-tool-doc="' + esc(path) + '">' + (i === 0 ? '개발 배경 / 기획 MD' : '사용 / 상세 MD') + '</button>').join('');
         showToolDoc(tool.docs[0]);
-        document.getElementById('tool-row-' + index).scrollIntoView({block: 'nearest'})
       }
       toolNav.addEventListener('click', event => {
+        const groupButton = event.target.closest('[data-tool-group]');
+        if (groupButton) {
+          const body = document.getElementById(groupButton.getAttribute('aria-controls'));
+          const isOpen = groupButton.getAttribute('aria-expanded') === 'true';
+          groupButton.setAttribute('aria-expanded', String(!isOpen));
+          body.hidden = isOpen;
+          return
+        }
         const button = event.target.closest('[data-tool]');
         if (button) selectTool(Number(button.dataset.tool))
       });
