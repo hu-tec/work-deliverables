@@ -1247,8 +1247,10 @@
       .specialized-content { flex: 1; min-height: 0; max-width: none }
       .specialized-content[hidden] { display: none }
       .specialized-content.markdown { padding: 20px 24px 48px; line-height: 1.65 }
-      .specialized-content.markdown h2 { margin-top: 26px }
-      .specialized-content.markdown .guide-code { max-width: 100% }
+      .specialized-content .guide-topic-grid { align-items: start }
+      .specialized-content .guide-topic { overflow: hidden }
+      .specialized-content .guide-code, .specialized-content pre { min-width: 0; max-width: 100% }
+      .specialized-content .markdown-table { min-width: 520px }
       .specialized-content.markdown pre { white-space: pre-wrap; overflow-wrap: anywhere }
       .ui-prompt-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); flex: 1; min-height: 0 }
       .ui-prompt-preview { display: flex; flex-direction: column; min-width: 0; min-height: 0; border-left: 1px solid var(--line); background: #f8f9fc }
@@ -4677,6 +4679,7 @@
           panel.innerHTML = documents[key]
             ? renderMarkdown(documents[key], sourcePath)
             : '<p>본문을 불러오지 못했습니다. <a href="' + sourcePath + '">원본 문서 열기</a></p>';
+          if (documents[key]) arrangePromptGuideContent(panel);
           addPromptCopyButtons(panel)
         });
         function activateTab(index, moveFocus) {
